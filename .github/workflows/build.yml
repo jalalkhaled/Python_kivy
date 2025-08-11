@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:  # allows manual run
+  workflow_dispatch:
 
 jobs:
   build:
@@ -13,6 +13,24 @@ jobs:
     steps:
       # Checkout code
       - uses: actions/checkout@v4
+
+      # Install Android SDK tools (including sdkmanager) before using sdkmanager
+      - name: Setup Android SDK tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-11-jdk unzip wget
+          wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
+          mkdir -p $HOME/android-sdk/cmdline-tools
+          unzip cmdline-tools.zip -d $HOME/android-sdk/cmdline-tools
+          mv $HOME/android-sdk/cmdline-tools/cmdline-tools $HOME/android-sdk/cmdline-tools/latest
+          export PATH=$HOME/android-sdk/cmdline-tools/latest/bin:$PATH
+          yes | sdkmanager --licenses
+
+      # Install required Android SDK components
+      - name: Setup Android SDK build-tools
+        run: |
+          export PATH=$HOME/android-sdk/cmdline-tools/latest/bin:$PATH
+          sdkmanager "platform-tools" "build-tools;33.0.0" "platforms;android-33"
 
       # Get date for caching
       - name: Get Date
@@ -26,7 +44,7 @@ jobs:
           path: .buildozer_global
           key: buildozer-global-${{ hashFiles('buildozer.spec') }}
 
-      # Cache local buildozer directory (daily cache key to avoid conflicts)
+      # Cache local buildozer directory (daily cache key)
       - name: Cache Buildozer local directory
         uses: actions/cache@v4
         with:
