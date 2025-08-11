@@ -21,11 +21,11 @@ jobs:
           which mkdir
           mkdir -p test_dir && echo "mkdir works"
 
-      # Install system dependencies (including coreutils for 'yes')
+      # Install system dependencies
       - name: Setup system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y openjdk-11-jdk wget unzip coreutils
+          sudo apt-get install -y openjdk-11-jdk wget unzip coreutils build-essential libffi-dev python3-dev
 
       # Download and install Android SDK command line tools + SDK packages
       - name: Setup Android SDK command line tools and packages
@@ -36,17 +36,18 @@ jobs:
           /bin/mv $HOME/android-sdk/cmdline-tools/cmdline-tools $HOME/android-sdk/cmdline-tools/latest
 
           export PATH=$HOME/android-sdk/cmdline-tools/latest/bin:$PATH
+          export ANDROID_HOME=$HOME/android-sdk
+          export ANDROID_SDK_ROOT=$HOME/android-sdk
 
           yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
           $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager "platform-tools" "build-tools;33.0.2" "platforms;android-33" "ndk;23.1.7779620" "cmdline-tools;latest"
-        env:
-          ANDROID_SDK_ROOT: $HOME/android-sdk
-          PATH: $HOME/android-sdk/cmdline-tools/latest/bin:$PATH
+        shell: bash
 
       # Get current date for cache keys
       - name: Get Date
         id: get-date
         run: echo "date=$(date -u '+%Y%m%d')" >> $GITHUB_OUTPUT
+        shell: bash
 
       # Cache global Buildozer directory
       - name: Cache Buildozer global directory
@@ -62,21 +63,39 @@ jobs:
           path: .buildozer
           key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
 
+      # Setup Python and install buildozer
+      - name: Setup Python and Buildozer
+        run: |
+          sudo apt-get install -y python3-pip
+          pip3 install --user buildozer cython
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+        shell: bash
+
       # Run Buildozer to build APK
       - name: Build APK with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
+        run: |
+          export ANDROID_HOME=$HOME/android-sdk
+          export ANDROID_SDK_ROOT=$HOME/android-sdk
+          export PATH=$HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools:$HOME/android-sdk/build-tools/33.0.2:$PATH
+          
+          buildozer android debug
+        shell: bash
         env:
           ANDROID_SDK_ROOT: $HOME/android-sdk
           ANDROID_HOME: $HOME/android-sdk
           PATH: $HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools:$HOME/android-sdk/build-tools/33.0.2:$PATH
-        with:
-          command: buildozer android debug
-          buildozer_version: master
+
+      # Find and upload APK artifact
+      - name: Find APK file
+        id: find-apk
+        run: |
+          APK_FILE=$(find . -name "*.apk" -type f | head -n 1)
+          echo "filename=$APK_FILE" >> $GITHUB_OUTPUT
+        shell: bash
 
       # Upload APK artifact
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: kivy-apk
-          path: ${{ steps.buildozer.outputs.filename }}
+          path: ${{ steps.find-apk.outputs.filename }}
