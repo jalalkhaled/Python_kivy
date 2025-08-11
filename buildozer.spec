@@ -38,10 +38,7 @@ android.version_code = 1
 # android.sdk = 33
 
 # Add these or confirm they exist:
-android.minapi = 21
-android.target = 33
-android.build_tools_version = 33.0.2
-android.ndk_api = 21
+
 
 # Architecture
 android.archs = armeabi-v7a, arm64-v8a
