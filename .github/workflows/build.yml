@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch: # manual trigger
+  workflow_dispatch:  # allows manual run
 
 jobs:
   build:
@@ -13,6 +13,13 @@ jobs:
     steps:
       # Checkout code
       - uses: actions/checkout@v4
+
+      # Debug step to check basic shell commands
+      - name: Debug system info
+        run: |
+          echo "PATH=$PATH"
+          which mkdir
+          mkdir -p test_dir && echo "mkdir works"
 
       # Install system dependencies (including coreutils for 'yes')
       - name: Setup system dependencies
