@@ -30,15 +30,15 @@ jobs:
       # Download and install Android SDK command line tools + SDK packages
       - name: Setup Android SDK command line tools and packages
         run: |
-          mkdir -p $HOME/android-sdk/cmdline-tools
-          wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
-          unzip cmdline-tools.zip -d $HOME/android-sdk/cmdline-tools
-          mv $HOME/android-sdk/cmdline-tools/cmdline-tools $HOME/android-sdk/cmdline-tools/latest
+          /bin/mkdir -p $HOME/android-sdk/cmdline-tools
+          /usr/bin/wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
+          /usr/bin/unzip cmdline-tools.zip -d $HOME/android-sdk/cmdline-tools
+          /bin/mv $HOME/android-sdk/cmdline-tools/cmdline-tools $HOME/android-sdk/cmdline-tools/latest
 
           export PATH=$HOME/android-sdk/cmdline-tools/latest/bin:$PATH
 
-          yes | sdkmanager --licenses
-          sdkmanager "platform-tools" "build-tools;33.0.0" "platforms;android-33" "ndk;23.1.7779620"
+          yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
+          $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager "platform-tools" "build-tools;33.0.0" "platforms;android-33" "ndk;23.1.7779620"
         env:
           PATH: $HOME/android-sdk/cmdline-tools/latest/bin:$PATH
 
