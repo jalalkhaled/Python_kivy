@@ -11,38 +11,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout source code
+      # Checkout code
       - uses: actions/checkout@v4
 
-      # Install OpenJDK, wget, unzip (needed for sdk tools)
+      # Install system dependencies (including coreutils for 'yes')
       - name: Setup system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y openjdk-11-jdk wget unzip
+          sudo apt-get install -y openjdk-11-jdk wget unzip coreutils
 
-      # Download and setup Android SDK Command Line Tools
-      - name: Setup Android SDK command line tools
+      # Download and install Android SDK command line tools + SDK packages
+      - name: Setup Android SDK command line tools and packages
         run: |
           mkdir -p $HOME/android-sdk/cmdline-tools
           wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
           unzip cmdline-tools.zip -d $HOME/android-sdk/cmdline-tools
           mv $HOME/android-sdk/cmdline-tools/cmdline-tools $HOME/android-sdk/cmdline-tools/latest
 
-      # Accept licenses and install required SDK components
-      - name: Install Android SDK packages
-        env:
-          ANDROID_SDK_ROOT: $HOME/android-sdk
-          PATH: $HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools:$PATH
-        run: |
+          export PATH=$HOME/android-sdk/cmdline-tools/latest/bin:$PATH
+
           yes | sdkmanager --licenses
           sdkmanager "platform-tools" "build-tools;33.0.0" "platforms;android-33" "ndk;23.1.7779620"
+        env:
+          PATH: $HOME/android-sdk/cmdline-tools/latest/bin:$PATH
 
       # Get current date for cache keys
       - name: Get Date
         id: get-date
         run: echo "date=$(date -u '+%Y%m%d')" >> $GITHUB_OUTPUT
 
-      # Cache global Buildozer directory to speed up builds
+      # Cache global Buildozer directory
       - name: Cache Buildozer global directory
         uses: actions/cache@v4
         with:
@@ -67,7 +65,7 @@ jobs:
           command: buildozer android debug
           buildozer_version: master
 
-      # Upload the APK artifact
+      # Upload APK artifact
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
