@@ -40,7 +40,7 @@ android.version_code = 1
 # Add these or confirm they exist:
 android.minapi = 21
 android.target = 33
-android.build_tools_version = 33.0.0
+android.build_tools_version = 33.0.2
 android.ndk_api = 21
 
 # Architecture
