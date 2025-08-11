@@ -34,10 +34,13 @@ version = 1.0.0
 android.version_code = 1
 
 # Android version targets
+# Remove or comment out this deprecated line
+# android.sdk = 33
+
+# Add these or confirm they exist:
 android.minapi = 21
 android.target = 33
-android.sdk = 33
-android.ndk_api = 21
+android.build_tools_version = 33.0.0
 
 # Architecture
 android.archs = armeabi-v7a, arm64-v8a
