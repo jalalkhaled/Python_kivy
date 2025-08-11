@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hepatological Symptoms</title>
+  <link rel="stylesheet" href="../style/regional_style.css" type="text/css" media="all" />
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="nav-title">ALGOMED <span>HEPATOLOGY</span></div>
+  <button class="toggle-button" onclick="playClick(); toggleSidebar()">☰</button>
+</nav>
+
+<!-- Overlay for click outside -->
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <ul>
+      <li onclick="navigateTo('respiratory.html')">Respiratory</li>
+      <li onclick="navigateTo('cardiovascular.html')">Cardiovascular</li>
+      <li onclick="navigateTo('git.html')">Gastroenterology</li>
+      <li onclick="navigateTo('gynecology.html')">Gynecology</li>
+      <li onclick="navigateTo('hepatology.html')">Hepatology</li>
+      <li onclick="navigateTo('nephrology.html')">Nephrology</li>
+      <li onclick="navigateTo('obstetric.html')">Obstetric</li>
+      <li onclick="navigateTo('rheumatology.html')">Rheumatology</li>
+      <li onclick="navigateTo('hematology.html')">Hematology</li>
+      <li onclick="navigateTo('pediatric.html')">Pediatric</li>
+      <li onclick="navigateTo('ophthalmology.html')">Ophthalmology</li>
+      <li onclick="navigateTo('neurology.html')">Neurology</li>
+      <li onclick="navigateTo('dermatology.html')">Dermatology</li>
+      <li onclick="navigateTo('ent.html')">ENT</li>
+      <li onclick="navigateTo('psychiatric.html')">Psychiatric</li>
+      <li onclick="navigateTo('General.html')">General</li>
+    </ul>
+<button class="sidebar-about-button" onclick="navigateTo('../about.html')">About Us</button>
+  </aside>
+
+  <!-- Audio -->
+  <audio id="click-sound" src="../sounds/click_sound.wav" preload="auto"></audio>
+
+  <!-- Headlines Outside Container -->
+  <h3 id="headline">Select a Primary Symptom</h3>
+<p id="subheadline">Choose from the list below to begin diagnosis.</p>
+
+  <!-- Main Page -->
+  <div id="main-page" class="container">
+    <button class="symptom-button" onclick="playClick(); startSymptom('Ascites')">Ascites</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Jaundice')">Jaundice</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Biliary Colic')">Biliary Colic</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Asymptomatic Abnormal Liver Aminotransferases')">Asymptomatic Abnormal Liver Aminotransferases</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Elevated Serum Amylase')">Elevated Serum Amylase</button>
+    
+  </div>
+
+  <!-- Question Page -->
+  <div id="question-page">
+  <div class="title" id="symptom-title">Symptom Diagnostic</div>
+  <div id="question-image-container"></div>
+  <div id="question" class="question"></div>
+  <div class="button-container"></div>
+  <div id="footer" class="footer"></div>
+</div>
+
+  <!-- Home Button -->
+  <button class="home-button" onclick="goHome()">
+  <img src="../bodyicons/home_button.png" alt="Home" class="home-icon">
+  <span class="sr-only">Home</span>
+</button>
+  
+  
+  <!-- Script -->
+  <script>
+  const questions = {
+    "Ascites": {
+      start: {
+        text: "Perform diagnostic paracentesis and send ascitic fluid for analysis.",
+        explanation: "Initial tests should include cell count, albumin, total protein, culture, and LDH.",
+        options: {
+          "Proceed": "Evaluate WBC count"
+        }
+      },
+      "Evaluate WBC count": {
+        text: "Is ascitic fluid WBC count ≥500 cells/mm³?",
+        explanation: "Elevated WBC suggests infection or inflammation.",
+        options: {
+          yes: "Assess PMN count",
+          no: "Calculate SAAG"
+        }
+      },
+      "Assess PMN count": {
+        text: "Is PMN count ≥250 cells/mm³?",
+        explanation: "High PMNs suggest bacterial peritonitis.",
+        options: {
+          yes: "Evaluate for SBP",
+          no: "Calculate SAAG"
+        }
+      },
+      "Evaluate for SBP": {
+        text: "Check additional SBP criteria: Single organism, TP <1 g/dL, Glucose >50 mg/dL, LDH <225 U/L?",
+        explanation: "Typical SBP has monomicrobial infection with these characteristics.",
+        options: {
+          "Meets criteria": "Spontaneous bacterial peritonitis",
+          "Does not meet": "Secondary peritonitis likely"
+        }
+      },
+      "Spontaneous bacterial peritonitis": {
+        text: "Diagnosis: Spontaneous bacterial peritonitis (SBP).",
+        explanation: "Start antibiotics (e.g., cefotaxime). Consider albumin if Cr >1 or BUN >30.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Secondary peritonitis likely": {
+        text: "Polymicrobial infection, TP >1 g/dL, Glucose <50 mg/dL, or LDH ≥225 U/L suggests secondary peritonitis.",
+        explanation: "Requires surgical evaluation for gut perforation.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Calculate SAAG": {
+        text: "Is SAAG ≥1.1 g/dL?",
+        explanation: "High SAAG indicates portal hypertension (e.g., cirrhosis).",
+        options: {
+          yes: "Assess total protein",
+          no: "Low SAAG evaluation"
+        }
+      },
+      "Assess total protein": {
+        text: "Is ascitic fluid total protein <2.5 g/dL?",
+        explanation: "Low protein suggests uncomplicated cirrhotic ascites.",
+        options: {
+          yes: "Uncomplicated cirrhotic ascites",
+          no: "Cardiac ascites"
+        }
+      },
+      "Uncomplicated cirrhotic ascites": {
+        text: "Diagnosis: Uncomplicated cirrhotic ascites.",
+        explanation: "Treat with sodium restriction and diuretics (spironolactone ± furosemide).",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Cardiac ascites": {
+        text: "Diagnosis: Cardiac ascites (SAAG ≥1.1 + TP ≥2.5 g/dL).",
+        explanation: "Order echocardiogram. Manage heart failure with diuretics and afterload reduction.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Low SAAG evaluation": {
+        text: "Select additional findings:",
+        explanation: "Low SAAG (<1.1) suggests non-portal hypertension causes.",
+        options: {
+          "Amylase >100 U/L": "Pancreatic ascites",
+          "Positive cytology": "Peritoneal carcinomatosis",
+          "Mycobacterial growth": "Tuberculous peritonitis"
+        }
+      },
+      "Pancreatic ascites": {
+        text: "Diagnosis: Pancreatic ascites.",
+        explanation: "Obtain pancreatic protocol CT. May require ERCP or surgery for duct leak.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Peritoneal carcinomatosis": {
+        text: "Diagnosis: Peritoneal carcinomatosis.",
+        explanation: "Identify primary malignancy. Consider palliative paracentesis or chemotherapy.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Tuberculous peritonitis": {
+        text: "Diagnosis: Tuberculous peritonitis.",
+        explanation: "Start anti-TB therapy (RIPE regimen). Laparoscopic biopsy may confirm.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      }
+    },
+    
+    
+    
+    // Jaundice - - - - - - - - 
+  "Jaundice": {
+    start: {
+      text: "Is the patient's jaundice accompanied by signs of systemic illness (fever, abdominal pain, weight loss)?",
+      explanation: "RED FLAGS: Fever + RUQ pain suggests cholangitis. Weight loss may indicate malignancy. These require urgent evaluation.",
+      options: {
+        yes: "Urgent Evaluation Pathway",
+        no: "Initial Laboratory Evaluation"
+      }
+    },
+
+    // Urgent Evaluation Pathway
+    "Urgent Evaluation Pathway": {
+      text: "Assess for signs of cholangitis (fever, RUQ pain, hypotension) or acute liver failure (encephalopathy, coagulopathy).",
+      explanation: "CHOLANGITIS TRIAD: Fever, jaundice, RUQ pain (Reynolds' pentad adds shock + confusion). Requires immediate antibiotics + ERCP.",
+      options: {
+        "Cholangitis suspected": "Immediate ERCP + Antibiotics",
+        "No cholangitis": "Initial Laboratory Evaluation"
+      }
+    },
+    "Immediate ERCP + Antibiotics": {
+      text: "Start broad-spectrum antibiotics (e.g., piperacillin-tazobactam) and arrange urgent ERCP for biliary decompression.",
+      explanation: "TIMING: ERCP within 24h reduces mortality. Antibiotics should cover enteric pathogens (E. coli, Klebsiella, Enterococcus).",
+      options: {
+        "Stable post-procedure": "Identify Obstruction Cause",
+        "Unstable": "ICU Transfer"
+      }
+    },
+
+    // Initial Laboratory Evaluation
+    "Initial Laboratory Evaluation": {
+      text: "Obtain total/direct bilirubin, AST, ALT, ALP, CBC, INR, and albumin. Is bilirubin predominantly conjugated (>50% direct)?",
+      explanation: "CRITICAL: Conjugated hyperbilirubinemia suggests hepatobiliary disease. Unconjugated suggests hemolysis/Gilbert's.",
+      options: {
+        "Conjugated >50%": "Hepatobiliary Workup",
+        "Unconjugated >80%": "Hemolysis/Gilbert's Evaluation"
+      }
+    },
+
+    // Hepatobiliary Workup Pathway
+    "Hepatobiliary Workup": {
+      text: "Are AST/ALT elevated >3x ULN (hepatocellular pattern) or ALP elevated >2x ULN (cholestatic pattern)?",
+      explanation: "PATTERNS: AST/ALT >1000 = ischemic/toxic hepatitis. Isolated ALP rise = early biliary obstruction or infiltrative disease.",
+      options: {
+        "Hepatocellular (AST/ALT ↑↑)": "Hepatocellular Causes",
+        "Cholestatic (ALP ↑↑)": "Biliary Obstruction Workup"
+      }
+    },
+
+    // Hepatocellular Causes
+    "Hepatocellular Causes": {
+      text: "Evaluate for viral hepatitis (HAV IgM, HBsAg, HCV RNA), toxins (alcohol, acetaminophen), ischemia, or autoimmune hepatitis (ANA, ASMA, IgG).",
+      explanation: "ACETAMINOPHEN TOXICITY: AST > ALT (>1000), history of overdose. NAC treatment if within 24h.",
+      options: {
+        "Cause identified": "Targeted Treatment",
+        "Unknown cause": "Liver Biopsy Consideration"
+      }
+    },
+
+    // Biliary Obstruction Workup
+    "Biliary Obstruction Workup": {
+      text: "Perform abdominal ultrasound to assess for biliary dilation (sensitivity 95% for extrahepatic obstruction).",
+      explanation: "ULTRASOUND FIRST: No radiation, detects stones/dilation. MRCP if US equivocal (89-100% accuracy). Avoid HIDA scan - poor sensitivity.",
+      options: {
+        "Dilated ducts": "ERCP/MRCP for Definitive Diagnosis",
+        "No dilation": "Intrahepatic Cholestasis Workup"
+      }
+    },
+    "ERCP/MRCP for Definitive Diagnosis": {
+      text: "MRCP for diagnosis (non-invasive), ERCP if therapeutic intervention needed (e.g., stone extraction, stent placement).",
+      explanation: "CHOICE: ERCP if high suspicion for choledocholithiasis (e.g., bilirubin >4, CBD >6mm). MRCP avoids pancreatitis risk.",
+      options: {
+        "Obstruction confirmed": "Relieve Obstruction",
+        "No obstruction": "Intrahepatic Cholestasis Workup"
+      }
+    },
+    "Relieve Obstruction": {
+      text: "ERCP with sphincterotomy (stones), stent placement (malignancy), or PTC if ERCP unavailable.",
+      explanation: "PANCREATIC CANCER: Metal stents preferred for survival >4mo. Plastic for shorter life expectancy.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Intrahepatic Cholestasis Workup
+    "Intrahepatic Cholestasis Workup": {
+      text: "Check AMA (PBC), viral hepatitis serologies, medications review, and consider infiltrative diseases (sarcoid, metastases).",
+      explanation: "DRUG-INDUCED: Common culprits = amoxicillin-clavulanate, anabolic steroids, TPN. Onset typically within 6 weeks.",
+      options: {
+        "Cause identified": "Targeted Treatment",
+        "Unknown cause": "Liver Biopsy"
+      }
+    },
+
+    // Hemolysis/Gilbert's Evaluation
+    "Hemolysis/Gilbert's Evaluation": {
+      text: "Check LDH, haptoglobin, reticulocyte count for hemolysis. If normal, consider Gilbert's (fasting bilirubin ↑ by >25%).",
+      explanation: "GILBERT'S: Benign, affects 5-10% population. UGT1A1 mutation. No treatment needed.",
+      options: {
+        "Hemolysis confirmed": "Hemolysis Management",
+        "Gilbert's suspected": "Reassurance + Monitor"
+      }
+    },
+    "Hemolysis Management": {
+      text: "Treat underlying cause (e.g., stop offending drug, immunosuppressants for AIHA, transfusions if severe anemia).",
+      explanation: "AIHA WORKUP: Coombs test, cold agglutinins. Avoid transfusions unless Hb <7 or symptomatic.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Common Terminal Pathways
+    "Targeted Treatment": {
+      text: "Treat specific etiology: antivirals for hepatitis, steroids for AIH, ursodiol for PBC, etc.",
+      explanation: "AUTOIMMUNE HEPATITIS: Prednisone 40mg daily + azathioprine. 80% remission rate.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Liver Biopsy Consideration": {
+      text: "Proceed with biopsy if serologies negative and diagnosis unclear (e.g., suspected NASH, granulomatous disease).",
+      explanation: "SAFETY: Major complications <0.5%. Transjugular route if coagulopathy present.",
+      options: {
+        "Diagnosis confirmed": "Targeted Treatment",
+        "Still unclear": "Refer to Specialist"
+      }
+    },
+
+    // Exit/Reentry Points
+    "ICU Transfer": {
+      text: "Manage shock, coagulopathy, and encephalopathy in ICU. Consider liver transplant evaluation for acute liver failure.",
+      explanation: "KING'S COLLEGE CRITERIA: pH <7.3 or INR >6.5 + Cr >3.4 = poor prognosis without transplant.",
+      options: {
+        "Stabilized": "Identify Obstruction Cause"
+      }
+    },
+    "Refer to Specialist": {
+      text: "Consult hepatology for complex cases (e.g., indeterminate biopsy, rare genetic disorders).",
+      explanation: "GENETIC TESTS: Wilson's (ceruloplasmin), hemochromatosis (HFE mutations), alpha-1 antitrypsin deficiency.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+  
+
+
+  // Biliary Colic - - - - - - - - - - 
+  "Biliary Colic": {
+    start: {
+      text: "Does the patient have RUQ/epigastric pain lasting 15min-several hours with vomiting?",
+      explanation: "CLASSIC PRESENTATION: Sudden onset, severe pain. May radiate to right scapula. Fatty food association is unreliable (present in only 50%).",
+      options: {
+        yes: "Initial Evaluation",
+        no: "Consider Alternative Diagnoses"
+      }
+    },
+
+    // Initial Evaluation Pathway
+    "Initial Evaluation": {
+      text: "Obtain CBC, LFTs (AST/ALT/ALP/bilirubin), lipase, and RUQ ultrasound.",
+      explanation: "KEY LABS: Elevated ALP + bilirubin suggests CBD obstruction. Normal LFTs don't exclude stones (40% normal during pain-free periods).",
+      options: {
+        "Gallstones on US": "Gallstone Management",
+        "No stones but dilated CBD": "CBD Obstruction Workup",
+        "Normal US": "Atypical Presentation Workup"
+      }
+    },
+
+    // Gallstone Management Pathway
+    "Gallstone Management": {
+      text: "Are LFTs elevated (ALT >2x or bilirubin >2)?",
+      explanation: "HIGH-RISK: Elevated LFTs + gallstones = 85% chance of CBD stone. Falling LFTs may indicate passed stone.",
+      options: {
+        "Elevated LFTs": "ERCP vs Surgery Decision",
+        "Normal LFTs": "Elective Cholecystectomy"
+      }
+    },
+    "ERCP vs Surgery Decision": {
+      text: "Are there signs of cholangitis (fever, hypotension, mental status changes)?",
+      explanation: "CHOLANGITIS = MEDICAL EMERGENCY. Requires antibiotics (piperacillin-tazobactam) + urgent ERCP within 24h.",
+      options: {
+        "Cholangitis present": "Urgent ERCP",
+        "No cholangitis": "Pre-op ERCP vs IOC"
+      }
+    },
+    "Urgent ERCP": {
+      text: "Perform ERCP with sphincterotomy + stone extraction. Schedule cholecystectomy within 2 weeks.",
+      explanation: "MORTALITY: 5-10% if untreated. Post-ERCP pancreatitis risk 3-5%. IV fluids + rectal NSAIDs reduce risk.",
+      options: {
+        "Successful clearance": "Interval Cholecystectomy",
+        "Failed ERCP": "PTC or Surgical Exploration"
+      }
+    },
+    "Pre-op ERCP vs IOC": {
+      text: "Consider EUS/MRCP first if intermediate probability of stones. High probability → direct ERCP.",
+      explanation: "STRATEGY: ERCP pre-op if high suspicion (dilated CBD + jaundice). IOC during surgery if low suspicion.",
+      options: {
+        "ERCP done": "Stone Extraction then Surgery",
+        "IOC planned": "Laparoscopic Cholecystectomy"
+      }
+    },
+
+    // CBD Obstruction Workup
+    "CBD Obstruction Workup": {
+      text: "Perform MRCP or EUS to confirm CBD stones (95% sensitive). Avoid diagnostic ERCP due to risks.",
+      explanation: "EUS ADVANTAGE: No radiation, lower pancreatitis risk than ERCP. Can detect small stones (<3mm) missed by MRCP.",
+      options: {
+        "Stones confirmed": "ERCP with Sphincterotomy",
+        "No stones": "Sphincter of Oddi Dysfunction Evaluation"
+      }
+    },
+
+    // Atypical Presentation Workup
+    "Atypical Presentation Workup": {
+      text: "Consider HIDA scan if gallbladder dysfunction suspected. For normal HIDA, evaluate for peptic ulcer (EGD) or functional disorders.",
+      explanation: "HIDA CRITERIA: EF <35% = biliary dyskinesia. CCK-HIDA more accurate than fasting scan.",
+      options: {
+        "Low EF on HIDA": "Cholecystectomy for Dysmotility",
+        "Normal HIDA": "Non-biliary Cause Evaluation"
+      }
+    },
+
+    // Special Scenarios
+    "Sphincter of Oddi Dysfunction Evaluation": {
+      text: "Perform biliary manometry if Type I/II SOD suspected (Milwaukee criteria). Type III responds poorly to sphincterotomy.",
+      explanation: "CONTROVERSY: Sphincterotomy helps 60% Type I, 40% Type II, but only 10% Type III. High post-ERCP pancreatitis risk (20%).",
+      options: {
+        "Type I/II SOD": "ERCP with Sphincterotomy",
+        "Type III SOD": "Medical Management First"
+      }
+    },
+    "Non-biliary Cause Evaluation": {
+      text: "Rule out peptic ulcer (EGD), pancreatitis (lipase/CT), renal colic (UA/CT), or functional disorders.",
+      explanation: "RED FLAGS: Weight loss → EGD for malignancy. Colicky pain + hematuria → renal CT.",
+      options: {
+        "Cause identified": "Targeted Treatment",
+        "Functional pain": "Low-dose TCAs or CBT"
+      }
+    },
+
+    // Treatment Pathways
+    "Elective Cholecystectomy": {
+      text: "Schedule laparoscopic cholecystectomy. High-risk patients may consider ursodiol (only for small cholesterol stones).",
+      explanation: "URSO REQUIREMENTS: Radiolucent stones <5mm, patent cystic duct. 50% recurrence at 5 years.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Medical Management First": {
+      text: "Trial of calcium channel blockers (nifedipine) or TCAs (amitriptyline 10-25mg QHS) for SOD Type III.",
+      explanation: "EVIDENCE: 40% response to medical therapy vs 10% placebo. Avoid narcotics (worsens dysmotility).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Exit/Reentry Points
+    "Consider Alternative Diagnoses": {
+      text: "Evaluate for pancreatitis, peptic ulcer, MI (elderly/diabetics), or functional GI disorders.",
+      explanation: "MIMICKERS: 'Biliary' pain from IBS (30%), gastroparesis, or even inferior MI (diaphragmatic irritation).",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    }
+  },
+
+
+
+  //Asymptomatic Abnormal Liver Aminotransferases - - - - 
+  "Asymptomatic Abnormal Liver Aminotransferases": {
+  start: {
+    text: "Are liver aminotransferases (ALT/AST) elevated >5 times the upper limit of normal (ULN)?",
+    explanation: "Initial stratification by severity. Levels >5x ULN suggest acute injury (e.g., viral, ischemic, or toxic). Levels <5x ULN often reflect chronic processes (e.g., NAFLD, medications).",
+    options: {
+      ">5x ULN": "Acute Injury Evaluation",
+      "<5x ULN": "Chronic Elevation Evaluation"
+    }
+  },
+  
+  // Acute Injury Pathway (>5x ULN)
+  "Acute Injury Evaluation": {
+    text: "Assess for acute symptoms (jaundice, abdominal pain, fever) or risk factors (recent hepatotoxic drugs, viral exposure, hypotension).",
+    explanation: "RED FLAGS: Jaundice + AST/ALT >1000 U/L suggests acute hepatitis/ischemia. Check PT/INR for synthetic dysfunction. Immediate hospitalization if encephalopathy or coagulopathy present.",
+    options: {
+      "Acute symptoms present": "Urgent Hospitalization",
+      "No acute symptoms": "Evaluate for Ischemic/Drug Injury"
+    }
+  },
+  "Urgent Hospitalization": {
+    text: "Admit for monitoring, viral serologies (HAV IgM, HBV sAg/IgM, HCV RNA), toxicology screen, and abdominal imaging (US/CT).",
+    explanation: "CRITICAL: Rule out acetaminophen toxicity (check level) and Wilson’s disease (if <40yo). Consider liver biopsy if diagnosis unclear after 48h.",
+    options: {
+      "Restart Algorithm": "start",
+      "Proceed to Biopsy": "Liver Biopsy Consideration"
+    }
+  },
+  "Evaluate for Ischemic/Drug Injury": {
+    text: "Review medications (e.g., statins, antibiotics, herbal supplements) and assess for hypotension/shock history.",
+    explanation: "KEY DRUGS: Amoxicillin-clavulanate, INH, valproate. NOTE: ALT > AST in most drug-induced injury; AST > ALT in alcohol/ischemia.",
+    options: {
+      "Identified cause": "Discontinue Toxin & Monitor",
+      "No clear cause": "Extended Serologic Testing"
+    }
+  },
+  "Discontinue Toxin & Monitor": {
+    text: "Stop hepatotoxic agent; repeat LFTs in 72h. Expect 50% decline in ALT within 3 days if drug-induced.",
+    explanation: "WARNING: Continue monitoring even after stopping the drug (e.g., amoxicillin-clavulanate can cause delayed cholestasis).",
+    options: {
+      "Restart Algorithm": "start",
+      "Proceed to Biopsy": "Liver Biopsy Consideration"
+    }
+  },
+  
+  // Chronic Elevation Pathway (<5x ULN)
+  "Chronic Elevation Evaluation": {
+    text: "Perform initial workup: Hepatitis B/C serologies, iron studies (ferritin, saturation), and abdominal ultrasound.",
+    explanation: "PRIORITY TESTS: HBV sAg, HCV antibody (confirm with RNA if positive). Iron saturation >45% suggests hemochromatosis. US assesses steatosis/portal hypertension.",
+    options: {
+      "Positive serologies": "Disease-Specific Management",
+      "Negative serologies": "Secondary Workup"
+    }
+  },
+  "Disease-Specific Management": {
+    text: "Treat underlying condition: Antivirals for HBV/HCV, phlebotomy for hemochromatosis, lifestyle changes for NAFLD.",
+    explanation: "NAFLD: Weight loss (5-10% improves histology), control diabetes/dyslipidemia. HBV: Entecavir/tenofovir for high viral load. HCV: Direct-acting antivirals.",
+    options: {
+      "Restart Algorithm": "start",
+      "Persistent Elevation": "Liver Biopsy Consideration"
+    }
+  },
+  "Secondary Workup": {
+    text: "Check ANA, anti-smooth muscle Ab (autoimmune hepatitis), ceruloplasmin (Wilson’s), alpha-1-antitrypsin (AATD), and TSH (hypothyroidism).",
+    explanation: "AUTOANTIBODIES: ANA ≥1:80 + elevated IgG suggests autoimmune hepatitis. Ceruloplasmin <20 mg/dL + Kayser-Fleischer rings indicate Wilson’s.",
+    options: {
+      "Abnormal result": "Targeted Treatment",
+      "All normal": "NAFLD or Biopsy"
+    }
+  },
+  "Targeted Treatment": {
+    text: "Initiate therapy: Prednisone/azathioprine for AIH, D-penicillamine for Wilson’s, AAT augmentation for deficiency.",
+    explanation: "MONITORING: Autoimmune hepatitis requires lifelong immunosuppression. Wilson’s needs copper-lowering therapy and dietary changes.",
+    options: {
+      "Restart Algorithm": "start",
+      "Treatment Failure": "Liver Biopsy Consideration"
+    }
+  },
+  "NAFLD or Biopsy": {
+    text: "Assess metabolic risk factors (obesity, diabetes) or consider biopsy if elevation persists >6 months.",
+    explanation: "NON-INVASIVE TOOLS: FIB-4/NAFLD fibrosis score estimates fibrosis risk. Biopsy gold standard for steatohepatitis (NASH) grading.",
+    options: {
+      "High-risk NAFLD": "Aggressive Lifestyle Intervention",
+      "Indeterminate cause": "Liver Biopsy Consideration"
+    }
+  },
+  
+  // Shared Pathway (Liver Biopsy)
+  "Liver Biopsy Consideration": {
+    text: "Does biopsy offer prognostic/therapeutic value (e.g., confirm NASH, grade fibrosis, diagnose AIH)?",
+    explanation: "INDICATIONS: Unexplained elevation >6mo, suspected autoimmune disease, or discordant non-invasive tests. RISKS: Bleeding (1:1000), pain (5%).",
+    options: {
+      "Proceed with biopsy": "Biopsy Findings Management",
+      "Monitor without biopsy": "Continued Surveillance"
+    }
+  },
+  "Biopsy Findings Management": {
+    text: "Tailor management based on histology: NASH (weight loss/vitamin E), AIH (immunosuppression), fibrosis (surveillance for cirrhosis).",
+    explanation: "NASH: Vitamin E 800 IU/day improves histology in non-diabetics. Cirrhosis: Screen for varices/HCC every 6mo.",
+    options: {
+      "Restart Algorithm": "start",
+      "Exit": "exit"
+    }
+  },
+  "Continued Surveillance": {
+    text: "Repeat LFTs q3-6mo + non-invasive fibrosis tests (e.g., elastography) if risk factors persist.",
+    explanation: "WARNING: Persistent ALT >30 U/L (men) or >20 U/L (women) increases cirrhosis risk over 10-15 years.",
+    options: {
+      "Restart Algorithm": "start",
+      "Exit": "exit"
+    }
+  }
+},
+
+
+
+  //Elevated Serum Amylase-------
+
+  "Elevated Serum Amylase": {
+  start: {
+    text: "Is the patient presenting with abdominal pain?",
+    explanation: "Abdominal pain suggests pancreatic or intra-abdominal pathology (e.g., pancreatitis, perforated viscus). Absence of pain points to systemic/macroamylasemia.",
+    options: {
+      yes: "Abdominal Pain Evaluation",
+      no: "Non-Abdominal Evaluation"
+    }
+  },
+  
+  // Abdominal Pain Pathway
+  "Abdominal Pain Evaluation": {
+    text: "Is serum amylase >3x upper limit of normal (ULN)?",
+    explanation: "Levels >3x ULN strongly suggest acute pancreatitis. Levels <3x may indicate non-pancreatic causes (e.g., cholecystitis, bowel perforation). NOTE: Normal amylase does not rule out pancreatitis if lipase is elevated.",
+    options: {
+      ">3x ULN": "Acute Pancreatitis Workup",
+      "<3x ULN": "Non-Pancreatic Abdominal Causes"
+    }
+  },
+  "Acute Pancreatitis Workup": {
+    text: "Assess for common etiologies: gallstones, alcohol, hypertriglyceridemia, or drugs (e.g., azathioprine, valproate).",
+    explanation: "CRITICAL: Check lipase (more specific for pancreatitis). RED FLAGS: Hypotension, hypoxia, or altered mentation indicate severe pancreatitis (need ICU).",
+    options: {
+      "Etiology identified": "Targeted Management",
+      "Unknown etiology": "Advanced Imaging"
+    }
+  },
+  "Targeted Management": {
+    text: "Treat underlying cause: NPO, IV fluids, analgesia. Gallstone pancreatitis may need ERCP if cholangitis present.",
+    explanation: "FLUID RESUSCITATION: 250–500 mL/hr LR initially. AVOID: NSAIDs (risk of AKI). WARNING: CT within 72h may underestimate necrosis.",
+    options: {
+      "Persistent elevation >5 days": "Complication Evaluation",
+      "Improvement": "Monitor Resolution"
+    }
+  },
+  "Advanced Imaging": {
+    text: "Perform abdominal CT with contrast (if creatinine normal) or MRI/MRCP to evaluate for structural causes.",
+    explanation: "INDICATIONS: Suspected necrosis, pseudocyst, or biliary obstruction. MRCP preferred for choledocholithiasis without duct dilation.",
+    options: {
+      "Structural abnormality found": "Intervention (e.g., ERCP/drainage)",
+      "No abnormality": "Obscure Causes Workup"
+    }
+  },
+  "Non-Pancreatic Abdominal Causes": {
+    text: "Evaluate for perforated viscus, mesenteric ischemia, or cholecystitis. Check upright CXR (free air) and lactate.",
+    explanation: "CLUES: Perforation → sudden pain + rigid abdomen. Ischemia → pain out of proportion to exam + metabolic acidosis.",
+    options: {
+      "Surgical emergency suspected": "Urgent Surgery Consult",
+      "Non-surgical cause": "Supportive Care"
+    }
+  },
+  
+  // Non-Abdominal Pathway
+  "Non-Abdominal Evaluation": {
+    text: "Check renal function (Cr), urine amylase, and amylase-creatinine clearance ratio (ACR).",
+    explanation: "MACROAMYLASEMIA: ACR <0.2% + normal urine amylase. Renal failure: Elevated Cr with ACR >5%. Salivary: Elevated s-isoenzyme.",
+    options: {
+      "ACR <0.2%": "Macroamylasemia",
+      "Elevated Cr": "Renal Insufficiency",
+      "Normal workup": "Salivary/Isoenzyme Testing"
+    }
+  },
+  "Macroamylasemia": {
+    text: "Confirm with serum macroamylase electrophoresis (if available). No treatment needed.",
+    explanation: "BENIGN CONDITION: Often incidental. Differentiate from pancreatitis (lipase normal). Associated with celiac disease or lymphoma.",
+    options: {
+      "Restart Algorithm": "start",
+      "Exit": "exit"
+    }
+  },
+  "Renal Insufficiency": {
+    text: "Amylase typically <2x ULN. Address AKI/CKD (e.g., volume repletion, dialysis).",
+    explanation: "NOTE: Pancreatitis can cause AKI (check lipase if suspicion high).",
+    options: {
+      "Restart Algorithm": "start",
+      "Exit": "exit"
+    }
+  },
+  "Salivary/Isoenzyme Testing": {
+    text: "Check s-amylase (salivary) if suspected mumps, lung cancer, or ovarian tumor.",
+    explanation: "SALIVARY SOURCES: Trauma, radiation, or infection (e.g., mumps). MALIGNANCY: Ovarian/prostate cancer may produce ectopic amylase.",
+    options: {
+      "Salivary cause identified": "Treat Underlying Condition",
+      "No cause found": "Observe/Repeat Testing"
+    }
+  },
+  
+  // Shared Pathways
+  "Complication Evaluation": {
+    text: "CT/MRI for pseudocyst, necrosis, or abscess. Consider ERCP if biliary obstruction.",
+    explanation: "TIMING: CT best after 5–7 days to assess necrosis. INTERVENTION: Drain infected collections; delay ERCP unless cholangitis.",
+    options: {
+      "Complication found": "Drainage/Surgery",
+      "No complication": "Chronic Pancreatitis Workup"
+    }
+  },
+  "Chronic Pancreatitis Workup": {
+    text: "Evaluate for calcifications (CT), steatorrhea (fecal fat), and diabetes (HbA1c).",
+    explanation: "DIAGNOSIS: Cambridge criteria on imaging. TREATMENT: Pancreatic enzyme replacement (40,000–90,000 USP units/meal).",
+    options: {
+      "Restart Algorithm": "start",
+      "Exit": "exit"
+    }
+  },
+  "Obscure Causes Workup": {
+    text: "Consider rare causes: diabetic ketoacidosis, anorexia, celiac disease, or cerebral trauma.",
+    explanation: "DKA: Amylase may be elevated without pancreatitis. CELIAC: Associated with macroamylasemia.",
+    options: {
+      "Restart Algorithm": "start",
+      "Exit": "exit"
+    }
+  }
+}
+};
+
+
+    let currentSymptom = null;
+    let currentQuestion = "start";
+
+    function playClick() {
+      const sound = document.getElementById("click-sound");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+      }
+    }
+
+    function startSymptom(symptom) {
+      currentSymptom = symptom;
+      currentQuestion = "start";
+      document.getElementById("symptom-title").textContent = symptom;
+      showQuestion();
+
+      document.getElementById("main-page").style.display = "none";
+      document.getElementById("question-page").style.display = "block";
+      document.getElementById("headline").style.display = "none";
+      document.getElementById("subheadline").style.display = "none";
+    }
+
+    // NEW/MODIFIED: This function is updated to show images.
+    function showQuestion() {
+      const symptomQuestions = questions[currentSymptom];
+      if (!symptomQuestions || !symptomQuestions[currentQuestion]) {
+        alert("Invalid symptom or question flow.");
+        return;
+      }
+
+      const questionData = symptomQuestions[currentQuestion];
+      const imageContainer = document.getElementById("question-image-container");
+      
+      // Clear previous image
+      imageContainer.innerHTML = "";
+
+      // If an image path exists, create and display the image
+      if (questionData.image) {
+        const img = document.createElement("img");
+        img.src = questionData.image;
+        img.alt = questionData.text; // for accessibility
+        img.className = "question-image";
+        imageContainer.appendChild(img);
+      }
+
+      document.getElementById("question").textContent = questionData.text;
+      document.getElementById("footer").textContent = questionData.explanation || "No explanation available.";
+
+      const buttons = Object.keys(questionData.options)
+        .map(option =>
+          `<button class='option-button' onclick="playClick(); nextQuestion('${option}')">${option}</button>`)
+        .join("");
+      document.querySelector(".button-container").innerHTML = buttons;
+    }
+
+    function nextQuestion(answer) {
+      const symptomQuestions = questions[currentSymptom];
+      const current = symptomQuestions[currentQuestion];
+      if (!current || !current.options[answer]) {
+        alert("Invalid choice.");
+        return;
+      }
+
+      const next = current.options[answer];
+      // Check if the next step is another question or a final diagnosis
+      if (symptomQuestions[next] && symptomQuestions[next].options) {
+          currentQuestion = next;
+          showQuestion();
+      } else {
+          // This handles both terminal nodes that are defined as full objects
+          // and those that are simple strings (your original implementation)
+          if (symptomQuestions[next]) {
+              currentQuestion = next;
+              showQuestion(); // This will display the final diagnosis with its image
+          } else {
+              // This is a fallback for legacy string-only terminals
+              document.getElementById("question").textContent = next;
+              document.getElementById("footer").textContent = "End of diagnostic path.";
+              document.querySelector(".button-container").innerHTML =
+                `<button class='option-button' onclick="playClick(); restart()">Restart</button>`;
+              document.getElementById("question-image-container").innerHTML = ""; // Clear image
+          }
+      }
+    }
+
+
+    function restart() {
+      document.getElementById("main-page").style.display = "flex";
+      document.getElementById("question-page").style.display = "none";
+      document.getElementById("headline").style.display = "block";
+      document.getElementById("subheadline").style.display = "block";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      sidebar.classList.toggle("active");
+      overlay.style.display = sidebar.classList.contains("active") ? "block" : "none";
+    }
+
+    document.addEventListener("click", function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const toggleBtn = document.querySelector(".toggle-button");
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnToggle = toggleBtn.contains(event.target);
+      if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains("active")) {
+        toggleSidebar();
+      }
+    });
+
+    let startX = 0;
+    document.addEventListener("touchstart", function(e) {
+      if (e.touches.length === 1) { startX = e.touches[0].clientX; }
+    });
+    document.addEventListener("touchend", function(e) {
+      const sidebar = document.getElementById("sidebar");
+      const diff = e.changedTouches[0].clientX - startX;
+      if (diff > 50 && sidebar.classList.contains("active")) { toggleSidebar(); }
+    });
+
+    function goHome() {
+      window.location.href = "../index.html";
+    }
+
+    function navigateTo(page) {
+      window.location.href = page;
+      const loadingScreen = document.querySelector('.loading');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'flex';
+        setTimeout(() => { window.location.href = page; }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,3148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rheumatological Symptoms</title>
+  <link rel="stylesheet" href="../style/regional_style.css" type="text/css" media="all" />
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="nav-title">ALGOMED <span>RHEUMATOLOGY </span></div>
+  <button class="toggle-button" onclick="playClick(); toggleSidebar()">☰</button>
+</nav>
+
+<!-- Overlay for click outside -->
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <ul>
+      <li onclick="navigateTo('respiratory.html')">Respiratory</li>
+      <li onclick="navigateTo('cardiovascular.html')">Cardiovascular</li>
+      <li onclick="navigateTo('git.html')">Gastroenterology</li>
+      <li onclick="navigateTo('gynecology.html')">Gynecology</li>
+      <li onclick="navigateTo('hepatology.html')">Hepatology</li>
+      <li onclick="navigateTo('nephrology.html')">Nephrology</li>
+      <li onclick="navigateTo('obstetric.html')">Obstetric</li>
+      <li onclick="navigateTo('rheumatology.html')">Rheumatology</li>
+      <li onclick="navigateTo('hematology.html')">Hematology</li>
+      <li onclick="navigateTo('pediatric.html')">Pediatric</li>
+      <li onclick="navigateTo('ophthalmology.html')">Ophthalmology</li>
+      <li onclick="navigateTo('neurology.html')">Neurology</li>
+      <li onclick="navigateTo('dermatology.html')">Dermatology</li>
+      <li onclick="navigateTo('ent.html')">ENT</li>
+      <li onclick="navigateTo('psychiatric.html')">Psychiatric</li>
+      <li onclick="navigateTo('General.html')">General</li>
+    </ul>
+<button class="sidebar-about-button" onclick="navigateTo('../about.html')">About Us</button>
+  </aside>
+
+  <!-- Audio -->
+  <audio id="click-sound" src="../sounds/click_sound.wav" preload="auto"></audio>
+
+  <!-- Headlines Outside Container -->
+  <h3 id="headline">Select a Primary Symptom</h3>
+<p id="subheadline">Choose from the list below to begin diagnosis.</p>
+
+  <!-- Main Page -->
+  <div id="main-page" class="container">
+    <button class="symptom-button" onclick="playClick(); startSymptom('Muscle Cramps and Aches')">Muscle Cramps and Aches</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Monoarticular Arthritis')">Monoarticular Arthritis</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Polyarticular Arthritis')">Polyarticular Arthritis</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Seronegative Arthritis')">Seronegative Arthritis</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Soft-Tissue Pain')">Soft-Tissue Pain</button>
+    <button class="symptom-button" onclick="startSymptom('Neck Pain')">Neck Pain</button>
+    <button class="symptom-button" onclick="startSymptom('Shoulder Pain')">Shoulder Pain</button>
+    <button class="symptom-button" onclick="startSymptom('Low Back Pain')">Low Back Pain</button>
+    <button class="symptom-button" onclick="startSymptom('Hip Pain')">Hip Pain</button>
+    <button class="symptom-button" onclick="startSymptom('Hand and Wrist Pain')">Hand and Wrist Pain</button>
+    <button class="symptom-button" onclick="startSymptom('Knee Pain')">Knee Pain</button>
+    <button class="symptom-button" onclick="startSymptom('Foot Pain')">Foot Pain</button>
+    <button class="symptom-button" onclick="startSymptom('Scleroderma')">Scleroderma</button>
+    <button class="symptom-button" onclick="startSymptom('Sjögren’s Syndrome')">Sjögren’s Syndrome</button>
+    <button class="symptom-button" onclick="startSymptom('Raynaud’s Phenomenon')">Raynaud’s Phenomenon</button>
+    <button class="symptom-button" onclick="startSymptom('Low Bone Density')">Low Bone Density</button>
+    <button class="symptom-button" onclick="startSymptom('Hyperuricemia and Gout')">Hyperuricemia and Gout</button>
+    <button class="symptom-button" onclick="startSymptom('Elevated Creatine Kinase (CK) Evaluation')">Elevated Creatine Kinase (CK) Evaluation</button>
+    <button class="symptom-button" onclick="startSymptom('Elevated Alkaline Phosphatase (ALP) Evaluation')">Elevated Alkaline Phosphatase (ALP) Evaluation</button>
+    <button class="symptom-button" onclick="startSymptom('Antinuclear Antibody (ANA) Test Evaluation')">Antinuclear Antibody (ANA) Test Evaluation</button>
+    <button class="symptom-button" onclick="startSymptom('Joint Hypermobility and Temporomandibular Pain')">Joint Hypermobility and Temporomandibular Pain</button>
+    <button class="symptom-button" onclick="startSymptom('Diffuse Muscle Pain and Stiffness')">Diffuse Muscle Pain and Stiffness</button>
+    <button class="symptom-button" onclick="startSymptom('Osteoporosis / Osteopenia')">Osteoporosis / Osteopenia</button>
+    
+    
+    
+    
+  </div>
+
+  <!-- Question Page -->
+  <div id="question-page">
+  <div class="title" id="symptom-title">Symptom Diagnostic</div>
+  <div id="question-image-container"></div>
+  <div id="question" class="question"></div>
+  <div class="button-container"></div>
+  <div id="footer" class="footer"></div>
+</div>
+
+  <!-- Home Button -->
+  <button class="home-button" onclick="goHome()">
+  <img src="../bodyicons/home_button.png" alt="Home" class="home-icon">
+  <span class="sr-only">Home</span>
+</button>
+  
+  
+  <!-- Script -->
+  <script>
+    const questions = {
+   // Muscle Cramps and Aches------------   
+  "Muscle Cramps and Aches": {
+    start: {
+      text: "Does the patient have sudden, involuntary, painful muscle contractions (true cramps) or muscle pain without contractions (myalgias)?",
+      explanation: "Differentiating true cramps (neural origin, relieved by stretching) from myalgias (non-contractile pain) or dystonias (task-specific contractions) is critical. NOTE: Contractures (electrically silent on EMG) suggest metabolic myopathies like McArdle’s disease.",
+      options: {
+        "True cramps": "Cramp Characteristics",
+        "Myalgias/Dystonias": "Non-Cramp Evaluation"
+      }
+    },
+    
+    // True Cramps Pathway
+    "Cramp Characteristics": {
+      text: "Do cramps occur at rest or with exercise?",
+      explanation: "Rest cramps (common in older adults, children, pregnant women) often resolve with stretching. Exercise-induced cramps may indicate metabolic or vascular issues.",
+      options: {
+        "At rest": "Rest Cramps Evaluation",
+        "With exercise": "Exercise Cramps Evaluation"
+      }
+    },
+    "Rest Cramps Evaluation": {
+      text: "Is the patient an older adult, child, pregnant woman, or adult with normal neurologic exam and serum CK/aldolase?",
+      explanation: "Benign rest cramps (nocturnal leg cramps) often follow daytime activity or cold exposure. RED FLAG: Abnormal labs or neurologic signs require further workup.",
+      options: {
+        "Yes (benign)": "Stretching/Supportive Care",
+        "No (abnormal)": "Secondary Causes Evaluation"
+      }
+    },
+    "Stretching/Supportive Care": {
+      text: "Recommend calf stretching 3x daily and warm bedding. Consider quinine sulfate for refractory nocturnal cramps.",
+      explanation: "EVIDENCE: Quinine reduces cramp frequency but carries arrhythmia risk (use lowest effective dose). Avoid in pregnancy. Carbamazepine/amitriptyline may help daytime cramps.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Secondary Causes Evaluation": {
+      text: "Check TSH, renal/liver function, CK, B12, folate, and electrolytes. Exclude volume depletion (diuretics, dialysis), metabolic disorders (uremia, cirrhosis), or medications (statins).",
+      explanation: "KEY TESTS: Hypothyroidism, electrolyte imbalances (Na/K/Ca/Mg), and uremia are common culprits. Statins may cause cramps without elevated CK.",
+      options: {
+        "Abnormal labs found": "Treat Underlying Cause",
+        "Normal labs": "Neurologic Referral"
+      }
+    },
+    "Treat Underlying Cause": {
+      text: "Address specific etiology (e.g., thyroid replacement, electrolyte correction, statin adjustment).",
+      explanation: "EXAMPLE: For statin-induced cramps, switch to fluvastatin (lower myotoxicity) or coenzyme Q10 supplementation.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Exercise Cramps Evaluation": {
+      text: "Are cramps associated with exercise intolerance, myoglobinuria, or second-wind phenomenon?",
+      explanation: "CLUES: Second-wind phenomenon (McArdle’s) or prolonged exercise-induced cramps (carnitine deficiency) suggest metabolic myopathies.",
+      options: {
+        "Yes": "Metabolic Myopathy Workup",
+        "No": "Vascular Claudication Check"
+      }
+    },
+    "Metabolic Myopathy Workup": {
+      text: "Perform forearm exercise test (lactate/pyruvate/ammonia), EMG, and consider muscle biopsy. Check for myoglobinuria.",
+      explanation: "DIAGNOSTIC PATTERNS: McArdle’s (lactate fails to rise), carnitine deficiency (lipid metabolism defect). BIOPSY: Glycogen stains for glycogenoses.",
+      options: {
+        "Abnormal results": "Specific Myopathy Management",
+        "Normal results": "Benign Cramps"
+      }
+    },
+    "Specific Myopathy Management": {
+      text: "Treat based on diagnosis: High-carb diet for McArdle’s, fat modification for carnitine deficiency, avoid strenuous exercise.",
+      explanation: "EMERGENCY: Myoglobinuria requires IV fluids to prevent renal failure. Genetic counseling for inherited disorders.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Vascular Claudication Check": {
+      text: "Does pain occur with exercise and resolve with rest? Check peripheral pulses and cardiovascular risk factors.",
+      explanation: "CRITICAL: Differentiate claudication (fixed-distance pain, absent pulses) from cramps (variable timing, palpable muscle knot).",
+      options: {
+        "Yes (claudication)": "Peripheral Vascular Workup",
+        "No": "Neurologic Disorder Evaluation"
+      }
+    },
+    "Peripheral Vascular Workup": {
+      text: "Order ABI, Doppler ultrasound, or angiography. Address smoking, hypertension, and hyperlipidemia.",
+      explanation: "TREATMENT: Revascularization for severe cases. Aspirin and cilostazol for symptom relief.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Neurologic Disorder Evaluation": {
+      text: "Assess for weakness/sensory loss. Consider ALS, myotonic dystrophy, radiculopathy, or neuropathy. Refer to neurologist.",
+      explanation: "RED FLAGS: Progressive weakness, fasciculations, or family history of neuromuscular disease.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    
+    // Non-Cramp Pathway (Myalgias/Dystonias)
+    "Non-Cramp Evaluation": {
+      text: "Is pain task-specific (e.g., writer’s cramp) or generalized?",
+      explanation: "DYSTONIAS: Focal (e.g., musician’s hand) vs. generalized (e.g., dopa-responsive dystonia). MYALGIAS: Consider fibromyalgia, polymyalgia rheumatica, or drug-induced (e.g., statins).",
+      options: {
+        "Task-specific": "Dystonia Management",
+        "Generalized": "Myalgia Workup"
+      }
+    },
+    "Dystonia Management": {
+      text: "Refer for botulinum toxin injections or occupational therapy. Exclude Wilson’s disease in young patients.",
+      explanation: "NOTE: Sensory tricks (e.g., touching chin for cervical dystonia) are diagnostic. Check ceruloplasmin if <40yrs.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Myalgia Workup": {
+      text: "Check ESR/CRP (polymyalgia), CPK (myositis), TSH, and vitamin D. Review medications (statins, colchicine).",
+      explanation: "STATIN MYOPATHY: Can occur with normal CPK. Consider anti-HMGCR antibodies if persistent.",
+      options: {
+        "Abnormal labs": "Targeted Treatment",
+        "Normal labs": "Fibromyalgia Evaluation"
+      }
+    },
+    "Targeted Treatment": {
+      text: "Treat underlying cause: Steroids for polymyalgia, vitamin D repletion, or medication adjustment.",
+      explanation: "EXAMPLE: Statin-induced myalgias may respond to coenzyme Q10 or switching to rosuvastatin.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Fibromyalgia Evaluation": {
+      text: "Assess for widespread pain ≥3 months, fatigue, and cognitive symptoms. Diagnose if ≥7 WPI or 4-6 + SS ≥5.",
+      explanation: "MANAGEMENT: Graded exercise, CBT, duloxetine/pregabalin. Exclude sleep apnea and hypothyroidism.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Monoarticular Arthritis------------——
+  "Monoarticular Arthritis": {
+    start: {
+      text: "Perform a complete history and physical examination. Assess for trauma, infection, systemic symptoms, or prior joint issues.",
+      explanation: "Key clues: Acute onset (hours-days) suggests trauma, infection, or crystal-induced arthritis. Chronic (>4-6 weeks) may indicate infection, osteoarthritis, or systemic disease. Referred pain or neuropathic causes must be ruled out.",
+      options: {
+        "Proceed": "Synovial Fluid Analysis"
+      }
+    },
+
+    // Synovial Fluid Analysis Pathway
+    "Synovial Fluid Analysis": {
+      text: "Aspirate joint for synovial fluid analysis (WBC count with differential, Gram stain, culture, crystal analysis).",
+      explanation: "CRITICAL: Synovial WBC count differentiates inflammatory (>2000 cells/mm³) vs. noninflammatory (<2000 cells/mm³) processes. Polymorphonuclear (PMN) >75% indicates acute inflammation.",
+      options: {
+        "Inflammatory (WBC >2000)": "Inflammatory Evaluation",
+        "Noninflammatory (WBC <2000)": "Noninflammatory Evaluation",
+        "Bloody effusion": "Hemarthrosis Evaluation"
+      }
+    },
+
+    // Inflammatory Pathway
+    "Inflammatory Evaluation": {
+      text: "Assess for infection or crystals in synovial fluid.",
+      explanation: "Priority: Rule out septic arthritis (medical emergency). Crystals (gout: needle-shaped, negative birefringence; CPPD: rhomboid, positive birefringence) may coexist with infection.",
+      options: {
+        "Gram stain/culture positive": "Infectious Arthritis",
+        "Crystals present": "Crystal-Induced Arthritis",
+        "Negative studies": "Inflammatory Further Workup"
+      }
+    },
+    "Infectious Arthritis": {
+      text: "Classify as nongonococcal or gonococcal (DGI) based on clinical context.",
+      explanation: "Nongonococcal: Often Staphylococcus aureus. Requires urgent IV antibiotics + joint drainage. Gonococcal (DGI): Migratory polyarthritis, tenosynovitis, skin lesions; culture other sites (GU, pharynx).",
+      options: {
+        "Nongonococcal": "Empiric Antibiotics + Drainage",
+        "Gonococcal (DGI)": "Ceftriaxone + Azithromycin"
+      }
+    },
+    "Empiric Antibiotics + Drainage": {
+      text: "Start empiric IV antibiotics (e.g., vancomycin + ceftriaxone) and drain joint surgically if needed.",
+      explanation: "ACTION: Synovial fluid cultures guide therapy. Nongonococcal infections often require 4-6 weeks of antibiotics. Monitor for cartilage destruction.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Ceftriaxone + Azithromycin": {
+      text: "Treat DGI with ceftriaxone 1g IV daily + azithromycin 1g PO for GU coverage.",
+      explanation: "NOTE: Synovial fluid cultures often negative in DGI. Test sexual partners and treat empirically for gonorrhea/chlamydia.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Crystal-Induced Arthritis": {
+      text: "Identify crystal type: Gout (urate) or CPPD (calcium pyrophosphate).",
+      explanation: "Gout: Treat with NSAIDs, colchicine, or steroids. CPPD: Manage acutely like gout; screen for hemochromatosis/hypothyroidism if age <60. CAUTION: Crystals do not exclude coexistent infection.",
+      options: {
+        "Gout": "Initiate Urate-Lowering Therapy",
+        "CPPD": "Acute Management + Screening"
+      }
+    },
+    "Initiate Urate-Lowering Therapy": {
+      text: "Start allopurinol/febuxostat (after acute flare resolves) and NSAIDs/colchicine for flare.",
+      explanation: "GOAL: Serum urate <6 mg/dL. Avoid urate-lowering drugs during acute flare (may worsen symptoms). Prophylax with colchicine when initiating therapy.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Inflammatory Further Workup": {
+      text: "Perform radiographs of affected + contralateral joints. Consider Lyme titer (endemic areas), RF, ANA, anti-CCP.",
+      explanation: "Radiograph findings: Osteoarthritis (joint space narrowing), chondrocalcinosis (CPPD), or unsuspected fractures/tumors. Serologies may reveal rheumatoid arthritis or SLE.",
+      options: {
+        "Diagnosis found": "Targeted Treatment",
+        "No diagnosis": "Persistent Monoarthritis"
+      }
+    },
+    "Persistent Monoarthritis": {
+      text: "If monoarthritis persists >4-6 weeks without diagnosis, consider synovial biopsy.",
+      explanation: "Biopsy diagnoses: Tuberculous/fungal infection, amyloidosis, pigmented villonodular synovitis (PVNS), or synovial tumors.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Noninflammatory Pathway
+    "Noninflammatory Evaluation": {
+      text: "Obtain joint radiographs to evaluate for trauma, osteoarthritis, neuropathic arthritis, or AVN.",
+      explanation: "Osteoarthritis: Effusions may lack inflammation despite structural damage. Neuropathic arthritis: Look for diabetes/neurologic disease + joint instability. AVN: MRI if high suspicion despite normal X-rays.",
+      options: {
+        "Trauma/Osteoarthritis": "Symptomatic Management",
+        "Neuropathic Arthritis": "Stabilize Joint",
+        "AVN suspected": "MRI Confirmation"
+      }
+    },
+    "Symptomatic Management": {
+      text: "Treat with NSAIDs, physical therapy, joint injections (steroids), or surgery if severe.",
+      explanation: "NOTE: Osteoarthritis effusions may recur. Avoid overuse of intra-articular steroids (>3-4 injections/year risks cartilage damage).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Stabilize Joint": {
+      text: "Immobilize joint (bracing) + optimize neurologic disease management (e.g., diabetes control).",
+      explanation: "RED FLAG: Neuropathic joints can dislocate/deform rapidly due to sensory loss. Surgical fusion may be needed.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "MRI Confirmation": {
+      text: "Perform MRI to detect early AVN (especially in corticosteroid users).",
+      explanation: "AVN MANAGEMENT: Core decompression for early disease; arthroplasty for late-stage collapse.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Hemarthrosis Pathway
+    "Hemarthrosis Evaluation": {
+      text: "Assess for trauma, coagulopathy (anticoagulants, hemophilia), or tumor (PVNS, hemangioma).",
+      explanation: "CLINICAL CLUE: Uniformly bloody effusion that doesn’t clot suggests true hemarthrosis (vs. traumatic tap).",
+      options: {
+        "Trauma/Coagulopathy": "Address Cause",
+        "No clear cause": "Tumor Evaluation"
+      }
+    },
+    "Address Cause": {
+      text: "Reverse anticoagulation if bleeding risk high. Manage trauma with immobilization.",
+      explanation: "For hemophilia: Factor replacement + avoid NSAIDs. Consider synovial ablation for recurrent hemarthrosis.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Tumor Evaluation": {
+      text: "Persistent bloody effusion without trauma → synovial biopsy for PVNS or synovial hemangioma.",
+      explanation: "PVNS: Brownish synovial fluid + nodular synovial thickening on MRI. Treatment: Surgical synovectomy.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Polyarticular Arthritis-------------
+  "Polyarticular Arthritis": {
+    start: {
+      text: "Perform a thorough history and physical exam. Assess symptom duration, joint distribution, morning stiffness (>30 min?), systemic symptoms (fever, rash, weight loss), and functional limitations.",
+      explanation: "CRITICAL CLUES: Morning stiffness >30 min suggests inflammation. Systemic symptoms may indicate autoimmune disease or infection. DIP joint involvement rules out RA (consider PsA or OA).",
+      options: {
+        "Proceed": "Initial Labs and Imaging"
+      }
+    },
+
+    // Initial Evaluation Pathway
+    "Initial Labs and Imaging": {
+      text: "Order CBC, ESR/CRP, RF, anti-CCP, chem-7. Consider synovial fluid analysis if effusion present (WBC count, crystals, culture).",
+      explanation: "KEY TESTS: Elevated ESR/CRP → inflammation. RF/anti-CCP → RA (anti-CCP more specific). Synovial WBC >2000/mm³ → inflammatory. CRYSTALS: Gout (neg. birefringent) vs. CPPD (pos. birefringent).",
+      options: {
+        "Inflammatory (ESR/CRP ↑, WBC >2000)": "Inflammatory Arthritis Workup",
+        "Noninflammatory (ESR/CRP normal, WBC <2000)": "Noninflammatory Arthritis Workup"
+      }
+    },
+
+    // Inflammatory Arthritis Pathway
+    "Inflammatory Arthritis Workup": {
+      text: "Assess for axial involvement (sacroiliitis, back pain) and symmetry of joint involvement.",
+      explanation: "AXIAL INVOLVEMENT: Suggests spondyloarthropathy (AS, PsA, reactive arthritis). SYMMETRY: RA (usually symmetric) vs. PsA (often asymmetric).",
+      options: {
+        "Axial involvement present": "Spondyloarthropathy Evaluation",
+        "No axial involvement": "Symmetric vs. Asymmetric Arthritis"
+      }
+    },
+    "Spondyloarthropathy Evaluation": {
+      text: "Look for associated features: psoriasis (nails, scalp), dactylitis, uveitis, IBD, urethritis, or HLA-B27 positivity.",
+      explanation: "DIAGNOSTIC TIPS: PsA: Nail pitting, sausage digits. Reactive arthritis: Post-STI/diarrhea. AS: Sacroiliitis on MRI (early) or X-ray (late).",
+      options: {
+        "Psoriasis present": "Psoriatic Arthritis Management",
+        "IBD/urethritis/diarrhea": "Reactive/Enteropathic Arthritis",
+        "Isolated axial symptoms": "Ankylosing Spondylitis Workup"
+      }
+    },
+    "Psoriatic Arthritis Management": {
+      text: "Treat with NSAIDs, DMARDs (methotrexate), or biologics (TNF inhibitors for axial disease).",
+      explanation: "NOTE: Skin and joint disease may require separate therapies (e.g., methotrexate for both; IL-17 inhibitors for refractory PsA).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Symmetric vs. Asymmetric Arthritis": {
+      text: "Is joint involvement symmetric (RA-like) or asymmetric (PsA, reactive)?",
+      explanation: "EXCEPTIONS: Early RA may be asymmetric. PsA can rarely be symmetric. Check anti-CCP for RA (high specificity).",
+      options: {
+        "Symmetric": "Rheumatoid Arthritis Evaluation",
+        "Asymmetric": "Asymmetric Inflammatory Arthritis"
+      }
+    },
+    "Rheumatoid Arthritis Evaluation": {
+      text: "Assess for RF/anti-CCP positivity, morning stiffness, and erosions on X-ray/US/MRI.",
+      explanation: "RED FLAGS: HCV/SBE can cause false-positive RF. Anti-CCP is RA-specific. Early erosions → aggressive DMARD therapy (methotrexate + biologics).",
+      options: {
+        "Anti-CCP+ or erosions": "RA Treatment",
+        "Anti-CCP-, no erosions": "Consider Viral/Postinfectious"
+      }
+    },
+    "RA Treatment": {
+      text: "Start DMARDs (methotrexate first-line) ± biologics (TNF inhibitors). Monitor for lung/liver toxicity.",
+      explanation: "GOAL: Treat-to-target (remission/low disease activity). Methotrexate requires folate supplementation. Screen for TB before biologics.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Asymmetric Inflammatory Arthritis": {
+      text: "Consider PsA, reactive arthritis, Lyme (endemic areas), or viral (parvovirus B19, HCV).",
+      explanation: "LYME: Migratory arthritis + erythema migrans. REACTIVE: Post-STI/diarrhea (e.g., Chlamydia, Salmonella).",
+      options: {
+        "Lyme/high-risk exposure": "Lyme Serology",
+        "Postinfectious": "Supportive Care",
+        "PsA features": "Psoriatic Arthritis Management"
+      }
+    },
+
+    // Noninflammatory Arthritis Pathway
+    "Noninflammatory Arthritis Workup": {
+      text: "Evaluate for osteoarthritis (primary/secondary) or rare causes (AVN, HPOA).",
+      explanation: "SECONDARY OA: Hemochromatosis (MCP joints), ochronosis (black cartilage), acromegaly (spade-like hands). AVN: Corticosteroid use, hip/shoulder pain.",
+      options: {
+        "Typical OA (DIP/PIP, knees, hips)": "Osteoarthritis Management",
+        "Atypical distribution (MCPs, wrists)": "Secondary OA Workup",
+        "AVN suspected": "MRI Confirmation"
+      }
+    },
+    "Osteoarthritis Management": {
+      text: "Treat with NSAIDs, PT, joint injections (steroids/visco-supplementation), or surgery if severe.",
+      explanation: "CAUTION: Avoid frequent steroid injections (>3-4/year). Weight loss reduces knee OA progression.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Secondary OA Workup": {
+      text: "Check iron studies (hemochromatosis), urinary homogentisic acid (ochronosis), PTH (hyperparathyroidism).",
+      explanation: "HEMOCHROMATOSIS: Elevated ferritin, transferrin saturation >45%. Treat with phlebotomy.",
+      options: {
+        "Diagnosis confirmed": "Targeted Therapy",
+        "No diagnosis": "Consider AVN/HPOA"
+      }
+    },
+    "MRI Confirmation": {
+      text: "Perform MRI to diagnose AVN (crescent sign, subchondral collapse) or HPOA (periosteal reaction).",
+      explanation: "AVN MANAGEMENT: Core decompression (early), arthroplasty (late). HPOA: Treat underlying lung/cancer.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Special Considerations
+    "Consider Viral/Postinfectious": {
+      text: "Test for HCV, parvovirus B19, or post-streptococcal reaction if RA workup negative.",
+      explanation: "POSTINFECTIOUS: Self-limited (4-6 weeks). Parvovirus B19 mimics RA (symmetrical small joints + rash).",
+      options: {
+        "Viral confirmed": "Supportive Care",
+        "Persistent symptoms": "Re-evaluate for Seronegative RA"
+      }
+    },
+    "Ankylosing Spondylitis Workup": {
+      text: "Order HLA-B27, pelvic MRI (STIR sequences for sacroiliitis), and X-rays (bamboo spine late).",
+      explanation: "TREATMENT: NSAIDs first-line; TNF inhibitors for refractory disease. Physical therapy is critical.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  //Seronegative Arthritis--------------
+  "Seronegative Arthritis": {
+    start: {
+      text: "Assess for inflammatory arthritis (morning stiffness >30 min, improvement with activity, soft-tissue swelling) with negative rheumatoid factor (RF).",
+      explanation: "KEY FEATURES: Seronegative spondyloarthropathies include ankylosing spondylitis (AS), psoriatic arthritis (PsA), reactive arthritis, and IBD-associated arthritis. Rule out degenerative causes.",
+      options: {
+        "Proceed": "Initial Evaluation"
+      }
+    },
+
+    // Initial Evaluation Pathway
+    "Initial Evaluation": {
+      text: "Order ESR, CRP, HLA-B27 (selectively), and synovial fluid analysis if effusion present (WBC >2000/mm³ = inflammatory). Consider infectious workup if acute onset.",
+      explanation: "HLA-B27 USEFULNESS: High pretest probability (30-70%) for AS/reactive arthritis. Infectious triggers: Chlamydia (urethral swab), Salmonella/Shigella/Yersinia (stool culture).",
+      options: {
+        "Inflammatory (ESR/CRP ↑, WBC >2000)": "Assess Axial Involvement",
+        "Noninflammatory": "Degenerative Spine Disease"
+      }
+    },
+
+    // Axial Involvement Pathway
+    "Assess Axial Involvement": {
+      text: "Evaluate for spinal/SI joint symptoms: chronic back pain/stiffness, limited Schober’s test (<15 cm), reduced chest expansion (<2.5 cm).",
+      explanation: "CLINICAL TESTS: Schober’s test (lumbar mobility), chest expansion (thoracic involvement). SI joint pain may radiate to buttocks.",
+      options: {
+        "Axial symptoms present": "Axial Imaging",
+        "No axial symptoms": "Peripheral Joint Evaluation"
+      }
+    },
+    "Axial Imaging": {
+      text: "Obtain AP pelvis (Ferguson view preferred) and spine radiographs. Consider MRI (STIR sequences) for early sacroiliitis/spondylitis if X-rays normal.",
+      explanation: "RADIOLOGIC CLUES: X-ray shows sacroiliitis (AS) or syndesmophytes (late AS). MRI detects bone edema (early inflammation). CT less specific.",
+      options: {
+        "Sacroiliitis/spondylitis": "Ankylosing Spondylitis Management",
+        "Normal imaging": "Consider Nonradiographic SpA"
+      }
+    },
+    "Ankylosing Spondylitis Management": {
+      text: "Treat with NSAIDs (first-line), TNF inhibitors (refractory disease), and physical therapy. Screen for uveitis/aortitis.",
+      explanation: "MONITORING: Annual echocardiogram for aortic regurgitation. TNF inhibitors reduce radiographic progression.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Consider Nonradiographic SpA": {
+      text: "If high clinical suspicion despite normal imaging, trial NSAIDs or refer for rheumatology evaluation.",
+      explanation: "NOTE: HLA-B27+ patients may develop radiographic changes later. MRI may show enthesitis.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Peripheral Joint Pathway
+    "Peripheral Joint Evaluation": {
+      text: "Assess joint pattern: asymmetric oligoarthritis (e.g., knee/ankle), dactylitis (sausage digit), or DIP involvement (PsA).",
+      explanation: "DACTYLITIS: PsA/reactive arthritis. DIP JOINT: PsA (rule out osteoarthritis). TENOSYNOVITIS: Common in PsA/reactive arthritis.",
+      options: {
+        "Psoriasis present": "Psoriatic Arthritis Workup",
+        "IBD symptoms": "IBD-Associated Arthritis",
+        "Recent infection": "Reactive Arthritis",
+        "Isolated peripheral arthritis": "Other Seronegative Causes"
+      }
+    },
+    "Psoriatic Arthritis Workup": {
+      text: "Look for nail pitting, onycholysis, scalp/umbilical/gluteal psoriasis. Treat with NSAIDs, DMARDs (methotrexate), or biologics (TNF/IL-17 inhibitors).",
+      explanation: "NAIL CHANGES: Correlate with joint severity. IL-17 inhibitors (e.g., secukinumab) preferred for refractory PsA with skin involvement.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Reactive Arthritis": {
+      text: "Triad of arthritis, urethritis, conjunctivitis (incomplete Reiter’s). Treat infection (e.g., doxycycline for Chlamydia), NSAIDs, and DMARDs if chronic.",
+      explanation: "CHRONIC CASES: 15-30% progress to chronic arthritis (consider sulfasalazine/methotrexate).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "IBD-Associated Arthritis": {
+      text: "Arthritis parallels IBD activity (Crohn’s > UC). Treat with NSAIDs (caution in IBD), TNF inhibitors (dual GI/joint benefit).",
+      explanation: "EXTRAINTESTINAL: Erythema nodosum, pyoderma gangrenosum. Avoid NSAIDs if IBD flare.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Noninflammatory Pathway
+    "Degenerative Spine Disease": {
+      text: "Assess for DISH (right-sided flowing osteophytes), osteoarthritis (facet joint degeneration), or degenerative disc disease.",
+      explanation: "DISH: No SI joint involvement. Osteophytes differ from syndesmophytes (non-marginal).",
+      options: {
+        "DISH/OA confirmed": "Symptomatic Management",
+        "Unclear diagnosis": "Advanced Imaging"
+      }
+    },
+    "Symptomatic Management": {
+      text: "Treat with NSAIDs, PT, and posture training. Avoid prolonged immobilization.",
+      explanation: "DISH: High association with metabolic syndrome (screen for diabetes).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Other Organ Involvement
+    "Other Seronegative Causes": {
+      text: "Evaluate for extra-articular features: uveitis (AS/reactive), keratoderma blennorrhagica (reactive), or aortic regurgitation (AS).",
+      explanation: "RED FLAGS: Acute anterior uveitis (eye pain/redness) → urgent ophthalmology referral.",
+      options: {
+        "Uveitis present": "Ophthalmology Referral",
+        "Cardiac symptoms": "Echocardiogram",
+        "None": "Observe/Re-evaluate"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Soft-Tissue Pain-------------------
+  "Soft-Tissue Pain": {
+    start: {
+      text: "Assess pain characteristics: localized periarticular vs. generalized vs. intraarticular. Evaluate for trauma, overuse, or systemic symptoms.",
+      explanation: "KEY DISTINCTIONS: Periarticular pain worsens with active movement/tendon use. Intraarticular pain affects both active/passive motion. Generalized pain suggests systemic or idiopathic causes.",
+      options: {
+        "Localized periarticular pain": "Focal Soft-Tissue Evaluation",
+        "Generalized pain": "Systemic Workup",
+        "Intraarticular pain": "Arthritis Evaluation"
+      }
+    },
+
+    // Focal Soft-Tissue Pathway
+    "Focal Soft-Tissue Evaluation": {
+      text: "Identify specific structure involved: tendon (pain with isometric contraction), bursa (point tenderness ± swelling), or ligament (pain with stretch).",
+      explanation: "COMMON SITES: Subacromial bursa (shoulder), olecranon/prepatellar bursa (red/swollen → rule out infection/gout), Achilles tendon.",
+      options: {
+        "Tendonitis suspected": "Tendonitis Management",
+        "Bursitis suspected": "Bursitis Management",
+        "Ligament sprain suspected": "Sprain Management"
+      }
+    },
+    "Tendonitis Management": {
+      text: "Treat with rest, NSAIDs, activity modification, and eccentric exercises. Consider corticosteroid injection for refractory cases.",
+      explanation: "CAUTION: Avoid repeated steroid injections (risk of tendon rupture). Achilles/patellar tendonitis may require PT for eccentric loading.",
+      options: {
+        "Improves": "Monitor",
+        "Persists >6 weeks": "Imaging (US/MRI)"
+      }
+    },
+    "Bursitis Management": {
+      text: "For non-infected bursitis: Ice, NSAIDs, aspiration if swollen. For red/swollen bursa (olecranon/prepatellar): Aspirate to rule out infection/gout.",
+      explanation: "INFECTION RISK: Gram stain/culture if aspirate purulent. Gout: Check for crystals. Chronic bursitis may require excision.",
+      options: {
+        "Septic bursitis": "Antibiotics + Drainage",
+        "Crystal-positive": "Gout/CPPD Treatment",
+        "Non-inflammatory": "Conservative Measures"
+      }
+    },
+    "Sprain Management": {
+      text: "Grade severity (I-III). Treat with RICE (rest, ice, compression, elevation), bracing, and gradual mobilization. Refer for complete tears.",
+      explanation: "GRADING: I (mild stretch), II (partial tear), III (complete tear). MRI if concern for full-thickness tear or joint instability.",
+      options: {
+        "Grade I-II": "Rehab Program",
+        "Grade III": "Ortho Referral"
+      }
+    },
+
+    // Generalized Pain Pathway
+    "Systemic Workup": {
+      text: "Order TSH, CK, calcium, 25-OH vitamin D, HCV Ab, CBC, ESR/CRP, ANA. Assess for fibromyalgia tender points.",
+      explanation: "RED FLAGS: Elevated CK → myopathy. Hypocalcemia/vitamin D deficiency → osteomalacia. HCV → cryoglobulinemia. ANA+ → connective tissue disease.",
+      options: {
+        "Abnormal labs": "Targeted Evaluation",
+        "Normal labs + tender points": "Fibromyalgia Diagnosis"
+      }
+    },
+    "Targeted Evaluation": {
+      text: "Investigate based on lab abnormalities: Thyroid disease, myopathy, vitamin D deficiency, autoimmune disease, or HCV.",
+      explanation: "EXAMPLE: High CK → EMG/muscle biopsy. Low vitamin D → supplement and assess for malabsorption.",
+      options: {
+        "Underlying condition found": "Treat Specific Disease",
+        "No diagnosis": "Consider Fibromyalgia"
+      }
+    },
+    "Fibromyalgia Diagnosis": {
+      text: "Diagnose if widespread pain + ≥11/18 tender points. Address sleep, mood, and functional status.",
+      explanation: "TREATMENT: Aerobic exercise, CBT, duloxetine/milnacipran, pregabalin/gabapentin. Avoid opioids.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Intraarticular Pain Pathway
+    "Arthritis Evaluation": {
+      text: "Assess for inflammatory features (morning stiffness >30 min, swelling, systemic symptoms). Refer to mono/polyarthritis algorithms if present.",
+      explanation: "NON-INFLAMMATORY: Osteoarthritis (activity-related pain). INFLAMMATORY: RA, spondyloarthropathy (requires RF/anti-CCP, HLA-B27).",
+      options: {
+        "Inflammatory features": "Inflammatory Arthritis Workup",
+        "Non-inflammatory": "Osteoarthritis Management"
+      }
+    },
+    "Inflammatory Arthritis Workup": {
+      text: "Order RF, anti-CCP, HLA-B27, synovial fluid analysis. Image affected joints (X-ray/US/MRI).",
+      explanation: "SYNOVIAL FLUID: WBC >2000/mm³ → inflammation. Crystals → gout/CPPD. Culture if septic arthritis suspected.",
+      options: {
+        "RA confirmed": "DMARDs + Biologics",
+        "Spondyloarthropathy": "NSAIDs/TNF Inhibitors",
+        "Septic arthritis": "IV Antibiotics + Drainage"
+      }
+    },
+
+    // Shared Pathways
+    "Monitor": {
+      text: "Reassess in 4-6 weeks. If unresolved, consider advanced imaging (US/MRI) or rheumatology referral.",
+      explanation: "CHRONIC TENDINOPATHY: May require shockwave therapy or surgical debridement.",
+      options: {
+        "Resolved": "Discharge",
+        "Persistent": "Specialist Referral"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  //Neck Pain-----------------------
+  "Neck Pain": {
+    start: {
+      text: "Assess onset (acute/chronic), trauma history, and presence of neurologic symptoms (radicular pain, weakness, numbness).",
+      explanation: "RED FLAGS: Trauma (rule out fracture), myelopathy (gait dysfunction, hyperreflexia), or systemic symptoms (fever/weight loss - consider infection/malignancy).",
+      options: {
+        "Trauma present": "Trauma Evaluation",
+        "No trauma, neurologic symptoms": "Neurologic Evaluation",
+        "No trauma, no neurologic symptoms": "Mechanical Neck Pain"
+      }
+    },
+
+    // Trauma Pathway
+    "Trauma Evaluation": {
+      text: "Apply Canadian C-Spine Rules or NEXUS criteria to determine need for imaging. Assess for midline tenderness, focal neurologic deficits, or dangerous mechanism.",
+      explanation: "HIGH-RISK FEATURES: Age >65, paresthesias, dangerous mechanism (MVC >100km/h, fall >3ft). IMAGING: CT for acute trauma; X-rays if low-risk and CT unavailable.",
+      options: {
+        "Imaging indicated": "Cervical Spine Imaging",
+        "Imaging not indicated": "Conservative Management"
+      }
+    },
+    "Cervical Spine Imaging": {
+      text: "Obtain CT cervical spine (preferred) or X-rays (AP, lateral, odontoid, oblique views). If negative but high clinical suspicion, consider MRI.",
+      explanation: "FRACTURE MANAGEMENT: Stable - cervical collar. Unstable/displaced - neurosurgery consult. Whiplash: Soft tissue injury - treat symptomatically.",
+      options: {
+        "Fracture identified": "Ortho/Neurosurg Referral",
+        "No fracture": "Whiplash Management"
+      }
+    },
+
+    // Neurologic Pathway
+    "Neurologic Evaluation": {
+      text: "Localize neurologic level based on exam: C5-C6 (shoulder/thumb), C6-C7 (index finger), C7-T1 (ulnar hand). Check for hyperreflexia (myelopathy).",
+      explanation: "RADICULOPATHY: Dermatomal sensory loss, reflex asymmetry. MYELOPATHY: Hyperreflexia, Babinski, gait disturbance (urgent MRI needed).",
+      options: {
+        "Radiculopathy only": "Radiculopathy Workup",
+        "Myelopathy signs": "Urgent MRI + Neurosurg"
+      }
+    },
+    "Radiculopathy Workup": {
+      text: "Perform Spurling's test (reproduce radicular pain with neck extension/rotation). Order MRI (preferred) or CT myelogram if MRI contraindicated.",
+      explanation: "SPURLING'S TEST: 72% sensitive for radiculopathy. IMAGING: MRI shows nerve root compression. EMG if diagnosis unclear after imaging.",
+      options: {
+        "Confirmed radiculopathy": "Radiculopathy Management",
+        "Negative imaging": "Consider Non-Spinal Causes"
+      }
+    },
+    "Radiculopathy Management": {
+      text: "Treat with NSAIDs, physical therapy, cervical traction. Consider epidural steroid injection if severe. Surgery for refractory cases (>6 weeks).",
+      explanation: "NATURAL HISTORY: 75-90% improve with conservative care. SURGICAL INDICATIONS: Progressive weakness, intolerable pain.",
+      options: {
+        "Improves": "Monitor",
+        "Persists >6 weeks": "Neurosurg Referral"
+      }
+    },
+
+    // Mechanical Neck Pain Pathway
+    "Mechanical Neck Pain": {
+      text: "Assess for myofascial pain (trapezius tenderness), osteoarthritis (older patients), or poor posture. Evaluate range of motion.",
+      explanation: "COMMON CAUSES: Muscle strain (limited rotation), cervical spondylosis (crepitus), poor ergonomics. RED FLAG: Night pain - consider tumor.",
+      options: {
+        "Myofascial pain": "Muscle Strain Management",
+        "Osteoarthritis": "Cervical Spondylosis Care",
+        "Postural": "Ergonomic Intervention"
+      }
+    },
+    "Muscle Strain Management": {
+      text: "Treat with heat, NSAIDs, gentle stretching, and postural exercises. Consider muscle relaxants (short-term) for spasms.",
+      explanation: "PROGNOSIS: Most resolve in 4-6 weeks. CHRONIC PAIN: May require trigger point injections or cognitive-behavioral therapy.",
+      options: {
+        "Improves": "Discharge",
+        "Persists >6 weeks": "Physical Therapy Referral"
+      }
+    },
+    "Cervical Spondylosis Care": {
+      text: "Manage with NSAIDs, physical therapy (neck strengthening), and activity modification. Consider facet joint injections for refractory pain.",
+      explanation: "IMAGING: X-rays show osteophytes, disc space narrowing. MRI if neurologic symptoms develop.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Shared Pathways
+    "Conservative Management": {
+      text: "Initiate NSAIDs, gentle mobilization, and ergonomic adjustments. Provide return precautions for worsening symptoms.",
+      explanation: "WHIPLASH: 50% resolve by 3 months. PERSISTENT SYMPTOMS: May require multidisciplinary pain management.",
+      options: {
+        "Improves": "Discharge",
+        "Worsens": "Re-evaluate Imaging"
+      }
+    },
+    "Non-Spinal Causes": {
+      text: "Consider cardiac (angina), pulmonary (apical tumor), or referred shoulder pain. Evaluate based on associated symptoms.",
+      explanation: "CARDIAC PAIN: Left neck/jaw radiation. PANCOAST TUMOR: Horner's syndrome, arm weakness.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  //Shoulder Pain------------------
+  "Shoulder Pain": {
+    start: {
+      text: "Assess for trauma history and perform focused physical exam (range of motion, strength testing, special tests).",
+      explanation: "CRITICAL FIRST STEP: Trauma history directs initial workup. Always evaluate for red flags (fever, severe pain at rest, neurologic deficits).",
+      options: {
+        "Trauma present": "Acute Injury Evaluation",
+        "No trauma": "Chronic Shoulder Pain Evaluation"
+      }
+    },
+
+    // Acute Injury Pathway
+    "Acute Injury Evaluation": {
+      text: "Assess for deformity, swelling, or inability to move shoulder. Check for common acute injuries: dislocation, AC separation, fracture.",
+      explanation: "DISLOCATION: Anterior most common (arm abducted/externally rotated). AC SEPARATION: Tenderness at AC joint, 'piano key' sign. FRACTURE: Clavicle most common.",
+      options: {
+        "Deformity/severe pain": "Immediate Radiographs",
+        "No deformity": "Physical Exam Findings"
+      }
+    },
+    "Immediate Radiographs": {
+      text: "Obtain trauma series (AP internal/external rotation, scapular Y, axillary views). Consider weighted views for AC separation.",
+      explanation: "ESSENTIAL VIEWS: Axillary view confirms dislocation. HUMERAL FRACTURE: Look for fat pad sign (effusion). AC SEPARATION: >5mm widening = Grade II+.",
+      options: {
+        "Dislocation found": "Reduction + Follow-up",
+        "Fracture found": "Ortho Referral",
+        "No fracture/dislocation": "Soft Tissue Injury"
+      }
+    },
+
+    // Chronic Shoulder Pain Pathway
+    "Chronic Shoulder Pain Evaluation": {
+      text: "Perform targeted exam: impingement tests (Neer, Hawkins), rotator cuff strength (empty can, lift-off), biceps tests (Speed's, Yergason's).",
+      explanation: "IMPINGEMENT: Pain with Neer/Hawkins. ROTATOR CUFF: Weakness suggests tear. BICEPS: Tenderness in groove + pain with resisted flexion.",
+      options: {
+        "Positive impingement": "Subacromial Pathology",
+        "Rotator cuff weakness": "Rotator Cuff Tear Workup",
+        "Biceps tenderness": "Biceps Tendonitis",
+        "Global stiffness": "Adhesive Capsulitis",
+        "Systemic symptoms": "Inflammatory Arthritis"
+      }
+    },
+
+    // Subacromial Pathology
+    "Subacromial Pathology": {
+      text: "Differentiate bursitis vs tendonitis vs tear. Bursitis has localized tenderness; tendonitis has pain with resisted movement.",
+      explanation: "CALCIFIC TENDONITIS: Acute severe pain + radiographic calcifications. BURSITIS: Often chronic overuse with focal swelling.",
+      options: {
+        "Acute severe pain": "Calcific Tendonitis Imaging",
+        "Chronic pain": "Conservative Management"
+      }
+    },
+    "Calcific Tendonitis Imaging": {
+      text: "Obtain radiographs to confirm calcifications. Consider US for guided aspiration if severe.",
+      explanation: "TREATMENT: NSAIDs, subacromial steroid injection, PT. Most resolve in 1-2 weeks.",
+      options: {
+        "Confirmed": "Acute Treatment",
+        "Negative": "Re-evaluate"
+      }
+    },
+
+    // Rotator Cuff Pathway
+    "Rotator Cuff Tear Workup": {
+      text: "Assess for full vs partial tear. Full tear: inability to initiate abduction. Partial tear: weakness with pain.",
+      explanation: "SURGICAL CANDIDATES: Acute traumatic tears in young patients. Chronic tears trial PT first.",
+      options: {
+        "Acute traumatic tear": "MRI + Surgical Consult",
+        "Chronic tear": "PT Trial"
+      }
+    },
+
+    // Biceps Pathway
+    "Biceps Tendonitis": {
+      text: "Confirm with Speed's test (resisted forward flexion) and tenderness in bicipital groove.",
+      explanation: "RED FLAG: Rupture presents with 'Popeye' deformity. Chronic cases may require tenodesis.",
+      options: {
+        "Mild": "Activity Modification",
+        "Severe": "Corticosteroid Injection"
+      }
+    },
+
+    // Stiff Shoulder Pathway
+    "Adhesive Capsulitis": {
+      text: "Diagnose if global limitation (active/passive) in all planes. Rule out underlying diabetes.",
+      explanation: "PHASES: Painful → Frozen → Thawing. DIABETES: 10-20% develop frozen shoulder.",
+      options: {
+        "Confirmed": "Gradual Stretching",
+        "Uncertain": "MRI to Exclude OA"
+      }
+    },
+
+    // Inflammatory Pathway
+    "Inflammatory Arthritis": {
+      text: "Check for systemic symptoms (fever, rash), polyarticular involvement. Consider PMR (age >50, bilateral), septic joint, or crystalline.",
+      explanation: "PMR: Elevated ESR/CRP, rapid response to steroids. SEPTIC JOINT: Fever + elevated WBC.",
+      options: {
+        "PMR suspected": "ESR/CRP + Steroid Trial",
+        "Acute monoarthritis": "Joint Aspiration"
+      }
+    },
+
+    // Shared Pathways
+    "Conservative Management": {
+      text: "Initiate PT, NSAIDs, activity modification. Consider subacromial injection if no improvement in 6 weeks.",
+      explanation: "EVIDENCE: PT equally effective as surgery for many chronic conditions at 1 year.",
+      options: {
+        "Improves": "Maintenance Program",
+        "Persists": "Advanced Imaging"
+      }
+    },
+    "Advanced Imaging": {
+      text: "MRI for soft tissue (rotator cuff, labrum). CT for bony detail (fractures, AVN). US for dynamic assessment.",
+      explanation: "MRI INDICATIONS: Pre-surgical planning, suspected full-thickness tears, labral pathology.",
+      options: {
+        "Surgical lesion": "Ortho Referral",
+        "No surgery needed": "Rehab Focus"
+      }
+    }
+  },
+  
+  
+  
+  
+ //Low Back Pain------------------
+  "Low Back Pain": {
+    start: {
+      text: "Does the patient have any RED FLAGS (fever, unexplained weight loss, neurologic deficits, IV drug abuse, age >50, trauma, or history of cancer)?",
+      explanation: "RED FLAGS indicate potential serious pathology (e.g., infection, malignancy, or cauda equina syndrome) requiring urgent evaluation.",
+      options: {
+        yes: "Red Flag Evaluation",
+        no: "Non-Red Flag Evaluation"
+      }
+    },
+
+    // Red Flag Pathway
+    "Red Flag Evaluation": {
+      text: "Proceed with urgent diagnostic workup: CBC, ESR, and imaging (MRI preferred for neurologic deficits; CT or X-ray if fracture suspected).",
+      explanation: "CRITICAL: MRI is mandatory for suspected cauda equina (bowel/bladder dysfunction, perineal numbness) or spinal infection (fever, IV drug use). X-rays detect fractures/spondylolisthesis but miss early infections/tumors.",
+      options: {
+        "Cauda equina suspected": "Emergency MRI + Neurosurgery Consult",
+        "Infection/malignancy suspected": "Lab Tests + Advanced Imaging",
+        "Fracture identified": "Fracture Management",
+        "No serious pathology found": "Non-Red Flag Evaluation"
+      }
+    },
+    "Emergency MRI + Neurosurgery Consult": {
+      text: "Confirm cauda equina syndrome (S2-S4 deficits, saddle anesthesia, urinary retention). Urgent decompression required within 24 hours.",
+      explanation: "ACTION: Immediate MRI (no contrast initially). If confirmed, consult neurosurgery for laminectomy. Delayed treatment risks permanent paralysis/incontinence.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Treatment": "exit"
+      }
+    },
+    "Lab Tests + Advanced Imaging": {
+      text: "Check CBC (↑WBC), ESR/CRP (↑in infection/malignancy). MRI with contrast for osteomyelitis/discitis or tumor.",
+      explanation: "NOTE: ESR >50 mm/hr suggests infection/malignancy. Biopsy needed for mass lesions. Blood cultures if fever present.",
+      options: {
+        "Infection confirmed": "IV Antibiotics + Immobilization",
+        "Malignancy confirmed": "Oncology Referral",
+        "Restart Algorithm": "start"
+      }
+    },
+    "Fracture Management": {
+      text: "Stabilize spine (brace if stable; surgical consult if unstable or neurologic deficits). Assess osteoporosis risk.",
+      explanation: "High-risk fractures: Vertebral collapse >50%, spinal canal compromise, or ligamentous instability. Consider vertebroplasty for painful compression fractures.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Rehabilitation": "exit"
+      }
+    },
+
+    // Non-Red Flag Pathway
+    "Non-Red Flag Evaluation": {
+      text: "Assess pain characteristics: Location, radiation, aggravating/alleviating factors, and duration.",
+      explanation: "KEY PATTERNS: Disk herniation (radiating leg pain worsened by sitting/Valsalva), spinal stenosis (relieved by flexion, 'shopping cart sign'), or inflammatory (morning stiffness improves with activity).",
+      options: {
+        "Radiating leg pain (sciatica)": "Neurogenic Evaluation",
+        "Mechanical pain (localized)": "Mechanical Pain Management",
+        "Inflammatory features": "Inflammatory Workup"
+      }
+    },
+    "Neurogenic Evaluation": {
+      text: "Perform Straight Leg Raise (SLR) test and neurologic exam (motor/sensory/reflexes).",
+      explanation: "POSITIVE SLR: Pain <60° elevation radiating below knee (90% sensitive for L4-S1 herniation). Crossed SLR is 98% specific. Check L5 (dorsiflexion, big toe sensation) and S1 (ankle reflex, plantar flexion).",
+      options: {
+        "SLR + neurologic deficit": "MRI for Surgical Consideration",
+        "SLR + no deficit": "Conservative Management",
+        "Restart Algorithm": "start"
+      }
+    },
+    "MRI for Surgical Consideration": {
+      text: "Obtain MRI if symptoms persist >6 weeks or severe deficit (foot drop, progressive weakness).",
+      explanation: "Surgical candidates: Refractory pain, progressive deficits, or large herniation with compression. Microdiscectomy preferred for focal lesions.",
+      options: {
+        "Surgical referral": "exit",
+        "Conservative trial": "Physical Therapy + Medications"
+      }
+    },
+    "Conservative Management": {
+      text: "First-line: NSAIDs + physical therapy (McKenzie exercises for disk-related pain). Consider epidural steroid injection if severe radiculopathy.",
+      explanation: "EVIDENCE: 90% of disk herniations improve within 6 weeks. Avoid bed rest >48h. Epidural injections may provide short-term relief (max 3-4/year).",
+      options: {
+        "Improvement": "Continue Rehabilitation",
+        "No improvement in 6 weeks": "Re-evaluate for MRI",
+        "Restart Algorithm": "start"
+      }
+    },
+    "Mechanical Pain Management": {
+      text: "Trial of NSAIDs/acetaminophen + activity modification. Assess for myofascial or facet joint pain.",
+      explanation: "Red flags absent: Imaging not routinely needed. Heat/cold therapy may help symptomatically. Consider trigger point injections for myofascial pain.",
+      options: {
+        "Improvement": "Gradual Activity Resumption",
+        "Persistent pain": "Consider Physical Therapy",
+        "Restart Algorithm": "start"
+      }
+    },
+    "Inflammatory Workup": {
+      text: "Check ESR/CRP, HLA-B27 if ankylosing spondylitis suspected (morning stiffness >30 min, improvement with exercise, nocturnal pain).",
+      explanation: "CLINICAL PEARL: Inflammatory back pain often starts <40y, chronic (>3mo), and alternates buttock pain. Sacroiliitis on X-ray/MRI confirms diagnosis.",
+      options: {
+        "Ankylosing spondylitis": "DMARDs + Physical Therapy",
+        "Other spondyloarthropathy": "Rheumatology Referral",
+        "Restart Algorithm": "start"
+      }
+    },
+    "DMARDs + Physical Therapy": {
+      text: "Start TNF inhibitors (e.g., adalimumab) for active AS. NSAIDs first-line for symptom control.",
+      explanation: "MONITORING: Baseline TB testing before biologics. Physical therapy preserves spinal mobility (focus on extension exercises).",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Monitoring": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Hip Pain----------------------
+  "Hip Pain": {
+    start: {
+      text: "Does the patient have a history of trauma or fall?",
+      explanation: "Trauma raises suspicion for fractures (femoral neck, intertrochanteric, acetabulum, or pelvic fractures). Atraumatic pain suggests overuse injuries, osteoporosis-related fractures, or joint disease.",
+      options: {
+        yes: "Trauma Evaluation",
+        no: "Non-Trauma Evaluation"
+      }
+    },
+
+    // Trauma Pathway
+    "Trauma Evaluation": {
+      text: "Assess for high-risk features (age >65, inability to bear weight, severe pain).",
+      explanation: "RED FLAGS: Elderly patients with falls and inability to ambulate have a 10-15% risk of hip fracture. Pain with passive range of motion (PROM) suggests intra-articular pathology.",
+      options: {
+        "High-risk features present": "Immediate Imaging",
+        "Low-risk features": "Conservative Management"
+      }
+    },
+    "Immediate Imaging": {
+      text: "Obtain AP pelvis and frog-leg lateral hip radiographs. If negative but clinical suspicion remains, proceed to MRI/CT.",
+      explanation: "CRITICAL: X-rays miss 2-10% of fractures (especially occult femoral neck fractures). MRI is gold standard for early detection (sensitivity >95%). CT is alternative if MRI unavailable.",
+      options: {
+        "Fracture confirmed": "Fracture Management",
+        "No fracture found": "Non-Trauma Evaluation"
+      }
+    },
+    "Fracture Management": {
+      text: "Stabilize fracture (surgical vs. non-surgical based on type/displacement).",
+      explanation: "ACTION: Displaced femoral neck fractures often require hemiarthroplasty. Intertrochanteric fractures may need intramedullary nailing. Non-displaced fractures may be managed conservatively with NWB status.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Rehabilitation": "exit"
+      }
+    },
+
+    // Non-Trauma Pathway
+    "Non-Trauma Evaluation": {
+      text: "Localize pain: Groin/thigh, buttock, or lateral hip?",
+      explanation: "KEY PATTERNS: Groin pain suggests intra-articular pathology (OA, AVN, infection). Lateral pain indicates trochanteric syndrome. Buttock pain may reflect LS spine/SI joint disease.",
+      options: {
+        "Groin/thigh pain": "Intra-articular Evaluation",
+        "Buttock pain": "Spinal/SI Joint Evaluation",
+        "Lateral hip pain": "Trochanteric Syndrome Evaluation"
+      }
+    },
+    "Intra-articular Evaluation": {
+      text: "Perform log-roll test and Thomas test. Assess for systemic symptoms (fever, weight loss).",
+      explanation: "LOG-ROLL TEST: Most specific for hip joint pathology. Positive Thomas test suggests flexion contracture (severe OA, infection, or AVN). Fever + acute pain = septic arthritis until proven otherwise.",
+      options: {
+        "Positive Thomas test/systemic symptoms": "Septic Arthritis Workup",
+        "Chronic pain (OA/AVN suspicion)": "OA/AVN Workup",
+        "Restart Algorithm": "start"
+      }
+    },
+    "Septic Arthritis Workup": {
+      text: "Urgent ESR/CRP, blood cultures, and hip aspiration (image-guided). Consider MRI if effusion suspected.",
+      explanation: "EMERGENCY: Septic arthritis requires IV antibiotics within 6h. Synovial WBC >50k/mm³ or >90% PMNs is diagnostic. MRI shows effusion/osteomyelitis.",
+      options: {
+        "Septic arthritis confirmed": "IV Antibiotics + Drainage",
+        "No infection": "OA/AVN Workup"
+      }
+    },
+    "OA/AVN Workup": {
+      text: "Obtain AP pelvis radiograph. If normal but high suspicion, proceed to MRI (for AVN) or CT (for early OA changes).",
+      explanation: "RADIOLOGIC CLUES: OA shows joint space narrowing/osteophytes. AVN may have crescent sign (late) or marrow edema (early on MRI). Bone scan is less specific.",
+      options: {
+        "OA confirmed": "Conservative Management",
+        "AVN confirmed": "Ortho Referral (Core Decompression)",
+        "Restart Algorithm": "start"
+      }
+    },
+    "Spinal/SI Joint Evaluation": {
+      text: "Assess for neurologic deficits. Perform FABER test (SI joint) and LS spine exam.",
+      explanation: "FABER TEST: Pain at SI joint is 85% sensitive for SI pathology. LS spine disease may mimic hip pain (referred via L2-L4 roots).",
+      options: {
+        "Neurologic deficits": "MRI Spine",
+        "No deficits, SI joint tender": "SI Joint Imaging",
+        "Restart Algorithm": "start"
+      }
+    },
+    "MRI Spine": {
+      text: "Evaluate for spinal stenosis, nerve root compression, or cauda equina.",
+      explanation: "NOTE: Cauda equina requires emergent decompression. For stenosis, consider PT/epidural injections first.",
+      options: {
+        "Surgical lesion found": "Neurosurgery/Ortho Referral",
+        "No surgical lesion": "Physical Therapy"
+      }
+    },
+    "SI Joint Imaging": {
+      text: "Obtain Ferguson view X-rays or MRI if inflammatory spondyloarthropathy suspected.",
+      explanation: "INFLAMMATORY CLUES: Bilateral SI joint erosions/sclerosis suggest ankylosing spondylitis. HLA-B27 may be helpful.",
+      options: {
+        "Inflammatory changes": "Rheumatology Referral",
+        "Degenerative changes": "PT + NSAIDs"
+      }
+    },
+    "Trochanteric Syndrome Evaluation": {
+      text: "Palpate greater trochanter. Assess for gluteal tendon tenderness.",
+      explanation: "TYPICAL FINDINGS: Point tenderness over trochanter. Pain with resisted abduction suggests gluteus medius tendinopathy.",
+      options: {
+        "Tenderness present": "Trochanteric Injection + PT",
+        "No tenderness": "Consider Fibromyalgia"
+      }
+    },
+    "Conservative Management": {
+      text: "First-line: NSAIDs, weight loss, PT (gait training, strengthening). Consider corticosteroid injection for OA/severe pain.",
+      explanation: "EVIDENCE: PT improves function in hip OA (NNT=4). Intra-articular steroids provide 8-12 weeks of pain relief.",
+      options: {
+        "Improvement": "Continue Rehabilitation",
+        "No improvement in 6 weeks": "Re-evaluate for Surgery",
+        "Restart Algorithm": "start"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  //Hand and Wrist Pain------------
+  "Hand and Wrist Pain": {
+    start: {
+      text: "Does the patient have a history of trauma or acute injury?",
+      explanation: "Trauma raises suspicion for fractures (e.g., Colles’ fracture) or dislocations. Atraumatic pain suggests arthritis, tendonitis, neuropathy, or systemic disease.",
+      options: {
+        yes: "Trauma Evaluation",
+        no: "Non-Trauma Evaluation"
+      }
+    },
+
+    // Trauma Pathway
+    "Trauma Evaluation": {
+      text: "Assess for high-risk features (deformity, inability to move joint, severe swelling).",
+      explanation: "RED FLAGS: Deformity or crepitus suggests fracture/dislocation. Neurovascular compromise requires immediate intervention.",
+      options: {
+        "High-risk features present": "Immediate Radiography",
+        "Low-risk features": "Conservative Management"
+      }
+    },
+    "Immediate Radiography": {
+      text: "Obtain X-rays of the affected area (AP/lateral views). Consider CT if occult fracture suspected.",
+      explanation: "CRITICAL: Colles’ fracture shows dorsal angulation. Scaphoid fractures may not be visible initially; MRI may be needed if clinical suspicion persists.",
+      options: {
+        "Fracture/dislocation confirmed": "Fracture Management",
+        "No fracture found": "Non-Trauma Evaluation"
+      }
+    },
+    "Fracture Management": {
+      text: "Stabilize fracture (reduction + casting vs. surgical fixation). Refer to orthopedics if displaced or intra-articular.",
+      explanation: "ACTION: Scaphoid fractures often require prolonged immobilization or surgery due to poor blood supply. Colles’ fractures may need closed reduction.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Rehabilitation": "exit"
+      }
+    },
+
+    // Non-Trauma Pathway
+    "Non-Trauma Evaluation": {
+      text: "Is the pain articular (joint swelling/tenderness) or extra-articular (tendons/nerves)?",
+      explanation: "KEY PATTERNS: Articular pain suggests arthritis (OA, RA, gout). Extra-articular pain indicates tendonitis (de Quervain’s), neuropathy (carpal tunnel), or Dupuytren’s contracture.",
+      options: {
+        "Articular pain": "Articular Evaluation",
+        "Extra-articular pain": "Extra-Articular Evaluation",
+        "Vascular/neurologic symptoms": "Vascular/Neurologic Evaluation"
+      }
+    },
+    "Articular Evaluation": {
+      text: "Assess number of joints involved (monoarticular vs. polyarticular) and symmetry.",
+      explanation: "POLYARTICULAR CLUES: Symmetric PIP/MCP/wrist involvement suggests RA. DIP involvement ± nail changes indicates psoriatic arthritis. CPPD often affects wrists/knees.",
+      options: {
+        "Monoarticular": "Monoarthritis Workup",
+        "Polyarticular": "Polyarthritis Workup"
+      }
+    },
+    "Monoarthritis Workup": {
+      text: "Aspirate joint if infection or crystal disease suspected (acute onset, erythema, fever).",
+      explanation: "URGENT: Septic arthritis requires immediate drainage + antibiotics. Gout/pseudogout show crystals (needle-shaped vs. rhomboid) on polarized microscopy.",
+      options: {
+        "Infection confirmed": "IV Antibiotics + Drainage",
+        "Crystals found": "Treat Crystal Arthropathy",
+        "No infection/crystals": "Consider Trauma or OA"
+      }
+    },
+    "Polyarthritis Workup": {
+      text: "Check RF, anti-CCP (RA), ESR/CRP, and X-rays (erosions, osteophytes). Consider HLA-B27 for spondyloarthropathies.",
+      explanation: "RADIOLOGIC CLUES: RA shows periarticular osteopenia/erosions. OA has joint space narrowing/osteophytes. Psoriatic arthritis may have “pencil-in-cup” deformities.",
+      options: {
+        "RA confirmed": "DMARDs (e.g., methotrexate)",
+        "OA confirmed": "NSAIDs + PT",
+        "Psoriatic arthritis": "Rheumatology Referral"
+      }
+    },
+    "Extra-Articular Evaluation": {
+      text: "Identify specific structure involved (tendon, nerve, skin). Perform Finkelstein test (de Quervain’s) or Tinel’s sign (carpal tunnel).",
+      explanation: "FINKELSTEIN TEST: Pain with thumb flexion + ulnar deviation confirms de Quervain’s. Tinel’s sign (tingling on nerve percussion) suggests carpal tunnel.",
+      options: {
+        "Tendonitis (e.g., de Quervain’s)": "Corticosteroid Injection + Splinting",
+        "Carpal tunnel syndrome": "Nerve Conduction Studies + Splinting",
+        "Dupuytren’s contracture": "Surgical Referral if Severe"
+      }
+    },
+    "Vascular/Neurologic Evaluation": {
+      text: "Assess for Raynaud’s (color changes with cold), embolic signs (sudden pain + pallor), or neuropathy (numbness/weakness).",
+      explanation: "RED FLAGS: Acute finger ischemia requires emergent vascular evaluation. Carpal tunnel syndrome causes nocturnal paresthesias in median nerve distribution.",
+      options: {
+        "Raynaud’s phenomenon": "Evaluate for Connective Tissue Disease",
+        "Acute ischemia": "Vascular Surgery Consult",
+        "Neuropathy": "Nerve Conduction Studies"
+      }
+    },
+    "Conservative Management": {
+      text: "First-line: Rest, NSAIDs, splinting (e.g., wrist splint for carpal tunnel). PT for OA/tendonitis.",
+      explanation: "EVIDENCE: Splinting improves carpal tunnel symptoms in 50% of cases. Corticosteroid injections provide short-term relief for tendonitis/arthritis.",
+      options: {
+        "Improvement": "Continue Rehabilitation",
+        "No improvement in 6 weeks": "Re-evaluate for Surgery",
+        "Restart Algorithm": "start"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Knee Pain----------------------
+  "Knee Pain": {
+    start: {
+      text: "Is the pain articular (joint swelling, pain with passive/active motion) or extra-articular (localized tenderness without joint involvement)?",
+      explanation: "Articular pain suggests intra-articular pathology (OA, RA, meniscal tear). Extra-articular pain indicates bursitis, tendonitis, or ligament injury.",
+      options: {
+        "Articular": "Articular Evaluation",
+        "Extra-articular": "ExtraArticular Evaluation"
+      }
+    },
+
+    // Articular Pathway
+    "Articular Evaluation": {
+      text: "Is there visible effusion or significant joint swelling?",
+      explanation: "Effusion suggests inflammatory process (infection, crystal arthropathy) or severe structural damage (ACL tear, fracture).",
+      options: {
+        yes: "Effusion Present",
+        no: "No Effusion"
+      }
+    },
+    "Effusion Present": {
+      text: "Aspirate joint fluid for analysis (cell count, crystals, culture). Is the onset acute (<48 hours)?",
+      explanation: "URGENT: Acute effusion requires immediate aspiration to rule out septic arthritis (WBC >50k/mm³). Gout/pseudogout show crystals.",
+      options: {
+        "Acute": "Acute Effusion Workup",
+        "Chronic": "Chronic Effusion Workup"
+      }
+    },
+    "Acute Effusion Workup": {
+      text: "Evaluate fluid: WBC >50k = septic arthritis; crystals present = gout/pseudogout.",
+      explanation: "CRITICAL: Septic arthritis requires IV antibiotics + drainage. Gout: NSAIDs/colchicine. Pseudogout: NSAIDs.",
+      options: {
+        "Septic arthritis": "IV Antibiotics + Ortho Consult",
+        "Crystal arthropathy": "Treat Crystal Disease",
+        "Traumatic hemarthrosis": "MRI for Ligament/Meniscal Tear"
+      }
+    },
+    "Chronic Effusion Workup": {
+      text: "Obtain weight-bearing X-rays (AP, lateral, sunrise views). Consider inflammatory markers (ESR/CRP).",
+      explanation: "X-ray findings: OA shows joint space narrowing. Inflammatory arthritis shows periarticular osteopenia. Consider RA serology if symmetric involvement.",
+      options: {
+        "OA confirmed": "Conservative Management",
+        "Inflammatory arthritis suspected": "Rheumatology Referral",
+        "Uncertain diagnosis": "MRI Evaluation"
+      }
+    },
+    "No Effusion": {
+      text: "Perform specialized tests: McMurray's (meniscus), Lachman's (ACL), patellar grind test (chondromalacia).",
+      explanation: "McMurray's test: 80% sensitive for meniscal tear. Lachman's more sensitive than anterior drawer for ACL. Patellar grind suggests chondromalacia.",
+      options: {
+        "Meniscal tear suspected": "MRI Confirmation",
+        "ACL injury suspected": "MRI Confirmation",
+        "Chondromalacia suspected": "Patellofemoral Rehabilitation",
+        "No clear diagnosis": "X-ray Initial Evaluation"
+      }
+    },
+    "MRI Evaluation": {
+      text: "MRI is indicated for suspected meniscal/ligament tears, osteonecrosis, or occult fractures.",
+      explanation: "Gold standard for soft tissue evaluation. Meniscal tears show increased signal extending to surface. ACL tears show fiber disruption.",
+      options: {
+        "Meniscal/ligament tear": "Ortho Referral",
+        "Osteonecrosis": "Ortho Referral",
+        "No structural damage": "Physical Therapy"
+      }
+    },
+
+    // Extra-articular Pathway
+    "ExtraArticular Evaluation": {
+      text: "Localize tenderness: Anterior (prepatellar bursa), medial (pes anserine), lateral (IT band), or ligamentous?",
+      explanation: "Prepatellar bursitis: swelling anterior to patella. Pes anserine: medial tibia. IT band: lateral pain worsened by activity.",
+      options: {
+        "Anterior": "Prepatellar Bursitis Evaluation",
+        "Medial": "Pes Anserine Evaluation",
+        "Lateral": "IT Band Evaluation",
+        "Ligamentous": "Collateral Ligament Evaluation"
+      }
+    },
+    "Prepatellar Bursitis Evaluation": {
+      text: "Assess for overuse (e.g., kneeling) or infection (erythema, warmth).",
+      explanation: "Septic bursitis requires aspiration + antibiotics. Non-septic: rest, NSAIDs, aspiration if large.",
+      options: {
+        "Infection suspected": "Aspiration + Antibiotics",
+        "Non-septic": "Conservative Management"
+      }
+    },
+    "Pes Anserine Evaluation": {
+      text: "Assess for localized medial tenderness 2-5cm below joint line. Common in OA/runners.",
+      explanation: "Treatment: NSAIDs, corticosteroid injection, address biomechanical factors.",
+      options: {
+        "Confirmed": "Corticosteroid Injection",
+        "Uncertain": "Consider Medial Meniscus Pathology"
+      }
+    },
+    "IT Band Evaluation": {
+      text: "Assess for lateral pain worsened by activity (e.g., running downhill). Ober's test positive.",
+      explanation: "Treatment: IT band stretching, gluteal strengthening, activity modification.",
+      options: {
+        "Confirmed": "Physical Therapy",
+        "Uncertain": "Consider Lateral Meniscus Pathology"
+      }
+    },
+    "Collateral Ligament Evaluation": {
+      text: "Perform valgus (MCL) and varus (LCL) stress tests at 30° flexion.",
+      explanation: "Grade I: Pain but no laxity. Grade II: Partial tear with laxity but endpoint. Grade III: Complete tear.",
+      options: {
+        "Grade I-II": "Bracing + Physical Therapy",
+        "Grade III": "Ortho Referral"
+      }
+    },
+
+    // Common Management Options
+    "Conservative Management": {
+      text: "First-line: RICE (rest, ice, compression, elevation), NSAIDs, activity modification.",
+      explanation: "Most extra-articular and mild-moderate OA cases improve with conservative measures.",
+      options: {
+        "Improvement": "Gradual Return to Activity",
+        "No improvement in 6 weeks": "Re-evaluate Diagnosis"
+      }
+    },
+    "Ortho Referral": {
+      text: "Refer for surgical evaluation (meniscal repair, ACL reconstruction, etc.).",
+      explanation: "Young/active patients may benefit from early surgical intervention for certain injuries.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Surgery": "exit"
+      }
+    },
+    "Physical Therapy": {
+      text: "Focus on strengthening (quadriceps for patellofemoral pain), proprioception, and gait training.",
+      explanation: "PT reduces pain and improves function in most mechanical knee disorders.",
+      options: {
+        "Improvement": "Continue Program",
+        "No improvement": "Re-evaluate Diagnosis"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Foot Pain---------------------
+  "Foot Pain": {
+    start: {
+      text: "Does the patient have a history of trauma or acute injury?",
+      explanation: "Trauma raises suspicion for fractures or sprains. Atraumatic pain suggests arthritis, neuropathy, vascular disease, or soft tissue disorders.",
+      options: {
+        yes: "Trauma Evaluation",
+        no: "Non-Trauma Evaluation"
+      }
+    },
+
+    // Trauma Pathway
+    "Trauma Evaluation": {
+      text: "Assess for high-risk features (inability to bear weight, bony tenderness, deformity).",
+      explanation: "RED FLAGS: Inability to bear weight suggests fracture. Point tenderness over 5th metatarsal/base of 5th metatarsal (Jones fracture) requires imaging.",
+      options: {
+        "High-risk features present": "Immediate Radiography",
+        "Low-risk features": "Conservative Management"
+      }
+    },
+    "Immediate Radiography": {
+      text: "Obtain foot X-rays (AP, lateral, oblique views). Consider MRI if stress fracture suspected.",
+      explanation: "CRITICAL: X-rays may miss stress fractures initially. MRI is gold standard for stress fractures and soft tissue injuries.",
+      options: {
+        "Fracture confirmed": "Fracture Management",
+        "No fracture found": "Consider MRI for Stress Fracture"
+      }
+    },
+    "Fracture Management": {
+      text: "Immobilize with boot/cast for stable fractures. Refer to orthopedics for displaced/intra-articular fractures.",
+      explanation: "ACTION: Jones fractures often require NWB for 6-8 weeks. Lisfranc injuries need surgical fixation if displaced.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Rehabilitation": "exit"
+      }
+    },
+
+    // Non-Trauma Pathway
+    "Non-Trauma Evaluation": {
+      text: "Localize pain: Forefoot, midfoot, hindfoot, or diffuse?",
+      explanation: "KEY PATTERNS: Forefoot - Morton's neuroma, MTP arthritis. Midfoot - osteoarthritis, Lisfranc injury. Hindfoot - plantar fasciitis, Achilles tendinitis.",
+      options: {
+        "Forefoot pain": "Forefoot Evaluation",
+        "Midfoot pain": "Midfoot Evaluation",
+        "Hindfoot pain": "Hindfoot Evaluation",
+        "Diffuse pain": "Systemic Evaluation"
+      }
+    },
+    "Forefoot Evaluation": {
+      text: "Assess for MTP joint tenderness (squeeze test), neuroma (web space tenderness), or bunion deformity.",
+      explanation: "SQUEEZE TEST: Pain with compression of metatarsal heads suggests synovitis/arthritis. Mulder's click suggests Morton's neuroma.",
+      options: {
+        "MTP joint pain": "Arthritis Workup",
+        "Web space pain": "Morton's Neuroma Evaluation",
+        "Bunion present": "Hallux Valgus Management"
+      }
+    },
+    "Midfoot Evaluation": {
+      text: "Assess for tenderness at Lisfranc joint or navicular. Perform midfoot squeeze test.",
+      explanation: "LISFRANC INJURY: Midfoot pain with inability to bear weight requires weight-bearing X-rays. Navicular stress fractures common in athletes.",
+      options: {
+        "Lisfranc tenderness": "Weight-Bearing X-rays",
+        "Navicular tenderness": "MRI for Stress Fracture",
+        "Midfoot arthritis": "Conservative Management"
+      }
+    },
+    "Hindfoot Evaluation": {
+      text: "Assess for plantar heel pain (fasciitis) or posterior heel pain (Achilles tendinitis).",
+      explanation: "PLANTAR FASCIITIS: Maximal tenderness at medial calcaneal tubercle. Worse with first steps. Achilles tendinitis shows crepitus/thickening.",
+      options: {
+        "Plantar fasciitis": "Stretching Program + Night Splint",
+        "Achilles tendinitis": "Eccentric Strengthening",
+        "Retrocalcaneal bursitis": "Heel Lift + NSAIDs"
+      }
+    },
+    "Systemic Evaluation": {
+      text: "Assess for vascular, neurologic, or dermatologic causes. Check pulses, sensation, skin changes.",
+      explanation: "VASCULAR: Check DP/PT pulses. NEUROLOGIC: Diabetes? Tarsal tunnel? DERMATOLOGIC: Cellulitis, gouty tophi?",
+      options: {
+        "Vascular insufficiency": "Vascular Workup",
+        "Neuropathic pain": "Neurologic Workup",
+        "Skin/soft tissue changes": "Dermatologic Workup"
+      }
+    },
+    "Vascular Workup": {
+      text: "Perform ABI. Consider arterial Doppler if pulses diminished or ulcers present.",
+      explanation: "CRITICAL: ABI <0.9 suggests PAD. Diabetics may have falsely elevated ABIs (calcified vessels) - consider toe-brachial index.",
+      options: {
+        "PAD confirmed": "Vascular Surgery Referral",
+        "Venous insufficiency": "Compression Therapy"
+      }
+    },
+    "Neurologic Workup": {
+      text: "Assess for symmetric (polyneuropathy) vs asymmetric (mononeuritis) patterns. Consider EMG/NCS.",
+      explanation: "DIABETIC NEUROPATHY: Stocking distribution. TARSAL TUNNEL: Tinel's sign posterior to medial malleolus.",
+      options: {
+        "Polyneuropathy": "Glucose Control + Medications",
+        "Tarsal tunnel": "Orthotics ± Injection",
+        "Mononeuritis multiplex": "Vasculitis Workup"
+      }
+    },
+    "Dermatologic Workup": {
+      text: "Evaluate for cellulitis (erythema, warmth), gout (tophi), or stasis dermatitis.",
+      explanation: "CELLULITIS: Requires antibiotics. GOUT: Needle-shaped crystals on aspiration. STASIS: Elevation + compression.",
+      options: {
+        "Cellulitis": "Antibiotics",
+        "Gout": "NSAIDs/Colchicine",
+        "Stasis dermatitis": "Wound Care"
+      }
+    },
+
+    // Common Management Options
+    "Conservative Management": {
+      text: "First-line: RICE, NSAIDs, activity modification, orthotics as needed.",
+      explanation: "Most mechanical foot pain improves with conservative measures. Custom orthotics help for pes planus/cavus.",
+      options: {
+        "Improvement": "Gradual Return to Activity",
+        "No improvement in 6 weeks": "Re-evaluate Diagnosis"
+      }
+    },
+    "Arthritis Workup": {
+      text: "Obtain X-rays. Consider inflammatory markers (ESR/CRP) if inflammatory arthritis suspected.",
+      explanation: "OA: Joint space narrowing, osteophytes. RA: Periarticular osteopenia, erosions. Gout: Punched-out erosions.",
+      options: {
+        "OA confirmed": "Conservative Management",
+        "Inflammatory arthritis": "Rheumatology Referral"
+      }
+    },
+    "Morton's Neuroma Evaluation": {
+      text: "Confirm with Mulder's click or ultrasound. Consider corticosteroid injection or surgical referral if refractory.",
+      explanation: "INJECTION: US-guided improves accuracy. SURGERY: Neurectomy for persistent cases.",
+      options: {
+        "Confirmed": "Orthotics + Injection",
+        "Uncertain": "US/MRI Evaluation"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Scleroderma-----------------------
+  "Scleroderma": {
+    start: {
+      text: "Does the patient have skin thickening or tightening?",
+      explanation: "Initial assessment focuses on identifying scleroderma spectrum disorders. Key differentials include localized vs. systemic forms. RED FLAG: Rapid progression or truncal involvement suggests diffuse systemic sclerosis (DeSSc).",
+      options: {
+        yes: "Assess Cutaneous Involvement",
+        no: "Consider Alternative Diagnoses"
+      }
+    },
+
+    // Cutaneous Involvement Pathway
+    "Assess Cutaneous Involvement": {
+      text: "Determine the extent of skin involvement:",
+      explanation: "Localization guides classification: Limited (LeSSc/CREST) affects hands/face; Diffuse (DeSSc) involves proximal limbs/trunk. NOTE: Early pitting edema may precede sclerosis.",
+      options: {
+        "Hands/feet only ± face": "Evaluate for LeSSc/CREST",
+        "Proximal to elbows/knees ± trunk": "Evaluate for DeSSc",
+        "Localized plaques/linear bands": "Evaluate Localized Scleroderma"
+      }
+    },
+
+    // Limited SSc (CREST) Pathway
+    "Evaluate for LeSSc/CREST": {
+      text: "Assess for CREST features (Calcinosis, Raynaud’s, Esophageal dysmotility, Sclerodactyly, Telangiectasias):",
+      explanation: "CREST syndrome is a subset of LeSSc. KEY FINDINGS: Centromere-pattern ANA (70-80% sensitivity), telangiectasias on palms/lips, and late-onset pulmonary hypertension.",
+      options: {
+        "CREST features present": "LeSSc/CREST Confirmed",
+        "No CREST features": "Re-evaluate Cutaneous Pattern"
+      }
+    },
+    "LeSSc/CREST Confirmed": {
+      text: "Evaluate for systemic involvement:",
+      explanation: "CRITICAL SCREENING: Esophageal manometry for dysmotility, echocardiogram for pulmonary hypertension (yearly if asymptomatic).",
+      options: {
+        "Esophageal/GI symptoms": "GI Evaluation",
+        "Dyspnea/dry cough": "Pulmonary Evaluation",
+        "No systemic symptoms": "Monitor and Symptom Management"
+      }
+    },
+
+    // Diffuse SSc Pathway
+    "Evaluate for DeSSc": {
+      text: "Assess for high-risk features:",
+      explanation: "RED FLAGS: Anti-Scl-70 antibodies (20% of DeSSc), rapid skin progression, or early internal organ involvement. WARNING: Renal crisis risk peaks in early disease (first 5 years).",
+      options: {
+        "Raynaud’s + skin tightening": "DeSSc Confirmed",
+        "Anti-Scl-70 positive": "Aggressive Monitoring",
+        "Renal/Pulmonary symptoms": "Organ-Specific Evaluation"
+      }
+    },
+    "DeSSc Confirmed": {
+      text: "Initiate systemic evaluation:",
+      explanation: "MANDATORY WORKUP: Blood pressure monitoring (renal crisis), HRCT for interstitial lung disease (ILD), and PFTs with DLCO.",
+      options: {
+        "Hypertension/renal symptoms": "Renal Evaluation",
+        "Pulmonary symptoms": "Pulmonary Evaluation",
+        "GI symptoms": "GI Evaluation",
+        "Cardiac symptoms": "Cardiac Evaluation"
+      }
+    },
+
+    // Localized Scleroderma Pathway
+    "Evaluate Localized Scleroderma": {
+      text: "Characterize skin lesions:",
+      explanation: "DIFFERENTIAL: Morphea (oval plaques), linear scleroderma (limb/forehead streaks), or en coup de sabre (facial depression). NOTE: No internal organ involvement.",
+      options: {
+        "Plaques (morphea)": "Morphea Management",
+        "Linear bands": "Linear Scleroderma Management"
+      }
+    },
+    "Morphea Management": {
+      text: "Treat based on extent: Topical steroids for limited disease, methotrexate for generalized morphea.",
+      explanation: "MONITOR: Lesions may stabilize or regress spontaneously. Biopsy if diagnosis uncertain.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "Linear Scleroderma Management": {
+      text: "Assess for functional impairment (joint contractures, growth abnormalities).",
+      explanation: "PEDIATRIC ALERT: Linear scleroderma in children may cause limb-length discrepancies. Physical therapy and systemic immunosuppressants may be needed.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Organ-Specific Evaluations (Shared Pathways)
+    "Renal Evaluation": {
+      text: "Check BP, urinalysis, BUN/Cr. If hypertensive with renal dysfunction:",
+      explanation: "EMERGENCY: Scleroderma renal crisis presents with malignant hypertension + acute kidney injury. TREAT IMMEDIATELY with ACE inhibitors (even if Cr elevated).",
+      options: {
+        "Renal crisis confirmed": "Start ACE Inhibitor",
+        "No renal crisis": "Monitor BP Quarterly"
+      }
+    },
+    "Start ACE Inhibitor": {
+      text: "Initiate captopril (short-acting titrated to BP) or equivalent. Avoid steroids.",
+      explanation: "CAUTION: High-dose steroids increase renal crisis risk. ACE inhibitors are lifesaving (reduce mortality from 80% to <15%).",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    "Pulmonary Evaluation": {
+      text: "Perform PFTs (DLCO), echocardiogram, HRCT. If abnormal:",
+      explanation: "KEY FINDINGS: DLCO <55% predicts pulmonary hypertension. HRCT identifies alveolitis (ground-glass opacities).",
+      options: {
+        "ILD/alveolitis": "Immunosuppression Consideration",
+        "Pulmonary hypertension": "Right Heart Catheterization"
+      }
+    },
+    "Immunosuppression Consideration": {
+      text: "Consider mycophenolate or cyclophosphamide for active alveolitis.",
+      explanation: "EVIDENCE: Scleroderma Lung Study II favors mycophenolate for ILD. Monitor for infection.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    "GI Evaluation": {
+      text: "Assess for GERD (PPI trial), dysmotility (barium swallow/manometry), or malabsorption.",
+      explanation: "MANAGEMENT: High-dose PPIs for GERD, prokinetics (metoclopramide) for dysmotility. Screen for bacterial overgrowth if bloating/diarrhea.",
+      options: {
+        "GERD confirmed": "Aggressive PPI Therapy",
+        "Dysmotility": "Promotility Agents"
+      }
+    },
+
+    "Cardiac Evaluation": {
+      text: "Obtain ECG, echocardiogram, Holter if arrhythmias suspected.",
+      explanation: "WARNING: Cardiac involvement (fibrosis) carries poor prognosis. Treat pericarditis with NSAIDs; arrhythmias may require antiarrhythmics.",
+      options: {
+        "Arrhythmias": "Cardiology Referral",
+        "Normal": "Annual Screening"
+      }
+    },
+
+    // Alternative Diagnoses Pathway
+    "Consider Alternative Diagnoses": {
+      text: "Evaluate for scleroderma mimics:",
+      explanation: "KEY DIFFERENTIALS: Eosinophilic fasciitis (orange-peel skin + eosinophilia), GVHD (history of transplant), or diabetic sclerodactyly.",
+      options: {
+        "Eosinophilic fasciitis": "CBC for Eosinophilia",
+        "Other (POEMS, amyloidosis, etc.)": "Disease-Specific Testing"
+      }
+    },
+    "CBC for Eosinophilia": {
+      text: "If eosinophilia + deep fascia thickening, diagnose eosinophilic fasciitis.",
+      explanation: "TREATMENT: High-dose steroids ± methotrexate. Unlike scleroderma, no Raynaud’s or organ involvement.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Sjögren’s Syndrome------------------
+  "Sjögren’s Syndrome": {
+    start: {
+      text: "Does the patient have persistent dry eyes (xerophthalmia) and/or dry mouth (xerostomia)?",
+      explanation: "Initial assessment focuses on distinguishing pathologic sicca symptoms from benign or medication-induced causes. RED FLAG: Inability to swallow dry foods or use eye drops > hourly suggests Sjögren’s.",
+      options: {
+        yes: "Assess Symptom Severity",
+        no: "Consider Non-Sjögren’s Causes"
+      }
+    },
+
+    // Symptom Severity Pathway
+    "Assess Symptom Severity": {
+      text: "Are symptoms severe (e.g., eye drops last <2 hours, dysphagia for dry foods) or associated with dental caries/vaginal dryness?",
+      explanation: "KEY CLUES: Frequent dental caries, contact lens intolerance, or dyspareunia (vaginal dryness) increase suspicion for Sjögren’s. NOTE: Medication review is critical (anticholinergics, diuretics).",
+      options: {
+        "Severe symptoms": "High Probability for Sjögren’s",
+        "Mild/transient symptoms": "Evaluate for Iatrogenic Causes"
+      }
+    },
+
+    // High Probability Pathway
+    "High Probability for Sjögren’s": {
+      text: "Proceed with serologic testing:",
+      explanation: "DIAGNOSTIC TRIAD: ANA (positive in 70-90%), anti-Ro/SSA (60-70%), anti-La/SSB (30-40%). NOTE: Anti-Ro/La may obviate biopsy if symptoms are classic.",
+      options: {
+        "ANA + anti-Ro/La positive": "Confirmatory Testing",
+        "ANA positive only": "Consider Lip Biopsy",
+        "Seronegative": "Proceed to Objective Testing"
+      }
+    },
+    "Confirmatory Testing": {
+      text: "Select confirmatory test based on clinical suspicion:",
+      explanation: "TESTS: Schirmer’s (<5mm/5min = severe dryness), Rose Bengal staining (corneal damage), or lip biopsy (focus score ≥1 = positive). PREFERENCE: Biopsy if seronegative or atypical presentation.",
+      options: {
+        "Schirmer’s test": "Schirmer’s Evaluation",
+        "Rose Bengal staining": "Ophthalmology Referral",
+        "Lip biopsy": "Oral Surgery Referral"
+      }
+    },
+    "Schirmer’s Evaluation": {
+      text: "Schirmer’s result:",
+      explanation: "INTERPRETATION: <5mm (severe), 5-10mm (moderate), >10mm (normal). CAUTION: False positives in elderly or contact lens users.",
+      options: {
+        "<5mm": "Diagnose Sjögren’s",
+        "≥5mm": "Consider Additional Testing"
+      }
+    },
+
+    // Iatrogenic Causes Pathway
+    "Evaluate for Iatrogenic Causes": {
+      text: "Review medications and environmental factors:",
+      explanation: "COMMON OFFENDERS: Anticholinergics (TCAs, antihistamines), diuretics, opioids. ACTION: Discontinue/replace if possible and reassess symptoms.",
+      options: {
+        "Medication identified": "Adjust Therapy",
+        "No clear cause": "Re-evaluate Symptoms"
+      }
+    },
+    "Adjust Therapy": {
+      text: "Discontinue/replace offending drug and monitor for improvement.",
+      explanation: "EXAMPLE: Switch from TCA to SSRI for depression. Follow-up in 4-6 weeks to reassess sicca symptoms.",
+      options: {
+        "Symptoms resolve": "Non-Sjögren’s Sicca",
+        "Symptoms persist": "Reconsider Sjögren’s"
+      }
+    },
+
+    // Diagnosis Confirmation Pathway
+    "Diagnose Sjögren’s": {
+      text: "Assess for systemic involvement and secondary connective tissue disease:",
+      explanation: "CRITICAL EVALUATION: Rule out lupus, RA, or scleroderma (ANA subserologies, RF, anti-CCP). SCREEN FOR: Renal tubular acidosis (urine pH, electrolytes), lymphoma (CBC, Ig levels).",
+      options: {
+        "Secondary Sjögren’s suspected": "Rheumatology Referral",
+        "Primary Sjögren’s": "Organ System Evaluation"
+      }
+    },
+    "Organ System Evaluation": {
+      text: "Evaluate for extraglandular manifestations:",
+      explanation: "KEY SYSTEMS: Pulmonary (HRCT if dyspnea), renal (urinalysis for RTA), neurologic (peripheral neuropathy). VIGILANCE: Annual CBC to monitor lymphoma risk.",
+      options: {
+        "Pulmonary symptoms": "HRCT/PFTs",
+        "Renal abnormalities": "Urine Electrolytes/pH",
+        "No systemic involvement": "Symptomatic Management"
+      }
+    },
+
+    // Non-Sjögren’s Pathway
+    "Consider Non-Sjögren’s Causes": {
+      text: "Evaluate for alternative diagnoses:",
+      explanation: "DIFFERENTIALS: Chronic GVHD (post-transplant), sarcoidosis (hilar adenopathy), or diabetes (autonomic neuropathy).",
+      options: {
+        "GVHD suspected": "Biopsy + Immunosuppression Review",
+        "Other (diabetes, etc.)": "Disease-Specific Testing"
+      }
+    },
+
+    // Symptomatic Management Pathway (Shared)
+    "Symptomatic Management": {
+      text: "Initiate therapy based on symptoms:",
+      explanation: "OCULAR: Preservative-free artificial tears, cyclosporine drops. ORAL: Pilocarpine/cevimeline, sugar-free gum. VAGINAL: Lubricants/moisturizers.",
+      options: {
+        "Severe dryness": "Consider Immunomodulators",
+        "Mild dryness": "Supportive Care Only"
+      }
+    },
+    "Consider Immunomodulators": {
+      text: "For refractory cases: Hydroxychloroquine (mild systemic disease) or rituximab (severe extraglandular).",
+      explanation: "EVIDENCE: Hydroxychloroquine may improve fatigue; rituximab for vasculitis/lymphoma. MONITOR: CBC, LFTs, and infection risk.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  //Raynaud’s Phenomenon-----------------
+  "Raynaud’s Phenomenon": {
+    start: {
+      text: "Does the patient have episodic digital pallor, cyanosis, and/or rubor triggered by cold or stress?",
+      explanation: "Initial assessment focuses on distinguishing true Raynaud’s (triphasic color changes) from cold intolerance. RED FLAG: Asymmetry or digital ulcers suggest secondary causes.",
+      options: {
+        yes: "Assess Symptom Characteristics",
+        no: "Consider Alternative Diagnoses"
+      }
+    },
+
+    // Symptom Characteristics Pathway
+    "Assess Symptom Characteristics": {
+      text: "Are the episodes symmetric, triphasic (white-blue-red), and without tissue necrosis?",
+      explanation: "KEY FEATURES: Primary Raynaud’s is symmetric, triphasic, and benign. Secondary causes are suggested by asymmetry, late onset (>40y), or ulcers.",
+      options: {
+        "Symmetric, no necrosis": "Evaluate for Primary Raynaud’s",
+        "Asymmetric/ulcers/late onset": "Evaluate for Secondary Causes"
+      }
+    },
+
+    // Primary Raynaud’s Pathway
+    "Evaluate for Primary Raynaud’s": {
+      text: "Review for medication/exposure history and rule out secondary triggers:",
+      explanation: "COMMON TRIGGERS: Beta-blockers, nicotine, caffeine. NOTE: Primary Raynaud’s is more common in young women with no systemic symptoms.",
+      options: {
+        "No medications/exposures": "Primary Raynaud’s Confirmed",
+        "Offending medication/exposure": "Adjust Therapy"
+      }
+    },
+    "Primary Raynaud’s Confirmed": {
+      text: "Initiate conservative management:",
+      explanation: "FIRST-LINE: Avoid cold, use gloves, and discontinue vasoconstrictors (caffeine, nicotine). CONSIDER: Calcium channel blockers (nifedipine) if severe.",
+      options: {
+        "Symptoms improve": "Monitor Annually",
+        "Symptoms persist": "Consider CCB Therapy"
+      }
+    },
+    "Adjust Therapy": {
+      text: "Discontinue/replace offending agent (e.g., switch beta-blocker to alternative).",
+      explanation: "EXAMPLE: Replace propranolol with a non-vasoconstrictive alternative. Reassess symptoms after 4 weeks.",
+      options: {
+        "Symptoms resolve": "Medication-Induced Raynaud’s",
+        "Symptoms persist": "Re-evaluate for Secondary Causes"
+      }
+    },
+
+    // Secondary Raynaud’s Pathway
+    "Evaluate for Secondary Causes": {
+      text: "Select evaluation based on clinical suspicion:",
+      explanation: "CRITICAL TESTS: Nailfold capillaroscopy (distorted loops = scleroderma), ANA, RF, ESR, CRP. ASYMMETRY: Arterial studies (Doppler/angiography) for thrombosis/embolism.",
+      options: {
+        "Suspected connective tissue disease": "Rheumatologic Workup",
+        "Asymmetric symptoms": "Vascular Evaluation",
+        "Occupational exposure (vibration/toxins)": "Exposure Management"
+      }
+    },
+    "Rheumatologic Workup": {
+      text: "Order labs: ANA, RF, anti-CCP, ESR, CRP, C3/C4, SPEP, cryoglobulins.",
+      explanation: "PATTERNS: Centromere ANA (limited scleroderma), anti-Scl-70 (diffuse scleroderma). ACTION: Refer to rheumatology if positive.",
+      options: {
+        "Abnormal labs": "Secondary Raynaud’s Confirmed",
+        "Normal labs": "Reconsider Primary Raynaud’s"
+      }
+    },
+    "Secondary Raynaud’s Confirmed": {
+      text: "Treat underlying disease + Raynaud’s:",
+      explanation: "EXAMPLE: Immunosuppressants for scleroderma, CCBs for vasospasm. URGENT: IV prostaglandins for digital ulcers.",
+      options: {
+        "Digital ulcers present": "Vascular Surgery Referral",
+        "No ulcers": "Aggressive Medical Therapy"
+      }
+    },
+    "Vascular Evaluation": {
+      text: "Perform Allen’s test, Doppler ultrasound, or angiography.",
+      explanation: "DIAGNOSES: Hypothenar hammer syndrome (ulnar artery trauma), emboli (AF, atherosclerosis). ACTION: Antiplatelets/surgery for thrombosis.",
+      options: {
+        "Thrombosis/emboli": "Antiplatelet/Surgical Therapy",
+        "Normal studies": "Re-evaluate for Other Causes"
+      }
+    },
+
+    // Exposure Management Pathway
+    "Exposure Management": {
+      text: "Remove occupational triggers (vibration tools, PVC/heavy metals).",
+      explanation: "PREVENTION: Vibration-reducing gloves, job modification. MONITOR: Symptoms may improve slowly after exposure cessation.",
+      options: {
+        "Symptoms improve": "Continue Avoidance",
+        "Symptoms persist": "Re-evaluate for Other Causes"
+      }
+    },
+
+    // Alternative Diagnoses Pathway
+    "Consider Alternative Diagnoses": {
+      text: "Evaluate for mimics:",
+      explanation: "DIFFERENTIALS: Acrocyanosis (persistent cyanosis without pallor), chilblains (painful erythema), or frostbite (history of cold injury).",
+      options: {
+        "Acrocyanosis/chilblains": "Symptomatic Management",
+        "Other": "Disease-Specific Testing"
+      }
+    },
+
+    // Shared Management Pathways
+    "Consider CCB Therapy": {
+      text: "Start nifedipine ER 30mg daily or amlodipine 5mg daily.",
+      explanation: "CAUTION: Titrate for hypotension. Alternatives: Losartan, fluoxetine, or topical nitrates.",
+      options: {
+        "Effective": "Continue Therapy",
+        "Ineffective": "Consider Advanced Therapies"
+      }
+    },
+    "Aggressive Medical Therapy": {
+      text: "Maximize CCBs + add phosphodiesterase inhibitors (sildenafil) if needed.",
+      explanation: "SEVERE CASES: Bosentan for digital ulcers (reduce recurrence). REFRACTORY: Consider sympathectomy.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  //Low Bone Density---------------------
+  "Low Bone Density": {
+    start: {
+      text: "Has the patient been diagnosed with low bone density (BMD T-score ≤ -1.0)?",
+      explanation: "Initial assessment focuses on identifying the etiology: osteoporosis (primary/secondary), osteomalacia, or rare disorders. RED FLAG: Vertebral fractures or severe bone pain suggest advanced disease.",
+      options: {
+        yes: "Evaluate Underlying Cause",
+        no: "Consider BMD Testing if Risk Factors"
+      }
+    },
+
+    // Etiology Evaluation Pathway
+    "Evaluate Underlying Cause": {
+      text: "Perform initial workup: CBC, serum calcium, phosphorus, ALP, creatinine, electrolytes, 25-OH vitamin D, PTH, and TSH.",
+      explanation: "KEY PATTERNS: Primary osteoporosis shows normal labs. Osteomalacia: ↓PO4, ↑ALP. Hyperparathyroidism: ↑Ca, ↑PTH. NOTE: Check urinary calcium if malabsorption suspected.",
+      options: {
+        "All normal": "Primary Osteoporosis",
+        "Abnormal labs": "Further Testing"
+      }
+    },
+
+    // Primary Osteoporosis Pathway
+    "Primary Osteoporosis": {
+      text: "Confirm absence of secondary causes and assess fracture risk:",
+      explanation: "RISK FACTORS: Age >50, female, postmenopausal, low BMI, prior fracture. ACTION: FRAX score calculation guides treatment threshold.",
+      options: {
+        "High fracture risk": "Start Antiresorptive Therapy",
+        "Low fracture risk": "Lifestyle Modification"
+      }
+    },
+    "Start Antiresorptive Therapy": {
+      text: "Initiate bisphosphonate (alendronate/risedronate) or denosumab.",
+      explanation: "FIRST-LINE: Oral bisphosphonates (avoid in GERD). MONITOR: Calcium/vitamin D levels. WARNING: Atypical femur fractures with long-term use.",
+      options: {
+        "Tolerated": "Annual BMD Monitoring",
+        "Intolerant": "Consider Alternative Agents"
+      }
+    },
+
+    // Secondary Causes Pathway
+    "Further Testing": {
+      text: "Target testing based on lab abnormalities:",
+      explanation: "GUIDED BY: ↓PO4 + ↑ALP → osteomalacia; ↑Ca + ↑PTH → hyperparathyroidism; ↓Ca + ↑PTH → vitamin D deficiency.",
+      options: {
+        "↓PO4 + ↑ALP": "Evaluate Osteomalacia",
+        "↑Ca + ↑PTH": "Primary Hyperparathyroidism",
+        "↓Ca + ↑PTH": "Vitamin D Deficiency",
+        "Other abnormalities": "Disease-Specific Workup"
+      }
+    },
+    "Evaluate Osteomalacia": {
+      text: "Assess for vitamin D deficiency vs. renal phosphate wasting:",
+      explanation: "TESTS: 24h urine phosphate, FGF23 (if renal wasting suspected). TREAT: Vitamin D repletion (50,000 IU/week x8) or phosphate supplements.",
+      options: {
+        "Vitamin D deficient": "High-Dose Vitamin D",
+        "Renal phosphate wasting": "Nephrology Referral"
+      }
+    },
+    "Primary Hyperparathyroidism": {
+      text: "Confirm with ionized calcium and PTH. Assess for surgery candidacy:",
+      explanation: "SURGERY CRITERIA: Ca >1mg/dL above normal, osteoporosis, renal stones. MONITOR: Cinacalcet if non-surgical.",
+      options: {
+        "Surgical candidate": "Parathyroidectomy",
+        "Non-surgical": "Medical Management"
+      }
+    },
+
+    // Vitamin D Deficiency Pathway
+    "Vitamin D Deficiency": {
+      text: "Determine cause: inadequate intake vs. malabsorption.",
+      explanation: "TREAT: 50,000 IU vitamin D2 weekly x8, then maintenance. MALABSORPTION: High-dose oral or IM vitamin D.",
+      options: {
+        "Corrected": "Recheck Levels",
+        "Persistent": "GI Evaluation"
+      }
+    },
+
+    // Medication-Induced Pathway
+    "Disease-Specific Workup": {
+      text: "Evaluate for medication effects (glucocorticoids, PPIs) or systemic disease:",
+      explanation: "COMMON CAUSES: Celiac disease (TTG IgA), myeloma (SPEP), hyperthyroidism (TSH). ACTION: Treat underlying condition.",
+      options: {
+        "Glucocorticoid use": "Bone Protection Therapy",
+        "Other identified cause": "Targeted Treatment"
+      }
+    },
+    "Bone Protection Therapy": {
+      text: "Start bisphosphonate or teriparatide if high fracture risk.",
+      explanation: "GLUCOCORTICOID-INDUCED: Alendronate/risedronate first-line. Teriparatide for very high risk (>30mg prednisone/day).",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Shared Management Pathways
+    "Lifestyle Modification": {
+      text: "Optimize calcium (1200mg/day) + vitamin D (800-1000 IU/day), weight-bearing exercise, fall prevention.",
+      explanation: "PREVENTION: Smoking cessation, limit alcohol. FOLLOW-UP: Repeat BMD in 2-5 years based on risk.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "Consider Alternative Agents": {
+      text: "Switch to raloxifene (postmenopausal women), teriparatide (high risk), or denosumab.",
+      explanation: "CHOICE: Raloxifene reduces breast cancer risk but increases VTE. Teriparatide for 2 years max (osteosarcoma risk).",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Hyperuricemia and Gout----------------
+  "Hyperuricemia and Gout": {
+    start: {
+      text: "Does the patient have hyperuricemia (serum urate >6.8 mg/dL) or acute gout symptoms?",
+      explanation: "Initial assessment focuses on distinguishing asymptomatic hyperuricemia from acute gout. RED FLAG: Polyarticular involvement or fever may indicate septic arthritis.",
+      options: {
+        "Asymptomatic hyperuricemia": "Evaluate Hyperuricemia",
+        "Acute joint symptoms": "Assess Gout Likelihood"
+      }
+    },
+
+    // Asymptomatic Hyperuricemia Pathway
+    "Evaluate Hyperuricemia": {
+      text: "Assess for risk factors: renal function, uric acid excretion, and secondary causes",
+      explanation: "KEY FACTORS: Serum urate >12 mg/dL suggests lead toxicity. 24h urine uric acid >1000 mg/day indicates overproduction. CRITICAL: Rule out tumor lysis in hematologic malignancies.",
+      options: {
+        "Normal renal function, UA excretion <1000 mg/day": "Observation",
+        "Renal insufficiency or UA >1000 mg/day": "Consider Treatment",
+        "Secondary cause identified": "Address Underlying Cause"
+      }
+    },
+    "Observation": {
+      text: "Monitor and advise lifestyle modifications: weight loss, limit alcohol/purines.",
+      explanation: "GUIDELINES: No treatment needed for asymptomatic hyperuricemia without risk factors. Consider losartan if hypertensive (mild uricosuric effect).",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "Consider Treatment": {
+      text: "Initiate urate-lowering therapy if: single kidney, nephrolithiasis, or urate >12 mg/dL.",
+      explanation: "FIRST-LINE: Allopurinol (start 100mg daily, adjust for renal function). WARNING: Screen for HLA-B*5801 in high-risk populations (Asian descent).",
+      options: {
+        "Start allopurinol": "Monitor Urate Levels",
+        "Contraindication to allopurinol": "Consider Febuxostat"
+      }
+    },
+
+    // Acute Gout Pathway
+    "Assess Gout Likelihood": {
+      text: "Is this a classic presentation (podagra, rapid onset, prior episodes) or atypical?",
+      explanation: "DIAGNOSTIC CLUES: Synovial fluid showing needle-shaped, negatively birefringent crystals confirms gout. NOTE: Urate levels may be normal during acute flares.",
+      options: {
+        "Classic presentation": "Initiate Acute Treatment",
+        "Atypical presentation": "Rule Out Septic Arthritis"
+      }
+    },
+    "Initiate Acute Treatment": {
+      text: "Select therapy based on comorbidities:",
+      explanation: "TREATMENT WINDOW: Most effective within 24h of symptom onset. NSAIDs first-line if no CKD/peptic ulcer disease.",
+      options: {
+        "Low-risk patient": "NSAID Therapy",
+        "Renal/CV risk": "Colchicine or Steroids",
+        "Monoarticular": "Consider Joint Aspiration + Steroid Injection"
+      }
+    },
+    "NSAID Therapy": {
+      text: "Start high-dose NSAID (indomethacin 50mg TID or naproxen 500mg BID) for 3-5 days.",
+      explanation: "CAUTION: Avoid in CKD, heart failure, or peptic ulcer disease. MAX DURATION: 7-10 days to minimize GI/renal toxicity.",
+      options: {
+        "Effective": "Taper Over 2-3 Days",
+        "Ineffective": "Switch to Alternative"
+      }
+    },
+    "Colchicine or Steroids": {
+      text: "Choose based on severity: colchicine (1.2mg then 0.6mg hourly x6) or prednisone 30-40mg daily.",
+      explanation: "COLCHICINE WARNING: High toxicity risk - do not repeat course within 3 days. STEROIDS: Taper over 10-14 days to prevent rebound.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Prophylaxis Pathway
+    "Monitor Urate Levels": {
+      text: "Titrate therapy to target urate <6 mg/dL (or <5 mg/dL for tophaceous gout).",
+      explanation: "MONITORING: Check urate q2-4 weeks during titration. PROPHYLAXIS: Colchicine 0.6mg daily during first 6 months of urate-lowering therapy.",
+      options: {
+        "Goal achieved": "Long-term Management",
+        "Not at goal": "Adjust Therapy"
+      }
+    },
+    "Adjust Therapy": {
+      text: "Increase allopurinol (max 800mg/day) or add probenecid (if underexcretor).",
+      explanation: "URICOSURICS: Use only if 24h urine uric acid <800 mg/day and normal renal function. CAUTION: Probenecid contraindicated in nephrolithiasis.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "Long-term Management": {
+      text: "Continue urate-lowering therapy indefinitely with annual monitoring.",
+      explanation: "TOPHI RESOLUTION: May take 3-12 months. EDUCATION: Avoid triggers (alcohol binges, dehydration) and monitor for medication side effects.",
+      options: {
+        "Tophi present": "Monitor for Resolution",
+        "No tophi": "Annual Follow-up"
+      }
+    },
+
+    // Special Cases Pathway
+    "Rule Out Septic Arthritis": {
+      text: "Perform arthrocentesis for cell count, crystals, and culture.",
+      explanation: "CRITICAL: Do not delay antibiotics if septic arthritis suspected. CRYSTAL FINDINGS: Gout (needle-shaped, negative birefringence) vs pseudogout (rhomboid, positive).",
+      options: {
+        "Gout confirmed": "Initiate Acute Treatment",
+        "Septic arthritis": "IV Antibiotics + Ortho Consult",
+        "Other crystal arthropathy": "Disease-Specific Treatment"
+      }
+    },
+    "Address Underlying Cause": {
+      text: "Treat secondary causes: tumor lysis (rasburicase), lead toxicity (chelation), or medication adjustment.",
+      explanation: "EXAMPLE: Switch diuretics to ACEi/ARB if possible. For tumor lysis: aggressive hydration + rasburicase for urate >8 mg/dL.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  //Diffuse Muscle Pain and Stiffness-----
+  "Diffuse Muscle Pain and Stiffness": {
+    start: {
+      text: "Does the patient have diffuse muscle pain and stiffness?",
+      explanation: "Initial assessment to confirm the primary complaint. Key considerations: bilateral involvement, age >50, and associated systemic symptoms.",
+      options: {
+        yes: "Initial Evaluation",
+        no: "exit"
+      }
+    },
+
+    // Initial Evaluation Pathway
+    "Initial Evaluation": {
+      text: "Perform history and physical examination. Key points: age >50, bilateral shoulder/neck pain, duration >30 minutes in AM, constitutional symptoms (fever, weight loss).",
+      explanation: "PMR typically presents abruptly in elderly patients. RED FLAG: GCA symptoms (headache, jaw claudication, visual changes) must be ruled out.",
+      options: {
+        "Proceed to Labs": "Laboratory Tests"
+      }
+    },
+
+    // Laboratory Tests Pathway
+    "Laboratory Tests": {
+      text: "Order CBC, ESR, CRP, CK, AST, ALT, TSH. Assess for elevated inflammatory markers (ESR/CRP) and normal muscle enzymes (CK/AST/ALT).",
+      explanation: "PMR: Elevated ESR/CRP but normal CK. Elevated CK suggests alternative diagnoses (e.g., myositis, drug-induced myopathy).",
+      options: {
+        "Elevated CK/AST/ALT": "Muscle Disorder Pathway",
+        "Normal CK/AST/ALT": "PMR Assessment"
+      }
+    },
+
+    // Muscle Disorder Pathway (Elevated CK/AST/ALT)
+    "Muscle Disorder Pathway": {
+      text: "Evaluate for prominent weakness or elevated muscle enzymes. Consider: myositis, drug-induced myopathy (statins, fibrates), muscular dystrophy.",
+      explanation: "CRITICAL: Inflammatory myopathies (e.g., polymyositis) may present with mild pain but prominent weakness. Drug-induced myopathy requires medication review.",
+      options: {
+        "Weakness present": "Inflammatory Myopathy Workup",
+        "No weakness": "Drug-Induced Myopathy"
+      }
+    },
+    "Inflammatory Myopathy Workup": {
+      text: "Assess for myositis (dermatomyositis/polymyositis): Check autoantibodies (ANA, anti-Jo-1), EMG, or muscle biopsy if indicated.",
+      explanation: "NOTE: Myositis often presents with proximal weakness (e.g., difficulty rising from chair). CK typically >5x ULN.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Drug-Induced Myopathy": {
+      text: "Review medications (statins, fibrates). Discontinue offending drug and monitor for improvement.",
+      explanation: "STATIN MYOPATHY: CK usually <10x ULN. Rhabdomyolysis (CK >10,000 U/L) requires hydration and ICU monitoring.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // PMR Assessment (Normal CK/AST/ALT)
+    "PMR Assessment": {
+      text: "Does the patient meet clinical criteria for PMR (age >50, bilateral pain, morning stiffness >30 min, elevated ESR/CRP)?",
+      explanation: "DIAGNOSTIC TIP: Rapid response to steroids (48 hours) supports PMR. Lack of response suggests alternative diagnoses (e.g., fibromyalgia).",
+      options: {
+        yes: "GCA Screening",
+        no: "Alternative Diagnoses"
+      }
+    },
+    "Alternative Diagnoses": {
+      text: "Consider fibromyalgia (tender points, fatigue), postviral syndrome, or vitamin D deficiency (check 25-OH vitamin D).",
+      explanation: "FIBROMYALGIA: Widespread pain + sleep disturbances. VITAMIN D: Levels <20 ng/mL may cause proximal muscle pain.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // GCA Screening Pathway
+    "GCA Screening": {
+      text: "Assess for GCA symptoms: headache, scalp tenderness, jaw claudication, visual changes (amaurosis fugax, diplopia).",
+      explanation: "URGENT: GCA can cause irreversible blindness. Temporal artery biopsy required if suspected, but steroids should not be delayed.",
+      options: {
+        "GCA symptoms present": "GCA Management",
+        "No GCA symptoms": "PMR Treatment"
+      }
+    },
+    "GCA Management": {
+      text: "Start high-dose steroids (1 mg/kg prednisone) immediately. Arrange temporal artery biopsy within 1-2 weeks.",
+      explanation: "EMERGENCY: Visual symptoms require IV methylprednisolone (1000 mg x3 days). Biopsy remains positive for ~14 days after steroid initiation.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // PMR Treatment Pathway
+    "PMR Treatment": {
+      text: "Initiate low-dose steroids (e.g., prednisone 15 mg daily). Expect dramatic improvement within 48 hours.",
+      explanation: "TAPERING: Reduce by 2.5 mg every 2-4 weeks. Relapses may require dose adjustment. Average disease duration: 18 months.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Joint Hypermobility and Temporomandibular Pain
+  "Joint Hypermobility and Temporomandibular Pain": {
+    start: {
+      text: "Does the patient have joint hypermobility or temporomandibular pain?",
+      explanation: "Initial triage to direct evaluation toward hypermobility syndromes or TMJ disorders.",
+      options: {
+        "Joint Hypermobility": "Hypermobility Evaluation",
+        "Temporomandibular Pain": "TMJ Evaluation"
+      }
+    },
+
+    // Joint Hypermobility Pathway
+    "Hypermobility Evaluation": {
+      text: "Calculate Beighton score (0–9). Assess for: elbow/knee hyperextension >10°, thumb-to-forearm opposition, fifth MCP extension >90°, palms-to-floor with knees straight.",
+      explanation: "SCORING: ≥5/9 suggests hypermobility. RED FLAG: Scores ≥7 may indicate hereditary connective tissue disorders (e.g., Ehlers-Danlos, Marfan’s).",
+      options: {
+        "Beighton ≥5": "Hypermobility Syndrome Assessment",
+        "Beighton <5": "Exit (Benign Hypermobility)"
+      }
+    },
+    "Hypermobility Syndrome Assessment": {
+      text: "Assess for associated symptoms: arthralgia, recurrent dislocations, fibromyalgia-like pain, mitral valve prolapse (MVP), or systemic features (e.g., skin laxity, vascular/ocular abnormalities).",
+      explanation: "KEY PHENOTYPES: MVP/palpitations suggest benign hypermobility. Thin skin/scars or aortic dilation may indicate Ehlers-Danlos or Marfan’s.",
+      options: {
+        "Systemic Features Present": "Connective Tissue Disorder Workup",
+        "Isolated Hypermobility": "Benign Hypermobility Management"
+      }
+    },
+    "Connective Tissue Disorder Workup": {
+      text: "Evaluate for Marfan’s (ectopia lentis, aortic dilation, arachnodactyly) or Ehlers-Danlos (skin hyperextensibility, vascular/organ rupture risk). Check echocardiogram, homocysteine (rule out homocystinuria).",
+      explanation: "URGENT: Aortic dilation (Marfan’s) or vascular fragility (EDS type IV) require immediate intervention. EDS type III mimics benign hypermobility but may have severe MVP.",
+      options: {
+        "Marfan’s Suspected": "Marfan’s Management",
+        "Ehlers-Danlos Suspected": "EDS Management",
+        "Neither": "Benign Hypermobility Management"
+      }
+    },
+    "Marfan’s Management": {
+      text: "Initiate beta-blockers (e.g., atenolol) for aortic protection. Serial echocardiograms (annually). Counsel on pregnancy risks and low-impact activity. Refer to genetics.",
+      explanation: "CRITICAL: Aortic root >4 cm may need surgical consult. Pregnancy increases dissection risk (avoid Valsalva maneuvers).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "EDS Management": {
+      text: "Type III: Manage MVP and joint instability. Type IV: Emergency counseling for vascular/organ rupture risks. Avoid high-impact activities. Skin protection for types I/II.",
+      explanation: "WARNING: Type IV patients should wear medical alert bracelets. Avoid colonoscopy/angiography due to perforation risk.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Benign Hypermobility Management": {
+      text: "Treat fibromyalgia symptoms (e.g., duloxetine, PT). NSAIDs for arthralgia. Joint stabilization with braces. MVP monitoring if present.",
+      explanation: "REHAB FOCUS: Physical therapy for proprioception. Avoid repetitive joint trauma.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Temporomandibular Pain Pathway
+    "TMJ Evaluation": {
+      text: "Assess for red flags: visual changes (temporal arteritis), purulent drainage (otitis/sinusitis), or trigeminal neuralgia (stabbing pain).",
+      explanation: "EMERGENCY: Temporal arteritis (jaw claudication + ESR ↑) requires steroids to prevent blindness.",
+      options: {
+        "Red Flags Present": "Urgent TMJ Red Flags",
+        "No Red Flags": "TMJ Disorder Workup"
+      }
+    },
+    "Urgent TMJ Red Flags": {
+      text: "Temporal arteritis: Start prednisone 60 mg/day, temporal artery biopsy. Otitis/sinusitis: Antibiotics. Trigeminal neuralgia: Carbamazepine trial.",
+      explanation: "ACTION: Steroids precede biopsy for arteritis. Neuralgia responds to anticonvulsants (e.g., gabapentin if carbamazepine fails).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "TMJ Disorder Workup": {
+      text: "Examine TMJ for crepitus (OA), clicking (internal derangement), or tenderness (myofascial pain). Assess for bruxism or inflammatory arthritis (e.g., RA).",
+      explanation: "CLINICAL CLUES: Crepitus = OA. Clicking + trismus = internal derangement. Bilateral pain + fatigue may suggest fibromyalgia.",
+      options: {
+        "Internal Derangement/OA": "TMJ Imaging",
+        "Myofascial Pain/Bruxism": "Muscular TMJ Management",
+        "Inflammatory Arthritis": "Rheumatologic Workup"
+      }
+    },
+    "TMJ Imaging": {
+      text: "MRI for disk displacement (internal derangement) or CT for bony changes (OA). Plain films if MRI/CT unavailable.",
+      explanation: "GOLD STANDARD: MRI shows soft tissue (disk). CT detects osteophytes/joint narrowing.",
+      options: {
+        "Confirmed OA": "OA Management",
+        "Confirmed Derangement": "Derangement Management"
+      }
+    },
+    "OA Management": {
+      text: "NSAIDs, jaw rest, soft diet. Intra-articular steroids if severe. Dental splints for malocclusion.",
+      explanation: "CAUTION: Limit steroid injections to 3–4/year to avoid cartilage damage.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Derangement Management": {
+      text: "Physical therapy (jaw exercises). Arthrocentesis or surgery if refractory. Stress reduction for bruxism.",
+      explanation: "SURGERY: Last-line for locked jaw or chronic dislocation.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Muscular TMJ Management": {
+      text: "Masseter/temporalis massage, heat therapy. Night guards for bruxism. Consider amitriptyline for chronic pain.",
+      explanation: "BRUXISM: Address stress/sleep disorders. Botox injections for refractory cases.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Rheumatologic Workup": {
+      text: "Check RF, anti-CCP (RA), ANA (SLE), HLA-B27 (spondyloarthritis). TMJ involvement in JIA requires aggressive immunosuppression.",
+      explanation: "PEDIATRIC ALERT: JIA can cause micrognathia (mandibular growth impairment).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  
+  //Antinuclear Antibody (ANA) Test Evaluation 
+  "Antinuclear Antibody (ANA) Test Evaluation": {
+    start: {
+      text: "Does the patient have clinical features suggestive of systemic autoimmune disease (e.g., SLE)?",
+      explanation: "Initial assessment to determine if ANA testing is appropriate. Key features include fever, fatigue, malar rash, arthritis, or renal involvement.",
+      options: {
+        yes: "Clinical Suspicion Evaluation",
+        no: "exit"
+      }
+    },
+
+    // Clinical Suspicion Pathway
+    "Clinical Suspicion Evaluation": {
+      text: "Perform a detailed history and physical exam. Assess for: malar/discoid rash, oral ulcers, photosensitivity, pleuritis, pericarditis, arthritis, renal/neurologic involvement.",
+      explanation: "RED FLAGS: Malar rash + nephritis strongly suggest SLE. Isolated symptoms (e.g., fatigue) are nonspecific and may require infection/malignancy workup.",
+      options: {
+        "Findings Suggestive of SLE/Autoimmune": "Initial Laboratory Workup",
+        "Non-Specific Findings": "Consider Alternative Diagnoses"
+      }
+    },
+    "Initial Laboratory Workup": {
+      text: "Order CBC, liver/kidney function tests, urinalysis with sediment, ESR/CRP. Rule out infection (e.g., viral serologies, blood cultures if febrile).",
+      explanation: "NOTE: Anemia, leukopenia, thrombocytopenia, proteinuria, or elevated ESR/CRP support autoimmune etiology. Always exclude mimics (e.g., endocarditis).",
+      options: {
+        "Proceed to ANA Testing": "ANA Testing"
+      }
+    },
+    "Consider Alternative Diagnoses": {
+      text: "Evaluate for infections (EBV, HIV), malignancies (lymphoma), or other rheumatic diseases (e.g., rheumatoid arthritis).",
+      explanation: "CLUES: Lymphadenopathy + fever may suggest lymphoma. Symmetric small-joint arthritis favors RA over SLE.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // ANA Testing Pathway
+    "ANA Testing": {
+      text: "Obtain ANA test by immunofluorescence. Interpret results based on titer and pattern (if available).",
+      explanation: "KEY POINTS: >1:640 titer is highly suggestive of autoimmune disease. Patterns (e.g., homogenous, speckled) are nonspecific but anticentromere suggests scleroderma.",
+      options: {
+        "ANA Positive (≥1:160)": "ANA Positive Evaluation",
+        "ANA Negative": "Reassess for Non-Autoimmune Etiologies"
+      }
+    },
+    "ANA Positive Evaluation": {
+      text: "Assess titer: Low (1:40–1:160) may be normal; high (≥1:640) warrants further workup. Check C3/C4 (low in active SLE), ESR/CRP.",
+      explanation: "FALSE POSITIVES: 32% of healthy people have ANA 1:40. High titers (>1:320) occur in only 3% of normals.",
+      options: {
+        "High Titer (≥1:640) or Clinical Suspicion": "Specific Antibody Testing",
+        "Low Titer + No Clinical Signs": "Monitor/Reassess"
+      }
+    },
+    "Specific Antibody Testing": {
+      text: "Order based on clinical suspicion:",
+      explanation: "ANTIBODY PROFILES:",
+      list: [
+        "Anti-dsDNA/Sm: Highly specific for SLE (dsDNA correlates with nephritis).",
+        "Anti-RNP: Mixed connective tissue disease (MCTD).",
+        "Anti-Ro/La: Sjögren’s or SLE (neonatal lupus risk if Ro+).",
+        "Anti-Scl-70: Scleroderma.",
+        "Anticentromere: Limited scleroderma (CREST).",
+        "Antihistone: Drug-induced lupus."
+      ],
+      options: {
+        "Anti-dsDNA/Sm Positive": "SLE Diagnosis",
+        "Anti-RNP Positive": "MCTD Evaluation",
+        "Anti-Ro/La Positive": "Sjögren’s/SLE Evaluation",
+        "Anti-Scl-70/Anticentromere Positive": "Scleroderma Evaluation",
+        "Antihistone Positive": "Drug-Induced Lupus Evaluation",
+        "All Negative": "Reevaluate for Other Autoimmune/Non-Autoimmune Causes"
+      }
+    },
+    "SLE Diagnosis": {
+      text: "Confirm SLE using SLICC or ACR criteria. Assess disease activity (renal, CNS involvement) with urine PCR, anti-dsDNA titers, C3/C4, and imaging as needed.",
+      explanation: "URGENT: Active nephritis (proteinuria, casts) or CNS lupus (seizures, psychosis) requires immunosuppression (e.g., steroids, mycophenolate).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "MCTD Evaluation": {
+      text: "Assess for overlapping features (Raynaud’s, swollen hands, myositis, ILD). Check pulmonary function tests (PFTs) and echocardiogram for PAH.",
+      explanation: "TREATMENT: Steroids for myositis/arthritis; calcium channel blockers for Raynaud’s.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Sjögren’s/SLE Evaluation": {
+      text: "Evaluate for sicca symptoms (dry eyes/mouth), parotid enlargement. Schirmer’s test, lip biopsy if needed. Monitor for lymphoma (↑ risk in Sjögren’s).",
+      explanation: "NEONATAL RISK: Anti-Ro+ mothers require fetal echocardiograms (risk of congenital heart block).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Scleroderma Evaluation": {
+      text: "Assess skin thickening (modified Rodnan score), Raynaud’s, digital ulcers, ILD (HRCT), PAH (echocardiogram). Nailfold capillaroscopy if available.",
+      explanation: "CRITICAL: Scl-70 = diffuse scleroderma (high ILD risk). Anticentromere = CREST (PAH risk).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Drug-Induced Lupus Evaluation": {
+      text: "Review medications (procainamide, hydralazine, TNF inhibitors). Discontinue offending drug; symptoms typically resolve within weeks.",
+      explanation: "TYPICAL LABS: ANA+, antihistone+, but anti-dsDNA usually negative.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Reassess for Non-Autoimmune Etiologies": {
+      text: "Consider chronic infections (hepatitis, HIV), fibromyalgia, or psychiatric causes (e.g., depression with somatic symptoms).",
+      explanation: "NOTE: Persistent fatigue + normal workup may suggest fibromyalgia/chronic fatigue syndrome.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Monitor/Reassess": {
+      text: "Low-titer ANA without symptoms: Monitor annually or if new symptoms arise.",
+      explanation: "WARNING: 5–10% of SLE patients are ANA-negative. Clinical judgment is key.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  //Elevated Alkaline Phosphatase (ALP) Evaluation
+  "Elevated Alkaline Phosphatase (ALP) Evaluation": {
+    start: {
+      text: "Is the patient's serum ALP level elevated?",
+      explanation: "Initial confirmation of elevated ALP. Note: Normal ranges vary by age (higher in children, pregnant women due to placental ALP).",
+      options: {
+        yes: "Initial Evaluation",
+        no: "exit"
+      }
+    },
+
+    // Initial Evaluation Pathway
+    "Initial Evaluation": {
+      text: "Assess for symptoms/signs of hepatobiliary disease (jaundice, pruritus, RUQ pain) or skeletal disease (bone pain, fractures, deformity). Exclude pregnancy.",
+      explanation: "RED FLAGS: Painless jaundice suggests malignancy. Severe bone pain may indicate metastases/Paget's.",
+      options: {
+        "Hepatobiliary Symptoms": "Hepatobiliary Workup",
+        "Skeletal Symptoms": "Skeletal Workup",
+        "Asymptomatic": "Asymptomatic Evaluation"
+      }
+    },
+
+    // Hepatobiliary Pathway
+    "Hepatobiliary Workup": {
+      text: "Order GGT, 5'-NT, bilirubin, AST, ALT, albumin, INR. If GGT/5'-NT also elevated, likely hepatobiliary origin.",
+      explanation: "KEY POINT: GGT correlates with ALP in biliary disease. Isolated ALP elevation may suggest bone origin or non-hepatic ALP (e.g., placental, intestinal).",
+      options: {
+        "GGT/5'-NT Elevated": "Biliary Imaging",
+        "GGT/5'-NT Normal": "Skeletal Workup"
+      }
+    },
+    "Biliary Imaging": {
+      text: "Perform abdominal ultrasound (first-line) or CT/MRI for bile duct dilation, masses. Consider ERCP/MRCP if obstruction suspected.",
+      explanation: "URGENT: Painless jaundice + dilated ducts → ERCP for possible cholangiocarcinoma/pancreatic cancer.",
+      options: {
+        "Obstruction/Mass Found": "Biliary Intervention",
+        "No Obstruction": "Liver Disease Evaluation"
+      }
+    },
+    "Biliary Intervention": {
+      text: "Refer to GI for ERCP/stenting if obstructive cause. Surgical oncology consult if malignancy suspected.",
+      explanation: "NOTE: Pancreatic cancer/cholangiocarcinoma often present with painless jaundice + elevated ALP/GGT.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Liver Disease Evaluation": {
+      text: "Check viral hepatitis serologies, ANA/AMA (PBC), anti-LKM (AIH), ferritin (hemochromatosis), ceruloplasmin (Wilson's). Consider liver biopsy.",
+      explanation: "AUTOANTIBODIES: AMA+ = primary biliary cholangitis (PBC). ANA/anti-LKM+ = autoimmune hepatitis (AIH).",
+      options: {
+        "Diagnosis Confirmed": "Disease-Specific Management",
+        "Unclear Diagnosis": "Hepatology Referral"
+      }
+    },
+    "Disease-Specific Management": {
+      text: "PBC: Ursodeoxycholic acid/obeticholic acid. AIH: Steroids/azathioprine. Viral hepatitis: Antivirals.",
+      explanation: "PBC: Monitor for portal hypertension. AIH: Requires long-term immunosuppression.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Skeletal Pathway
+    "Skeletal Workup": {
+      text: "Check serum calcium, phosphate, magnesium, 25-OH vitamin D, PTH. If calcium elevated, add PTHrP (malignancy screen).",
+      explanation: "CRITICAL: Hypercalcemia + low PTH → malignancy (PTHrP-mediated). Low vitamin D/phosphate → osteomalacia.",
+      options: {
+        "Calcium Abnormal": "Hypercalcemia Evaluation",
+        "Calcium Normal": "Normocalcemic Evaluation"
+      }
+    },
+    "Hypercalcemia Evaluation": {
+      text: "High PTH: Primary hyperparathyroidism. Low PTH + high PTHrP: Malignancy (e.g., lung CA). Low PTH/PTHrP: Consider granulomas, myeloma.",
+      explanation: "ACTION: Parathyroidectomy for symptomatic hyperparathyroidism. CT chest for PTHrP+ cases.",
+      options: {
+        "Malignancy Suspected": "Oncology Workup",
+        "Hyperparathyroidism": "Parathyroidectomy Referral"
+      }
+    },
+    "Normocalcemic Evaluation": {
+      text: "Low phosphate/vitamin D: Osteomalacia (check 1,25-OH vitamin D if renal insufficiency). Normal minerals: Paget's, metastases, healing fracture.",
+      explanation: "OSTEOMALACIA: Treat with vitamin D/calcium. Paget's: Bisphosphonates if symptomatic.",
+      options: {
+        "Osteomalacia": "Vitamin D Repletion",
+        "Bone Pain/Deformity": "Bone Imaging"
+      }
+    },
+    "Bone Imaging": {
+      text: "X-ray painful sites first. If negative, bone scan to assess for Paget's/metastases. Follow MRI/CT for focal lesions.",
+      explanation: "PAGET'S: Lytic/sclerotic lesions on X-ray. MYELOMA: Bone scan often negative (use skeletal survey).",
+      options: {
+        "Paget's Disease": "Bisphosphonate Therapy",
+        "Metastases": "Oncology Referral",
+        "No Diagnosis": "Rheumatology Referral"
+      }
+    },
+
+    // Asymptomatic Pathway
+    "Asymptomatic Evaluation": {
+      text: "Repeat ALP + GGT in 3–6 months. If persistently elevated, proceed with hepatobiliary/skeletal workup.",
+      explanation: "BENIGN CAUSES: Transient elevation from fasting, blood type O/B, familial trait.",
+      options: {
+        "Persistently Elevated": "Initial Evaluation",
+        "Normalized": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  //Elevated Creatine Kinase (CK) Evaluation
+  "Elevated Creatine Kinase (CK) Evaluation": {
+    start: {
+      text: "Is the patient's serum CK level elevated?",
+      explanation: "Initial confirmation of elevated CK. Note: Normal ranges vary by gender, race, and activity level (higher in Black individuals and athletes).",
+      options: {
+        yes: "Initial Evaluation",
+        no: "exit"
+      }
+    },
+
+    // Initial Evaluation Pathway
+    "Initial Evaluation": {
+      text: "Assess for symptoms/signs of cardiac (chest pain, ECG changes), cerebral (recent trauma/seizures), or skeletal muscle (weakness, myalgia) involvement.",
+      explanation: "RED FLAGS: Chest pain + ECG changes → cardiac ischemia. Severe weakness → rhabdomyolysis or inflammatory myopathy.",
+      options: {
+        "Cardiac Symptoms": "Cardiac Workup",
+        "Cerebral Symptoms": "Cerebral Evaluation",
+        "Muscle Symptoms": "Muscle Workup",
+        "Asymptomatic": "Asymptomatic Evaluation"
+      }
+    },
+
+    // Cardiac Pathway
+    "Cardiac Workup": {
+      text: "Obtain CK-MB, troponin, ECG. If elevated troponin/CK-MB >5% of total CK, pursue acute coronary syndrome protocol.",
+      explanation: "NOTE: CK-MB can be mildly elevated in skeletal muscle injury. Troponin is more cardiac-specific but may rise in myositis.",
+      options: {
+        "Cardiac Ischemia Confirmed": "Cardiac Intervention",
+        "No Cardiac Ischemia": "Muscle Workup"
+      }
+    },
+    "Cardiac Intervention": {
+      text: "Immediate cardiology consult for ACS protocol (angiography, revascularization). Monitor for complications (e.g., arrhythmias).",
+      explanation: "CRITICAL: STEMI/NSTEMI require urgent intervention. Myocarditis may mimic ACS.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Cerebral Pathway
+    "Cerebral Evaluation": {
+      text: "Evaluate for recent trauma, seizures, or stroke (CK-BB fraction). Obtain head CT if indicated.",
+      explanation: "CK-BB is brain-specific but rarely measured clinically. Trauma/seizures cause nonspecific CK-MM elevation.",
+      options: {
+        "Acute Brain Injury": "Neurology Management",
+        "No Acute Brain Injury": "Muscle Workup"
+      }
+    },
+    "Neurology Management": {
+      text: "Treat underlying cause (e.g., antiepileptics for seizures, neurosurgery consult for trauma). Monitor CK for rhabdomyolysis.",
+      explanation: "SEIZURES: Prolonged convulsions can cause rhabdomyolysis (check urine myoglobin).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Muscle Pathway
+    "Muscle Workup": {
+      text: "Assess for: medication use (statins, colchicine), trauma, exertion, family history, weakness pattern (proximal vs. distal). Check electrolytes, TSH, CBC.",
+      explanation: "DRUG CAUSES: Statins most common. HMG-CoA reductase inhibitors cause myalgias in 5-10%.",
+      options: {
+        "Medication/Toxin Exposure": "Discontinue Offending Agent",
+        "Trauma/Exertion": "Rhabdomyolysis Protocol",
+        "Unexplained Weakness": "Neuromuscular Evaluation",
+        "Isolated Elevation": "Persistent CK Evaluation"
+      }
+    },
+    "Discontinue Offending Agent": {
+      text: "Hold statins/other myotoxic drugs. Monitor CK weekly until normalized. Rechallenge cautiously if needed.",
+      explanation: "WARNING: CK >10x ULN or myoglobinuria indicates rhabdomyolysis (risk of renal failure).",
+      options: {
+        "CK Normalizes": "exit",
+        "Persistent Elevation": "Neuromuscular Evaluation"
+      }
+    },
+    "Rhabdomyolysis Protocol": {
+      text: "Aggressive IV hydration (saline), monitor urine output/Cr. Alkalinize urine if CK >5,000 U/L. Treat hyperkalemia.",
+      explanation: "GOAL: Urine output >200 mL/hr. Dialysis may be needed for AKI.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Neuromuscular Evaluation": {
+      text: "Perform EMG/NCS (unilateral to preserve contralateral side for biopsy). Check myositis antibodies (anti-Jo-1, anti-Mi-2).",
+      explanation: "EMG CLUES: Myopathic changes (small polyphasic units) suggest inflammatory myopathy.",
+      options: {
+        "Myopathic EMG": "Muscle Biopsy",
+        "Neuropathic EMG": "Neurology Referral",
+        "Normal EMG": "Persistent CK Evaluation"
+      }
+    },
+    "Muscle Biopsy": {
+      text: "Biopsy clinically weak muscle (contralateral to EMG). Routine H&E + special stains (e.g., MHC-I for dermatomyositis). Electron microscopy if inclusion body myositis suspected.",
+      explanation: "PATCHY DISEASE: Negative biopsy doesn't exclude myopathy. Consider MRI-guided biopsy if uncertain.",
+      options: {
+        "Inflammatory Myopathy": "Immunosuppressive Therapy",
+        "Metabolic/Genetic Myopathy": "Neuromuscular Specialist Referral",
+        "Normal Biopsy": "Persistent CK Evaluation"
+      }
+    },
+    "Immunosuppressive Therapy": {
+      text: "Start prednisone 1 mg/kg/day for polymyositis/dermatomyositis. Add steroid-sparing agent (e.g., methotrexate). Screen for malignancy in dermatomyositis.",
+      explanation: "MALIGNANCY RISK: 15-30% of dermatomyositis cases (ovarian, lung, GI cancers).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Asymptomatic Pathway
+    "Asymptomatic Evaluation": {
+      text: "Repeat CK in 1-2 weeks. If persistently elevated >3x ULN, proceed with muscle workup. Consider familial hyperCKemia if no cause found.",
+      explanation: "BENIGN CAUSES: Strenuous exercise, IM injections, or idiopathic hyperCKemia (up to 1% population).",
+      options: {
+        "Persistently Elevated": "Muscle Workup",
+        "Normalized": "exit"
+      }
+    },
+
+    // Persistent CK Pathway
+    "Persistent CK Evaluation": {
+      text: "Consider muscle MRI to guide biopsy. Check myositis antibodies, genetic testing (e.g., dystrophinopathies). Refer to neuromuscular specialist.",
+      explanation: "IDIOPATHIC: Up to 25% of elevated CK cases remain unexplained after workup.",
+      options: {
+        "Diagnosis Confirmed": "Disease-Specific Management",
+        "No Diagnosis": "Neuromuscular Specialist Follow-up"
+      }
+    }
+  },
+  
+  
+  
+  
+  //OSTEOPOROSIS/OSTEOPENIA---------------
+  "Osteoporosis / Osteopenia": {
+    start: {
+      text: "Does the patient meet screening criteria for bone density testing?",
+      explanation: "SCREENING INDICATIONS: All women ≥65yo, postmenopausal women <65yo with risk factors (fragility fracture, steroid use, parental hip fracture, smoking, alcohol >3 drinks/day, low BMI, rheumatoid arthritis), or men ≥70yo.",
+      options: {
+        yes: "Bone Density Testing",
+        no: "Risk Factor Assessment"
+      }
+    },
+
+    // SCREENING PATHWAY
+    "Bone Density Testing": {
+      text: "Perform DXA scan (spine/hip preferred) - interpret results:",
+      explanation: "T-score: Compared to young adult mean. Osteopenia: T-score -1 to -2.5. Osteoporosis: T-score ≤-2.5. Z-score (age-matched) <-2.0 suggests secondary causes.",
+      options: {
+        "Normal (T > -1)": "Routine Rescreening",
+        "Osteopenia (T -1 to -2.5)": "Osteopenia Management",
+        "Osteoporosis (T ≤ -2.5)": "Osteoporosis Workup"
+      }
+    },
+
+    // OSTEOPENIA PATHWAY
+    "Osteopenia Management": {
+      text: "Assess fracture risk using FRAX calculator:",
+      explanation: "FRAX estimates 10-year major osteoporotic fracture risk. Consider treatment if: 1) FRAX ≥3% for hip or ≥20% for major fracture, 2) High-risk features (steroid use, frequent falls).",
+      options: {
+        "High fracture risk": "Pharmacologic Therapy",
+        "Low fracture risk": "Lifestyle Intervention"
+      }
+    },
+
+    // OSTEOPOROSIS PATHWAY
+    "Osteoporosis Workup": {
+      text: "Initiate comprehensive evaluation:",
+      explanation: "1) Basic labs (CBC, BMP, Ca/Phos, LFTs, TSH), 2) 25-OH vitamin D, 3) SPEP/UPEP if Z-score <-2.0, 4) Testosterone (men), 5) 24hr urine Ca/Cr if indicated.",
+      options: {
+        "Secondary cause found": "Targeted Treatment",
+        "No secondary cause": "Primary Osteoporosis Management"
+      }
+    },
+
+    // SECONDARY CAUSES PATHWAY
+    "Targeted Treatment": {
+      text: "Address identified secondary causes:",
+      explanation: "HYPERPARATHYROIDISM: Parathyroidectomy if symptomatic. VITAMIN D DEFICIENCY: 50,000 IU weekly x8w then maintenance. HYPERTHYROIDISM: Normalize thyroid function.",
+      options: {
+        "Corrected": "Reassess BMD",
+        "Persistent": "Specialist Referral"
+      }
+    },
+
+    // TREATMENT PATHWAYS
+    "Lifestyle Intervention": {
+      text: "Implement non-pharmacologic measures:",
+      explanation: "1) Calcium 1200mg/day (diet + supplements), 2) Vitamin D 800-2000 IU/day, 3) Weight-bearing exercise, 4) Fall prevention, 5) Smoking cessation, 6) Limit alcohol.",
+      options: {
+        "Follow-up in 2 years": "Repeat DXA",
+        "New risk factors": "Re-evaluate Sooner"
+      }
+    },
+    "Pharmacologic Therapy": {
+      text: "Select first-line agent based on patient factors:",
+      explanation: "BISPHOSPHONATES (oral): First-line for most. IV zoledronate if poor GI absorption. DENOSUMAB: If renal impairment. ANABOLICS (teriparatide/abaloparatide): Severe cases.",
+      options: {
+        "Oral bisphosphonate": "Alendronate/Risedronate",
+        "IV therapy": "Zoledronic Acid",
+        "High fracture risk": "Consider Anabolic Agent"
+      }
+    },
+
+    // MEDICATION-SPECIFIC PATHWAYS
+    "Alendronate/Risedronate": {
+      text: "Prescribe with proper administration instructions:",
+      explanation: "Dosing: Alendronate 70mg weekly or risedronate 35mg weekly. MUST take with full glass of water, remain upright for 30min, no food/meds for 30min. Avoid in GERD/esophageal disorders.",
+      options: {
+        "Tolerated": "5-Year Reassessment",
+        "Side effects": "Alternative Agent"
+      }
+    },
+    "Zoledronic Acid": {
+      text: "Administer IV zoledronic acid 5mg annually:",
+      explanation: "Pre-dose: Check Cr, Ca, vitamin D. Hydrate pre-infusion. Post-dose: Monitor for flu-like symptoms (common first 3d). Contraindicated if CrCl <35.",
+      options: {
+        "Completed infusion": "Annual Follow-up",
+        "Acute phase reaction": "Symptomatic Management"
+      }
+    },
+
+    // MONITORING PATHWAYS
+    "5-Year Reassessment": {
+      text: "After 5 years of oral bisphosphonates:",
+      explanation: "LOW RISK: Consider drug holiday with monitoring. HIGH RISK: Continue therapy. All patients need ongoing calcium/vitamin D and lifestyle measures.",
+      options: {
+        "Drug holiday": "Annual DXA Monitoring",
+        "Continue therapy": "Indefinite Treatment"
+      }
+    },
+    "Repeat DXA": {
+      text: "Follow-up DXA timing:",
+      explanation: "OSTEOPOROSIS ON TX: Every 1-2y. OSTEOPENIA: Every 2-5y based on risk. Normal BMD: 10-15y for women <65yo.",
+      options: {
+        "Stable/improved": "Continue Current Plan",
+        "Worsening": "Re-evaluate Treatment"
+      }
+    },
+
+    // SPECIAL POPULATIONS
+    "Glucocorticoid-Induced": {
+      text: "Special protocol for steroid users:",
+      explanation: "Start bisphosphonates if: 1) Prednisone ≥5mg/day for ≥3mo, 2) T-score <-1.5. CALCIUM: 1500mg/day. VITAMIN D: 800-2000 IU/day.",
+      options: {
+        "Initiating steroids": "Baseline DXA",
+        "Chronic use": "Prophylactic Treatment"
+      }
+    }
+  }
+}; 
+
+
+
+
+
+  
+  
+
+
+
+    let currentSymptom = null;
+    let currentQuestion = "start";
+
+    function playClick() {
+      const sound = document.getElementById("click-sound");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+      }
+    }
+
+    function startSymptom(symptom) {
+      currentSymptom = symptom;
+      currentQuestion = "start";
+      document.getElementById("symptom-title").textContent = symptom;
+      showQuestion();
+
+      document.getElementById("main-page").style.display = "none";
+      document.getElementById("question-page").style.display = "block";
+      document.getElementById("headline").style.display = "none";
+      document.getElementById("subheadline").style.display = "none";
+    }
+
+    // NEW/MODIFIED: This function is updated to show images.
+    function showQuestion() {
+      const symptomQuestions = questions[currentSymptom];
+      if (!symptomQuestions || !symptomQuestions[currentQuestion]) {
+        alert("Invalid symptom or question flow.");
+        return;
+      }
+
+      const questionData = symptomQuestions[currentQuestion];
+      const imageContainer = document.getElementById("question-image-container");
+      
+      // Clear previous image
+      imageContainer.innerHTML = "";
+
+      // If an image path exists, create and display the image
+      if (questionData.image) {
+        const img = document.createElement("img");
+        img.src = questionData.image;
+        img.alt = questionData.text; // for accessibility
+        img.className = "question-image";
+        imageContainer.appendChild(img);
+      }
+
+      document.getElementById("question").textContent = questionData.text;
+      document.getElementById("footer").textContent = questionData.explanation || "No explanation available.";
+
+      const buttons = Object.keys(questionData.options)
+        .map(option =>
+          `<button class='option-button' onclick="playClick(); nextQuestion('${option}')">${option}</button>`)
+        .join("");
+      document.querySelector(".button-container").innerHTML = buttons;
+    }
+
+    function nextQuestion(answer) {
+      const symptomQuestions = questions[currentSymptom];
+      const current = symptomQuestions[currentQuestion];
+      if (!current || !current.options[answer]) {
+        alert("Invalid choice.");
+        return;
+      }
+
+      const next = current.options[answer];
+      // Check if the next step is another question or a final diagnosis
+      if (symptomQuestions[next] && symptomQuestions[next].options) {
+          currentQuestion = next;
+          showQuestion();
+      } else {
+          // This handles both terminal nodes that are defined as full objects
+          // and those that are simple strings (your original implementation)
+          if (symptomQuestions[next]) {
+              currentQuestion = next;
+              showQuestion(); // This will display the final diagnosis with its image
+          } else {
+              // This is a fallback for legacy string-only terminals
+              document.getElementById("question").textContent = next;
+              document.getElementById("footer").textContent = "End of diagnostic path.";
+              document.querySelector(".button-container").innerHTML =
+                `<button class='option-button' onclick="playClick(); restart()">Restart</button>`;
+              document.getElementById("question-image-container").innerHTML = ""; // Clear image
+          }
+      }
+    }
+
+
+    function restart() {
+      document.getElementById("main-page").style.display = "flex";
+      document.getElementById("question-page").style.display = "none";
+      document.getElementById("headline").style.display = "block";
+      document.getElementById("subheadline").style.display = "block";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      sidebar.classList.toggle("active");
+      overlay.style.display = sidebar.classList.contains("active") ? "block" : "none";
+    }
+
+    document.addEventListener("click", function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const toggleBtn = document.querySelector(".toggle-button");
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnToggle = toggleBtn.contains(event.target);
+      if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains("active")) {
+        toggleSidebar();
+      }
+    });
+
+    let startX = 0;
+    document.addEventListener("touchstart", function(e) {
+      if (e.touches.length === 1) { startX = e.touches[0].clientX; }
+    });
+    document.addEventListener("touchend", function(e) {
+      const sidebar = document.getElementById("sidebar");
+      const diff = e.changedTouches[0].clientX - startX;
+      if (diff > 50 && sidebar.classList.contains("active")) { toggleSidebar(); }
+    });
+
+    function goHome() {
+      window.location.href = "../index.html";
+    }
+
+    function navigateTo(page) {
+      window.location.href = page;
+      const loadingScreen = document.querySelector('.loading');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'flex';
+        setTimeout(() => { window.location.href = page; }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>

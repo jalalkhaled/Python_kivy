@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Respiratory Symptoms</title>
+  <link rel="stylesheet" href="../style/regional_style.css" type="text/css" media="all" />
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="nav-title">ALGOMED <span>RESPIRATORY</span></div>
+  <button class="toggle-button" onclick="playClick(); toggleSidebar()">☰</button>
+</nav>
+
+<!-- Overlay for click outside -->
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <ul>
+      <li onclick="navigateTo('respiratory.html')">Respiratory</li>
+      <li onclick="navigateTo('cardiovascular.html')">Cardiovascular</li>
+      <li onclick="navigateTo('git.html')">Gastroenterology</li>
+      <li onclick="navigateTo('gynecology.html')">Gynecology</li>
+      <li onclick="navigateTo('hepatology.html')">Hepatology</li>
+      <li onclick="navigateTo('nephrology.html')">Nephrology</li>
+      <li onclick="navigateTo('obstetric.html')">Obstetric</li>
+      <li onclick="navigateTo('rheumatology.html')">Rheumatology</li>
+      <li onclick="navigateTo('hematology.html')">Hematology</li>
+      <li onclick="navigateTo('pediatric.html')">Pediatric</li>
+      <li onclick="navigateTo('ophthalmology.html')">Ophthalmology</li>
+      <li onclick="navigateTo('neurology.html')">Neurology</li>
+      <li onclick="navigateTo('dermatology.html')">Dermatology</li>
+      <li onclick="navigateTo('ent.html')">ENT</li>
+      <li onclick="navigateTo('psychiatric.html')">Psychiatric</li>
+      <li onclick="navigateTo('General.html')">General</li>
+    </ul>
+<button class="sidebar-about-button" onclick="navigateTo('../about.html')">About Us</button>
+  </aside>
+
+  <!-- Audio -->
+  <audio id="click-sound" src="../sounds/click_sound.wav" preload="auto"></audio>
+
+  <!-- Headlines Outside Container -->
+  <h3 id="headline">Select a Primary Symptom</h3>
+<p id="subheadline">Choose from the list below to begin diagnosis.</p>
+
+  <!-- Main Page -->
+  <div id="main-page" class="container">
+    <button class="symptom-button" onclick="playClick(); startSymptom('Cough')">Cough</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Dyspnea')">Dyspnea</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Hemoptysis')">Hemoptysis</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Wheezing')">Wheezing</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Stridor')">Stridor</button>
+    <button class="symptom-button" onclick="startSymptom('Pleural Effusion')">Pleural Effusion</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Mediastinal Lymphadenopathy')">Mediastinal Lymphadenopathy</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Solitary Pulmonary Nodule')">Solitary Pulmonary Nodule</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Multiple Pulmonary Nodules')">Multiple Pulmonary Nodules</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Diffuse Interstitial Lung Disease')">Diffuse Interstitial Lung Disease</button>
+  </div>
+
+  <!-- Question Page -->
+  <div id="question-page">
+  <div class="title" id="symptom-title">Symptom Diagnostic</div>
+  <div id="question-image-container"></div>
+  <div id="question" class="question"></div>
+  <div class="button-container"></div>
+  <div id="footer" class="footer"></div>
+</div>
+
+  <!-- Home Button -->
+  <button class="home-button" onclick="goHome()">
+  <img src="../bodyicons/home_button.png" alt="Home" class="home-icon">
+  <span class="sr-only">Home</span>
+</button>
+  
+  
+
+  <script>
+    const questions = {
+   
+    //Cough--------------------- 
+  "Cough": {
+    start: {
+      text: "What is the duration of the cough?",
+      explanation: "Duration categorizes cough into acute (<3 weeks), subacute (3-8 weeks), or chronic (>8 weeks), guiding differential diagnosis.",
+      options: {
+        "Acute (<3 weeks)": "Acute Cough Evaluation",
+        "Subacute (3-8 weeks)": "Subacute Cough Evaluation",
+        "Chronic (>8 weeks)": "Chronic Cough Evaluation"
+      }
+    },
+
+    // Acute Cough Pathway
+    "Acute Cough Evaluation": {
+      text: "Does the patient have red flags (hemoptysis, fever, hypoxia, weight loss)?",
+      explanation: "RED FLAGS: Suggest serious conditions (pneumonia, PE, CHF). Absence favors viral etiology.",
+      options: {
+        yes: "Serious Cause Workup",
+        no: "Viral Cough Management"
+      }
+    },
+    "Serious Cause Workup": {
+      text: "Obtain CXR, CBC, and consider ECG/ABG based on presentation.",
+      explanation: "KEY TESTS: CXR for pneumonia/CHF, D-dimer if PE suspected. Hypoxia warrants ABG.",
+      options: {
+        "Pneumonia": "Antibiotic Therapy",
+        "CHF": "Diuresis + Cardiac Workup",
+        "PE suspected": "CT Pulmonary Angiogram"
+      }
+    },
+    "Viral Cough Management": {
+      text: "Treat symptomatically with antihistamine/decongestant. Assess ACE inhibitor use.",
+      explanation: "ACE INHIBITOR NOTE: 20% develop dry cough; resolves within 1-4 weeks of discontinuation.",
+      options: {
+        "Improvement": "Supportive Care",
+        "No improvement": "Re-evaluate Duration"
+      }
+    },
+
+    // Subacute Cough Pathway
+    "Subacute Cough Evaluation": {
+      text: "Is there a history of recent infection?",
+      explanation: "Postinfectious cough (e.g., pertussis, viral) typically resolves spontaneously within 8 weeks.",
+      options: {
+        yes: "Postinfectious Cough Management",
+        no: "Treat as Chronic Cough"
+      }
+    },
+    "Postinfectious Cough Management": {
+      text: "Consider postnasal drip (UACS) or cough-variant asthma. Trial antihistamine or inhaled steroid.",
+      explanation: "PERTUSSIS CLUE: Paroxysmal cough with whoop/post-tussive vomiting. Treat with macrolides if early.",
+      options: {
+        "Improvement": "Continue Therapy",
+        "No improvement": "Chronic Cough Workup"
+      }
+    },
+
+    // Chronic Cough Pathway
+    "Chronic Cough Evaluation": {
+      text: "Obtain CXR and assess for smoking/ACE inhibitor use.",
+      explanation: "MANDATORY TEST: CXR rules out mass/infiltrate. Smokers require spirometry for COPD.",
+      options: {
+        "CXR abnormal": "Abnormal CXR Workup",
+        "CXR normal": "Empiric Therapy Trial"
+      }
+    },
+    "Abnormal CXR Workup": {
+      text: "Proceed with CT chest, bronchoscopy, or specialty referral based on findings.",
+      explanation: "MASS LESION: CT-guided biopsy. INFILTRATE: Consider TB/fungal testing.",
+      options: {
+        "Diagnosis confirmed": "Targeted Therapy",
+        "Unclear diagnosis": "Multidisciplinary Review"
+      }
+    },
+    "Empiric Therapy Trial": {
+      text: "Initiate therapy for most likely cause: UACS, asthma, or GERD.",
+      explanation: "ACCP GUIDELINES: Start with UACS (antihistamine/decongestant), then asthma (inhaled steroids), then GERD (PPI).",
+      options: {
+        "UACS suspected": "UACS Treatment",
+        "Asthma suspected": "Asthma Treatment",
+        "GERD suspected": "GERD Treatment"
+      }
+    },
+    "UACS Treatment": {
+      text: "First-gen antihistamine (e.g., chlorpheniramine) + decongestant x 2 weeks.",
+      explanation: "NASAL STEROID ADD-ON: If partial response, add intranasal corticosteroid.",
+      options: {
+        "Improvement": "Continue Therapy",
+        "No improvement": "Step to Asthma Protocol"
+      }
+    },
+    "Asthma Treatment": {
+      text: "Inhaled corticosteroid + SABA. Confirm with spirometry/bronchoprovocation if unclear.",
+      explanation: "COUGH-VARIANT ASTHMA: Cough may be only symptom. Methacholine challenge if spirometry normal.",
+      options: {
+        "Improvement": "Maintain Therapy",
+        "No improvement": "Step to GERD Protocol"
+      }
+    },
+    "GERD Treatment": {
+      text: "High-dose PPI (e.g., omeprazole 40mg BID) + lifestyle modifications x 8 weeks.",
+      explanation: "WARNING: 24hr pH monitoring needed if atypical symptoms. May take 3-6 months for full effect.",
+      options: {
+        "Improvement": "Continue Therapy",
+        "No improvement": "Advanced Testing"
+      }
+    },
+    "Advanced Testing": {
+      text: "Consider NAEB (sputum eosinophils), bronchoscopy, or HRCT for interstitial diseases.",
+      explanation: "NAEB DIAGNOSIS: Sputum eosinophils >3% with steroid response. HRCT for bronchiectasis/ILD.",
+      options: {
+        "NAEB confirmed": "Inhaled Steroids",
+        "Other diagnosis": "Specialty Referral"
+      }
+    },
+
+    // Shared Pathways
+    "Targeted Therapy": {
+      text: "Treat specific diagnosis: antibiotics (TB), antifungals (histoplasmosis), or oncology referral (lung cancer).",
+      explanation: "EXAMPLE: Chronic bronchitis may require mucolytics; bronchiectasis needs airway clearance.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+
+    
+    
+    
+    //Dyspnea-----------------------  
+  "Dyspnea": {
+    start: {
+      text: "Is the dyspnea acute (minutes to hours) or chronic (weeks to months)?",
+      explanation: "Acute dyspnea requires urgent evaluation for life-threatening causes (PE, MI, pneumothorax). Chronic dyspnea allows for stepwise workup.",
+      options: {
+        "Acute": "Acute Dyspnea Pathway",
+        "Chronic": "Chronic Dyspnea Pathway"
+      }
+    },
+
+    // Acute Dyspnea Pathway
+    "Acute Dyspnea Pathway": {
+      text: "Does the patient show signs of respiratory failure (hypoxia, cyanosis, altered mental status)?",
+      explanation: "RED FLAGS: Oxygen saturation <90%, accessory muscle use, or inability to speak full sentences warrant immediate intervention.",
+      options: {
+        yes: "Emergent Stabilization",
+        no: "Focused Acute Evaluation"
+      }
+    },
+    "Emergent Stabilization": {
+      text: "Administer oxygen, prepare for intubation, and obtain STAT ECG, ABG, and CXR.",
+      explanation: "CRITICAL ACTIONS: Non-rebreather mask at 15L/min. Consider BiPAP for CHF. ECG rules out STEMI.",
+      options: {
+        "Hypoxia persists": "Intubation + Mechanical Ventilation",
+        "Stabilized": "Proceed with Diagnostics"
+      }
+    },
+    "Focused Acute Evaluation": {
+      text: "Assess for key clinical features: pleuritic chest pain (PE), wheezing (asthma/COPD), crackles (CHF).",
+      explanation: "BEDSIDE CLUES: Unilateral leg swelling suggests PE. Frothy pink sputum indicates pulmonary edema.",
+      options: {
+        "Pleuritic pain": "PE Workup",
+        "Wheezing": "Obstructive Disease Management",
+        "Crackles": "CHF Evaluation",
+        "Non-specific": "Basic Labs + Imaging"
+      }
+    },
+    "PE Workup": {
+      text: "Obtain D-dimer (if low probability) or CT pulmonary angiogram (moderate/high probability).",
+      explanation: "WELLS SCORE: >4 points = high probability. PERC rule can exclude PE in low-risk patients.",
+      options: {
+        "PE confirmed": "Anticoagulation",
+        "PE excluded": "Re-evaluate Diagnosis"
+      }
+    },
+
+    // Chronic Dyspnea Pathway
+    "Chronic Dyspnea Pathway": {
+      text: "Perform initial workup: CXR, CBC, and basic metabolic panel.",
+      explanation: "MANDATORY TESTS: CXR for masses/effusions. CBC for anemia. BNP if CHF suspected.",
+      options: {
+        "CXR abnormal": "Abnormal CXR Workup",
+        "CXR normal": "Pulmonary Function Testing"
+      }
+    },
+    "Abnormal CXR Workup": {
+      text: "Proceed with chest CT based on findings: HRCT for interstitial patterns, contrast for masses/PE.",
+      explanation: "INTERSTITIAL PATTERNS: Reticular = fibrosis. Nodular = sarcoidosis. Ground-glass = alveolitis.",
+      options: {
+        "Interstitial pattern": "ILD Workup",
+        "Mass lesion": "Oncology Referral",
+        "Pleural effusion": "Thoracentesis + Analysis"
+      }
+    },
+    "Pulmonary Function Testing": {
+      text: "Obtain spirometry with bronchodilator response and lung volumes.",
+      explanation: "KEY PATTERNS: FEV1/FVC <70% = obstruction. TLC <80% predicted = restriction.",
+      options: {
+        "Obstructive": "Asthma/COPD Differentiation",
+        "Restrictive": "Restrictive Disease Workup",
+        "Normal": "Cardiac/Metabolic Evaluation"
+      }
+    },
+    "Asthma/COPD Differentiation": {
+      text: "Assess bronchodilator response (>12% + 200mL FEV1 improvement suggests asthma).",
+      explanation: "GOLD CRITERIA: Post-BD FEV1/FVC <0.7 confirms COPD. Smoking history critical.",
+      options: {
+        "Reversible": "Asthma Management",
+        "Non-reversible": "COPD Management"
+      }
+    },
+    "Restrictive Disease Workup": {
+      text: "Order HRCT (parenchymal vs. extraparenchymal) and consider neuromuscular evaluation.",
+      explanation: "EXTRAPARENCHYMAL: Kyphoscoliosis, obesity. PARENCHYMAL: Pulmonary fibrosis, sarcoidosis.",
+      options: {
+        "Parenchymal": "ILD Subtyping",
+        "Extraparenchymal": "Chest Wall/Nerve Conduction Studies"
+      }
+    },
+    "Cardiac/Metabolic Evaluation": {
+      text: "Perform echocardiogram and cardiopulmonary exercise testing (CPET).",
+      explanation: "CPET PATTERNS: Low VO2 max = cardiac. High VE/VCO2 = pulmonary vascular disease.",
+      options: {
+        "Cardiac dysfunction": "CHF Management",
+        "Normal cardiac": "Anemia/Thyroid Testing"
+      }
+    },
+
+    // Shared Pathways
+    "CHF Evaluation": {
+      text: "Administer diuretics, obtain BNP, and perform echocardiogram.",
+      explanation: "BNP >400 pg/mL = high probability CHF. Echo assesses EF and valvular function.",
+      options: {
+        "ADHF confirmed": "Inpatient Management",
+        "Non-cardiac": "Re-evaluate Pulmonary Causes"
+      }
+    },
+    "Obstructive Disease Management": {
+      text: "Initiate bronchodilators (SABA for asthma, LAMA/LABA for COPD) and assess response.",
+      explanation: "STATUS ASTHMATICUS: Requires steroids + magnesium. COPD: Avoid high FiO2 (risk of CO2 retention).",
+      options: {
+        "Improvement": "Chronic Management Plan",
+        "No improvement": "Consider Intubation"
+      }
+    },
+    "Targeted Therapy": {
+      text: "Treat specific diagnosis: antifibrotics (IPF), immunosuppressants (sarcoidosis), or oxygen (severe COPD).",
+      explanation: "EXAMPLE: Idiopathic pulmonary fibrosis may require pirfenidone. Sarcoidosis often needs prednisone.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Wheezing-------------------------
+  "Wheezing": {
+    start: {
+      text: "Is the patient in respiratory distress (tachypnea, cyanosis, accessory muscle use)?",
+      explanation: "Immediate assessment of respiratory status is critical. RED FLAG: Signs of impending respiratory failure require emergent intervention.",
+      options: {
+        yes: "Emergent Stabilization",
+        no: "Initial Evaluation"
+      }
+    },
+
+    // Emergent Pathway
+    "Emergent Stabilization": {
+      text: "Secure airway if needed and administer oxygen. Consider anaphylaxis if stridor present.",
+      explanation: "CRITICAL ACTION: Intubate for respiratory failure. For suspected anaphylaxis, give epinephrine 0.3-0.5mg IM immediately.",
+      options: {
+        "Anaphylaxis suspected": "Epinephrine Administration",
+        "Status asthmaticus": "Status Asthmaticus Management",
+        "Other distress": "Oxygen + Rapid Workup"
+      }
+    },
+    "Epinephrine Administration": {
+      text: "Administer epinephrine IM and prepare for possible intubation.",
+      explanation: "KEY POINT: Repeat epinephrine every 5-15 minutes if needed. Monitor for biphasic reactions.",
+      options: {
+        "Improvement": "Observe for Rebound",
+        "No improvement": "Advanced Airway Management"
+      }
+    },
+    "Status Asthmaticus Management": {
+      text: "Start inhaled beta-agonists, IV corticosteroids, and magnesium sulfate if severe.",
+      explanation: "VENTILATOR WARNING: Permissive hypercapnia may be needed. Avoid barotrauma with low tidal volumes (6-8mL/kg).",
+      options: {
+        "Improvement": "ICU Monitoring",
+        "No improvement": "Consider Intubation"
+      }
+    },
+
+    // Initial Evaluation Pathway
+    "Initial Evaluation": {
+      text: "Obtain detailed history (triggers, smoking, CHF symptoms) and chest x-ray.",
+      explanation: "CLINICAL CLUES: Nocturnal wheezing suggests asthma. Orthopnea/edema indicates cardiac asthma (CHF).",
+      options: {
+        "CXR abnormal": "CXR Findings Evaluation",
+        "CXR normal": "Spirometry Evaluation"
+      }
+    },
+    "CXR Findings Evaluation": {
+      text: "Assess CXR for infiltrates, edema, masses, or hyperinflation.",
+      explanation: "PATTERN RECOGNITION: Pulmonary edema (CHF), hyperinflation (asthma/COPD), mass (obstruction).",
+      options: {
+        "Infiltrate": "Treat for Pneumonia",
+        "Pulmonary edema": "Cardiac Asthma Management",
+        "Mass lesion": "CT Scan + Pulmonology Referral"
+      }
+    },
+    "Treat for Pneumonia": {
+      text: "Start antibiotics if bacterial pneumonia suspected. Consider viral wheeze if febrile.",
+      explanation: "NOTE: Viral wheeze often resolves with supportive care. Bacterial pneumonia requires targeted antibiotics.",
+      options: {
+        "Improvement": "Follow-up",
+        "No improvement": "Re-evaluate Diagnosis"
+      }
+    },
+    "Cardiac Asthma Management": {
+      text: "Initiate diuretics for CHF. Obtain echocardiogram to assess cardiac function.",
+      explanation: "DIAGNOSTIC TIP: BNP/NT-proBNP can help differentiate cardiac vs. pulmonary wheezing.",
+      options: {
+        "Improvement": "CHF Management",
+        "No improvement": "Consider Alternative Diagnoses"
+      }
+    },
+
+    // Spirometry Pathway
+    "Spirometry Evaluation": {
+      text: "Perform spirometry to assess for obstruction (FEV1/FVC <70%).",
+      explanation: "REVERSIBILITY TEST: >12% + 200mL FEV1 improvement post-bronchodilator suggests asthma.",
+      options: {
+        "Obstructive pattern": "Assess Reversibility",
+        "Normal spirometry": "Alternative Causes Evaluation"
+      }
+    },
+    "Assess Reversibility": {
+      text: "Administer bronchodilator and repeat spirometry.",
+      explanation: "ASTHMA CONFIRMATION: Reversible obstruction confirms asthma. Poor reversibility suggests COPD.",
+      options: {
+        "Reversible": "Asthma Management",
+        "Non-reversible": "COPD Evaluation"
+      }
+    },
+    "Asthma Management": {
+      text: "Start inhaled corticosteroids + SABA. Consider controller therapy if persistent.",
+      explanation: "STEP-UP APPROACH: GINA guidelines recommend adjusting therapy based on symptom control.",
+      options: {
+        "Controlled": "Maintenance Therapy",
+        "Uncontrolled": "Step-up Therapy"
+      }
+    },
+    "COPD Evaluation": {
+      text: "Assess for smoking history, chronic bronchitis, or alpha-1-antitrypsin deficiency.",
+      explanation: "RED FLAG: Early-onset COPD warrants alpha-1 testing. Consider CT for bronchiectasis.",
+      options: {
+        "Confirmed COPD": "COPD Management",
+        "Atypical features": "Advanced Testing"
+      }
+    },
+
+    // Alternative Causes Pathway
+    "Alternative Causes Evaluation": {
+      text: "Consider postnasal drip, GERD, vocal cord dysfunction, PE, or ILD.",
+      explanation: "DIAGNOSTIC TIPS: 24hr pH probe for GERD, laryngoscopy for vocal cord dysfunction.",
+      options: {
+        "GERD symptoms": "PPI Trial",
+        "Vocal cord symptoms": "Laryngoscopy",
+        "PE suspicion": "CT Pulmonary Angiogram"
+      }
+    },
+    "Advanced Testing": {
+      text: "Proceed with CT chest, bronchoscopy, or specialty consultations as needed.",
+      explanation: "INTERVENTIONAL OPTIONS: Bronchoscopy for atypical infections, VATS for interstitial diseases.",
+      options: {
+        "Diagnosis confirmed": "Targeted Therapy",
+        "Unclear diagnosis": "Multidisciplinary Review"
+      }
+    },
+
+    // Shared Pathways
+    "Targeted Therapy": {
+      text: "Treat specific diagnosis: PPIs (GERD), speech therapy (vocal cord dysfunction), anticoagulation (PE).",
+      explanation: "EXAMPLE: Carcinoid syndrome requires octreotide for wheezing/flushing.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  //Hemoptysis------------------------
+  "Hemoptysis": {
+    start: {
+      text: "Is the blood originating from the respiratory tract (true hemoptysis)?",
+      explanation: "First, differentiate true hemoptysis from pseudohemoptysis (nasooropharyngeal or GI bleeding). KEY CLUE: Respiratory origin typically involves coughing up frothy, bright red blood with alkaline pH.",
+      options: {
+        yes: "Assess Bleeding Severity",
+        no: "Evaluate for Pseudohemoptysis (ENT/GI workup)"
+      }
+    },
+
+    // True Hemoptysis Pathway
+    "Assess Bleeding Severity": {
+      text: "Is the hemoptysis mild (blood-tinged sputum) or moderate/frank blood?",
+      explanation: "Mild cases often resolve with infection treatment. Moderate/frank blood requires urgent evaluation for malignancy, bronchiectasis, or vascular causes.",
+      options: {
+        "Mild": "Mild Hemoptysis Evaluation",
+        "Moderate/Frank": "Moderate Hemoptysis Workup"
+      }
+    },
+
+    // Mild Hemoptysis Pathway
+    "Mild Hemoptysis Evaluation": {
+      text: "Does the patient have risk factors for malignancy (smoking, age >40, male)?",
+      explanation: "RED FLAGS: Smoking history increases lung cancer risk 20-fold. Even mild hemoptysis in high-risk patients warrants bronchoscopy.",
+      options: {
+        yes: "Bronchoscopy for High-Risk",
+        no: "CXR + Conservative Management"
+      }
+    },
+    "Bronchoscopy for High-Risk": {
+      text: "Perform bronchoscopy to rule out endobronchial lesions. If negative, follow with chest CT if bleeding persists.",
+      explanation: "NOTE: Bronchoscopy has higher yield than CXR for central tumors. Combine with CT if initial evaluation is inconclusive.",
+      options: {
+        "Lesion found": "Treat Underlying Cause (e.g., malignancy)",
+        "No lesion": "Monitor/Repeat Evaluation if Recurrent"
+      }
+    },
+    "CXR + Conservative Management": {
+      text: "Obtain CXR to assess for infiltrate/mass. Treat empirically for infection if no mass is found.",
+      explanation: "CAUTION: Idiopathic hemoptysis resolves spontaneously in 80% within 6 months, but monitor for recurrence.",
+      options: {
+        "Infiltrate/mass found": "Further Imaging (CT) or Biopsy",
+        "No infiltrate/mass": "Symptomatic Treatment"
+      }
+    },
+
+    // Moderate/Frank Hemoptysis Pathway
+    "Moderate Hemoptysis Workup": {
+      text: "Initiate inpatient evaluation: CXR, CBC, coagulation studies, UA. Start empiric antibiotics if infection suspected.",
+      explanation: "URGENT ACTIONS: Coagulation studies rule out bleeding disorders. UA screens for renal cell carcinoma (metastasis to lung).",
+      options: {
+        "Bleeding continues": "Advanced Imaging/Bronchoscopy",
+        "Bleeding stops": "Treat Underlying Cause"
+      }
+    },
+    "Advanced Imaging/Bronchoscopy": {
+      text: "Proceed with high-resolution chest CT or bronchoscopy based on suspected etiology.",
+      explanation: "CT vs. BRONCHOSCOPY: CT detects parenchymal lesions (e.g., bronchiectasis, AV malformations). Bronchoscopy visualizes endobronchial tumors.",
+      options: {
+        "CT preferred (parenchymal suspicion)": "Chest CT Evaluation",
+        "Bronchoscopy preferred (endobronchial suspicion)": "Bronchoscopy Evaluation"
+      }
+    },
+    "Chest CT Evaluation": {
+      text: "CT reveals parenchymal abnormality (e.g., bronchiectasis, tumor, AVM). Proceed to targeted treatment.",
+      explanation: "CRITICAL FINDINGS: Bronchiectasis may require embolization for recurrent bleeding. AVMs are treated with embolization or resection.",
+      options: {
+        "Treatable lesion found": "Definitive Therapy",
+        "No lesion": "Proceed to Bronchoscopy"
+      }
+    },
+    "Bronchoscopy Evaluation": {
+      text: "Bronchoscopy identifies endobronchial mass or active bleeding site.",
+      explanation: "WARNING: Normal CXR + bronchoscopy has low yield but is mandatory in high-risk patients (smokers, age >40).",
+      options: {
+        "Mass/bleeding found": "Biopsy/Intervention",
+        "No mass": "Consider CT or Monitor"
+      }
+    },
+
+    // Massive Hemoptysis Pathway
+    "Massive Hemoptysis (>200mL/24h)": {
+      text: "Secure airway immediately. Prepare for emergent bronchial artery embolization or surgery.",
+      explanation: "LIFE-THREATENING: Prioritize airway stabilization (intubation with large-bore ETT). EMBOLIZATION RISK: 10% chance of spinal artery embolization (paralysis).",
+      options: {
+        "Bleeding controlled": "Proceed with Etiology Workup",
+        "Bleeding uncontrolled": "Surgical Resection"
+      }
+    },
+
+    // Shared Pathways
+    "Treat Underlying Cause": {
+      text: "Targeted treatment based on diagnosis: antibiotics (infection), chemotherapy/radiation (malignancy), embolization (AVM/bronchiectasis).",
+      explanation: "RECURRENT BLEEDING: Bronchial artery embolization is first-line for non-massive recurrent hemoptysis unresponsive to medical therapy.",
+      options: {
+        "Recurrent bleeding": "Embolization/Resection",
+        "Resolution": "Discharge with Follow-up"
+      }
+    },
+    "Definitive Therapy": {
+      text: "Malignancy: Oncologic referral. Bronchiectasis: Airway clearance + antibiotics. AVM: Embolization.",
+      explanation: "NOTE: Cystic fibrosis patients with massive hemoptysis often require embolization due to hypertrophied bronchial arteries.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Stridor-------------------------
+  "Stridor": {
+    start: {
+      text: "Is the stridor acute (sudden onset) or chronic (progressive/ongoing)?",
+      explanation: "Acute stridor suggests life-threatening airway obstruction (e.g., anaphylaxis, foreign body). Chronic stridor may indicate structural or neurologic causes. RED FLAG: Acute stridor requires immediate airway assessment.",
+      options: {
+        "Acute": "Acute Stridor Pathway",
+        "Chronic": "Chronic Stridor Pathway"
+      }
+    },
+
+    // Acute Stridor Pathway
+    "Acute Stridor Pathway": {
+      text: "Is the patient in respiratory distress (tachypnea, cyanosis, accessory muscle use)?",
+      explanation: "EMERGENCY ACTION: If distress is present, secure airway immediately (e.g., fiberoptic intubation or tracheotomy) while preparing for definitive treatment.",
+      options: {
+        yes: "Emergent Airway Management",
+        no: "Assess for Anaphylaxis/Infection"
+      }
+    },
+    "Emergent Airway Management": {
+      text: "Perform fiberoptic intubation (preferred) or surgical tracheotomy if intubation fails.",
+      explanation: "CRITICAL: Fiberoptic intubation should be done by the most experienced operator. Have a tracheotomy kit ready for backup. NOTE: Avoid blind nasotracheal intubation in epiglottitis.",
+      options: {
+        "Airway secured": "Proceed to Etiology Workup",
+        "Airway unstable": "Surgical Tracheotomy"
+      }
+    },
+    "Assess for Anaphylaxis/Infection": {
+      text: "Evaluate for signs of anaphylaxis (lip/tongue swelling, urticaria) or infection (fever, odynophagia).",
+      explanation: "KEY CLUES: Anaphylaxis requires immediate epinephrine (0.3-0.5mg IM). Infection may show 'thumb sign' on lateral neck X-ray (epiglottitis).",
+      options: {
+        "Anaphylaxis suspected": "Treat with Epinephrine",
+        "Infection suspected": "Evaluate for Epiglottitis/Tracheitis",
+        "Neither": "Consider Foreign Body"
+      }
+    },
+    "Treat with Epinephrine": {
+      text: "Administer epinephrine IM and monitor for response. Prepare for possible intubation.",
+      explanation: "DOSING: 0.3-0.5mg IM (1:1000) in adults. REPEAT every 5-15 minutes if needed. WARNING: Delayed treatment increases mortality.",
+      options: {
+        "Improvement": "Observe for Rebound",
+        "No improvement": "Emergent Airway Management"
+      }
+    },
+    "Evaluate for Epiglottitis/Tracheitis": {
+      text: "Obtain lateral neck X-ray if stable. Look for 'thumb sign' (epiglottitis) or tracheal narrowing.",
+      explanation: "EPIGLOTTITIS: Do not attempt oral exam if suspected—may trigger complete obstruction. TRAcheitis: May require bronchoscopy for purulent secretions.",
+      options: {
+        "Epiglottitis confirmed": "ICU Admission + IV Antibiotics",
+        "Tracheitis/other infection": "Antibiotics + Supportive Care",
+        "Negative imaging": "Proceed to Bronchoscopy"
+      }
+    },
+    "Consider Foreign Body": {
+      text: "Assess for history of aspiration (e.g., choking, neurologic dysphagia).",
+      explanation: "HIGH-RISK GROUPS: Children, adults with ALS/Parkinson’s. ACTION: Rigid bronchoscopy for removal if suspected.",
+      options: {
+        "Foreign body confirmed": "Rigid Bronchoscopy",
+        "No foreign body": "Re-evaluate for Laryngospasm"
+      }
+    },
+
+    // Chronic Stridor Pathway
+    "Chronic Stridor Pathway": {
+      text: "Is the stridor physiologic (e.g., vocal cord dysfunction) or structural (e.g., tumor, stenosis)?",
+      explanation: "CLINICAL CLUES: Intermittent symptoms suggest vocal cord dysfunction. Fixed obstruction suggests neoplasm or tracheal stenosis.",
+      options: {
+        "Physiologic": "Assess Vocal Cord Function",
+        "Structural": "Imaging Workup"
+      }
+    },
+    "Assess Vocal Cord Function": {
+      text: "Perform laryngoscopy to evaluate for paradoxical vocal cord motion or adduction.",
+      explanation: "DIAGNOSTIC GOLD STANDARD: Laryngoscopy during symptoms. TREATMENT: Speech therapy for functional cases; botulinum toxin for refractory spasms.",
+      options: {
+        "Vocal cord dysfunction confirmed": "Speech Therapy/Botulinum Toxin",
+        "Normal exam": "Consider GERD/Neurologic Causes"
+      }
+    },
+    "Imaging Workup": {
+      text: "Obtain CT neck/chest with airway reconstructions or flow-volume loops.",
+      explanation: "CT ADVANTAGE: Identifies tumors, goiters, or stenosis. FLOW-VOLUME LOOPS: Differentiates fixed vs. variable obstruction.",
+      options: {
+        "Mass/stenosis found": "Biopsy/Surgical Referral",
+        "No mass": "Proceed to Bronchoscopy"
+      }
+    },
+    "Biopsy/Surgical Referral": {
+      text: "Neoplasms require biopsy (e.g., laryngeal cancer). Tracheal stenosis may need dilation/stenting.",
+      explanation: "WARNING: Tracheal stenosis post-intubation often recurs; consider multidisciplinary management (ENT/pulmonology).",
+      options: {
+        "Malignancy confirmed": "Oncology Referral",
+        "Benign stenosis": "Dilation/Stenting"
+      }
+    },
+
+    // Shared Pathways
+    "Proceed to Bronchoscopy": {
+      text: "Perform bronchoscopy (pulmonology) or laryngoscopy (ENT) for direct visualization.",
+      explanation: "INTERVENTIONAL OPTIONS: Remove foreign bodies, biopsy masses, or dilate strictures during the procedure.",
+      options: {
+        "Diagnosis confirmed": "Targeted Therapy",
+        "Unclear diagnosis": "Repeat Imaging/Multidisciplinary Consult"
+      }
+    },
+    "Targeted Therapy": {
+      text: "Treat underlying cause: antibiotics (infection), surgery (tumor), PPIs (GERD), or immunotherapy (RA).",
+      explanation: "EXAMPLE: Rheumatoid arthritis with cricoarytenoid involvement may require steroids or biologics.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Pleural Effusion-----------------
+  "Pleural Effusion": {
+    start: {
+      text: "Does the patient have symptoms requiring immediate thoracentesis (severe dyspnea, hypoxia)?",
+      explanation: "EMERGENCY: Therapeutic thoracentesis needed for symptomatic relief. Limit to 1500mL to avoid reexpansion pulmonary edema.",
+      options: {
+        yes: "Therapeutic Thoracentesis",
+        no: "Diagnostic Workup"
+      }
+    },
+
+    // Initial Evaluation Pathway
+    "Diagnostic Workup": {
+      text: "Obtain CXR (PA/lateral) and consider ultrasound/decubitus films.",
+      explanation: "KEY IMAGING: Lateral decubitus confirms free-flowing fluid (>10mm layer). Ultrasound guides sampling for small/loculated effusions.",
+      options: {
+        "Effusion confirmed": "Pre-Thoracentesis Evaluation",
+        "Unclear imaging": "CT Chest for Characterization"
+      }
+    },
+    "Pre-Thoracentesis Evaluation": {
+      text: "Assess for contraindications (coagulopathy, small effusion <10mm, mechanical ventilation).",
+      explanation: "SAFETY CHECK: INR >1.5 or platelets <50k require correction. Avoid procedure-site infection.",
+      options: {
+        "Safe to proceed": "Perform Thoracentesis",
+        "High risk": "Alternative Imaging/Biopsy"
+      }
+    },
+
+    // Thoracentesis Pathway
+    "Perform Thoracentesis": {
+      text: "Collect fluid for: Light's criteria, cell count, pH, glucose, cultures, cytology.",
+      explanation: "ESSENTIAL TESTS: Protein, LDH (for Light's), Gram stain/culture, pH (critical for empyema).",
+      options: {
+        "Fluid obtained": "Apply Light's Criteria",
+        "Dry tap": "CT-Guided Sampling"
+      }
+    },
+    "Apply Light's Criteria": {
+      text: "Does the fluid meet any exudate criteria? (Protein ratio >0.5, LDH ratio >0.6, or LDH >2/3 upper normal limit)",
+      explanation: "LIGHT'S RULES: 98% sensitive for exudates but 25% false positives. Transudates usually need no further testing.",
+      options: {
+        "Exudate": "Exudate Analysis",
+        "Transudate": "Transudate Management"
+      }
+    },
+
+    // Transudate Pathway
+    "Transudate Management": {
+      text: "Evaluate for CHF (BNP), cirrhosis (LFTs), or nephrotic syndrome (urinalysis).",
+      explanation: "COMMON CAUSES: 90% are CHF-related. Treat underlying condition - effusion often resolves.",
+      options: {
+        "CHF confirmed": "Diuresis + Cardiac Management",
+        "Other cause": "Targeted Therapy"
+      }
+    },
+
+    // Exudate Pathway
+    "Exudate Analysis": {
+      text: "Assess fluid characteristics: appearance, pH, glucose, cell count/differential.",
+      explanation: "VISUAL CLUES: Bloody (malignancy/PE), purulent (empyema), milky (chylothorax).",
+      options: {
+        "Bloody": "Malignancy/PE Workup",
+        "Purulent/pH<7.2": "Empyema Management",
+        "Milky": "Chylothorax Evaluation",
+        "Other": "Comprehensive Exudate Workup"
+      }
+    },
+    "Empyema Management": {
+      text: "Start broad-spectrum antibiotics and place chest tube. Consider surgery if loculated.",
+      explanation: "URGENT: pH<7.2 or glucose<60 indicates complicated parapneumonic effusion requiring drainage.",
+      options: {
+        "Improvement": "Continue Antibiotics",
+        "No improvement": "Surgical Consult (VATS)"
+      }
+    },
+    "Malignancy/PE Workup": {
+      text: "Send cytology (3 samples), consider CT chest, and evaluate for DVT/PE.",
+      explanation: "CYTOLOGY YIELD: 60% for first sample, 85% cumulatively. Adenocarcinoma most common.",
+      options: {
+        "Malignancy confirmed": "Oncology Referral",
+        "PE confirmed": "Anticoagulation"
+      }
+    },
+    "Chylothorax Evaluation": {
+      text: "Check fluid triglycerides (>110 mg/dL confirms) and consider lymphoma workup.",
+      explanation: "CAUSES: Trauma (50%), lymphoma (25%). Medium-chain triglyceride diet or surgery may be needed.",
+      options: {
+        "Triglycerides >110": "Lymphoma Staging",
+        "Pseudochylous": "Chronic Inflammation Workup"
+      }
+    },
+    "Comprehensive Exudate Workup": {
+      text: "Evaluate for TB (ADA/interferon-gamma), RA (RF), or pancreatic (amylase) causes.",
+      explanation: "TB CLUES: Lymphocytes >85%, ADA >40 U/L. Pancreatitis: Amylase >1000 U/L.",
+      options: {
+        "TB suspected": "AFB Smear/Culture",
+        "Rheumatologic": "Autoantibody Panel",
+        "Pancreatic": "Abdominal Imaging"
+      }
+    },
+
+    // Undiagnosed Pathway
+    "Alternative Imaging/Biopsy": {
+      text: "Consider CT chest or thoracoscopic biopsy if cause remains unclear after thoracentesis.",
+      explanation: "DIAGNOSTIC GAP: 25% of exudates remain undiagnosed - biopsy has 90% yield for malignancy/TB.",
+      options: {
+        "Diagnosis confirmed": "Targeted Therapy",
+        "Persistently unclear": "Observation vs. VATS"
+      }
+    },
+
+    // Shared Pathways
+    "Targeted Therapy": {
+      text: "Treat underlying cause: diuretics (CHF), chemotherapy (malignancy), or pleurodesis (recurrent).",
+      explanation: "RECURRENT MALIGNANT EFFUSION: Consider indwelling catheter or talc pleurodesis.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  //Mediastinal Lymphadenopathy--------
+  "Mediastinal Lymphadenopathy": {
+    start: {
+      text: "Is mediastinal lymphadenopathy detected on chest radiograph?",
+      explanation: "Initial detection typically occurs via chest X-ray. Comparison with prior imaging is crucial to assess stability. Stable findings over years may not require further workup.",
+      options: {
+        yes: "Initial Evaluation",
+        no: "Exit Algorithm"
+      }
+    },
+
+    // Initial Evaluation Pathway
+    "Initial Evaluation": {
+      text: "Perform thorough history and physical examination (Steps A & B).",
+      explanation: "KEY HISTORY: Focus on travel (histoplasmosis-endemic areas), TB exposure, B symptoms (fever, night sweats, weight loss), smoking, and family history of sarcoid/lymphoma. PHYSICAL EXAM: Check peripheral lymphadenopathy, hepatosplenomegaly, and lung signs.",
+      options: {
+        "Proceed": "Chest CT Scan"
+      }
+    },
+
+    // Imaging Pathway
+    "Chest CT Scan": {
+      text: "Obtain chest CT for detailed assessment (Step C).",
+      explanation: "CT clarifies lymph node anatomy, differentiates vascular structures/masses, identifies calcifications (e.g., granulomas), and guides biopsy planning. PARENCHYMAL CHANGES: Look for sarcoidosis (bilateral hilar adenopathy) or TB patterns.",
+      options: {
+        "Lymphadenopathy confirmed": "Assess Clinical Suspicion"
+      }
+    },
+
+    // Clinical Suspicion Branching
+    "Assess Clinical Suspicion": {
+      text: "Based on history/CT, what is the primary concern?",
+      explanation: "RED FLAGS: B symptoms suggest lymphoma/metastasis. Granulomatous risks (TB/fungi) or sarcoid family history shift the workup.",
+      options: {
+        "Lymphoma/Metastasis": "Biopsy for Malignancy",
+        "Sarcoidosis": "Sarcoid Workup",
+        "Infectious Granuloma": "Infectious Workup"
+      }
+    },
+
+    // Malignancy Pathway
+    "Biopsy for Malignancy": {
+      text: "Proceed to biopsy (Step D). Choose method based on accessibility:",
+      explanation: "ARCHITECTURE MATTERS: Core/excisional biopsy preferred for lymphoma (avoid FNA). Bronchoscopic biopsy (Wang/transbronchial) may suffice for central nodes; mediastinoscopy if inconclusive or peripheral nodes.",
+      options: {
+        "Bronchoscopic biopsy": "Biopsy Results",
+        "Mediastinoscopy": "Biopsy Results"
+      }
+    },
+    "Biopsy Results": {
+      text: "Biopsy confirms malignancy (e.g., lymphoma, lung cancer).",
+      explanation: "ACTION: Refer to oncology. For lung cancer, biopsy also stages nodal involvement. NOTE: Mediastinoscopy has higher diagnostic yield for anterior mediastinal masses.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit to Oncology": "exit"
+      }
+    },
+
+    // Sarcoidosis Pathway
+    "Sarcoid Workup": {
+      text: "Perform bronchoscopic biopsy + endobronchial/transbronchial biopsies (Step E).",
+      explanation: "DIAGNOSTIC HALLMARKS: Non-caseating granulomas on histology. PFTs assess pulmonary involvement (restrictive pattern common).",
+      options: {
+        "Biopsy consistent with sarcoid": "Sarcoid Management",
+        "Biopsy inconclusive": "Mediastinoscopy"
+      }
+    },
+    "Sarcoid Management": {
+      text: "Initiate sarcoid treatment (corticosteroids) and monitor PFTs.",
+      explanation: "NOTE: PFTs may show reduced DLCO or restrictive disease. Follow serial imaging for response.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit to Pulmonology": "exit"
+      }
+    },
+
+    // Infectious Pathway
+    "Infectious Workup": {
+      text: "Order PPD, urine histoplasmosis antigen, and evaluate for TB (Step F).",
+      explanation: "TB WORKUP: If parenchymal TB signs, collect 3 sputum AFB smears/cultures. Fungal exposure may require serum/urine antigens (e.g., Histoplasma).",
+      options: {
+        "PPD/antigen positive": "Treat Infection",
+        "Negative but high suspicion": "Bronchoscopic Biopsy"
+      }
+    },
+    "Treat Infection": {
+      text: "Start targeted therapy (e.g., TB regimen, antifungals).",
+      explanation: "CRITICAL: Confirm TB sensitivities via culture before finalizing regimen. Histoplasmosis may require itraconazole.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit to Infectious Disease": "exit"
+      }
+    },
+    "Bronchoscopic Biopsy": {
+      text: "Proceed to biopsy if infectious workup negative but clinical suspicion remains.",
+      explanation: "CULTURES: Ensure biopsies are sent for mycobacterial/fungal cultures. Mediastinoscopy may be needed if bronchoscopy nondiagnostic.",
+      options: {
+        "Diagnosis confirmed": "Treat Infection",
+        "Inconclusive": "Mediastinoscopy"
+      }
+    },
+
+    // Shared Diagnostic Step
+    "Mediastinoscopy": {
+      text: "Perform mediastinoscopy for definitive diagnosis if prior biopsies inconclusive.",
+      explanation: "GOLD STANDARD: Highest yield for anterior/superior mediastinal nodes. Required when lymphoma or TB is suspected but unconfirmed.",
+      options: {
+        "Diagnosis confirmed": ["Biopsy Results", "Sarcoid Management", "Treat Infection"],
+        "Restart Algorithm": "start"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Solitary Pulmonary Nodule-----------
+  "Solitary Pulmonary Nodule": {
+    start: {
+      text: "Is a solitary pulmonary nodule (SPN) <3 cm detected on imaging?",
+      explanation: "SPN is defined as a single lung lesion <3 cm surrounded by parenchyma, without adenopathy or effusion. Incidental findings on CT are common; malignancy must be ruled out.",
+      options: {
+        yes: "Check Prior Imaging",
+        no: "Exit Algorithm"
+      }
+    },
+
+    // Initial Evaluation Pathway
+    "Check Prior Imaging": {
+      text: "Is prior chest imaging available showing stability for >2 years? (Step C)",
+      explanation: "Stability over 2 years strongly suggests benignity (e.g., granuloma). EXCEPTION: Slow-growing malignancies (e.g., bronchoalveolar carcinoma) may mimic stability.",
+      options: {
+        yes: "Benign Lesion",
+        no: "High-Resolution CT"
+      }
+    },
+    "Benign Lesion": {
+      text: "No further workup needed for stable nodule.",
+      explanation: "ACTION: Document stability and discharge. WARNING: If nodule is non-solid or partially solid, consider extended follow-up due to adenocarcinoma risk.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Imaging Pathway
+    "High-Resolution CT": {
+      text: "Obtain high-resolution chest CT with IV contrast if not already done (Step D).",
+      explanation: "CT assesses size, calcification (benign: central/laminated/popcorn; malignant: stippled/eccentric), borders (smooth=benign, spiculated=malignant), and fat (hamartoma).",
+      options: {
+        "Alternative Diagnosis Found": "Resolve Alternative Cause",
+        "SPN Confirmed": "Risk Stratification"
+      }
+    },
+    "Resolve Alternative Cause": {
+      text: "Treat identified alternative (e.g., AV fistula, mucoid impaction).",
+      explanation: "EXAMPLE: AV fistulas may require embolization; infections need antibiotics.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Risk Stratification Pathway
+    "Risk Stratification": {
+      text: "Assess malignancy risk based on CT + patient factors (Step E).",
+      explanation: "HIGH-RISK FEATURES: Age >60, smoking, COPD, prior cancer, hemoptysis, spiculated borders, size >8 mm. LOW-RISK: <5 mm, smooth borders, young age.",
+      options: {
+        "Low Risk": "Serial CT Monitoring",
+        "Moderate Risk": "Additional Testing",
+        "High Risk": "Surgical Referral"
+      }
+    },
+
+    // Low-Risk Pathway
+    "Serial CT Monitoring": {
+      text: "Follow Fleischner Society guidelines (Step F):",
+      explanation: "RECOMMENDATIONS: <5 mm → no follow-up; 5-8 mm → CT at 6-12 months; >8 mm → CT at 3, 6, 12, 24 months. ADJUST for risk factors (e.g., smoking).",
+      options: {
+        "Growth Detected": "Upgrade Risk Stratification",
+        "Stable": "Continue Monitoring"
+      }
+    },
+
+    // Moderate-Risk Pathway
+    "Additional Testing": {
+      text: "Select diagnostic test based on nodule characteristics (Step G):",
+      explanation: "PERIPHERAL NODULE: CT-guided biopsy (90% sensitivity for malignancy). CENTRAL/ENDOBRONCHIAL: Bronchoscopy. METABOLIC ACTIVITY: PET (false negatives in BAC, carcinoid; false positives in infection).",
+      options: {
+        "PET Positive": "Surgical Referral",
+        "Biopsy Malignant": "Oncology Referral",
+        "Biopsy Benign/Inconclusive": "Serial CT Monitoring"
+      }
+    },
+
+    // High-Risk Pathway
+    "Surgical Referral": {
+      text: "Refer for VATS resection if benefits outweigh risks (Step H).",
+      explanation: "VATS preferred over thoracotomy (lower morbidity). CONTRAINDICATIONS: Poor lung function, comorbidities. ALTERNATIVES: Radiation/ablation for non-surgical candidates.",
+      options: {
+        "Pathology Malignant": "Oncology Referral",
+        "Pathology Benign": "Discharge"
+      }
+    },
+
+    // Shared Outcomes
+    "Oncology Referral": {
+      text: "Initiate malignancy workup (e.g., staging, biomarker testing).",
+      explanation: "NOTE: Stage IA NSCLC has 60-80% 5-year survival with resection.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Continue Monitoring": {
+      text: "Continue surveillance until 2-year stability confirmed.",
+      explanation: "WARNING: Adjust interval if risk factors change (e.g., new smoking).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Multiple Pulmonary Nodules---------
+  "Multiple Pulmonary Nodules": {
+    start: {
+      text: "Are multiple pulmonary nodules detected on imaging?",
+      explanation: "Multiple nodules are often incidental findings. Initial evaluation focuses on distinguishing benign from malignant/infectious causes. KEY: Compare with prior imaging if available.",
+      options: {
+        yes: "Initial Evaluation",
+        no: "Exit Algorithm"
+      }
+    },
+
+    // Initial Evaluation Pathway
+    "Initial Evaluation": {
+      text: "Perform comprehensive history and physical exam (Step A).",
+      explanation: "HISTORY FOCUS: Immunocompromise, malignancy risks (smoking, prior cancer), infectious exposures (travel, TB), rheumatologic symptoms (arthritis, rash). PHYSICAL EXAM: Check for lymphadenopathy, cutaneous nodules (rheumatoid), or signs of infection.",
+      options: {
+        "Proceed": "ComparePriorImaging"
+      }
+    },
+
+    // Imaging Comparison Pathway
+    "ComparePriorImaging": {
+      text: "Are prior radiographs/CTs available for comparison? (Step B)",
+      explanation: "Stability over months/years suggests benignity (e.g., granulomas). Rapid growth may indicate infection or malignancy. NOTE: Tiny (<5 mm) nodules in low-risk patients may only need one follow-up CT.",
+      options: {
+        yes: "AssessStability",
+        no: "CTPatternAnalysis"
+      }
+    },
+    "AssessStability": {
+      text: "Are nodules stable for >2 years?",
+      explanation: "Stable nodules rarely require intervention. EXCEPTION: Ground-glass or partially solid nodules may still harbor slow-growing adenocarcinoma.",
+      options: {
+        yes: "BenignEtiology",
+        no: "CTPatternAnalysis"
+      }
+    },
+    "BenignEtiology": {
+      text: "Likely benign. Discharge with routine monitoring if risk factors change.",
+      explanation: "ACTION: Document stability. Consider follow-up CT in 1 year for high-risk patients (e.g., heavy smokers).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // CT Pattern Analysis Pathway
+    "CTPatternAnalysis": {
+      text: "Analyze nodule characteristics on CT (Steps C, D, H):",
+      explanation: "KEY PATTERNS:\n- Peripheral/cavitary: Septic emboli (blood cultures)\n- Lower lobe: Abscess/Paragonimus\n- Calcified: Histoplasmosis/TB\n- Halo sign: Angio-invasive aspergillosis\n- Tree-in-bud: Atypical mycobacteria\n- Upper lobe: Silicosis/talcosis\n- AVM: Vessel leading into nodule",
+      options: {
+        "Infectious Pattern": "InfectiousWorkup",
+        "Malignant Pattern": "MalignancyWorkup",
+        "Rheumatologic Pattern": "RheumatologicWorkup",
+        "AVM Suspected": "AVMConfirmation"
+      }
+    },
+
+    // Infectious Workup Pathway
+    "InfectiousWorkup": {
+      text: "Targeted workup based on CT pattern (Steps C, D):",
+      explanation: "TESTS:\n- Septic emboli: Blood cultures, echocardiogram\n- TB/Histoplasmosis: Sputum AFB, urine antigen\n- Aspergillus: BAL, serum galactomannan\n- Atypical mycobacteria: Sputum/BAL cultures\n- Immunocompromised: Consider Pneumocystis PCR, viral panels",
+      options: {
+        "Diagnosis Confirmed": "TreatInfection",
+        "Inconclusive": "BiopsyConsideration"
+      }
+    },
+    "TreatInfection": {
+      text: "Initiate pathogen-specific therapy (e.g., antifungals, TB regimen).",
+      explanation: "NOTE: Immunocompromised hosts may require broader empiric coverage until cultures return.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Malignancy Workup Pathway
+    "MalignancyWorkup": {
+      text: "Assess for metastatic disease or primary lung cancer (Steps E, F):",
+      explanation: "HIGH-RISK CANCERS: Colon, breast, melanoma, renal, thyroid. SUSPICIOUS FEATURES: Growth, spiculation, ground-glass component (BAC). ACTION: Biopsy accessible nodule (CT-guided for peripheral, bronchoscopy for central).",
+      options: {
+        "Biopsy Positive": "OncologyReferral",
+        "Biopsy Negative/Inconclusive": "PETScanOrRepeatBiopsy"
+      }
+    },
+    "OncologyReferral": {
+      text: "Refer to oncology for staging/treatment planning.",
+      explanation: "NOTE: Bronchoalveolar carcinoma may require multifocal resection; metastases may warrant systemic therapy.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "PETScanOrRepeatBiopsy": {
+      text: "Consider PET (if >1 cm) or surgical biopsy for diagnosis.",
+      explanation: "PET PITFALLS: False negatives in carcinoid/BAC; false positives in infection. Surgical biopsy has highest yield.",
+      options: {
+        "Diagnosis Confirmed": "OncologyReferral",
+        "Still Inconclusive": "SerialMonitoring"
+      }
+    },
+
+    // Rheumatologic Workup Pathway
+    "RheumatologicWorkup": {
+      text: "Evaluate for rheumatologic causes (Step G, I):",
+      explanation: "RHEUMATOID NODULES: Associated with cutaneous nodules, RF/CCP positive. WEGENER'S: Cavitary nodules + ANCA, sinus/renal involvement. SARCOID: Hilar adenopathy, non-caseating granulomas.",
+      options: {
+        "Rheumatoid/Sarcoid": "ImmunosuppressiveTherapy",
+        "Wegener's Suspected": "ANCAAndBiopsy"
+      }
+    },
+    "ANCAAndBiopsy": {
+      text: "Check ANCA; biopsy lung/kidney if positive.",
+      explanation: "DIAGNOSIS: Necrotizing granulomas on biopsy. TREAT: Cyclophosphamide/rituximab + glucocorticoids.",
+      options: {
+        "Diagnosis Confirmed": "ImmunosuppressiveTherapy",
+        "Inconclusive": "SerialMonitoring"
+      }
+    },
+    "ImmunosuppressiveTherapy": {
+      text: "Start disease-specific immunosuppression (e.g., methotrexate for RA).",
+      explanation: "MONITOR: For infection/pulmonary toxicity. Wegener's requires aggressive induction therapy.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // AVM Pathway
+    "AVMConfirmation": {
+      text: "Confirm AVM with CT angiography or traditional angiogram (Step H).",
+      explanation: "ACTION: Embolize if symptomatic (hemoptysis) or large. Screen for HHT if multiple AVMs (nosebleeds, family history).",
+      options: {
+        "AVM Confirmed": "AVMTreatment",
+        "Negative": "ReevaluatePattern"
+      }
+    },
+    "AVMTreatment": {
+      text: "Refer to interventional radiology for embolization.",
+      explanation: "FOLLOW-UP: Monitor for recanalization. HHT patients need cerebral/ hepatic screening.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Shared Pathways
+    "BiopsyConsideration": {
+      text: "Proceed to biopsy if diagnosis unclear (BAL/surgical).",
+      explanation: "CHOICE: BAL for diffuse/miliary patterns; CT-guided for peripheral nodules; VATS for deep/ multiple lesions.",
+      options: {
+        "Diagnosis Confirmed": ["TreatInfection", "OncologyReferral", "ImmunosuppressiveTherapy"],
+        "Inconclusive": "SerialMonitoring"
+      }
+    },
+    "SerialMonitoring": {
+      text: "Follow with serial CT scans (interval based on risk).",
+      explanation: "LOW-RISK: 6-12 months. HIGH-RISK: 3-6 months. Adjust if new symptoms arise.",
+      options: {
+        "Growth Detected": "CTPatternAnalysis",
+        "Stable": "ContinueMonitoring"
+      }
+    },
+    "ContinueMonitoring": {
+      text: "Continue surveillance until 2-year stability confirmed.",
+      explanation: "DISCHARGE: If no change after 2 years. EXCEPTION: Ground-glass nodules may need longer follow-up.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "ReevaluatePattern": {
+      text: "Reassess CT for alternate patterns (e.g., missed infection/malignancy).",
+      explanation: "CONSIDER: Multidisciplinary review or PET scan if uncertainty persists.",
+      options: {
+        "New Pattern Identified": "CTPatternAnalysis",
+        "No Change": "SerialMonitoring"
+      }
+    }
+  },
+  
+  
+  
+
+
+
+   //Diffuse Interstitial Lung Disease---
+  "Diffuse Interstitial Lung Disease": {
+    start: {
+      text: "Does the patient have symptoms or findings suggestive of diffuse ILD?",
+      explanation: "Key symptoms include progressive dyspnea, dry cough, and fatigue. Physical findings may include bibasilar crackles, clubbing, or signs of pulmonary hypertension.",
+      options: {
+        yes: "InitialEvaluation",
+        no: "ExitAlgorithm"
+      }
+    },
+
+    // Initial Evaluation Pathway
+    "InitialEvaluation": {
+      text: "Perform comprehensive history and physical exam (Steps A-B).",
+      explanation: "HISTORY FOCUS: Tempo of symptom progression, occupational/environmental exposures, smoking, medication use, rheumatologic symptoms, family history. EXAM: Assess for crackles, clubbing, signs of connective tissue disease (e.g., skin tightening, joint swelling).",
+      options: {
+        "Proceed": "DiagnosticWorkup"
+      }
+    },
+
+    // Diagnostic Workup Pathway
+    "DiagnosticWorkup": {
+      text: "Order initial tests: Labs, PFTs, CXR (Steps C-E).",
+      explanation: "LABS: CBC (eosinophilia), ESR, ANA, RF, anti-CCP, hypersensitivity panels. PFTs: Look for restrictive pattern (↓TLC) ± obstruction (e.g., sarcoidosis). CXR: Initial screen for interstitial patterns.",
+      options: {
+        "AbnormalCXR": "HRCT",
+        "NormalCXR": "HRCTIfHighSuspicion"
+      }
+    },
+    "HRCTIfHighSuspicion": {
+      text: "Is clinical suspicion for ILD high despite normal CXR?",
+      explanation: "HRCT detects early ILD missed by CXR. Proceed if: Unexplained dyspnea, abnormal PFTs, or high-risk exposure history.",
+      options: {
+        yes: "HRCT",
+        no: "MonitorSymptoms"
+      }
+    },
+    "HRCT": {
+      text: "Obtain high-resolution chest CT (Step F).",
+      explanation: "PATTERN RECOGNITION:\n- Usual Interstitial Pneumonia (UIP): Basal/peripheral honeycombing (IPF)\n- NSIP: Ground-glass opacities\n- LAM: Cysts\n- PLCH: Upper lobe nodules/cysts\n- COP: Patchy consolidations",
+      options: {
+        "CharacteristicPattern": "ConsiderDiagnosis",
+        "UncertainPattern": "FurtherTesting"
+      }
+    },
+
+    // Pattern-Based Pathways
+    "ConsiderDiagnosis": {
+      text: "Does HRCT show a characteristic pattern with supporting clinical context?",
+      explanation: "DIAGNOSIS WITHOUT BIOPSY POSSIBLE FOR:\n- Typical UIP + IPF clinical picture\n- PLCH in smoker\n- LAM in young woman\n- COP with compatible history",
+      options: {
+        yes: "InitiateTreatment",
+        no: "FurtherTesting"
+      }
+    },
+    "InitiateTreatment": {
+      text: "Start disease-specific therapy based on HRCT diagnosis.",
+      explanation: "EXAMPLES:\n- IPF: Antifibrotics (pirfenidone/nintedanib)\n- COP: Glucocorticoids\n- Hypersensitivity pneumonitis: Antigen avoidance + steroids",
+      options: {
+        "RestartAlgorithm": "start",
+        "ExitToSpecialist": "exit"
+      }
+    },
+
+    // Further Testing Pathway
+    "FurtherTesting": {
+      text: "Select next diagnostic step based on suspicion (Steps G-J):",
+      explanation: "CHOOSE:\n- Exposure removal if drug/toxin suspected\n- BAL for infection/eosinophilic pneumonia/DAH\n- Transbronchial biopsy for sarcoid/lymphangitic carcinomatosis\n- Surgical biopsy for uncertain cases",
+      options: {
+        "RemoveExposure": "ExposureRemoval",
+        "Bronchoscopy": "BronchoscopicEvaluation",
+        "SurgicalBiopsy": "VATSBiopsy"
+      }
+    },
+    "ExposureRemoval": {
+      text: "Eliminate suspected causative agent (drug/toxin) and monitor.",
+      explanation: "OBSERVATION PERIOD: 2-4 weeks for improvement. If no response, proceed to biopsy.",
+      options: {
+        "Improved": "Monitor",
+        "NoImprovement": "BronchoscopicEvaluation"
+      }
+    },
+    "BronchoscopicEvaluation": {
+      text: "Perform BAL ± transbronchial biopsy based on suspicion (Steps I-J).",
+      explanation: "BAL DIAGNOSTIC FOR:\n- Infection (PCP, fungi)\n- Eosinophilic pneumonia (>25% eosinophils)\n- DAH (progressively bloody aliquots)\n- PAP (milky fluid, PAS+)\nTRANBRONCHIAL BIOPSY: Best for sarcoidosis (≥4 samples).",
+      options: {
+        "Diagnostic": "InitiateTreatment",
+        "NonDiagnostic": "VATSBiopsy"
+      }
+    },
+    "VATSBiopsy": {
+      text: "Proceed to VATS lung biopsy if diagnosis remains unclear (Step K).",
+      explanation: "INDICATIONS: Non-diagnostic bronchoscopy, suspected IPF without classic UIP, or when tissue confirmation will change management. AVOID in severe pulmonary hypertension.",
+      options: {
+        "DiagnosisConfirmed": "InitiateTreatment",
+        "StillUncertain": "MultidisciplinaryReview"
+      }
+    },
+
+    // Shared Pathways
+    "MonitorSymptoms": {
+      text: "Monitor symptoms with follow-up PFTs/CXR in 3-6 months.",
+      explanation: "RE-EVALUATE if: Progressive dyspnea, new hypoxemia, or declining PFTs.",
+      options: {
+        "Worsening": "HRCT",
+        "Stable": "ContinueMonitoring"
+      }
+    },
+    "ContinueMonitoring": {
+      text: "Annual monitoring for stable patients without clear diagnosis.",
+      explanation: "INCLUDE: PFTs, symptom assessment, oxygen needs. Consider repeat HRCT if clinical change.",
+      options: {
+        "RestartAlgorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "MultidisciplinaryReview": {
+      text: "Confer with pulmonology, radiology, and pathology for complex cases.",
+      explanation: "MDD IMPROVES diagnostic accuracy in 30-50% of challenging ILD cases.",
+      options: {
+        "ConsensusReached": "InitiateTreatment",
+        "StillUncertain": "ExpertReferral"
+      }
+    },
+    "ExpertReferral": {
+      text: "Refer to ILD specialty center for advanced diagnostics.",
+      explanation: "OPTIONS: Cryobiopsy, advanced serologic testing, genetic studies for familial ILD.",
+      options: {
+        "RestartAlgorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  }
+    };
+
+
+
+
+
+
+
+    let currentSymptom = null;
+    let currentQuestion = "start";
+
+    function playClick() {
+      const sound = document.getElementById("click-sound");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+      }
+    }
+
+    function startSymptom(symptom) {
+      currentSymptom = symptom;
+      currentQuestion = "start";
+      document.getElementById("symptom-title").textContent = symptom;
+      showQuestion();
+
+      document.getElementById("main-page").style.display = "none";
+      document.getElementById("question-page").style.display = "block";
+      document.getElementById("headline").style.display = "none";
+      document.getElementById("subheadline").style.display = "none";
+    }
+
+    // NEW/MODIFIED: This function is updated to show images.
+    function showQuestion() {
+      const symptomQuestions = questions[currentSymptom];
+      if (!symptomQuestions || !symptomQuestions[currentQuestion]) {
+        alert("Invalid symptom or question flow.");
+        return;
+      }
+
+      const questionData = symptomQuestions[currentQuestion];
+      const imageContainer = document.getElementById("question-image-container");
+      
+      // Clear previous image
+      imageContainer.innerHTML = "";
+
+      // If an image path exists, create and display the image
+      if (questionData.image) {
+        const img = document.createElement("img");
+        img.src = questionData.image;
+        img.alt = questionData.text; // for accessibility
+        img.className = "question-image";
+        imageContainer.appendChild(img);
+      }
+
+      document.getElementById("question").textContent = questionData.text;
+      document.getElementById("footer").textContent = questionData.explanation || "No explanation available.";
+
+      const buttons = Object.keys(questionData.options)
+        .map(option =>
+          `<button class='option-button' onclick="playClick(); nextQuestion('${option}')">${option}</button>`)
+        .join("");
+      document.querySelector(".button-container").innerHTML = buttons;
+    }
+
+    function nextQuestion(answer) {
+      const symptomQuestions = questions[currentSymptom];
+      const current = symptomQuestions[currentQuestion];
+      if (!current || !current.options[answer]) {
+        alert("Invalid choice.");
+        return;
+      }
+
+      const next = current.options[answer];
+      // Check if the next step is another question or a final diagnosis
+      if (symptomQuestions[next] && symptomQuestions[next].options) {
+          currentQuestion = next;
+          showQuestion();
+      } else {
+          // This handles both terminal nodes that are defined as full objects
+          // and those that are simple strings (your original implementation)
+          if (symptomQuestions[next]) {
+              currentQuestion = next;
+              showQuestion(); // This will display the final diagnosis with its image
+          } else {
+              // This is a fallback for legacy string-only terminals
+              document.getElementById("question").textContent = next;
+              document.getElementById("footer").textContent = "End of diagnostic path.";
+              document.querySelector(".button-container").innerHTML =
+                `<button class='option-button' onclick="playClick(); restart()">Restart</button>`;
+              document.getElementById("question-image-container").innerHTML = ""; // Clear image
+          }
+      }
+    }
+
+
+    function restart() {
+      document.getElementById("main-page").style.display = "flex";
+      document.getElementById("question-page").style.display = "none";
+      document.getElementById("headline").style.display = "block";
+      document.getElementById("subheadline").style.display = "block";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      sidebar.classList.toggle("active");
+      overlay.style.display = sidebar.classList.contains("active") ? "block" : "none";
+    }
+
+    document.addEventListener("click", function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const toggleBtn = document.querySelector(".toggle-button");
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnToggle = toggleBtn.contains(event.target);
+      if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains("active")) {
+        toggleSidebar();
+      }
+    });
+
+    let startX = 0;
+    document.addEventListener("touchstart", function(e) {
+      if (e.touches.length === 1) { startX = e.touches[0].clientX; }
+    });
+    document.addEventListener("touchend", function(e) {
+      const sidebar = document.getElementById("sidebar");
+      const diff = e.changedTouches[0].clientX - startX;
+      if (diff > 50 && sidebar.classList.contains("active")) { toggleSidebar(); }
+    });
+
+    function goHome() {
+      window.location.href = "../index.html";
+    }
+
+    function navigateTo(page) {
+      window.location.href = page;
+      const loadingScreen = document.querySelector('.loading');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'flex';
+        setTimeout(() => { window.location.href = page; }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>

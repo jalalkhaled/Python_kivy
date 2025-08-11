@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AlgoMed Diagnostic Tool</title>
+  <link rel="stylesheet" href="style/style.css" />
+</head>
+<body>
+  
+   <audio id="click-sound" src="sounds/click_sound.wav" preload="auto"></audio>
+
+ <!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="nav-title"><img src="bodyicons/algomed_icon.png" alt="AlgoMed Icon" class="nav-icon">ALGOMED</div>
+  <button class="toggle-button" onclick="playClick(); toggleSidebar()">☰</button>
+</nav>
+
+<!-- Overlay for click outside -->
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+
+  <!-- Sidebar for Systems -->
+ <aside class="sidebar" id="sidebar">
+    <ul>
+      <li onclick="navigateTo('regional_pages/respiratory.html')">Respiratory</li>
+      <li onclick="navigateTo('regional_pages/cardiovascular.html')">Cardiovascular</li>
+      <li onclick="navigateTo('regional_pages/endocrinology.html')">Endocrinology</li>
+      <li onclick="navigateTo('regional_pages/git.html')">Gastroenterology</li>
+      <li onclick="navigateTo('regional_pages/gynecology.html')">Gynecology</li>
+      <li onclick="navigateTo('regional_pages/hepatology.html')">Hepatology</li>
+      <li onclick="navigateTo('regional_pages/nephrology.html')">Nephrology</li>
+      <li onclick="navigateTo('regional_pages/obstetric.html')">Obstetric</li>
+      <li onclick="navigateTo('regional_pages/rheumatology.html')">Rheumatology</li>
+      <li onclick="navigateTo('regional_pages/hematology.html')">Hematology</li>
+      <li onclick="navigateTo('regional_pages/pediatric.html')">Pediatric</li>
+      <li onclick="navigateTo('regional_pages/ophthalmology.html')">Ophthalmology</li>
+      <li onclick="navigateTo('regional_pages/neurology.html')">Neurology</li>
+      <li onclick="navigateTo('regional_pages/dermatology.html')">Dermatology</li>
+      <li onclick="navigateTo('regional_pages/ent.html')">ENT</li>
+      <li onclick="navigateTo('regional_pages/psychiatric.html')">Psychiatric</li>
+      <li onclick="navigateTo('regional_pages/General.html')">General</li>
+    </ul>
+<button class="sidebar-about-button" onclick="navigateTo('about.html')">About Us</button>
+  </aside>
+
+  <h3>AlgoMed Diagnostic Tool</h3>
+  
+  
+    <!-- Add this right after the <p>Select a region to explore more:</p> in index.html -->
+<div class="search-container">
+  <form id="symptom-search-form" class="search-form">
+    <div class="search-input-container">
+      <input type="text" id="symptom-search" placeholder="Search for symptoms (e.g., cough, chest pain)" autocomplete="off">
+      <button type="submit" class="search-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </button>
+    </div>
+    <div id="search-results" class="search-results"></div>
+  </form>
+</div>
+
+<p>Select a region to explore more:</p>
+
+
+  <div class="container">
+
+    <div class="button-group">
+    <img src="bodyicons/respiratory.png" alt="Respiratory Icon" class="icon-image">
+    <div class="button" onclick="playClick(); navigateTo('regional_pages/respiratory.html')">
+      <span>Respiratory</span>
+    </div>
+  </div>
+
+  <div class="button-group">
+    <img src="bodyicons/cardiology.png" alt="Cardiovascular Icon" class="icon-image">
+    <div class="button" onclick="playClick(); navigateTo('regional_pages/cardiovascular.html')">
+      <span>Cardiovascular</span>
+    </div>
+  </div>
+
+  <div class="button-group">
+    <img src="bodyicons/Endocrinology.png" alt="Endocrinology Icon" class="icon-image">
+    <div class="button" onclick="playClick(); navigateTo('regional_pages/endocrinology.html')">
+      <span>Endocrinology</span>
+    </div>
+  </div>
+
+  <div class="button-group">
+    <img src="bodyicons/git.png" alt="GIT Icon" class="icon-image">
+    <div class="button" onclick="playClick(); navigateTo('regional_pages/git.html')">
+      <span>Gastroenterology</span>
+    </div>
+  </div>
+
+  <div class="button-group">
+    <img src="bodyicons/Gynecology.png" alt="Gynecology Icon" class="icon-image">
+    <div class="button" onclick="playClick(); navigateTo('regional_pages/gynecology.html')">
+      <span>Gynecology</span>
+    </div>
+  </div>
+
+  <div class="button-group">
+    <img src="bodyicons/Hepatology.png" alt="Hepatology Icon" class="icon-image">
+    <div class="button" onclick="playClick(); navigateTo('regional_pages/hepatology.html')">
+      <span>Hepatology</span>
+    </div>
+  </div>
+
+  <div class="button-group">
+    <img src="bodyicons/nephrology.png" alt="Nephrology Icon" class="icon-image">
+    <div class="button" onclick="playClick(); navigateTo('regional_pages/nephrology.html')">
+      <span>Nephro & Urology</span>
+    </div>
+  </div>
+  
+    <div class="button-group">
+    <img src="bodyicons/Obstetric.png" alt="Obstetric Icon" class="icon-image">
+    <div class="button" onclick="playClick(); navigateTo('regional_pages/Obstetric.html')">
+      <span>Obstetric</span>
+    </div>
+  </div>
+  
+    <div class="button-group">
+    <img src="bodyicons/Rheumatology.png" alt="Rheumatology Icon" class="icon-image">
+    <div class="button" onclick="playClick(); navigateTo('regional_pages/Rheumatology.html')">
+      <span>Rheumatology</span>
+    </div>
+  </div>
+  
+    <div class="button-group">
+    <img src="bodyicons/hematology.png" alt="Hematology Icon" class="icon-image">
+    <div class="button" onclick="playClick(); navigateTo('regional_pages/Hematology.html')">
+      <span>Hematology</span>
+    </div>
+  </div>
+  
+    <div class="button-group">
+    <img src="bodyicons/Pediatric.png" alt="Pediatric Icon" class="icon-image">
+    <div class="button" onclick="playClick(); navigateTo('regional_pages/pediatric.html')">
+      <span>Pediatric</span>
+    </div>
+  </div>
+  
+    <div class="button-group">
+    <img src="bodyicons/Ophthalmology.png" alt="Ophthalmology Icon" class="icon-image">
+    <div class="button" onclick="playClick(); navigateTo('regional_pages/Ophthalmology.html')">
+      <span>Ophthalmology</span>
+    </div>
+  </div>
+  
+    <div class="button-group">
+    <img src="bodyicons/Neurology.png" alt="Neurology Icon" class="icon-image">
+    <div class="button" onclick="playClick(); navigateTo('regional_pages/Neurology.html')">
+      <span>Neurology</span>
+    </div>
+  </div>
+  
+    <div class="button-group">
+    <img src="bodyicons/Dermatology.png" alt="Dermatology Icon" class="icon-image">
+    <div class="button" onclick="playClick(); navigateTo('regional_pages/Dermatology.html')">
+      <span>Dermatology</span>
+    </div>
+  </div>
+  
+    <div class="button-group">
+    <img src="bodyicons/ent.png" alt="ent Icon" class="icon-image">
+    <div class="button" onclick="playClick(); navigateTo('regional_pages/ent.html')">
+      <span>ENT</span>
+    </div>
+  </div>
+  
+  <div class="button-group">
+    <img src="bodyicons/ent.png" alt="ent Icon" class="icon-image">
+    <div class="button" onclick="playClick(); navigateTo('regional_pages/psychiatric.html')">
+      <span>Psychiatric</span>
+    </div>
+  </div>
+  
+  <div class="button-group">
+    <img src="bodyicons/ent.png" alt="ent Icon" class="icon-image">
+    <div class="button" onclick="playClick(); navigateTo('regional_pages/General.html')">
+      <span>General</span>
+    </div>
+  </div>
+  
+  
+  
+  </div>
+
+  <div class="loading">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+  </div>
+
+  
+
+  <script>
+  function playClick() {
+      const sound = document.getElementById("click-sound");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+      }
+    }
+    
+    function navigateTo(page) {
+      const loadingScreen = document.querySelector('.loading');
+      loadingScreen.style.display = 'flex';
+      setTimeout(() => {
+        window.location.href = page;
+      }, 2000);
+    }
+
+    // Toggle sidebar open/close
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("overlay");
+  
+  sidebar.classList.toggle("active");
+  overlay.style.display = sidebar.classList.contains("active") ? "block" : "none";
+}
+
+// Close sidebar if user clicks outside of it
+document.addEventListener("click", function(event) {
+  const sidebar = document.getElementById("sidebar");
+  const toggleBtn = document.querySelector(".toggle-button");
+  const isClickInsideSidebar = sidebar.contains(event.target);
+  const isClickOnToggle = toggleBtn.contains(event.target);
+  
+  if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains("active")) {
+    toggleSidebar();
+  }
+});
+
+// Swipe gesture support
+let startX = 0;
+
+document.addEventListener("touchstart", function(e) {
+  if (e.touches.length === 1) {
+    startX = e.touches[0].clientX;
+  }
+});
+
+document.addEventListener("touchend", function(e) {
+  const sidebar = document.getElementById("sidebar");
+  const diff = e.changedTouches[0].clientX - startX;
+  
+  // If swiped right and sidebar is active -> close
+  if (diff > 50 && sidebar.classList.contains("active")) {
+    toggleSidebar();
+  }
+});
+  </script>
+  <script src="search.js"></script>
+</body>
+</html>

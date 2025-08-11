@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cardiovascular Symptoms</title>
+  <link rel="stylesheet" href="../style/regional_style.css" type="text/css" media="all" />
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="nav-title">ALGOMED <span>CARDIOLOGY</span></div>
+  <button class="toggle-button" onclick="playClick(); toggleSidebar()">☰</button>
+</nav>
+
+<!-- Overlay for click outside -->
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <ul>
+      <li onclick="navigateTo('respiratory.html')">Respiratory</li>
+      <li onclick="navigateTo('cardiovascular.html')">Cardiovascular</li>
+      <li onclick="navigateTo('endocrinology.html')">Endocrinology</li>
+      <li onclick="navigateTo('git.html')">Gastroenterology</li>
+      <li onclick="navigateTo('gynecology.html')">Gynecology</li>
+      <li onclick="navigateTo('hepatology.html')">Hepatology</li>
+      <li onclick="navigateTo('nephrology.html')">Nephrology</li>
+      <li onclick="navigateTo('obstetric.html')">Obstetric</li>
+      <li onclick="navigateTo('rheumatology.html')">Rheumatology</li>
+      <li onclick="navigateTo('hematology.html')">Hematology</li>
+      <li onclick="navigateTo('pediatric.html')">Pediatric</li>
+      <li onclick="navigateTo('ophthalmology.html')">Ophthalmology</li>
+      <li onclick="navigateTo('neurology.html')">Neurology</li>
+      <li onclick="navigateTo('dermatology.html')">Dermatology</li>
+      <li onclick="navigateTo('ent.html')">ENT</li>
+      <li onclick="navigateTo('psychiatric.html')">Psychiatric</li>
+      <li onclick="navigateTo('General.html')">General</li>
+    </ul>
+<button class="sidebar-about-button" onclick="navigateTo('../about.html')">About Us</button>
+  </aside>
+
+  <!-- Audio -->
+  <audio id="click-sound" src="../sounds/click_sound.wav" preload="auto"></audio>
+
+  <!-- Headlines Outside Container -->
+  <h3 id="headline">Select a Primary Symptom</h3>
+<p id="subheadline">Choose from the list below to begin diagnosis.</p>
+  <!-- Main Page -->
+  <div id="main-page" class="container">
+  <button class="symptom-button" onclick="playClick(); startSymptom('Chest Pain')">Chest Pain</button> 
+  <button class="symptom-button" onclick="playClick(); startSymptom('Adult Cardiac Arrest')">Adult Cardiac Arrest</button>
+  <button class="symptom-button" onclick="playClick(); startSymptom('Generalized Edema')">Generalized Edema</button>
+  <button class="symptom-button" onclick="playClick(); startSymptom('Narrow QRS Tachycardia')">Narrow QRS Tachycardia</button>
+  <button class="symptom-button" onclick="playClick(); startSymptom('Wide-Complex Tachycardia')">Wide-Complex Tachycardia</button>
+  <button class="symptom-button" onclick="playClick(); startSymptom('Bradycardia')">Bradycardia</button>
+  <button class="symptom-button" onclick="playClick(); startSymptom('Stable Angina')">Stable Angina</button>
+  <button class="symptom-button" onclick="playClick(); startSymptom('Unstable Angina/NSTEMI')">Unstable Angina/NSTEMI</button>
+  <button class="symptom-button" onclick="playClick(); startSymptom('Systolic Murmurs')">Systolic Murmurs</button>
+  <button class="symptom-button" onclick="playClick(); startSymptom('Palpitations')">Palpitations</button>
+  <button class="symptom-button" onclick="playClick(); startSymptom('Hypotension')">Hypotension</button>
+    </div>
+  </div>
+
+  <!-- Question Page -->
+  <div id="question-page">
+  <div class="title" id="symptom-title">Symptom Diagnostic</div>
+  <div id="question-image-container"></div>
+  <div id="question" class="question"></div>
+  <div class="button-container"></div>
+  <div id="footer" class="footer"></div>
+</div>
+
+  <!-- Home Button -->
+  <button class="home-button" onclick="goHome()">
+  <img src="../bodyicons/home_button.png" alt="Home" class="home-icon">
+  <span class="sr-only">Home</span>
+</button>
+  
+  
+  <!-- Script -->
+  <script>
+  const questions = {
+    
+    // Chest Pain
+    "Chest Pain": {
+    start: {
+      text: "Is the patient hemodynamically unstable (hypotension, hypoxia, altered mental status)?",
+      explanation: "Immediate stabilization takes priority over diagnostic workup. RED FLAGS: Signs of shock, respiratory failure, or acute distress require emergent intervention.",
+      options: {
+        yes: "Unstable Patient Management",
+        no: "Stable Patient Evaluation"
+        
+      }
+    },
+
+    // Unstable Pathway
+    "Unstable Patient Management": {
+      text: "Initiate ABCDE approach: Airway, Breathing, Circulation, Disability, Exposure",
+      explanation: "CRITICAL ACTIONS: Administer O2 to maintain SpO2 ≥90%, establish IV access, cardiac monitoring, prepare for intubation if needed. NOTE: Avoid excessive O2 in ACS without hypoxia (potential harm).",
+      options: {
+        "Airway compromised": "Immediate Intubation",
+        "Breathing compromised": "Treat Tension Pneumothorax/PE",
+        "Circulation compromised": "Shock Management"
+      }
+    },
+    "Immediate Intubation": {
+      text: "Secure airway with RSI if needed. Obtain portable CXR post-intubation.",
+      explanation: "CAUTION: Hemodynamic instability increases risk of peri-intubation arrest. Have vasopressors ready. KEY POINT: Esophageal rupture may present with mediastinal emphysema (Hamman's crunch).",
+      options: {
+        "Proceed to Evaluation": "Unstable Etiology Workup"
+      }
+    },
+    "Treat Tension Pneumothorax/PE": {
+      text: "Unilateral absent breath sounds? Perform immediate needle decompression (2nd ICS MCL).",
+      explanation: "LIFE-SAVING: Tension pneumothorax is clinical diagnosis - don't wait for CXR. For suspected PE with RV strain, start anticoagulation if no contraindications.",
+      options: {
+        "Improved": "Proceed to Evaluation",
+        "No improvement": "Consider PE/Tamponade"
+      }
+    },
+    "Shock Management": {
+      text: "Obtain ECG, bedside echo, CXR. Treat based on findings:",
+      explanation: "ECHO PRIORITIES: Look for pericardial effusion (tamponade), RV strain (PE), wall motion abnormalities (STEMI). WARNING: Don't delay pericardiocentesis for tamponade.",
+      options: {
+        "Cardiogenic shock": "ACS/STEMI Protocol",
+        "Obstructive shock": "Tamponade/PE Protocol",
+        "Distributive shock": "Septic/Aortic Dissection Workup"
+      }
+    },
+    "Unstable Etiology Workup": {
+      text: "Based on initial stabilization, pursue targeted diagnostics:",
+      explanation: "TIME-SENSITIVE: Simultaneous ECG, CXR, labs (troponin, D-dimer, ABG). REMEMBER: Aortic dissection may present with pulse deficits or neurologic symptoms.",
+      options: {
+        "ECG STEMI": "Immediate Reperfusion",
+        "Suspected PE": "CTPA or Bedside Echo",
+        "Aortic dissection": "CT Angiography",
+        "Pericardial tamponade": "Pericardiocentesis"
+      }
+    },
+
+    // Stable Pathway
+    "Stable Patient Evaluation": {
+      text: "Obtain focused history: Pain characteristics, risk factors, associated symptoms",
+      explanation: "KEY HISTORY ELEMENTS: Onset (sudden vs gradual), quality (tearing/ripping suggests dissection), radiation (arm/jaw suggests ACS), provoking/palliating factors.",
+      options: {
+        "High-risk features present": "High-risk Workup",
+        "Low-risk features": "Stepwise Evaluation"
+      }
+    },
+    "High-risk Workup": {
+      text: "Immediate ECG and CXR. Assess for:",
+      explanation: "HIGH-RISK FEATURES: Sudden severe pain, tearing/ripping quality, syncope, pulse/BP discrepancy >20mmHg, known aortic disease, malignancy, recent procedures.",
+      options: {
+        "Aortic dissection suspected": "ADD-RS Score + D-dimer",
+        "PE suspected": "Wells Score/PERC Rule",
+        "ACS suspected": "HEART Score + Troponin"
+      }
+    },
+    "Stepwise Evaluation": {
+      text: "Perform systematic assessment:",
+      explanation: "ESSENTIALS: ECG within 10min, CXR, troponin (serial if high suspicion). NOTE: Single normal ECG misses 50% of MIs - repeat if ongoing pain.",
+      options: {
+        "ECG diagnostic": "ECG-directed Management",
+        "ECG non-diagnostic": "Risk Stratification"
+      }
+    },
+    "ECG-directed Management": {
+      text: "Interpret ECG findings:",
+      explanation: "CRITICAL PATTERNS: STEMI (immediate cath lab activation), Wellens' waves (impending LAD occlusion), de Winter pattern (proximal LAD occlusion), S1Q3T3 (PE).",
+      options: {
+        "STEMI": "Reperfusion Therapy",
+        "NSTEMI": "Medical Management",
+        "Pericarditis": "Four-stage ECG Changes",
+        "PE signs": "Right Heart Strain Evaluation"
+      }
+    },
+    "Risk Stratification": {
+      text: "Use validated tools based on suspicion:",
+      explanation: "RISK SCORES: HEART score for ACS, Wells/PERC for PE, ADD-RS for dissection. REMEMBER: Low-risk by PERC requires all criteria negative + clinical gestalt.",
+      options: {
+        "ACS likely": "Serial Troponins",
+        "PE likely": "D-dimer → CTPA",
+        "Dissection likely": "D-dimer → CTA",
+        "Indeterminate": "Observation Protocol"
+      }
+    },
+
+    // Diagnostic Pathways
+    "ACS/STEMI Protocol": {
+      text: "STEMI: Activate cath lab. Give aspirin 325mg, consider P2Y12 inhibitor.",
+      explanation: "TIME-CRITICAL: Door-to-balloon <90min. CONTRAINDICATIONS: Avoid fibrinolytics in dissection, active bleeding, recent surgery.",
+      options: {
+        "Cath lab available": "Primary PCI",
+        "No timely PCI": "Consider Lytics"
+      }
+    },
+    "Medical Management": {
+      text: "NSTEMI: Start antiplatelet/anticoagulant therapy. Consider early invasive strategy.",
+      explanation: "MEDICATION BUNDLE: Aspirin + P2Y12 inhibitor (clopidogrel/ticagrelor) + anticoagulant (heparin/enoxaparin). MONITOR: Watch for hemodynamic changes.",
+      options: {
+        "High-risk features": "Early Angiography",
+        "Low-risk": "Ischemia-guided Approach"
+      }
+    },
+    "PE Protocol": {
+      text: "Confirm with CTPA. Risk stratify by PESI/sPESI. Start anticoagulation if confirmed.",
+      explanation: "HIGH-RISK PE: RV dysfunction + hypotension → consider thrombolysis. CAUTION: Avoid anticoagulation if active bleeding or suspected aortic dissection.",
+      options: {
+        "Massive PE": "Thrombolysis/Embolectomy",
+        "Submassive": "Anticoagulation + Monitor",
+        "Low-risk": "Consider Outpatient Treatment"
+      }
+    },
+    "Aortic Dissection Workup": {
+      text: "CT angiography is first-line. Start anti-impulse therapy (HR <60, SBP <120).",
+      explanation: "MEDICAL MANAGEMENT: IV beta-blocker (esmolol/labetalol) first, then add vasodilator if needed. SURGICAL: Type A requires emergent surgery.",
+      options: {
+        "Type A": "Emergent Surgery",
+        "Type B": "Medical/Surgical Decision"
+      }
+    },
+
+    // Special Considerations
+    "Young Patient Evaluation": {
+      text: "Age <40 with no cardiac risk factors: Consider alternative diagnoses",
+      explanation: "COMMON IN YOUNG: Costochondritis (reproducible tenderness), PE (especially if OCP use), pericarditis (positional pain). LOW ACS RISK: <1% in this population.",
+      options: {
+        "Pleuritic pain": "Evaluate for PE/Pericarditis",
+        "Reproducible pain": "Musculoskeletal Cause",
+        "Atypical features": "Psychogenic Evaluation"
+      }
+    },
+    "Recurrent Chest Pain": {
+      text: "Assess prior workup: Normal stress test <1yr or cath <5yr reduces ACS risk.",
+      explanation: "RED FLAGS: Changed pain pattern or new risk factors warrant re-evaluation despite prior negative workup. CONSIDER: Esophageal spasm, microvascular angina.",
+      options: {
+        "Prior negative workup": "Reassess for New Features",
+        "No prior workup": "Complete Initial Evaluation"
+      }
+    },
+
+    // Disposition
+    "Disposition Decision": {
+      text: "Based on final diagnosis and stability:",
+      explanation: "ADMISSION CRITERIA: ACS, PE with RV strain, dissection, tamponade. OBSERVATION: Intermediate-risk ACS (serial troponins). DISCHARGE: Low-risk with follow-up.",
+      options: {
+        "Life-threatening diagnosis": "ICU Admission",
+        "Intermediate risk": "Observation Unit",
+        "Low-risk": "Outpatient Follow-up"
+      }
+    },
+    "Outpatient Follow-up": {
+      text: "Arrange follow-up within 72h. Provide clear return precautions.",
+      explanation: "KEY INSTRUCTIONS: Return for worsening pain, dyspnea, syncope. CONSIDER: Stress test or CCTA if intermediate risk factors present.",
+      options: {
+        "Restart Algorithm": "start",
+        "Complete": "exit"
+      }
+    }
+  },
+  
+
+
+    
+    
+   // Adult Cardiac Arrest
+  "Adult Cardiac Arrest": {
+    start: {
+      text: "Verify cardiac arrest: Unresponsive, no normal breathing, no pulse",
+      explanation: "CRITICAL FIRST STEP: Confirm arrest before starting CPR. Check responsiveness and breathing simultaneously with pulse check (≤10 seconds).",
+      options: {
+        "Confirmed arrest": "Initiate CPR",
+        "Uncertain diagnosis": "Reassess While Preparing"
+        
+      }
+    },
+
+    // Initial Response Pathway
+    "Initiate CPR": {
+      text: "Begin high-quality CPR and attach monitor/defibrillator",
+      explanation: "PRIORITY ACTIONS: Start compressions immediately (30:2 ratio if no airway). Apply defibrillator pads during CPR. KEY METRICS: Depth 2-2.4 inches, rate 100-120/min, full recoil.",
+      options: {
+        "Monitor attached": "Rhythm Analysis"
+      }
+    },
+    "Rhythm Analysis": {
+      text: "Analyze rhythm after 2 minutes of CPR - shockable (VF/pVT) or non-shockable (PEA/Asystole)?",
+      explanation: "ESSENTIAL: Minimize pause (<5 sec) for rhythm check. WARNING: Artifact may mimic VF - confirm in multiple leads.",
+      options: {
+        "Shockable (VF/pVT)": "Shockable Rhythm Pathway",
+        "Non-shockable (PEA/Asystole)": "Non-Shockable Pathway"
+      }
+    },
+
+    // Shockable Rhythm Pathway (VF/pVT)
+    "Shockable Rhythm Pathway": {
+      text: "Deliver 1 shock (biphasic: 120-200J; monophasic: 360J) then resume CPR immediately",
+      explanation: "TECHNIQUE: Clear patient before shock. Continue compressions during charger. POST-SHOCK: Resume CPR without pulse check - full 2-minute cycle.",
+      options: {
+        "CPR in progress": "Post-Shock CPR Cycle"
+      }
+    },
+    "Post-Shock CPR Cycle": {
+      text: "Perform 2 minutes CPR with: IV/IO access, epinephrine q3-5min, consider advanced airway",
+      explanation: "MEDICATIONS: Epinephrine 1mg IV/IO after 2nd shock (then q3-5min). AIRWAY: ET tube or supraglottic with waveform capnography (target PETCO2 10-20 mmHg during CPR).",
+      options: {
+        "Next rhythm check": "Second Rhythm Analysis"
+      }
+    },
+    "Second Rhythm Analysis": {
+      text: "After 2 minutes CPR - persistent shockable rhythm?",
+      explanation: "PERSISTENT VF: Consider amiodarone (300mg) or lidocaine (1-1.5mg/kg) after 3rd shock. CORRECTIBLE CAUSES: Address Hs and Ts during CPR.",
+      options: {
+        "Still shockable": "Second Shock",
+        "Non-shockable": "Transition to Non-Shockable"
+      }
+    },
+    "Second Shock": {
+      text: "Deliver 2nd shock (same energy) + continue CPR with medications",
+      explanation: "ADVANCED INTERVENTIONS: Amiodarone 300mg IV after 3rd shock (150mg repeat if needed). Alternative: Lidocaine 1-1.5mg/kg. MAINTAIN: Continuous compressions with minimal interruptions.",
+      options: {
+        "CPR in progress": "Third Cycle Evaluation"
+      }
+    },
+
+    // Non-Shockable Pathway (PEA/Asystole)
+    "Non-Shockable Pathway": {
+      text: "Continue high-quality CPR with: IV/IO access, epinephrine q3-5min, advanced airway",
+      explanation: "PRIORITIES: Epinephrine 1mg IV/IO q3-5min. Hs and Ts evaluation. WARNING: Asystole may be fine VF - confirm in multiple leads and consider double-check pads.",
+      options: {
+        "Next rhythm check": "PEA/Asystole Re-evaluation"
+      }
+    },
+    "PEA/Asystole Re-evaluation": {
+      text: "After 2 minutes CPR - any rhythm change?",
+      explanation: "TRANSITIONS: PEA may convert to shockable rhythm (5-10% cases). ORGANIZED RHYTHM: Check for pulse with rhythm change (ROSC).",
+      options: {
+        "Now shockable": "Transition to Shockable",
+        "Persistent PEA/Asystole": "Continue CPR + Reversible Causes"
+      }
+    },
+
+    // Reversible Causes Management (Hs and Ts)
+    "Continue CPR + Reversible Causes": {
+      text: "Search for and treat reversible causes during CPR:",
+      explanation: "HS AND TS: Hypovolemia, Hypoxia, H+ (acidosis), Hypo/hyperkalemia, Hypothermia, Tamponade, Tension PTX, Toxins, Thrombosis (coronary/pulmonary). ACTION ITEMS: Ultrasound during pulse checks, blood gas, empiric treatments.",
+      options: {
+        "Identified cause": "Targeted Intervention",
+        "No cause found": "Continue Standard ACLS"
+      }
+    },
+    "Targeted Intervention": {
+      text: "Specific treatments based on identified cause:",
+      explanation: "EXAMPLES: Needle decompression for tension PTX, fluids for hypovolemia, calcium/insulin/glucose for hyperkalemia, thrombolytics for suspected PE. NOTE: Consider empiric naloxone for possible opioid overdose.",
+      options: {
+        "Intervention complete": "Reassess Rhythm"
+      }
+    },
+
+    // Special Considerations
+    "Advanced Airway Management": {
+      text: "Place advanced airway when feasible without interrupting CPR >10 sec",
+      explanation: "OPTIONS: ET intubation (confirm with waveform capnography) or supraglottic device. VENTILATION: 1 breath q6sec (10/min) with continuous compressions once placed.",
+      options: {
+        "Airway secured": "Monitor PETCO2",
+        "Unsuccessful": "Resume BVM"
+      }
+    },
+    "Drug Administration": {
+      text: "IV/IO access and medication sequence:",
+      explanation: "EPINEPHRINE: 1mg q3-5min (sooner if needed for PEA). AMIODARONE: 300mg after 3rd shock, 150mg repeat. LIDOCAINE: Alternative if amiodarone unavailable (1-1.5mg/kg).",
+      options: {
+        "Access obtained": "Continue Protocol",
+        "No access": "Consider IO Immediately"
+      }
+    },
+
+    // Termination/ROSC Considerations
+    "ROSC Evaluation": {
+      text: "Signs of ROSC: Spontaneous circulation, PETCO2 ↑≥40mmHg, arterial waveform return",
+      explanation: "POST-ROSC: Immediate hemodynamic support, targeted temperature management, identify/treat cause. WARNING: Avoid hypertension (SBP <180) initially to prevent reperfusion injury.",
+      options: {
+        "ROSC achieved": "Post-Cardiac Arrest Care",
+        "No ROSC": "Continue Resuscitation"
+      }
+    },
+    "Termination Decision": {
+      text: "Consider stopping if: Asystole >20min with no reversible causes, unwitnessed with no bystander CPR",
+      explanation: "FACTORS TO CONSIDER: Downtime, initial rhythm, comorbidities, age, pre-arrest status. ETHICAL NOTE: Involve family in decision-making when possible.",
+      options: {
+        "Terminate efforts": "Pronouncement",
+        "Continue efforts": "Re-evaluate"
+      }
+    },
+
+    // Post-Cardiac Arrest Care
+    "Post-Cardiac Arrest Care": {
+      text: "Immediate post-ROSC management:",
+      explanation: "ABCDE BUNDLE: Airway protection, Breathing (avoid hyperoxia), Circulation (MAP ≥65), Disability (neuroprotection), Exposure (12-lead ECG). TARGETS: SpO2 92-98%, normocapnia, normothermia (TTM 32-36°C for comatose).",
+      options: {
+        "Stable": "Cardiac ICU Transfer",
+        "Unstable": "Treat Shock/Causes"
+      }
+    }
+  },
+
+    
+    
+    // Generalized Edema Approach
+    "Generalized Edema": {
+      start: {
+        text: "Assess jugular venous pressure (JVP):",
+        explanation: "Elevated JVP suggests cardiac or pericardial causes; normal JVP suggests other etiologies.",
+        options: {
+          "Elevated JVP": "Cardiac evaluation",
+          "Normal JVP": "Non-cardiac evaluation"
+        }
+      },
+      "Cardiac evaluation": {
+        text: "Perform chest radiography. Findings?",
+        explanation: "Differentiates cardiac, pulmonary, and pericardial causes.",
+        options: {
+          "Cardiomegaly": "Assess cardiac function",
+          "Normal heart size": "Evaluate for pericardial disease",
+          "Pulmonary hypertension pattern": "Right heart failure workup"
+        }
+      },
+      "Assess cardiac function": {
+        text: "Echocardiogram results:",
+        explanation: "Determines systolic vs diastolic dysfunction.",
+        options: {
+          "Poor contractility (low EF)": "Congestive heart failure management",
+          "Normal EF": "Diastolic dysfunction evaluation"
+        }
+      },
+      "Non-cardiac evaluation": {
+        text: "Check serum albumin and urinalysis:",
+        explanation: "Hypoalbuminemia suggests nephrotic syndrome, liver disease, or malnutrition.",
+        options: {
+          "Low albumin + proteinuria": "Nephrotic syndrome evaluation",
+          "Low albumin + normal urine": "Hepatic/nutritional evaluation",
+          "Normal albumin": "Renal/idiopathic causes"
+        }
+      },
+      "Nephrotic syndrome evaluation": {
+        text: "24-hour urine protein results:",
+        explanation: ">3.5g protein defines nephrotic syndrome.",
+        options: {
+          ">3.5g protein": "Nephrotic syndrome diagnosis",
+          "<3.5g protein": "Non-nephrotic proteinuria"
+        }
+      },
+      "Hepatic/nutritional evaluation": {
+        text: "Liver function tests and prealbumin:",
+        explanation: "Prealbumin <20mg/dL suggests malnutrition; abnormal LFTs suggest liver disease.",
+        options: {
+          "Abnormal LFTs": "Cirrhosis evaluation",
+          "Low prealbumin": "Protein-calorie malnutrition",
+          "Both abnormal": "Combined hepatic/malnutrition"
+        }
+      },
+      "Renal/idiopathic causes": {
+        text: "BUN/Creatinine and thyroid function:",
+        explanation: "Evaluates renal failure and myxedema.",
+        options: {
+          "Elevated BUN/Cr": "Renal failure management",
+          "Abnormal TFTs": "Hypothyroidism evaluation",
+          "All normal": "Drug-induced or idiopathic edema"
+        }
+      },
+      // Terminal diagnosis nodes
+      "Congestive heart failure management": {
+        text: "Diagnosis: Systolic heart failure.",
+        explanation: "Diuretics, ACE inhibitors, beta-blockers. Salt/fluid restriction.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Nephrotic syndrome diagnosis": {
+        text: "Diagnosis: Nephrotic syndrome.",
+        explanation: "ACE inhibitors, statins. Consider renal biopsy if no obvious cause.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Cirrhosis evaluation": {
+        text: "Diagnosis: Hepatic edema from cirrhosis.",
+        explanation: "Salt restriction, diuretics (spironolactone first-line). Monitor for ascites.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Protein-calorie malnutrition": {
+        text: "Diagnosis: Nutritional edema (kwashiorkor-like).",
+        explanation: "Nutritional rehabilitation with gradual protein repletion.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      }
+      // Additional terminal nodes would follow same pattern
+    },
+
+
+   //Narrow QRS Tachycardia 
+  "Narrow QRS Tachycardia": {
+    start: {
+      text: "Initial Assessment: Place patient in semi-reclined position, monitor BP every 15 mins, check oxygen saturation, establish IV access.",
+      explanation: "Proper positioning and monitoring are essential before proceeding with evaluation.",
+      options: {
+        "Continue": "Assess rhythm regularity"
+      }
+    },
+    
+    "Assess rhythm regularity": {
+      text: "Is the rhythm regular on ECG?",
+      explanation: "Regular narrow QRS tachycardia includes SVT, atrial flutter. Irregular includes atrial fibrillation.",
+      options: {
+        "Regular": "Regular narrow QRS tachycardia",
+        "Irregular": "Atrial fibrillation"
+      }
+    },
+    
+    "Atrial fibrillation": {
+      text: "Irregular narrow QRS tachycardia identified as atrial fibrillation.",
+      explanation: "Management depends on stability, duration, and underlying conditions.",
+      options: {
+        "Continue management": "AF management"
+      }
+    },
+    
+    "Regular narrow QRS tachycardia": {
+      text: "Assess patient stability: Any signs of instability (MI, shock, syncope, heart failure, SBP <90)?",
+      explanation: "Unstable patients require immediate cardioversion.",
+      options: {
+        "Unstable": "Unstable SVT management",
+        "Stable": "Stable SVT management"
+      }
+    },
+    
+    "Unstable SVT management": {
+      text: "Unstable patient with SVT: Prepare for synchronized cardioversion.",
+      explanation: "Sedate if possible. Shock doses: 50-100J (biphasic) or 100J (monophasic).",
+      options: {
+        "Cardioversion successful": "Post-cardioversion care",
+        "Cardioversion unsuccessful": "Repeat cardioversion or consider amiodarone"
+      }
+    },
+    
+    "Stable SVT management": {
+      text: "Stable patient with SVT: Attempt vagal maneuvers first.",
+      explanation: "Carotid massage (if no bruit) or Valsalva maneuver.",
+      options: {
+        "Successful": "SVT terminated",
+        "Unsuccessful": "Administer adenosine"
+      }
+    },
+    
+    "Administer adenosine": {
+      text: "Administer adenosine: 6mg rapid IV push, followed by 12mg if needed, then repeat 12mg.",
+      explanation: "Warn patient about transient asystole/fluttering sensation. Have crash cart available.",
+      options: {
+        "Successful": "SVT terminated",
+        "Unsuccessful": "Consider alternative medications"
+      }
+    },
+    
+    "Alternative medications": {
+      text: "If adenosine fails, consider:",
+      explanation: "Options include IV beta-blockers, calcium channel blockers, or amiodarone.",
+      options: {
+        "Beta-blocker": "Atenolol 50-100mg or Bisoprolol 1.25-10mg daily",
+        "Calcium channel blocker": "Avoid verapamil in heart failure",
+        "Amiodarone": "300mg over 10-20 min, then 900mg/24hrs",
+        "Digoxin": "0.5mg start, then 0.125-0.25mg doses (max 1.5mg/24hrs)"
+      }
+    },
+    
+    "AF management": {
+      text: "Atrial fibrillation management based on stability:",
+      explanation: "Unstable requires cardioversion. Stable may use rate or rhythm control.",
+      options: {
+        "Unstable": "Synchronized cardioversion (120-200J biphasic)",
+        "Stable, <48hr duration": "Consider rhythm control with amiodarone/flecainide",
+        "Stable, >48hr duration": "Rate control (target HR <110) and anticoagulation"
+      }
+    },
+    
+    "Post-cardioversion care": {
+      text: "After successful cardioversion:",
+      explanation: "Monitor for recurrence, consider maintenance therapy, evaluate for underlying causes.",
+      options: {
+        "Continue monitoring": "Monitor for recurrence",
+        "Start maintenance therapy": "Consider beta-blockers, antiarrhythmics",
+        "Evaluate underlying causes": "Check for thyroid disease, structural heart disease"
+      }
+    },
+    
+    "Restart Algorithm": {
+      text: "Would you like to restart the arrhythmia algorithm?",
+      options: {
+        "Yes": "start",
+        "No": "exit"
+      }
+    }
+  },
+  
+  
+  // Approach to Bradycardia 
+  "Bradycardia": {
+    start: {
+      text: "Is the patient symptomatic (fatigue, dizziness, syncope, dyspnea, angina)?",
+      explanation: "Symptom assessment guides urgency of intervention. RED FLAG: Syncope/pre-syncope with bradycardia requires urgent pacing evaluation.",
+      options: {
+        yes: "Symptomatic Evaluation",
+        no: "Asymptomatic Evaluation"
+      }
+    },
+
+    // Symptomatic Pathway
+    "Symptomatic Evaluation": {
+      text: "Obtain ECG and assess for acute ischemia/infarction",
+      explanation: "ECG identifies conduction abnormalities and ischemic changes. CRITICAL: Wide QRS (>120ms) suggests infranodal disease (higher pacing urgency).",
+      options: {
+        "Acute MI present": "MI-related Bradycardia",
+        "No acute MI": "Assess Conduction Abnormalities"
+      }
+    },
+    "MI-related Bradycardia": {
+      text: "Is this inferior MI (narrow QRS) or anterior MI (wide QRS)?",
+      explanation: "Inferior MI (AV nodal artery involvement) typically causes reversible AV nodal block. Anterior MI (septal branch occlusion) causes infranodal block requiring pacing. NOTE: >80% of anterior MI with wide QRS need permanent pacing.",
+      options: {
+        "Inferior MI": "Atropine/Temporary Pacing",
+        "Anterior MI": "Urgent Temporary Pacing"
+      }
+    },
+    "Atropine/Temporary Pacing": {
+      text: "Inferior MI - treat with atropine if AV nodal block. Consider temporary pacing if unstable.",
+      explanation: "Vagally mediated blocks often resolve. CAUTION: Atropine (0.5mg IV q3-5min, max 3mg) may worsen infranodal block. Temporary pacing is rarely needed long-term.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Urgent Temporary Pacing": {
+      text: "Anterior MI - infranodal block usually requires permanent pacing. Start with temporary pacing.",
+      explanation: "Wide QRS escape rhythms are unstable. ACTION: Use balloon-tipped catheter initially; convert to transvenous pacing within 24h if needed.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Assess Conduction Abnormalities": {
+      text: "What type of conduction abnormality is present?",
+      explanation: "ECG CLUES: Mobitz I shows progressive PR prolongation before dropped beats (AV nodal). Mobitz II has fixed PR with sudden non-conducted P waves (infranodal).",
+      options: {
+        "Mobitz I (Wenckebach)": "Mobitz I Management",
+        "Mobitz II/3° AV Block": "Infranodal Block Management",
+        "Sinus Brady/Pauses": "Sinus Node Dysfunction"
+      }
+    },
+    "Mobitz I Management": {
+      text: "Mobitz I (AV nodal) - usually benign. Pace only if symptomatic.",
+      explanation: "Common in athletes/high vagal tone. EXCEPTION: Consider pacing if pauses >3sec or symptoms correlate with block.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Infranodal Block Management": {
+      text: "Mobitz II/3° AV block - requires permanent pacing regardless of symptoms.",
+      explanation: "Infranodal blocks progress to complete heart block in 35% annually. MANDATE: Permanent pacing even if asymptomatic.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Sinus Node Dysfunction": {
+      text: "Perform workup: Echocardiogram, Holter/event monitor, stress test if indicated.",
+      explanation: "REVERSIBLE CAUSES: Hypothyroidism, Lyme carditis (treat with doxycycline), or medications (beta-blockers, digoxin, non-DHP CCBs).",
+      options: {
+        "Reversible cause found": "Treat Underlying Cause",
+        "No reversible cause": "Pacemaker Evaluation"
+      }
+    },
+    "Treat Underlying Cause": {
+      text: "Address specific causes: Hypothyroidism, Lyme disease, medication adjustment, etc.",
+      explanation: "DRUG MANAGEMENT: Taper beta-blockers to avoid rebound tachycardia. Check digoxin levels if toxicity suspected (nausea, visual changes).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Pacemaker Evaluation": {
+      text: "Symptomatic sinus node dysfunction - consider permanent pacemaker.",
+      explanation: "DEVICE SELECTION: DDD for sinus node disease with intact AV conduction. VVI for chronic AF + bradycardia. Consider CRT if EF ≤35%.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Asymptomatic Pathway
+    "Asymptomatic Evaluation": {
+      text: "Assess for physiologic causes (athlete, sleep) or medications",
+      explanation: "PHYSIOLOGIC NORMS: Athletes often have HR 40-60bpm. During sleep, HR <50bpm occurs in 25% men and 10% women.",
+      options: {
+        "Identified cause": "Monitor/Adjust Medications",
+        "No clear cause": "Risk Stratification"
+      }
+    },
+    "Monitor/Adjust Medications": {
+      text: "Discontinue/reduce offending drugs if possible (beta blockers, CCBs, etc.).",
+      explanation: "SAFE DEPRESCRIBING: Gradually reduce beta-blockers over 1-2 weeks. For digoxin, hold and monitor for rebound tachyarrhythmias.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Risk Stratification": {
+      text: "Does patient have high-risk features? (Infranodal disease, prolonged pauses >3s)",
+      explanation: "HIGH-RISK FEATURES: Mobitz II/3° block (even asymptomatic), pauses >3s, or post-valve surgery block (wait 4 days post-op for edema resolution).",
+      options: {
+        "High-risk": "Consider Pacemaker",
+        "Low-risk": "Continued Monitoring"
+      }
+    },
+    "Consider Pacemaker": {
+      text: "Asymptomatic infranodal block or prolonged pauses may warrant pacing.",
+      explanation: "GUIDELINES: Class IIa indication for infranodal block. Class IIb for pauses >3s (individualize decision).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Continued Monitoring": {
+      text: "Regular follow-up with ECG/ambulatory monitoring as needed.",
+      explanation: "TOOLS: 24h Holter for frequent symptoms, 30-day event monitor for intermittent symptoms, or implantable loop recorder for unexplained syncope.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+  
+  
+  
+  //Wide-Complex Tachycardia 
+  "Wide-Complex Tachycardia": {
+    start: {
+      text: "Is the patient hemodynamically unstable (hypotension, chest pain, altered mental status, shock)?",
+      explanation: "CRITICAL: Unstable WCT requires immediate cardioversion. KEY POINT: Hemodynamic stability does NOT rule out VT (many VTs are tolerated initially).",
+      options: {
+        yes: "Immediate Cardioversion",
+        no: "Stable WCT Evaluation"
+      }
+    },
+
+    // Unstable Pathway
+    "Immediate Cardioversion": {
+      text: "Perform synchronized DC cardioversion (100-200J biphasic).",
+      explanation: "ACLS PROTOCOL: Sedate if possible (e.g., midazolam 1-2mg IV). WARNING: Avoid delays—cardioversion takes precedence over rhythm diagnosis in instability.",
+      options: {
+        "Rhythm persists": "Repeat Cardioversion",
+        "Rhythm converts": "Post-Cardioversion Care"
+      }
+    },
+    "Repeat Cardioversion": {
+      text: "Increase energy (200-360J biphasic) and consider amiodarone 150mg IV over 10min.",
+      explanation: "ESCALATION: Higher energy for refractory cases. DRUG OPTION: Amiodarone preferred over procainamide in structural heart disease (less hypotension risk).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Post-Cardioversion Care": {
+      text: "Obtain 12-lead ECG and assess for underlying etiology.",
+      explanation: "POST-CONVERSION: Check for STEMI (may cause VT), electrolyte abnormalities (K+/Mg2+), or drug toxicity (e.g., digoxin).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Stable Pathway
+    "Stable WCT Evaluation": {
+      text: "Assess clinical history: Prior MI/CHF, age >35, or recurrent tachycardia since youth?",
+      explanation: "HISTORY CLUES: Prior MI/CHF makes VT 98% likely. Age <35 with recurrent episodes favors SVT. RED FLAG: Carotid massage termination suggests AV node-dependent SVT.",
+      options: {
+        "High VT risk": "ECG Analysis for VT",
+        "Possible SVT": "ECG Analysis for SVT"
+      }
+    },
+    "ECG Analysis for VT": {
+      text: "Search for AV dissociation (P waves independent of QRS, fusion/capture beats).",
+      explanation: "PATHOGNOMONIC: AV dissociation confirms VT. CLUES: Look for beat-to-beat BP variation, cannon A waves, or changing S1 intensity on exam.",
+      options: {
+        "AV dissociation present": "Confirm VT",
+        "No AV dissociation": "Morphology Analysis"
+      }
+    },
+    "Confirm VT": {
+      text: "VT confirmed - initiate antiarrhythmic therapy.",
+      explanation: "DRUG CHOICE: Procainamide (10-15mg/kg at 20-50mg/min) first-line. AVOID: Verapamil/adenosine (risk of collapse in VT).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Morphology Analysis": {
+      text: "Is QRS morphology RBBB-like (V1 positive) or LBBB-like (V1 negative)?",
+      explanation: "MORPHOLOGY MATTERS: RBBB/LBBB patterns have distinct VT criteria. NOTE: Prior ECG showing pre-excitation or BBB matching WCT suggests SVT.",
+      options: {
+        "RBBB-type": "RBBB VT Criteria",
+        "LBBB-type": "LBBB VT Criteria"
+      }
+    },
+    "RBBB VT Criteria": {
+      text: "Check for VT features: QRS >140ms, left axis, monophasic R/QR in V1, or R:S<1 in V6.",
+      explanation: "DIAGNOSTIC: Any one feature suggests VT. PEARL: Positive precordial concordance (all precordial leads upright) is virtually diagnostic of VT.",
+      options: {
+        "VT criteria met": "Confirm VT",
+        "No VT criteria": "Consider SVT with Aberrancy"
+      }
+    },
+    "LBBB VT Criteria": {
+      text: "Check for VT features: QRS >160ms, broad R (>40ms) in V1, R-S >100ms in V1, or Q in V6.",
+      explanation: "DIAGNOSTIC: Delayed S-wave downstroke in V1 is highly specific for VT. WARNING: Negative concordance (all precordial leads negative) indicates VT.",
+      options: {
+        "VT criteria met": "Confirm VT",
+        "No VT criteria": "Consider SVT with Aberrancy"
+      }
+    },
+    "Consider SVT with Aberrancy": {
+      text: "If SVT likely, consider adenosine (6mg rapid IV push, may repeat 12mg x2).",
+      explanation: "CAUTION: Only use if SVT is highly probable (e.g., young patient, known BBB matching WCT). RISK: Adenosine may precipitate VF in VT.",
+      options: {
+        "Rhythm converts": "SVT Confirmed",
+        "No conversion": "Reassess as VT"
+      }
+    },
+    "SVT Confirmed": {
+      text: "Treat as SVT (AVNRT/AVRT) with beta-blockers/CCBs long-term.",
+      explanation: "FOLLOW-UP: Electrophysiology referral for ablation if recurrent. NOTE: WPW-related SVT requires AV node-independent therapy (avoid AV blockers if pre-excited AF suspected).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Reassess as VT": {
+      text: "Treat as VT if adenosine fails or diagnosis uncertain.",
+      explanation: "SAFETY FIRST: When in doubt, assume VT (misdiagnosis as SVT carries higher mortality). PROCRAINAMIDE: Preferred over amiodarone for stable monomorphic VT without CHF.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+  
+  
+  
+  // Stable Angina approach 
+  "Stable Angina": {
+    start: {
+      text: "Does the patient have acute/unstable symptoms (rest angina >20min, dynamic ECG changes, or signs of heart failure)?",
+      explanation: "RED FLAG: Unstable features require immediate ACS evaluation. Stable angina typically presents with exertional chest pain relieved by rest/nitroglycerin.",
+      options: {
+        yes: "Refer for Acute Coronary Syndrome Workup",
+        no: "Initial Evaluation"
+      }
+    },
+
+    // Initial Evaluation Pathway
+    "Initial Evaluation": {
+      text: "Perform history, physical exam, and obtain fasting lipids, glucose, ECG, and assess for exacerbating conditions (anemia, hyperthyroidism).",
+      explanation: "KEY HISTORY: Characterize pain (location, duration, triggers), CAD risk factors (smoking, diabetes, HTN), and LV dysfunction symptoms (orthopnea, edema). NOTE: Correct exacerbating conditions (e.g., Hb <10g/dL) before further testing.",
+      options: {
+        "Exacerbating condition found": "Correct Underlying Condition",
+        "No exacerbating condition": "Risk Factor Modification"
+      }
+    },
+    "Correct Underlying Condition": {
+      text: "Treat identified exacerbators (e.g., iron for anemia, beta-blockers for hyperthyroidism).",
+      explanation: "EXAMPLE: Severe anemia (Hb <8g/dL) may mimic angina; transfuse if symptomatic. CAUTION: Avoid beta-blockers in active asthma/COPD.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Risk Factor Modification": {
+      text: "Initiate lifestyle changes: smoking cessation, Mediterranean diet, and aerobic exercise ≥150min/week.",
+      explanation: "EVIDENCE-BASED: Smoking cessation reduces CAD mortality by 36%. Mediterranean diet lowers CV events by 30%. Exercise improves endothelial function.",
+      options: {
+        "Proceed to Pharmacotherapy": "Preventive Pharmacotherapy"
+      }
+    },
+    "Preventive Pharmacotherapy": {
+      text: "Start aspirin 81mg daily (if no contraindication) and statin (e.g., atorvastatin 40-80mg).",
+      explanation: "DOSING: High-intensity statin (e.g., atorvastatin 40mg) reduces LDL by ≥50%. WARNING: Avoid aspirin in peptic ulcer disease; consider PPI if high GI risk.",
+      options: {
+        "Assess Symptom Severity": "Symptom Assessment"
+      }
+    },
+    "Symptom Assessment": {
+      text: "Are symptoms mild/moderate (controlled with meds) or severe (limiting daily activities)?",
+      explanation: "CLASSIFICATION: Canadian Cardiovascular Society (CCS) Class I-II = mild/moderate; Class III-IV = severe. NOTE: Even mild symptoms require risk stratification.",
+      options: {
+        "Mild/Moderate": "Medical Management",
+        "Severe": "Advanced Risk Stratification"
+      }
+    },
+
+    // Medical Management Pathway
+    "Medical Management": {
+      text: "First-line: Start beta-blocker (e.g., metoprolol succinate 25-100mg daily).",
+      explanation: "CHOICE: Beta-blockers reduce mortality post-MI. USE CAUTION: Avoid in decompensated HF, asthma, or severe bradycardia (HR <50bpm).",
+      options: {
+        "Inadequate response": "Add Second Agent",
+        "Adequate control": "Continued Monitoring"
+      }
+    },
+    "Add Second Agent": {
+      text: "Add long-acting nitrate (isosorbide mononitrate 30-120mg daily) or calcium channel blocker (amlodipine 5-10mg daily).",
+      explanation: "COMBINATION: Beta-blocker + nitrate is synergistic. PREFER CCBs: In vasospastic angina or if beta-blockers contraindicated (e.g., COPD).",
+      options: {
+        "Persistent symptoms": "Consider Stress Testing",
+        "Symptoms controlled": "Continued Monitoring"
+      }
+    },
+    "Continued Monitoring": {
+      text: "Reassess every 6-12 months for symptom progression or new risk factors.",
+      explanation: "MONITORING: Check LDL goal (<70mg/dL for CAD), HbA1c (<7% if diabetic), and BP (<130/80mmHg). WARN: Non-adherence causes 50% of treatment failures.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Advanced Risk Stratification Pathway
+    "Advanced Risk Stratification": {
+      text: "Obtain echocardiogram to assess LV function. Is LVEF ≤40% or high-risk feature present?",
+      explanation: "HIGH-RISK: Prior MI, HFrEF, or multivessel CAD. NOTE: Stress imaging (echo/PET) preferred if baseline ECG uninterpretable (e.g., LBBB).",
+      options: {
+        "High-risk": "Cardiac Catheterization",
+        "Low-risk": "Stress Testing"
+      }
+    },
+    "Stress Testing": {
+      text: "Perform exercise ECG (if interpretable) or pharmacologic stress with imaging (echo/MPI).",
+      explanation: "EXERCISE PREFERRED: Provides functional capacity (METs). IMAGING INDICATIONS: LBBB, paced rhythm, or ≥1mm ST depression at rest.",
+      options: {
+        "Ischemia present": "Cardiac Catheterization",
+        "No ischemia": "Optimize Medical Therapy"
+      }
+    },
+    "Cardiac Catheterization": {
+      text: "Proceed to coronary angiography if high-risk stress test or severe symptoms.",
+      explanation: "INDICATIONS: Left main disease, 3-vessel CAD with LVEF ≤40%, or proximal LAD stenosis. NOTE: FFR/iFR useful for intermediate lesions (40-70% stenosis).",
+      options: {
+        "Revascularization candidate": "Revascularization Decision",
+        "Non-obstructive CAD": "Consider Microvascular Dysfunction"
+      }
+    },
+    "Revascularization Decision": {
+      text: "Is anatomy suitable for CABG (left main, multivessel CAD with diabetes/LV dysfunction) or PCI?",
+      explanation: "CABG BENEFITS: Survival advantage in left main/3-vessel disease. PCI PREFERRED: Focal lesions or high surgical risk (STS score >5%).",
+      options: {
+        "CABG candidate": "Refer to Cardiothoracic Surgery",
+        "PCI candidate": "Perform PCI"
+      }
+    },
+    "Consider Microvascular Dysfunction": {
+      text: "If non-obstructive CAD, assess for coronary microvascular dysfunction or vasospasm.",
+      explanation: "DIAGNOSIS: Acetylcholine provocation testing or coronary flow reserve <2.0. TREAT: CCBs (e.g., diltiazem) and nitrates for vasospasm.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+  
+  
+  
+  // Unstable Angina/NSTEMI approach 
+  "Unstable Angina/NSTEMI": {
+    start: {
+      text: "Does the patient have chest pain at rest (>20min) or new-onset CCS Class III-IV angina?",
+      explanation: "RED FLAG: Rest angina suggests active coronary thrombosis. NOTE: NSTEMI requires troponin elevation (+/- CK-MB), while UA has normal biomarkers.",
+      options: {
+        yes: "Immediate Evaluation",
+        no: "Consider Stable Angina Pathway"
+      }
+    },
+
+    // Immediate Evaluation Pathway
+    "Immediate Evaluation": {
+      text: "Obtain ECG, troponin, CK-MB. Assess for ST deviations or new T-wave inversions.",
+      explanation: "CRITICAL: ST depression ≥0.5mm or dynamic T-wave changes indicate high risk. KEY POINT: Normal ECG doesn't exclude UA/NSTEMI (sensitivity ~50%).",
+      options: {
+        "ST elevation": "Activate STEMI Protocol",
+        "No ST elevation": "Risk Stratification"
+      }
+    },
+    "Risk Stratification": {
+      text: "Calculate TIMI Risk Score (0-7 points). Score ≥3 or troponin+?",
+      explanation: "TIMI SCORE: 1pt each for age>65, ≥3 CAD risk factors, known CAD, aspirin use <7d, recent severe angina, ST changes, elevated biomarkers. HIGH RISK: ≥3pts → mortality 8% at 14d.",
+      options: {
+        "High risk (TIMI≥3/troponin+/ST changes)": "Aggressive Management",
+        "Low risk (TIMI<3/troponin-)": "Conservative Management"
+      }
+    },
+
+    // High-Risk Pathway
+    "Aggressive Management": {
+      text: "Initiate dual antiplatelets (aspirin 325mg + ticagrelor 180mg LD) and anticoagulation (enoxaparin 1mg/kg SQ q12h).",
+      explanation: "DRUG CHOICES: Prefer ticagrelor over clopidogrel in high-risk (PLATO trial benefit). CAUTION: Avoid prasugrel in prior stroke/TIA or age≥75.",
+      options: {
+        "Prepare for Early Invasive Strategy": "Coronary Angiography"
+      }
+    },
+    "Coronary Angiography": {
+      text: "Perform within 24h if stable, immediately if refractory ischemia/shock.",
+      explanation: "EARLY INVASIVE BENEFIT: 22% mortality reduction in high-risk (FRISC II trial). NOTE: Radial access preferred (lower bleeding risk).",
+      options: {
+        "Obstructive CAD found": "Revascularization Decision",
+        "Non-obstructive CAD": "Consider Alternative Diagnoses"
+      }
+    },
+    "Revascularization Decision": {
+      text: "Left main/3-vessel disease or EF<40%? PCI-amenable lesions?",
+      explanation: "CABG INDICATIONS: Left main, multivessel CAD with diabetes/EF<40%. PCI PREFERRED: Focal lesions or high surgical risk (STS score>5%).",
+      options: {
+        "CABG candidate": "Refer to CT Surgery",
+        "PCI candidate": "Proceed with Stenting"
+      }
+    },
+
+    // Low-Risk Pathway
+    "Conservative Management": {
+      text: "Start aspirin 81mg + clopidogrel 75mg daily, heparin bridge, and anti-ischemics (beta-blocker + nitrate).",
+      explanation: "LOW-RISK THERAPY: Avoid GP IIb/IIIa inhibitors (no mortality benefit). MONITOR: Repeat troponin at 3-6h if initial negative but high suspicion.",
+      options: {
+        "Recurrent ischemia/troponin+": "Escalate to High-Risk Pathway",
+        "Stable for 24h": "Stress Testing"
+      }
+    },
+    "Stress Testing": {
+      text: "Perform exercise ECG (if interpretable) or pharmacologic stress imaging before discharge.",
+      explanation: "IMAGING MODALITIES: Echo for wall motion, MPI for ischemia extent. POSITIVE TEST: >1mm ST depression, EF<40%, or large perfusion defect → consider angiography.",
+      options: {
+        "Positive stress test": "Coronary Angiography",
+        "Negative stress test": "Medical Therapy Optimization"
+      }
+    },
+
+    // Long-Term Management
+    "Medical Therapy Optimization": {
+      text: "Continue dual antiplatelets x12mo (DAPT), high-intensity statin, beta-blocker, and ACEI/ARB.",
+      explanation: "SECONDARY PREVENTION: Goal LDL<70mg/dL (atorvastatin 40-80mg). CAUTION: Monitor for ticagrelor dyspnea (15% incidence, usually benign).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Consider Alternative Diagnoses": {
+      text: "Evaluate for microvascular dysfunction, vasospasm, or non-cardiac causes.",
+      explanation: "DIAGNOSTIC TESTS: Acetylcholine provocation (vasospasm), CFR<2.0 (microvascular dysfunction), or CTA to rule out MI with non-obstructive coronary arteries (MINOCA).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+  
+  
+  // Systolic Murmurs Approach
+  "Systolic Murmurs": {
+    start: {
+      text: "Is the murmur definitely systolic (timed with carotid pulse or S1/S2)?",
+      explanation: "CRITICAL: Confirm timing first - systole is shorter than diastole at HR <80bpm. NOTE: Murmurs radiating to carotids are almost always systolic.",
+      options: {
+        yes: "Characterize Murmur",
+        no: "Consider Diastolic Murmur Pathway"
+      }
+    },
+
+    // Murmur Characterization Pathway
+    "Characterize Murmur": {
+      text: "Identify location of maximal intensity:",
+      explanation: "LOCATION CLUES:\n- 2nd RICS: Aortic valve\n- 2nd LICS: Pulmonic valve\n- 5th LICS (LSB): Tricuspid valve\n- 5th ICS (MCL): Mitral valve",
+      options: {
+        "2nd RICS": "Aortic Valve Evaluation",
+        "2nd LICS": "Pulmonic Valve Evaluation",
+        "5th LICS": "Tricuspid Valve Evaluation",
+        "5th ICS MCL": "Mitral Valve Evaluation"
+      }
+    },
+
+    // Aortic Valve Pathway
+    "Aortic Valve Evaluation": {
+      text: "Is the murmur crescendo-decrescendo with harsh quality?",
+      explanation: "AORTIC STENOSIS: Harsh, radiating to carotids. KEY FEATURE: Intensity correlates with severity but may decrease in advanced disease ('paradoxically soft').",
+      options: {
+        yes: "Assess for Aortic Stenosis",
+        no: "Consider Aortic Sclerosis"
+      }
+    },
+    "Assess for Aortic Stenosis": {
+      text: "Perform Valsalva - does murmur intensity decrease?",
+      explanation: "AORTIC STENOSIS: Decreases with Valsalva (unlike HOCM). RED FLAGS: Syncope, angina, or HF symptoms indicate severe disease (valve area <1cm²).",
+      options: {
+        yes: "Confirm Aortic Stenosis",
+        no: "Evaluate for HOCM"
+      }
+    },
+    "Confirm Aortic Stenosis": {
+      text: "Order echocardiogram. Is peak gradient ≥40mmHg or valve area ≤1.0cm²?",
+      explanation: "SEVERITY CRITERIA:\n- Mild: <30mmHg\n- Moderate: 30-39mmHg\n- Severe: ≥40mmHg\nACTION: Refer to cardiology if symptomatic or severe.",
+      options: {
+        yes: "Severe AS Management",
+        no: "Monitor Mild/Moderate AS"
+      }
+    },
+
+    // Mitral Valve Pathway
+    "Mitral Valve Evaluation": {
+      text: "Is the murmur holosystolic (blowing) or late systolic with click?",
+      explanation: "MITRAL REGURG: Holosystolic (blowing) with radiation to axilla. MITRAL PROLAPSE: Late systolic + click (earlier with standing).",
+      options: {
+        "Holosystolic": "Assess Mitral Regurgitation",
+        "Late systolic + click": "Evaluate Mitral Prolapse"
+      }
+    },
+    "Assess Mitral Regurgitation": {
+      text: "Does handgrip increase murmur intensity?",
+      explanation: "MR PHYSIOLOGY: Handgrip ↑ afterload → worsens regurgitation. NOTE: Acute MR (e.g., papillary muscle rupture) has decrescendo configuration.",
+      options: {
+        yes: "Chronic MR Management",
+        no: "Consider Acute MR"
+      }
+    },
+    "Chronic MR Management": {
+      text: "Obtain echocardiogram. Is LVEF ≤60% or LVESD ≥40mm?",
+      explanation: "SURGICAL INDICATIONS: Symptoms, EF≤60%, or LVESD≥40mm (Class I). NOTE: Repair preferred over replacement when feasible.",
+      options: {
+        yes: "Refer for Mitral Valve Repair",
+        no: "Medical Management"
+      }
+    },
+
+    // Tricuspid Valve Pathway
+    "Tricuspid Valve Evaluation": {
+      text: "Does inspiration increase murmur intensity?",
+      explanation: "TRICUSPID REGURG: ↑ with inspiration (Carvallo's sign). ASSOCIATIONS: RV enlargement, V waves in JVP, hepatic pulsatility.",
+      options: {
+        yes: "Assess for TR Causes",
+        no: "Consider VSD"
+      }
+    },
+    "Assess for TR Causes": {
+      text: "Look for signs of pulmonary hypertension (loud P2, RV heave).",
+      explanation: "SECONDARY TR: Most common (due to RV dilation). PRIMARY TR: Rare (e.g., endocarditis, carcinoid). ECHO: Essential for assessment.",
+      options: {
+        "PH present": "Treat Underlying PH",
+        "No PH": "Evaluate Primary TR"
+      }
+    },
+
+    // Provocative Maneuvers Key
+    "Provocative Maneuvers": {
+      text: "Summary of Maneuver Effects:",
+      explanation: `
+      VALSALVA: ↓ preload → ↓ most murmurs (EXCEPT HOCM ↑)
+      HANDGRIP: ↑ afterload → ↑ MR, VSD; ↓ AS, HOCM
+      STANDING: ↓ preload → ↑ HOCM, MVP clicks earlier
+      SQUATTING: ↑ preload → ↓ HOCM, MVP clicks later
+      INSPIRATION: ↑ right-sided murmurs (TR, PS)`,
+      options: {
+        "Return to Algorithm": "start"
+      }
+    }
+  },
+  
+  
+  
+  // Palpitations Approach
+  "Palpitations": {
+    start: {
+      text: "Does the patient have high-risk features (syncope, structural heart disease, family history of sudden death)?",
+      explanation: "RED FLAGS: Syncope with palpitations suggests VT or severe bradycardia. EF <40% increases risk of malignant arrhythmias 5-fold.",
+      options: {
+        yes: "High-Risk Evaluation",
+        no: "Low-Risk Evaluation"
+      }
+    },
+
+    // High-Risk Pathway
+    "High-Risk Evaluation": {
+      text: "Obtain ECG and echocardiogram immediately. Any of these findings?",
+      explanation: "CRITICAL ECG FINDINGS:\n- Delta waves (WPW)\n- Q waves (prior MI)\n- LVH with deep septal Qs (HCM)\n- QT >500ms (Torsades risk)\nECHO: EF <40% mandates EP referral.",
+      options: {
+        "Abnormal ECG/echo": "Urgent Cardiology Referral",
+        "Normal ECG/echo": "Extended Monitoring"
+      }
+    },
+    "Urgent Cardiology Referral": {
+      text: "Refer to electrophysiologist for EPS ± ICD consideration.",
+      explanation: "INDICATIONS FOR ICD: EF <35% + NSVT (MADIT-II criteria) or prior cardiac arrest. NOTE: WPW with syncope needs ablation.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Extended Monitoring": {
+      text: "Use 30-day event monitor or implantable loop recorder.",
+      explanation: "LOOP RECORDER: Highest yield for infrequent symptoms (up to 88% diagnostic rate at 1 year). Avoid Holter for < daily symptoms.",
+      options: {
+        "Arrhythmia detected": "Arrhythmia-Specific Management",
+        "No arrhythmia": "Reassure with Safety Net"
+      }
+    },
+
+    // Low-Risk Pathway
+    "Low-Risk Evaluation": {
+      text: "Characterize palpitations: Regular/irregular? Associated with neck pounding?",
+      explanation: "CLINICAL CLUES:\n- Flip-flopping: PVCs/PACs\n- Rapid irregular: AFib\n- Neck pounding: AVNRT (atrial contraction against closed AV valves)\n- Anxiety: Often mimics arrhythmias",
+      options: {
+        "Regular": "Assess for SVT/PVCs",
+        "Irregular": "Assess for Atrial Fibrillation"
+      }
+    },
+    "Assess for SVT/PVCs": {
+      text: "Does Valsalva terminate episodes? Any visible neck pulsations?",
+      explanation: "AVNRT/AVRT: Terminates with Valsalva. NECK PULSES: Cannon A waves in AV dissociation. PVCs: Feel like 'skipped beats'.",
+      options: {
+        "Terminates with Valsalva": "SVT Management",
+        "No termination": "PVC Evaluation"
+      }
+    },
+    "SVT Management": {
+      text: "Educate on vagal maneuvers. Consider ablation if frequent/severe.",
+      explanation: "ABLATION SUCCESS: >95% for AVNRT/AVRT. WARNING: Avoid verapamil in WPW with AFib (risk of VF).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "PVC Evaluation": {
+      text: "Are PVCs frequent (>10%/day) or symptomatic despite lifestyle changes?",
+      explanation: "HIGH BURDEN: >20% PVCs may cause cardiomyopathy. TREATMENT: Beta-blockers first-line; flecainide for refractory cases.",
+      options: {
+        yes: "Consider Beta-Blocker",
+        no: "Reassure and Monitor"
+      }
+    },
+    "Assess for Atrial Fibrillation": {
+      text: "Check pulse irregularity and obtain ECG. CHA₂DS₂-VASc score?",
+      explanation: "CHA₂DS₂-VASc ≥2: Anticoagulate (DOAC preferred). RHYTHM VS RATE: Consider ablation if symptomatic despite meds (young patients).",
+      options: {
+        "Confirmed AFib": "AFib Management",
+        "No AFib": "Consider Anxiety/Hyperthyroidism"
+      }
+    },
+    "AFib Management": {
+      text: "Start anticoagulation if indicated. Rate vs rhythm control based on symptoms.",
+      explanation: "EARLY ABLATION: Consider if <1yr duration (CASTLE-AF benefit). AVOID: Antiarrhythmics in structural heart disease (amiodarone exception).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Diagnostic Tools
+    "Diagnostic Approach": {
+      text: "Summary of Monitoring Options:",
+      explanation: `
+      HOLTER: 24-48h (best for daily symptoms)
+      EVENT MONITOR: 30 days (patient-triggered)
+      LOOP RECORDER: 1-3 years (implantable)
+      MOBILE CARDIAC TELEMETRY: Real-time analysis
+      NOTE: Yield increases with symptom frequency`,
+      options: {
+        "Return to Algorithm": "start"
+      }
+    }
+  },
+  
+  
+  
+  // Hypotension Approach
+  "Hypotension": {
+    start: {
+      text: "Is the patient unstable (altered mental status, SBP <90mmHg with signs of hypoperfusion)?",
+      explanation: "RED FLAG: Unstable hypotension requires immediate intervention. CRITICAL: Check for pulsus paradoxus (>10mmHg drop) suggesting tamponade.",
+      options: {
+        yes: "Immediate Resuscitation",
+        no: "Stable Evaluation"
+      }
+    },
+
+    // Unstable Pathway
+    "Immediate Resuscitation": {
+      text: "Initiate ACLS protocol. Obtain IV access, give 500mL NS bolus, and check bedside echo.",
+      explanation: "FLUID CHALLENGE: 30mL/kg crystalloid for sepsis. CAUTION: Limit to 250mL boluses in cardiogenic shock (risk of pulmonary edema).",
+      options: {
+        "No response": "Vasopressor Initiation",
+        "Transient response": "Identify Etiology"
+      }
+    },
+    "Vasopressor Initiation": {
+      text: "Start norepinephrine 2-20mcg/min IV. Is cardiac function impaired?",
+      explanation: "FIRST-LINE PRESSOR: Norepinephrine for most shock states. ADD DOBUTAMINE: If EF<40% (2-20mcg/kg/min). AVOID: Dopamine in cardiogenic shock (increases mortality).",
+      options: {
+        yes: "Cardiogenic Shock Management",
+        no: "Vasodilatory Shock Management"
+      }
+    },
+
+    // Cardiogenic Shock Pathway
+    "Cardiogenic Shock Management": {
+      text: "Obtain ECG and troponin. Is STEMI or mechanical complication present?",
+      explanation: "MECHANICAL COMPLICATIONS: Look for new murmur (VSD/MR), JVD (RV failure), or pulsus paradoxus (tamponade). ECHO IS KEY.",
+      options: {
+        "STEMI": "Emergency Revascularization",
+        "Mechanical complication": "Urgent Surgery Consult",
+        "Non-ischemic": "Inotropic Support"
+      }
+    },
+    "Emergency Revascularization": {
+      text: "Activate cath lab for PCI within 90min. Insert IABP if refractory shock.",
+      explanation: "SHOCK TRIAL DATA: 67% mortality reduction with early revascularization. IABP: Contraindicated in aortic regurgitation/dissection.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Vasodilatory Shock Pathway
+    "Vasodilatory Shock Management": {
+      text: "Check lactate, cultures, cortisol. Suspected sepsis vs adrenal crisis?",
+      explanation: "SEPSIS BUNDLE: Antibiotics within 1hr + fluid resuscitation. ADRENAL CRISIS: Give hydrocortisone 100mg IV if AM cortisol <18mcg/dL.",
+      options: {
+        "Sepsis": "Sepsis Protocol",
+        "Adrenal insufficiency": "Steroid Replacement",
+        "Anaphylaxis": "Epinephrine IM"
+      }
+    },
+
+    // Stable Evaluation Pathway
+    "Stable Evaluation": {
+      text: "Assess volume status: JVD, lung crackles, skin turgor, orthostatic BP changes.",
+      explanation: "HYPOVOLEMIA CLUES: Dry mucous membranes, >20bpm HR increase on standing. CARDIOGENIC: Crackles + JVD suggests fluid overload.",
+      options: {
+        "Hypovolemic": "Volume Resuscitation",
+        "Euvolemic/Hypervolemic": "Hemodynamic Assessment"
+      }
+    },
+    "Hemodynamic Assessment": {
+      text: "Obtain CVP/echo. CO and SVR patterns:",
+      explanation: "HEMODYNAMIC PROFILES:\n- Cardiogenic: CO↓, PCWP↑\n- Distributive: CO↑, SVR↓\n- Obstructive: CO↓, RV dilated\n- Hypovolemic: CO↓, CVP↓",
+      options: {
+        "Low CO, High PCWP": "Cardiogenic Workup",
+        "High CO, Low SVR": "Sepsis Evaluation",
+        "Low CO, RV strain": "PE Protocol"
+      }
+    },
+
+    // Obstructive Shock Pathway
+    "PE Protocol": {
+      text: "CTPA or VQ scan for PE. SBP >90mmHg?",
+      explanation: "THROMBOLYSIS CRITERIA: SBP<90 + RV strain on echo. CONTRAINDICATIONS: Active bleeding, recent stroke.",
+      options: {
+        yes: "Therapeutic Anticoagulation",
+        no: "Consider Thrombolytics"
+      }
+    },
+
+    // Diagnostic Key
+    "Diagnostic Pearls": {
+      text: "Critical Differential Diagnoses:",
+      explanation: `
+      CARDIAC: 
+      - STEMI (ECG changes)
+      - Tamponade (Beck's triad: hypotension, JVD, muffled heart sounds)
+      - Massive PE (RV strain on echo)
+      
+      NONCARDIAC:
+      - Sepsis (fever, ↑lactate)
+      - Adrenal crisis (hyperpigmentation, hyponatremia)
+      - Anaphylaxis (urticaria, stridor)`,
+      options: {
+        "Return to Algorithm": "start"
+      }
+    }
+  }
+}; 
+
+
+
+
+  
+
+
+  
+
+
+    let currentSymptom = null;
+    let currentQuestion = "start";
+
+    function playClick() {
+      const sound = document.getElementById("click-sound");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+      }
+    }
+
+    function startSymptom(symptom) {
+      currentSymptom = symptom;
+      currentQuestion = "start";
+      document.getElementById("symptom-title").textContent = symptom;
+      showQuestion();
+
+      document.getElementById("main-page").style.display = "none";
+      document.getElementById("question-page").style.display = "block";
+      document.getElementById("headline").style.display = "none";
+      document.getElementById("subheadline").style.display = "none";
+    }
+
+    // NEW/MODIFIED: This function is updated to show images.
+    function showQuestion() {
+      const symptomQuestions = questions[currentSymptom];
+      if (!symptomQuestions || !symptomQuestions[currentQuestion]) {
+        alert("Invalid symptom or question flow.");
+        return;
+      }
+
+      const questionData = symptomQuestions[currentQuestion];
+      const imageContainer = document.getElementById("question-image-container");
+      
+      // Clear previous image
+      imageContainer.innerHTML = "";
+
+      // If an image path exists, create and display the image
+      if (questionData.image) {
+        const img = document.createElement("img");
+        img.src = questionData.image;
+        img.alt = questionData.text; // for accessibility
+        img.className = "question-image";
+        imageContainer.appendChild(img);
+      }
+
+      document.getElementById("question").textContent = questionData.text;
+      document.getElementById("footer").textContent = questionData.explanation || "No explanation available.";
+
+      const buttons = Object.keys(questionData.options)
+        .map(option =>
+          `<button class='option-button' onclick="playClick(); nextQuestion('${option}')">${option}</button>`)
+        .join("");
+      document.querySelector(".button-container").innerHTML = buttons;
+    }
+
+    function nextQuestion(answer) {
+      const symptomQuestions = questions[currentSymptom];
+      const current = symptomQuestions[currentQuestion];
+      if (!current || !current.options[answer]) {
+        alert("Invalid choice.");
+        return;
+      }
+
+      const next = current.options[answer];
+      // Check if the next step is another question or a final diagnosis
+      if (symptomQuestions[next] && symptomQuestions[next].options) {
+          currentQuestion = next;
+          showQuestion();
+      } else {
+          // This handles both terminal nodes that are defined as full objects
+          // and those that are simple strings (your original implementation)
+          if (symptomQuestions[next]) {
+              currentQuestion = next;
+              showQuestion(); // This will display the final diagnosis with its image
+          } else {
+              // This is a fallback for legacy string-only terminals
+              document.getElementById("question").textContent = next;
+              document.getElementById("footer").textContent = "End of diagnostic path.";
+              document.querySelector(".button-container").innerHTML =
+                `<button class='option-button' onclick="playClick(); restart()">Restart</button>`;
+              document.getElementById("question-image-container").innerHTML = ""; // Clear image
+          }
+      }
+    }
+
+
+    function restart() {
+      document.getElementById("main-page").style.display = "flex";
+      document.getElementById("question-page").style.display = "none";
+      document.getElementById("headline").style.display = "block";
+      document.getElementById("subheadline").style.display = "block";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      sidebar.classList.toggle("active");
+      overlay.style.display = sidebar.classList.contains("active") ? "block" : "none";
+    }
+
+    document.addEventListener("click", function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const toggleBtn = document.querySelector(".toggle-button");
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnToggle = toggleBtn.contains(event.target);
+      if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains("active")) {
+        toggleSidebar();
+      }
+    });
+
+    let startX = 0;
+    document.addEventListener("touchstart", function(e) {
+      if (e.touches.length === 1) { startX = e.touches[0].clientX; }
+    });
+    document.addEventListener("touchend", function(e) {
+      const sidebar = document.getElementById("sidebar");
+      const diff = e.changedTouches[0].clientX - startX;
+      if (diff > 50 && sidebar.classList.contains("active")) { toggleSidebar(); }
+    });
+
+    function goHome() {
+      window.location.href = "../index.html";
+    }
+
+    function navigateTo(page) {
+      window.location.href = page;
+      const loadingScreen = document.querySelector('.loading');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'flex';
+        setTimeout(() => { window.location.href = page; }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>

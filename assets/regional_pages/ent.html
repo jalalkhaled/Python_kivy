@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ENT Symptoms</title>
+  <link rel="stylesheet" href="../style/regional_style.css" type="text/css" media="all" />
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="nav-title">ALGOMED <span>ENT</span></div>
+  <button class="toggle-button" onclick="playClick(); toggleSidebar()">☰</button>
+</nav>
+
+<!-- Overlay for click outside -->
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <ul>
+      <li onclick="navigateTo('respiratory.html')">Respiratory</li>
+      <li onclick="navigateTo('cardiovascular.html')">Cardiovascular</li>
+      <li onclick="navigateTo('git.html')">Gastroenterology</li>
+      <li onclick="navigateTo('gynecology.html')">Gynecology</li>
+      <li onclick="navigateTo('hepatology.html')">Hepatology</li>
+      <li onclick="navigateTo('nephrology.html')">Nephrology</li>
+      <li onclick="navigateTo('obstetric.html')">Obstetric</li>
+      <li onclick="navigateTo('rheumatology.html')">Rheumatology</li>
+      <li onclick="navigateTo('hematology.html')">Hematology</li>
+      <li onclick="navigateTo('pediatric.html')">Pediatric</li>
+      <li onclick="navigateTo('ophthalmology.html')">Ophthalmology</li>
+      <li onclick="navigateTo('neurology.html')">Neurology</li>
+      <li onclick="navigateTo('dermatology.html')">Dermatology</li>
+      <li onclick="navigateTo('ent.html')">ENT</li>
+      <li onclick="navigateTo('psychiatric.html')">Psychiatric</li>
+      <li onclick="navigateTo('General.html')">General</li>
+    </ul>
+<button class="sidebar-about-button" onclick="navigateTo('../about.html')">About Us</button>
+  </aside>
+
+  <!-- Audio -->
+  <audio id="click-sound" src="../sounds/click_sound.wav" preload="auto"></audio>
+
+  <!-- Headlines Outside Container -->
+  <h3 id="headline">Select a Primary Symptom</h3>
+<p id="subheadline">Choose from the list below to begin diagnosis.</p>
+
+  <!-- Main Page -->
+  <div id="main-page" class="container">
+    <button class="symptom-button" onclick="playClick(); startSymptom('Stridor')">Stridor</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Epistaxis')">Epistaxis</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Tinnitus')">Tinnitus</button>
+    
+  </div>
+
+  <!-- Question Page -->
+  <div id="question-page">
+  <div class="title" id="symptom-title">Symptom Diagnostic</div>
+  <div id="question-image-container"></div>
+  <div id="question" class="question"></div>
+  <div class="button-container"></div>
+  <div id="footer" class="footer"></div>
+</div>
+
+  <!-- Home Button -->
+  <button class="home-button" onclick="goHome()">
+  <img src="../bodyicons/home_button.png" alt="Home" class="home-icon">
+  <span class="sr-only">Home</span>
+</button>
+  
+  
+
+  <!-- Script -->
+  <script>
+  const questions = {
+  
+    "Epistaxis": {
+      start: {
+        text: "Is the patient actively bleeding?",
+        explanation: "Assess for active bleeding and hemodynamic stability.",
+        options: {
+          yes: "ABCs assessment",
+          no: "Monitor and advise on prevention (e.g., humidification, nasal saline)."
+        }
+      },
+      "ABCs assessment": {
+        text: "Is the airway secure, breathing normal, and circulation stable?",
+        explanation: "Unstable patients require immediate resuscitation.",
+        options: {
+          yes: "Initial conservative measures",
+          no: "Resuscitate (e.g., airway support, IV fluids)."
+        }
+      },
+      "Initial conservative measures": {
+        text: "Apply pressure (squeeze alae), lean forward, and give oxymetazoline x2 sprays.",
+        explanation: "First-line treatment for most anterior nosebleeds.",
+        options: {
+          "Bleeding stops": "Observe for rebleeding; pack if recurrent.",
+          "Bleeding persists": "Rhinoscopy and local measures"
+        }
+      },
+      "Rhinoscopy and local measures": {
+        text: "Identify source. Apply cautery or anterior packing (gauze/balloon).",
+        explanation: "For persistent bleeding after conservative measures.",
+        options: {
+          "Bleeding stops": "ENT follow-up in 2-3 days; consider antibiotics.",
+          "Bleeding persists": "Posterior packing or surgical referral"
+        }
+      },
+      "Posterior packing or surgical referral": {
+        text: "Place posterior pack (e.g., balloon) or refer for ligation/embolization.",
+        explanation: "For refractory bleeding or suspected coagulopathy.",
+        options: {
+          "Bleeding stops": "Admit for monitoring; remove packing in 48-72h.",
+          "Bleeding persists": "Urgent ENT/IR intervention (e.g., embolization)."
+        }
+      }
+    }, 
+
+  
+  
+// Stridor Approach 
+    "Stridor": {
+      start: {
+        text: "Is the stridor acute or chronic?",
+        explanation: "Acute stridor requires immediate airway assessment; chronic stridor allows for more thorough evaluation.",
+        options: {
+          "Acute (<24 hours)": "Acute stridor evaluation",
+          "Chronic (>2 weeks)": "Chronic stridor evaluation",
+          "Subacute (1-14 days)": "Subacute stridor evaluation"
+        }
+      },
+      "Acute stridor evaluation": {
+        text: "Does the patient show signs of impending airway obstruction?",
+        explanation: "Drooling, tripod positioning, and hypoxia indicate emergent need for airway management.",
+        options: {
+          "Yes (respiratory distress)": "Emergent airway management",
+          "No (stable)": "Non-emergent acute causes"
+        }
+      },
+      "Emergent airway management": {
+        text: "Prepare for definitive airway while evaluating:",
+        explanation: "Call ENT/anesthesia. Do NOT agitate the patient. Have cricothyrotomy kit ready.",
+        options: {
+          "Child <3 years": "Pediatric emergency pathway",
+          "Adult/older child": "Adult emergency pathway"
+        }
+      },
+      "Pediatric emergency pathway": {
+        text: "Most likely pediatric emergencies:",
+        explanation: "Differentiate by associated symptoms and age group.",
+        options: {
+          "Fever + drooling + toxic appearance": "Epiglottitis (Hib vaccine status?)",
+          "Barking cough + fever": "Severe croup (consider racemic epi)",
+          "Sudden onset + choking": "Foreign body aspiration",
+          "History of intubation": "Subglottic stenosis"
+        }
+      },
+      "Adult emergency pathway": {
+        text: "Most likely adult emergencies:",
+        explanation: "Assess for anaphylaxis, trauma, or infection.",
+        options: {
+          "Allergy exposure + swelling": "Anaphylaxis (epinephrine IM)",
+          "Recent trauma/surgery": "Laryngeal injury",
+          "Fever + sore throat": "Bacterial tracheitis/epiglottitis",
+          "Recent intubation": "Laryngeal edema"
+        }
+      },
+      "Non-emergent acute causes": {
+        text: "Evaluate for non-emergent causes:",
+        explanation: "Assess for characteristic features of each condition.",
+        options: {
+          "Recent URI + barking cough": "Viral croup (steam therapy)",
+          "Sudden voice change + throat pain": "Laryngospasm",
+          "Immunocompromised state": "Consider fungal infection",
+          "Recent chemical exposure": "Inhalation injury"
+        }
+      },
+      "Chronic stridor evaluation": {
+        text: "Select most prominent feature:",
+        explanation: "Chronic stridor often indicates structural abnormalities.",
+        options: {
+          "Worsens with feeding (infants)": "Laryngomalacia",
+          "Progressive hoarseness": "Laryngeal carcinoma",
+          "History of intubation": "Subglottic/tracheal stenosis",
+          "Associated dysphagia": "Extrinsic compression"
+        }
+      },
+      "Subacute stridor evaluation": {
+        text: "Evaluate for subacute causes:",
+        explanation: "1-2 week progression suggests infectious or inflammatory processes.",
+        options: {
+          "Granulomatous disease history": "Wegener's granulomatosis",
+          "Immunocompromised state": "CMV/herpetic laryngitis",
+          "Recent radiation therapy": "Laryngeal edema",
+          "Neurologic symptoms": "Vocal cord paralysis"
+        }
+      },
+      // Diagnostic pathways
+      "Laryngoscopy/bronchoscopy results": {
+        text: "Procedure findings:",
+        explanation: "Direct visualization is diagnostic for most structural causes.",
+        options: {
+          "Vocal cord paralysis": "Evaluate for CNS/thoracic malignancy",
+          "Subglottic stenosis": "Grade severity (Cotton-Myer)",
+          "Laryngeal mass": "Biopsy for histopathology",
+          "Normal anatomy": "Consider functional disorders"
+        }
+      },
+      // Terminal diagnosis nodes
+      "Epiglottitis (Hib vaccine status?)": {
+        text: "Diagnosis: Acute epiglottitis.",
+        explanation: "EMERGENCY: Do not examine throat. Secure airway in OR. IV ceftriaxone + dexamethasone.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Laryngeal carcinoma": {
+        text: "Diagnosis: Laryngeal neoplasm.",
+        explanation: "Urgent ENT referral. CT neck with contrast. Smoking cessation counseling.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Vocal cord paralysis": {
+        text: "Diagnosis: Vocal cord paralysis.",
+        explanation: "CT from skull base to diaphragm to identify etiology. Consider speech therapy.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      }
+    },
+    
+    
+    // Tinnitus Approach
+  "Tinnitus": {
+    start: {
+      text: "Can the examiner hear the tinnitus (objective) or only the patient (subjective)?",
+      explanation: "CRITICAL FIRST STEP: Objective tinnitus suggests vascular/mechanical causes requiring urgent evaluation. Subjective is more common (90%) but harder to diagnose.",
+      options: {
+        "Objective": "Objective Tinnitus Evaluation",
+        "Subjective": "Subjective Tinnitus Evaluation"
+      }
+    },
+
+    // Objective Tinnitus Pathway
+    "Objective Tinnitus Evaluation": {
+      text: "Is the tinnitus pulsatile (synchronous with heartbeat)?",
+      explanation: "PULSATILE RED FLAGS: Arteriovenous malformations, carotid artery disease, or benign intracranial hypertension. Auscultate for bruits over carotids/temples.",
+      options: {
+        yes: "Pulsatile Tinnitus Workup",
+        no: "Non-Pulsatile Objective Tinnitus"
+      }
+    },
+    "Pulsatile Tinnitus Workup": {
+      text: "Check for retrotympanic mass on otoscopy. Any visible vascular abnormality?",
+      explanation: "RETROTYMPANIC MASSES:\n- Glomus tumor (reddish mass)\n- Aberrant carotid artery\n- High-riding jugular bulb\nACTION: Order CT temporal bone if mass seen.",
+      options: {
+        "Mass present": "High-Resolution CT Temporal Bone",
+        "No mass": "MR Angiography + MRI Brain"
+      }
+    },
+    "High-Resolution CT Temporal Bone": {
+      text: "CT shows vascular anomaly or tumor?",
+      explanation: "COMMON FINDINGS:\n- Glomus tympanicum (middle ear)\n- Carotid artery dehiscence\n- Jugular bulb abnormalities\nNOTE: Biopsy contraindicated without imaging (risk of hemorrhage).",
+      options: {
+        yes: "ENT/Neurosurgery Referral",
+        no: "Proceed with MRI/MRA"
+      }
+    },
+    "Non-Pulsatile Objective Tinnitus": {
+      text: "Does patient have palatal/myoclonus or TMJ symptoms?",
+      explanation: "MECHANICAL CAUSES:\n- Palatal myoclonus (visible twitching)\n- Stapedius spasm (clicking sounds)\n- TMJ disorder (pain with chewing)\nDIAGNOSIS: EMG for palatal myoclonus.",
+      options: {
+        yes: "Neuromuscular Evaluation",
+        no: "Consider Patulous Eustachian Tube"
+      }
+    },
+
+    // Subjective Tinnitus Pathway
+    "Subjective Tinnitus Evaluation": {
+      text: "Is hearing loss present on audiometry?",
+      explanation: "KEY POINT: 75% of subjective tinnitus correlates with cochlear damage. Asymmetric loss raises concern for acoustic neuroma (MRI needed).",
+      options: {
+        yes: "Hearing Loss Workup",
+        no: "Metabolic/Psychiatric Evaluation"
+      }
+    },
+    "Hearing Loss Workup": {
+      text: "Is hearing loss symmetric or asymmetric?",
+      explanation: "ASYMMETRIC LOSS RED FLAGS:\n- Acoustic neuroma (constant tinnitus + imbalance)\n- Meniere's (intermittent tinnitus + vertigo)\nACTION: MRI with gadolinium if asymmetric.",
+      options: {
+        "Symmetric": "Cochlear Tinnitus Management",
+        "Asymmetric": "MRI with Gadolinium"
+      }
+    },
+    "Cochlear Tinnitus Management": {
+      text: "Treat underlying cause (noise exposure, presbycusis). Consider:",
+      explanation: "TREATMENT OPTIONS:\n- Hearing aids (amplify ambient sound)\n- Sound masking devices\n- Cognitive behavioral therapy\nAVOID: Long-term benzodiazepines (risk of dependence).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Metabolic/Psychiatric Evaluation": {
+      text: "Check TSH, CBC, lipids, zinc. Any psychiatric symptoms?",
+      explanation: "METABOLIC CAUSES:\n- Hypothyroidism (↑TSH)\n- Anemia (↓Hgb)\n- Zinc deficiency\nPSYCHIATRIC: Anxiety/depression worsen perception.",
+      options: {
+        "Abnormal labs": "Treat Underlying Condition",
+        "Psychiatric features": "Consider CBT/SSRI",
+        "No cause found": "Reassure + Follow-up"
+      }
+    },
+
+    // Quick Reference
+    "Medication Culprits": {
+      text: "Common Ototoxic Medications:",
+      explanation: `
+      HIGH RISK:
+      - Aminoglycosides (gentamicin)
+      - Loop diuretics (furosemide)
+      - Chemotherapy (cisplatin)
+      
+      MODERATE RISK:
+      - High-dose NSAIDs
+      - Quinine/antimalarials
+      - SSRIs (rare)`,
+      options: {
+        "Return to Algorithm": "start"
+      }
+    }
+  }
+};
+
+    
+  
+
+
+    let currentSymptom = null;
+    let currentQuestion = "start";
+
+    function playClick() {
+      const sound = document.getElementById("click-sound");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+      }
+    }
+
+    function startSymptom(symptom) {
+      currentSymptom = symptom;
+      currentQuestion = "start";
+      document.getElementById("symptom-title").textContent = symptom;
+      showQuestion();
+
+      document.getElementById("main-page").style.display = "none";
+      document.getElementById("question-page").style.display = "block";
+      document.getElementById("headline").style.display = "none";
+      document.getElementById("subheadline").style.display = "none";
+    }
+
+    // NEW/MODIFIED: This function is updated to show images.
+    function showQuestion() {
+      const symptomQuestions = questions[currentSymptom];
+      if (!symptomQuestions || !symptomQuestions[currentQuestion]) {
+        alert("Invalid symptom or question flow.");
+        return;
+      }
+
+      const questionData = symptomQuestions[currentQuestion];
+      const imageContainer = document.getElementById("question-image-container");
+      
+      // Clear previous image
+      imageContainer.innerHTML = "";
+
+      // If an image path exists, create and display the image
+      if (questionData.image) {
+        const img = document.createElement("img");
+        img.src = questionData.image;
+        img.alt = questionData.text; // for accessibility
+        img.className = "question-image";
+        imageContainer.appendChild(img);
+      }
+
+      document.getElementById("question").textContent = questionData.text;
+      document.getElementById("footer").textContent = questionData.explanation || "No explanation available.";
+
+      const buttons = Object.keys(questionData.options)
+        .map(option =>
+          `<button class='option-button' onclick="playClick(); nextQuestion('${option}')">${option}</button>`)
+        .join("");
+      document.querySelector(".button-container").innerHTML = buttons;
+    }
+
+    function nextQuestion(answer) {
+      const symptomQuestions = questions[currentSymptom];
+      const current = symptomQuestions[currentQuestion];
+      if (!current || !current.options[answer]) {
+        alert("Invalid choice.");
+        return;
+      }
+
+      const next = current.options[answer];
+      // Check if the next step is another question or a final diagnosis
+      if (symptomQuestions[next] && symptomQuestions[next].options) {
+          currentQuestion = next;
+          showQuestion();
+      } else {
+          // This handles both terminal nodes that are defined as full objects
+          // and those that are simple strings (your original implementation)
+          if (symptomQuestions[next]) {
+              currentQuestion = next;
+              showQuestion(); // This will display the final diagnosis with its image
+          } else {
+              // This is a fallback for legacy string-only terminals
+              document.getElementById("question").textContent = next;
+              document.getElementById("footer").textContent = "End of diagnostic path.";
+              document.querySelector(".button-container").innerHTML =
+                `<button class='option-button' onclick="playClick(); restart()">Restart</button>`;
+              document.getElementById("question-image-container").innerHTML = ""; // Clear image
+          }
+      }
+    }
+
+
+    function restart() {
+      document.getElementById("main-page").style.display = "flex";
+      document.getElementById("question-page").style.display = "none";
+      document.getElementById("headline").style.display = "block";
+      document.getElementById("subheadline").style.display = "block";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      sidebar.classList.toggle("active");
+      overlay.style.display = sidebar.classList.contains("active") ? "block" : "none";
+    }
+
+    document.addEventListener("click", function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const toggleBtn = document.querySelector(".toggle-button");
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnToggle = toggleBtn.contains(event.target);
+      if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains("active")) {
+        toggleSidebar();
+      }
+    });
+
+    let startX = 0;
+    document.addEventListener("touchstart", function(e) {
+      if (e.touches.length === 1) { startX = e.touches[0].clientX; }
+    });
+    document.addEventListener("touchend", function(e) {
+      const sidebar = document.getElementById("sidebar");
+      const diff = e.changedTouches[0].clientX - startX;
+      if (diff > 50 && sidebar.classList.contains("active")) { toggleSidebar(); }
+    });
+
+    function goHome() {
+      window.location.href = "../index.html";
+    }
+
+    function navigateTo(page) {
+      window.location.href = page;
+      const loadingScreen = document.querySelector('.loading');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'flex';
+        setTimeout(() => { window.location.href = page; }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>

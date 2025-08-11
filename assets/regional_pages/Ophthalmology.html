@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ophthalmological Symptoms</title>
+  <link rel="stylesheet" href="../style/regional_style.css" type="text/css" media="all" />
+
+  <style>
+    #question-image-container {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .question-image {
+      max-width: 90%;
+      max-height: 250px; /* You can adjust this height */
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      object-fit: cover;
+    }
+  </style>
+
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-title">ALGOMED <span>OPHTHALMOLOGY</span></div>
+  <button class="toggle-button" onclick="playClick(); toggleSidebar()">☰</button>
+</nav>
+
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+
+  <aside class="sidebar" id="sidebar">
+    <ul>
+      <li onclick="navigateTo('respiratory.html')">Respiratory</li>
+      <li onclick="navigateTo('cardiovascular.html')">Cardiovascular</li>
+      <li onclick="navigateTo('git.html')">Gastroenterology</li>
+      <li onclick="navigateTo('gynecology.html')">Gynecology</li>
+      <li onclick="navigateTo('hepatology.html')">Hepatology</li>
+      <li onclick="navigateTo('nephrology.html')">Nephrology</li>
+      <li onclick="navigateTo('obstetric.html')">Obstetric</li>
+      <li onclick="navigateTo('rheumatology.html')">Rheumatology</li>
+      <li onclick="navigateTo('hematology.html')">Hematology</li>
+      <li onclick="navigateTo('pediatric.html')">Pediatric</li>
+      <li onclick="navigateTo('ophthalmology.html')">Ophthalmology</li>
+      <li onclick="navigateTo('neurology.html')">Neurology</li>
+      <li onclick="navigateTo('dermatology.html')">Dermatology</li>
+      <li onclick="navigateTo('ent.html')">ENT</li>
+      <li onclick="navigateTo('psychiatric.html')">Psychiatric</li>
+      <li onclick="navigateTo('General.html')">General</li>
+    </ul>
+<button class="sidebar-about-button" onclick="navigateTo('../about.html')">About Us</button>
+  </aside>
+
+  <audio id="click-sound" src="../sounds/click_sound.wav" preload="auto"></audio>
+
+  <h3 id="headline">Select a Primary Symptom</h3>
+<p id="subheadline">Choose from the list below to begin diagnosis.</p>
+
+  <div id="main-page" class="container">
+    <button class="symptom-button" onclick="playClick(); startSymptom('Red Eye')">Red Eye</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Mydriasis')">Mydriasis</button>
+    
+    
+    
+  </div>
+
+  <div id="question-page">
+    <div class="title" id="symptom-title">Symptom Diagnostic</div>
+    <div id="question-image-container"></div>
+    <div id="question" class="question"></div>
+    <div class="button-container"></div>
+    <div id="footer" class="footer"></div>
+  </div>
+
+  
+    
+    
+    
+  </div>
+
+  <!-- Question Page -->
+  <div id="question-page">
+  <div class="title" id="symptom-title">Symptom Diagnostic</div>
+  <div id="question-image-container"></div>
+  <div id="question" class="question"></div>
+  <div class="button-container"></div>
+  <div id="footer" class="footer"></div>
+</div>
+
+  <!-- Home Button -->
+  <button class="home-button" onclick="goHome()">
+  <img src="../bodyicons/home_button.png" alt="Home" class="home-icon">
+  <span class="sr-only">Home</span>
+</button>
+  
+  
+
+  <!-- Script -->
+  <script>
+  const questions = {
+    
+    // Red Eye Approach
+    "Red Eye": {
+      start: {
+        text: "Is there history of trauma or recent eye surgery?",
+        explanation: "Trauma/surgery requires immediate ophthalmology referral.",
+        image: "../bodyicons/question_images/red_eyes.jpg",
+        options: {
+          "Yes": "Trauma/surgical complication",
+          "No": "Assess pain and vision"
+        }
+      },
+      "Assess pain and vision": {
+        text: "Does the patient have deep pain or poor vision?",
+        explanation: "Pain + vision loss suggests serious intraocular pathology.",
+        options: {
+          "Deep pain ± vision loss": "Sight-threatening conditions",
+          "No pain, normal vision": "Benign causes evaluation"
+        }
+      },
+      "Sight-threatening conditions": {
+        text: "Select most concerning feature:",
+        explanation: "These conditions require urgent ophthalmology referral.",
+        options: {
+          "Mid-dilated pupil + headache": "Acute angle-closure glaucoma",
+          "Hypopyon/hyphema": "Endophthalmitis or iritis",
+          "White corneal infiltrate": "Corneal ulcer",
+          "Severe diffuse redness": "Scleritis"
+        }
+      },
+      "Benign causes evaluation": {
+        text: "Pattern of redness:",
+        explanation: "Localization helps differentiate common causes.",
+        options: {
+          "Diffuse redness": "Conjunctivitis evaluation",
+          "Focal redness": "Local lesion evaluation",
+          "Sectoral redness": "Episcleritis evaluation"
+        }
+      },
+      "Conjunctivitis evaluation": {
+        text: "Characterize discharge:",
+        explanation: "Differentiates viral, bacterial, and allergic conjunctivitis.",
+        options: {
+          "Purulent": "Bacterial conjunctivitis",
+          "Watery/mucoid": "Viral/allergic conjunctivitis",
+          "None": "Dry eye/irritation"
+        }
+      },
+      "Local lesion evaluation": {
+        text: "Fluorescein exam findings:",
+        explanation: "Identifies corneal vs conjunctival pathology.",
+        options: {
+          "Corneal staining": "Corneal abrasion/ulcer",
+          "Elevated lesion": "Pterygium/pinguecula",
+          "Blood under conjunctiva": "Subconjunctival hemorrhage"
+        }
+      },
+      // Terminal diagnosis nodes
+      "Acute angle-closure glaucoma": {
+        text: "Diagnosis: Acute angle-closure glaucoma.",
+        explanation: "EMERGENCY: Lower IOP with medications (pilocarpine, acetazolamide). Laser iridotomy definitive treatment.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Bacterial conjunctivitis": {
+        text: "Diagnosis: Bacterial conjunctivitis.",
+        explanation: "Topical antibiotics (e.g., erythromycin). Contagious until 24h of treatment.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Corneal abrasion": {
+        text: "Diagnosis: Corneal abrasion.",
+        explanation: "Topical antibiotics. Avoid patches in contact lens wearers.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Subconjunctival hemorrhage": {
+        text: "Diagnosis: Subconjunctival hemorrhage.",
+        explanation: "Reassurance. Resolves in 2-3 weeks. Check BP if recurrent.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      }
+      
+    },
+
+
+
+
+     // Mydriasis Approach
+    "Mydriasis": {
+      start: {
+        text: "Perform light reflex test. Is pupillary light reaction normal?",
+        explanation: "Abnormal light reflex suggests neurologic or pharmacologic causes.",
+        options: {
+          "Normal light reaction": "Essential anisocoria evaluation",
+          "Abnormal light reaction": "Pathologic mydriasis evaluation"
+        }
+      },
+      "Essential anisocoria evaluation": {
+        text: "Is the anisocoria greater in light or dark?",
+        explanation: "Physiologic anisocoria remains constant; pathologic varies with lighting.",
+        options: {
+          "Same in light/dark": "Physiologic anisocoria",
+          "Greater in dark": "Horner's syndrome evaluation",
+          "Greater in light": "Partial third nerve palsy"
+        }
+      },
+      "Pathologic mydriasis evaluation": {
+        text: "Is there light-near dissociation?",
+        explanation: "Light-near dissociation occurs in Parinaud syndrome and Adie's tonic pupil.",
+        options: {
+          "Present": "Light-near dissociation causes",
+          "Absent": "Complete third nerve palsy evaluation"
+        }
+      },
+      "Light-near dissociation causes": {
+        text: "Select associated findings:",
+        explanation: "Differentiates midbrain vs peripheral causes.",
+        options: {
+          "Convergence-retraction nystagmus + vertical gaze palsy": "Parinaud syndrome",
+          "Segmental constriction + tonic redilation": "Adie's tonic pupil",
+          "Bilateral + accommodative deficit": "Bilateral tonic pupils"
+        }
+      },
+      "Complete third nerve palsy evaluation": {
+        text: "Perform pharmacologic testing (0.125% pilocarpine):",
+        explanation: "Differentiates pharmacologic blockade from third nerve palsy.",
+        options: {
+          "Pupil constricts": "Third nerve palsy",
+          "No response": "Pharmacologic mydriasis"
+        }
+      },
+      "Third nerve palsy": {
+        text: "Assess for other cranial nerve signs:",
+        explanation: "Complete CN III palsy affects medial, superior, inferior recti and levator.",
+        options: {
+          "Ptosis + ophthalmoplegia": "Surgical third nerve palsy",
+          "Isolated pupillary involvement": "Medical third nerve palsy"
+        }
+      },
+      "Pharmacologic mydriasis": {
+        text: "Evaluate for exposure to:",
+        explanation: "Common culprits include atropine, scopolamine, or plant toxins.",
+        options: {
+          "Medications": "Anticholinergic drugs",
+          "Plants": "Angel's trumpet/Jimson weed",
+          "Unknown": "Toxicology workup"
+        }
+      },
+      "Parinaud syndrome": {
+        text: "Diagnosis: Dorsal midbrain syndrome.",
+        explanation: "MRI brain required. Common causes: pinealoma, hydrocephalus, stroke.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Adie's tonic pupil": {
+        text: "Diagnosis: Adie's tonic pupil.",
+        explanation: "Confirm with 0.125% pilocarpine hypersensitivity. Check VDRL/FTA-ABS for syphilis.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Pharmacologic mydriasis diagnosis": {
+        text: "Diagnosis: Pharmacologic mydriasis.",
+        explanation: "Resolves in 24-72 hours. Use pilocarpine 1% to confirm (no constriction).",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Third nerve palsy management": {
+        text: "Diagnosis: Third nerve palsy.",
+        explanation: "EMERGENCY if pupil-involved (aneurysm risk). MRI/MRA required. Neurosurgery consult.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      }
+    }
+    };
+
+
+
+    let currentSymptom = null;
+    let currentQuestion = "start";
+
+    function playClick() {
+      const sound = document.getElementById("click-sound");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+      }
+    }
+
+    function startSymptom(symptom) {
+      currentSymptom = symptom;
+      currentQuestion = "start";
+      document.getElementById("symptom-title").textContent = symptom;
+      showQuestion();
+
+      document.getElementById("main-page").style.display = "none";
+      document.getElementById("question-page").style.display = "block";
+      document.getElementById("headline").style.display = "none";
+      document.getElementById("subheadline").style.display = "none";
+    }
+
+    // NEW/MODIFIED: This function is updated to show images.
+    function showQuestion() {
+      const symptomQuestions = questions[currentSymptom];
+      if (!symptomQuestions || !symptomQuestions[currentQuestion]) {
+        alert("Invalid symptom or question flow.");
+        return;
+      }
+
+      const questionData = symptomQuestions[currentQuestion];
+      const imageContainer = document.getElementById("question-image-container");
+      
+      // Clear previous image
+      imageContainer.innerHTML = "";
+
+      // If an image path exists, create and display the image
+      if (questionData.image) {
+        const img = document.createElement("img");
+        img.src = questionData.image;
+        img.alt = questionData.text; // for accessibility
+        img.className = "question-image";
+        imageContainer.appendChild(img);
+      }
+
+      document.getElementById("question").textContent = questionData.text;
+      document.getElementById("footer").textContent = questionData.explanation || "No explanation available.";
+
+      const buttons = Object.keys(questionData.options)
+        .map(option =>
+          `<button class='option-button' onclick="playClick(); nextQuestion('${option}')">${option}</button>`)
+        .join("");
+      document.querySelector(".button-container").innerHTML = buttons;
+    }
+
+    function nextQuestion(answer) {
+      const symptomQuestions = questions[currentSymptom];
+      const current = symptomQuestions[currentQuestion];
+      if (!current || !current.options[answer]) {
+        alert("Invalid choice.");
+        return;
+      }
+
+      const next = current.options[answer];
+      // Check if the next step is another question or a final diagnosis
+      if (symptomQuestions[next] && symptomQuestions[next].options) {
+          currentQuestion = next;
+          showQuestion();
+      } else {
+          // This handles both terminal nodes that are defined as full objects
+          // and those that are simple strings (your original implementation)
+          if (symptomQuestions[next]) {
+              currentQuestion = next;
+              showQuestion(); // This will display the final diagnosis with its image
+          } else {
+              // This is a fallback for legacy string-only terminals
+              document.getElementById("question").textContent = next;
+              document.getElementById("footer").textContent = "End of diagnostic path.";
+              document.querySelector(".button-container").innerHTML =
+                `<button class='option-button' onclick="playClick(); restart()">Restart</button>`;
+              document.getElementById("question-image-container").innerHTML = ""; // Clear image
+          }
+      }
+    }
+
+
+    function restart() {
+      document.getElementById("main-page").style.display = "flex";
+      document.getElementById("question-page").style.display = "none";
+      document.getElementById("headline").style.display = "block";
+      document.getElementById("subheadline").style.display = "block";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      sidebar.classList.toggle("active");
+      overlay.style.display = sidebar.classList.contains("active") ? "block" : "none";
+    }
+
+    document.addEventListener("click", function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const toggleBtn = document.querySelector(".toggle-button");
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnToggle = toggleBtn.contains(event.target);
+      if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains("active")) {
+        toggleSidebar();
+      }
+    });
+
+    let startX = 0;
+    document.addEventListener("touchstart", function(e) {
+      if (e.touches.length === 1) { startX = e.touches[0].clientX; }
+    });
+    document.addEventListener("touchend", function(e) {
+      const sidebar = document.getElementById("sidebar");
+      const diff = e.changedTouches[0].clientX - startX;
+      if (diff > 50 && sidebar.classList.contains("active")) { toggleSidebar(); }
+    });
+
+    function goHome() {
+      window.location.href = "../index.html";
+    }
+
+    function navigateTo(page) {
+      window.location.href = page;
+      const loadingScreen = document.querySelector('.loading');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'flex';
+        setTimeout(() => { window.location.href = page; }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,2011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GIT Symptoms</title>
+  <link rel="stylesheet" href="../style/regional_style.css" type="text/css" media="all" />
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="nav-title">ALGOMED <span>GIT</span></div>
+  <button class="toggle-button" onclick="playClick(); toggleSidebar()">☰</button>
+</nav>
+
+<!-- Overlay for click outside -->
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <ul>
+      <li onclick="navigateTo('respiratory.html')">Respiratory</li>
+      <li onclick="navigateTo('cardiovascular.html')">Cardiovascular</li>
+      <li onclick="navigateTo('git.html')">Gastroenterology</li>
+      <li onclick="navigateTo('gynecology.html')">Gynecology</li>
+      <li onclick="navigateTo('hepatology.html')">Hepatology</li>
+      <li onclick="navigateTo('nephrology.html')">Nephrology</li>
+      <li onclick="navigateTo('obstetric.html')">Obstetric</li>
+      <li onclick="navigateTo('rheumatology.html')">Rheumatology</li>
+      <li onclick="navigateTo('hematology.html')">Hematology</li>
+      <li onclick="navigateTo('pediatric.html')">Pediatric</li>
+      <li onclick="navigateTo('ophthalmology.html')">Ophthalmology</li>
+      <li onclick="navigateTo('neurology.html')">Neurology</li>
+      <li onclick="navigateTo('dermatology.html')">Dermatology</li>
+      <li onclick="navigateTo('ent.html')">ENT</li>
+      <li onclick="navigateTo('psychiatric.html')">Psychiatric</li>
+      <li onclick="navigateTo('General.html')">General</li>
+    </ul>
+<button class="sidebar-about-button" onclick="navigateTo('../about.html')">About Us</button>
+  </aside>
+
+  <!-- Audio -->
+  <audio id="click-sound" src="../sounds/click_sound.wav" preload="auto"></audio>
+
+  <!-- Headlines Outside Container -->
+  <h3 id="headline">Select a Primary Symptom</h3>
+<p id="subheadline">Choose from the list below to begin diagnosis.</p>
+
+  <!-- Main Page -->
+  <div id="main-page" class="container">
+    <button class="symptom-button" onclick="playClick(); startSymptom('Acute Abdominal Pain')">Acute Abdominal Pain</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Chronic Abdominal Pain')">Chronic Abdominal Pain</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Nausea and Vomiting')">Nausea and Vomiting</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Dysphagia')">Dysphagia</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Noncardiac Chest Pain')">Noncardiac Chest Pain</button>
+    <button class="symptom-button" onclick="startSymptom('Dyspepsia')">Dyspepsia</button>
+    
+    <button class="symptom-button" onclick="startSymptom('Gastrointestinal Bleeding')">Gastrointestinal Bleeding</button>
+    <button class="symptom-button" onclick="startSymptom('Rectal Bleeding')">Rectal Bleeding</button>
+    <button class="symptom-button" onclick="startSymptom('Acute Diarrhea')">Acute Diarrhea</button>
+    <button class="symptom-button" onclick="startSymptom('Chronic Diarrhea')">Chronic Diarrhea</button>
+    <button class="symptom-button" onclick="startSymptom('Constipation')">Constipation</button>
+    <button class="symptom-button" onclick="startSymptom('Anorectal Pain')">Anorectal Pain</button>
+    <button class="symptom-button" onclick="startSymptom('Positive FOBT')">Positive FOBT</button>
+    <button class="symptom-button" onclick="startSymptom('Flatulence')">Flatulence</button>
+    <button class="symptom-button" onclick="startSymptom('fecal-incontinence')">Fecal Incontinence</button>
+    
+   
+  </div>
+
+  <!-- Question Page -->
+  <div id="question-page">
+  <div class="title" id="symptom-title">Symptom Diagnostic</div>
+  <div id="question-image-container"></div>
+  <div id="question" class="question"></div>
+  <div class="button-container"></div>
+  <div id="footer" class="footer"></div>
+</div>
+
+  <!-- Home Button -->
+  <button class="home-button" onclick="goHome()">
+  <img src="../bodyicons/home_button.png" alt="Home" class="home-icon">
+  <span class="sr-only">Home</span>
+</button>
+  
+  
+  <!-- Script -->
+  <script>
+    const questions = {
+  "Acute Abdominal Pain": {
+    start: {
+      text: "Is the patient hemodynamically unstable (hypotension, tachycardia, fever, rigidity)?",
+      explanation: "Instability suggests life-threatening conditions (e.g., perforation, ischemia, hemorrhage). RED FLAG: Immediate surgical consultation required.",
+      options: {
+        yes: "Unstable Evaluation",
+        no: "Stable Evaluation"
+      }
+    },
+    
+    // Unstable Pathway
+    "Unstable Evaluation": {
+      text: "Assess for signs of peritonitis (rebound tenderness, guarding) or hemorrhage (pale, distended abdomen).",
+      explanation: "CRITICAL: Peritonitis requires urgent laparotomy. Hemorrhage may need angiography or surgery. Resuscitate with IV fluids, NG tube, and oxygen while preparing for intervention.",
+      options: {
+        "Peritonitis/Perforation": "Immediate Laparotomy",
+        "Hemorrhage/Ischemia": "Resuscitate and Imaging",
+        "Unclear etiology": "Further Stabilization"
+      }
+    },
+    "Immediate Laparotomy": {
+      text: "Proceed to surgery for suspected perforation or diffuse peritonitis.",
+      explanation: "ACTION: Broad-spectrum antibiotics (e.g., piperacillin-tazobactam) pre-op. Avoid delays—mortality increases >12 hours post-perforation.",
+      options: {
+        "Restart Algorithm": "start",
+        "Post-op Management": "exit"
+      }
+    },
+    "Resuscitate and Imaging": {
+      text: "Obtain CT angiography (for ischemia) or FAST ultrasound (for hemorrhage).",
+      explanation: "KEY: CT angiography has >90% sensitivity for mesenteric ischemia. FAST exam detects free fluid in trauma. Transfuse if Hb <7g/dL (or <9g/dL in cardiac disease).",
+      options: {
+        "Positive findings": "Surgical Intervention",
+        "Negative findings": "Re-evaluate Diagnosis"
+      }
+    },
+    "Surgical Intervention": {
+      text: "Proceed to surgery or IR embolization based on findings.",
+      explanation: "NOTE: Ischemic bowel requires resection. Stable hemorrhage may undergo embolization.",
+      options: {
+        "Restart Algorithm": "start",
+        "Post-procedure Care": "exit"
+      }
+    },
+    
+    // Stable Pathway
+    "Stable Evaluation": {
+      text: "Assess pain characteristics (onset, location, radiation) and risk factors (age, medical history).",
+      explanation: "CLUES: Sudden onset = perforation; colicky pain = obstruction; RLQ pain = appendicitis. Elderly/diabetics may have atypical presentations.",
+      options: {
+        "Typical surgical pattern": "Surgical Consultation",
+        "Atypical/Medical cause suspected": "Medical Workup"
+      }
+    },
+    "Surgical Consultation": {
+      text: "Obtain labs (CBC, amylase, LFTs) and imaging (CT abdomen/pelvis).",
+      explanation: "PRIORITY: CT has 98% sensitivity for appendicitis. Elevated WBC >15k suggests infection. Amylase >3x normal indicates pancreatitis.",
+      options: {
+        "Confirmed surgical cause": "Surgical Management",
+        "Unclear diagnosis": "Observation"
+      }
+    },
+    "Surgical Management": {
+      text: "Proceed with surgery (e.g., appendectomy, cholecystectomy) or IR drainage (abscess).",
+      explanation: "TIMING: Appendicitis should be addressed within 24h. Abscesses >3cm may need drainage before surgery.",
+      options: {
+        "Restart Algorithm": "start",
+        "Post-op Care": "exit"
+      }
+    },
+    "Observation": {
+      text: "Re-evaluate in 6 hours if pain persists. Repeat exams/labs.",
+      explanation: "WARNING: Pain worsening or new instability mandates surgical re-evaluation.",
+      options: {
+        "Pain resolves": "Discharge with Follow-up",
+        "Pain persists/worsens": "Repeat Imaging/Surgery"
+      }
+    },
+    "Medical Workup": {
+      text: "Rule out medical causes (DKA, UTI, pneumonia) with labs (glucose, UA, CXR).",
+      explanation: "COMMON PITFALLS: Lower lobe pneumonia mimics abdominal pain. Diabetics may have silent ischemia.",
+      options: {
+        "Medical cause identified": "Treat Underlying Condition",
+        "No medical cause": "Advanced Imaging"
+      }
+    },
+    "Treat Underlying Condition": {
+      text: "Tailor treatment (e.g., insulin for DKA, antibiotics for pyelonephritis).",
+      explanation: "NOTE: Spontaneous bacterial peritonitis requires ceftriaxone + albumin if ascites present.",
+      options: {
+        "Restart Algorithm": "start",
+        "Discharge Criteria": "exit"
+      }
+    },
+    "Advanced Imaging": {
+      text: "Perform CT/MRI for obscure causes (retroperitoneal pathology, small bowel obstruction).",
+      explanation: "ADVANCED TOOLS: MRI avoids radiation in pregnancy. CT enterography evaluates Crohn’s disease.",
+      options: {
+        "Diagnosis confirmed": "Targeted Treatment",
+        "Still unclear": "Specialist Referral"
+      }
+    },
+    
+    // Special Considerations
+    "High-Risk Populations": {
+      text: "Is the patient elderly, immunosuppressed, or post-op?",
+      explanation: "ALERT: These patients may lack classic signs. Fever/WBC may be absent in immunosuppressed individuals.",
+      options: {
+        yes: "Lower Threshold for Imaging",
+        no: "Standard Pathway"
+      }
+    },
+    "Lower Threshold for Imaging": {
+      text: "Proceed directly to CT scan due to higher risk of occult pathology.",
+      explanation: "DATA: 30% of elderly patients with normal exams have surgical pathology on CT.",
+      options: {
+        "Restart Algorithm": "start",
+        "Admit for Monitoring": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  // Chronic Abdominal Pain - - - - - - - 
+  "Chronic Abdominal Pain": {
+    start: {
+      text: "Does the patient have 'alarming features' (fever, weight loss, anemia, GI bleeding, nocturnal pain)?",
+      explanation: "RED FLAGS: These suggest organic pathology (e.g., malignancy, IBD). Immediate workup required. NOTE: Functional disorders (e.g., IBS) lack these features.",
+      options: {
+        yes: "Organic Workup",
+        no: "Functional Evaluation"
+      }
+    },
+
+    // Organic Pathology Pathway
+    "Organic Workup": {
+      text: "Target evaluation based on pain location and associated symptoms.",
+      explanation: "KEY CLUES: RUQ pain → hepatobiliary; epigastric → pancreatic/GI; RLQ → Crohn’s/appendiceal. CRITICAL: Weight loss + pain = malignancy until proven otherwise.",
+      options: {
+        "RUQ/Epigastric": "Hepatobiliary/Pancreatic Workup",
+        "RLQ/LLQ": "Lower GI Workup",
+        "Diffuse/Pelvic": "Systemic/Pelvic Evaluation"
+      }
+    },
+    "Hepatobiliary/Pancreatic Workup": {
+      text: "Order LFTs, lipase, RUQ ultrasound, and/or CT/MRCP.",
+      explanation: "FOCUS: Elevated ALP + bilirubin → biliary obstruction. Lipase >3x normal → pancreatitis. MRCP detects choledocholithiasis with 95% sensitivity.",
+      options: {
+        "Abnormal findings": "Specialist Referral",
+        "Normal findings": "Consider Functional Causes"
+      }
+    },
+    "Lower GI Workup": {
+      text: "Perform CBC, CRP, colonoscopy, or CT enterography.",
+      explanation: "PRIORITY: Colonoscopy if >50yo or bleeding. CT enterography for Crohn’s. WARNING: LLQ pain + weight loss → rule out diverticulitis/colon cancer.",
+      options: {
+        "Inflammation/Mass": "Gastroenterology/Surgery",
+        "No pathology": "Functional Pathway"
+      }
+    },
+    "Systemic/Pelvic Evaluation": {
+      text: "Assess for metabolic (porphyria), gynecologic (endometriosis), or vascular (mesenteric ischemia) causes.",
+      explanation: "HIDDEN CAUSES: Postprandial pain + weight loss = chronic mesenteric ischemia. Women: Pelvic ultrasound for ovarian pathology.",
+      options: {
+        "Specific diagnosis": "Targeted Treatment",
+        "Unclear": "Advanced Imaging"
+      }
+    },
+    "Specialist Referral": {
+      text: "Refer to GI/surgery based on findings (e.g., ERCP for choledocholithiasis).",
+      explanation: "URGENT: Jaundice + fever = ascending cholangitis (needs ERCP within 24h).",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Treatment": "exit"
+      }
+    },
+
+    // Functional Pathway
+    "Functional Evaluation": {
+      text: "Assess for IBS or functional abdominal pain syndrome (FAPS) using Rome IV criteria.",
+      explanation: "IBS CLUES: Pain improves with defecation + bloating. FAPS: Continuous pain with no physiologic triggers. NOTE: Labs/imaging should be normal.",
+      options: {
+        "Meets IBS criteria": "IBS Management",
+        "Meets FAPS criteria": "FAPS Management",
+        "Atypical features": "Re-evaluate for Organic Causes"
+      }
+    },
+    "IBS Management": {
+      text: "Start dietary modifications (low-FODMAP) and pharmacotherapy (antispasmodics, SSRIs).",
+      explanation: "EVIDENCE: Low-FODMAP diet helps 70% of IBS patients. SSRIs for pain-predominant IBS. Avoid opioids (risk of narcotic bowel syndrome).",
+      options: {
+        "Refractory symptoms": "GI Referral",
+        "Improvement": "Continue Therapy"
+      }
+    },
+    "FAPS Management": {
+      text: "Initiate multidisciplinary approach (cognitive behavioral therapy, tricyclic antidepressants).",
+      explanation: "DRUG CHOICE: Amitriptyline 10–25mg HS (titrate to 50mg). CBT reduces pain catastrophizing. WARNING: Avoid unnecessary surgeries.",
+      options: {
+        "Restart Algorithm": "start",
+        "Pain Clinic Referral": "exit"
+      }
+    },
+
+    // Special Populations
+    "High-Risk Groups": {
+      text: "Is the patient elderly, immunosuppressed, or post-cholecystectomy?",
+      explanation: "ATYPICAL PRESENTATIONS: Elderly may mask malignancies. Post-cholecystectomy pain → SOD or bile reflux. Immunosuppressed → CMV/opportunistic infections.",
+      options: {
+        yes: "Expanded Workup",
+        no: "Standard Pathway"
+      }
+    },
+    "Expanded Workup": {
+      text: "Proceed to CT/MRI + specialist consultation early.",
+      explanation: "DATA: 40% of elderly with chronic pain have occult malignancy. Post-cholecystectomy: HIDA scan for SOD.",
+      options: {
+        "Restart Algorithm": "start",
+        "Admit for Observation": "exit"
+      }
+    },
+
+    // Diagnostic Tools
+    "Advanced Imaging": {
+      text: "Consider CT abdomen/pelvis, capsule endoscopy, or laparoscopy.",
+      explanation: "CHOOSE: CT for masses/abscesses. Capsule endoscopy for small bowel Crohn’s. Laparoscopy if suspicion for endometriosis/tuberculosis.",
+      options: {
+        "Positive findings": "Organ-Specific Treatment",
+        "Negative findings": "Pain Management Referral"
+      }
+    }
+  },
+  
+  
+  
+  // Nausea and Vomiting - - - - - - - 
+  "Nausea and Vomiting": {
+    start: {
+      text: "Is the patient hemodynamically unstable (hypotension, tachycardia, severe dehydration, or signs of obstruction/peritonitis)?",
+      explanation: "RED FLAGS: Instability or signs of obstruction/peritonitis require immediate intervention. NOTE: Orthostatic hypotension suggests volume depletion.",
+      options: {
+        yes: "Acute Management",
+        no: "Stable Evaluation"
+      }
+    },
+
+    // Acute Management Pathway (Linked to Stable Evaluation)
+    "Acute Management": {
+      text: "Assess for life-threatening causes (e.g., bowel obstruction, intracranial hemorrhage, myocardial infarction).",
+      explanation: "CRITICAL: Feculent vomiting → bowel obstruction; projectile vomiting → intracranial hypertension; chest pain → MI. ACTION: IV fluids, NG tube if obstruction suspected.",
+      options: {
+        "Obstruction/Peritonitis": "Imaging and Surgical Consult",
+        "Severe Dehydration": "Fluid Resuscitation",
+        "Neurologic Signs": "Neurologic Workup",
+        "Stable after treatment": "Stable Evaluation"  // Link back to stable pathway
+      }
+    },
+    "Imaging and Surgical Consult": {
+      text: "Obtain abdominal CT (preferred) or upright abdominal X-rays. Consult surgery if obstruction/perforation suspected.",
+      explanation: "KEY DATA: CT sensitivity >90% for obstruction. WARNING: Free air on X-ray → perforation (needs emergent surgery).",
+      options: {
+        "Confirmed Surgical Cause": "Surgical Intervention",
+        "Negative Imaging": "Medication/Toxin Evaluation"  // Link to medication review
+      }
+    },
+    "Fluid Resuscitation": {
+      text: "Administer IV fluids (normal saline or lactated Ringer’s) and correct electrolytes (K+, Mg2+).",
+      explanation: "METABOLIC CLUES: Hypokalemic metabolic alkalosis → chronic vomiting; hyperglycemia → DKA. Replace potassium if <3.5 mEq/L.",
+      options: {
+        "Stabilized": "Stable Evaluation",  // Link to stable pathway
+        "Persistent Instability": "ICU Transfer"
+      }
+    },
+    "Neurologic Workup": {
+      text: "Perform neurologic exam and consider head CT/MRI if increased ICP or focal deficits are present.",
+      explanation: "WARNING: Papilledema or Cushing’s triad (hypertension, bradycardia, irregular respirations) → herniation risk.",
+      options: {
+        "Positive Findings": "Neurosurgery Consult",
+        "Negative Findings": "Stable Evaluation"  // Link to stable pathway
+      }
+    },
+
+    // Stable Evaluation Pathway (Linked to All Sub-Pathways)
+    "Stable Evaluation": {
+      text: "Assess timing and characteristics of vomiting (e.g., morning vs. postprandial, associated symptoms).",
+      explanation: "CLUES: Morning vomiting → pregnancy/uremia; postprandial → gastroparesis/GERD; vertigo → vestibular disorders.",
+      options: {
+        "Morning Vomiting": "Pregnancy/Uremia Workup",
+        "Postprandial": "Upper GI Evaluation",
+        "Recurrent/Chronic": "Chronic Causes Workup",
+        "Pediatric Patient": "Pediatric Evaluation",  // Integrated pediatric path
+        "Medication/Toxin Suspected": "Medication/Toxin Evaluation"  // Integrated medication path
+      }
+    },
+    "Pregnancy/Uremia Workup": {
+      text: "Check pregnancy test (all women of childbearing age), BUN/creatinine, and electrolytes.",
+      explanation: "NOTE: Hyperemesis gravidarum may require thiamine (to prevent Wernicke’s) and antiemetics (e.g., ondansetron).",
+      options: {
+        "Positive Pregnancy": "OB Consultation",
+        "Uremia/Electrolyte Imbalance": "Nephrology Consult",
+        "Negative Workup": "Antiemetic Selection"  // Link to treatment
+      }
+    },
+    "Upper GI Evaluation": {
+      text: "Consider EGD for GERD/ulcers, gastric emptying study for gastroparesis, or H. pylori testing.",
+      explanation: "GASTROPARESIS: Diabetics/post-viral; treat with metoclopramide or erythromycin. WARNING: Metoclopramide risk of tardive dyskinesia.",
+      options: {
+        "GERD/Ulcer": "PPI Trial",
+        "Gastroparesis": "Prokinetic Therapy",
+        "Negative Findings": "Chronic Causes Workup"  // Link to chronic path
+      }
+    },
+    "Chronic Causes Workup": {
+      text: "Evaluate for cyclic vomiting syndrome, migraines, psychogenic causes, or metabolic disorders (e.g., Addison’s).",
+      explanation: "CYCLIC VOMITING: Episodic with migraine features; treat with amitriptyline. PSYCHOGENIC: Consider CBT if other causes excluded.",
+      options: {
+        "Metabolic Disorder": "Endocrine Consult",
+        "Functional/Psychogenic": "Psychology Referral",
+        "No Diagnosis": "Antiemetic Selection"  // Link to treatment
+      }
+    },
+
+    // Integrated Sub-Pathways (Now Displayed in Main Flow)
+    "Medication/Toxin Evaluation": {
+      text: "Review all medications (e.g., opioids, antibiotics, chemotherapy) and assess for toxin exposure (e.g., alcohol, heavy metals).",
+      explanation: "COMMON OFFENDERS: Digoxin, theophylline, chemotherapy. TOXINS: Lead → abdominal pain + anemia; alcohol → gastritis.",
+      options: {
+        "Identified Offender": "Discontinue/Treat Toxicity",
+        "No Clear Cause": "Antiemetic Selection"  // Link to treatment
+      }
+    },
+    "Pediatric Evaluation": {
+      text: "In children, consider pyloric stenosis (infants), intussusception, or infections (e.g., rotavirus).",
+      explanation: "PYLORIC STENOSIS: Non-bilious projectile vomiting; olive-shaped mass on US. INTUSSUSCEPTION: Currant jelly stools + sausage-shaped mass on US.",
+      options: {
+        "Surgical Cause": "Pediatric Surgery Consult",
+        "Medical Cause": "Antiemetic Selection"  // Link to treatment
+      }
+    },
+    "Antiemetic Selection": {
+      text: "Choose antiemetic based on etiology: 5-HT3 antagonists (ondansetron) for chemo, antihistamines (meclizine) for vestibular, dopamine antagonists (prochlorperazine) for general use.",
+      explanation: "CAUTIONS: Avoid metoclopramide long-term. Ondansetron may prolong QT. Scopolamine patches → anticholinergic side effects.",
+      options: {
+        "Chemotherapy-Induced": "Ondansetron + Dexamethasone",
+        "Vestibular": "Meclizine",
+        "Refractory": "Combination Therapy",
+        "Restart Evaluation": "start"  // Loop back if needed
+      }
+    },
+
+    // Terminal Nodes (Consultations/Interventions)
+    "Surgical Intervention": {
+      text: "Proceed with surgery (e.g., bowel resection, perforation repair).",
+      explanation: "POST-OP: Monitor for ileus; consider early enteral nutrition.",
+      options: {}  // End of pathway
+    },
+    "ICU Transfer": {
+      text: "Transfer to ICU for ongoing resuscitation/ventilatory support.",
+      explanation: "PRIORITY: Correct electrolytes and address underlying cause (e.g., DKA, sepsis).",
+      options: {}  // End of pathway
+    },
+    "OB Consultation": {
+      text: "Refer to OB/GYN for hyperemesis gravidarum management.",
+      explanation: "TREATMENT: IV fluids, thiamine, ondansetron. Avoid metoclopramide in 1st trimester.",
+      options: {}  // End of pathway
+    }
+  },
+  
+  
+  // Dysphagia - - - - - - - - - - - 
+  "Dysphagia": {
+    start: {
+      text: "Is the dysphagia for solids, liquids, or both?",
+      explanation: "KEY DIFFERENTIATION: Solids-only suggests structural obstruction (e.g., stricture, ring). Liquids +/- solids suggests motility disorder (e.g., achalasia).",
+      options: {
+        "Solids only": "Structural Evaluation",
+        "Liquids ± solids": "Motility Evaluation",
+        "Nasal regurgitation/coughing": "Oropharyngeal Dysphagia"
+      }
+    },
+
+    // Structural Pathway (Solids-only)
+    "Structural Evaluation": {
+      text: "Perform EGD to evaluate for strictures, rings, or malignancy.",
+      explanation: "PRIORITY: Rule out esophageal cancer if progressive dysphagia + weight loss. RED FLAG: Food impaction → consider eosinophilic esophagitis (allergy testing).",
+      options: {
+        "Stricture/ring found": "Dilation + PPI Therapy",
+        "Mass/tumor found": "Oncology Referral",
+        "Normal EGD": "Motility Evaluation"  // Link to motility workup
+      }
+    },
+    "Dilation + PPI Therapy": {
+      text: "Dilate stricture (balloon/bougie) and start high-dose PPI (e.g., omeprazole 40mg BID).",
+      explanation: "CAUTION: Avoid dilation in eosinophilic esophagitis (risk of perforation). Confirm with biopsies if suspected.",
+      options: {
+        "Recurrent symptoms": "Repeat Dilation + Biopsies",
+        "Improved": "Maintenance PPI",
+        "Worsening": "Oncology Reevaluation"  // Link back if malignancy missed
+      }
+    },
+    "Oncology Referral": {
+      text: "Refer for staging (EUS/CT) and treatment (surgery/chemoradiation).",
+      explanation: "URGENT: Malignant strictures may require stenting for palliation.",
+      options: {}  // Terminal node
+    },
+
+    // Motility Pathway (Liquids ± solids)
+    "Motility Evaluation": {
+      text: "Order esophageal manometry and barium esophagram (with marshmallow/cookie).",
+      explanation: "CLUES: Bird’s beak on barium → achalasia; corkscrew → diffuse esophageal spasm. Manometry confirms diagnosis.",
+      options: {
+        "Achalasia": "Achalasia Treatment",
+        "Diffuse esophageal spasm": "Smooth Muscle Relaxants",
+        "Normal manometry": "Extrinsic Compression Workup"  // Link to next pathway
+      }
+    },
+    "Achalasia Treatment": {
+      text: "Choose therapy: Pneumatic dilation, Botox injection, or Heller myotomy.",
+      explanation: "RISKS: Dilation has 5% perforation risk. Botox lasts ~6 months. Myotomy is definitive but invasive.",
+      options: {
+        "Recurrent symptoms": "Repeat Dilation/Surgery",
+        "Improved": "Monitor for GERD"
+      }
+    },
+    "Smooth Muscle Relaxants": {
+      text: "Trial nitrates (e.g., isosorbide) or CCBs (e.g., nifedipine). Add TCA if chest pain dominant.",
+      explanation: "NOTE: Low-dose amitriptyline (10-25mg HS) modulates visceral pain.",
+      options: {
+        "Refractory": "Consider POEM Procedure",  // Peroral endoscopic myotomy
+        "Improved": "Continued Therapy"
+      }
+    },
+
+    // Oropharyngeal Pathway (Nasal regurgitation)
+    "Oropharyngeal Dysphagia": {
+      text: "Assess for neurologic deficits (CVA, Parkinson’s) or mechanical obstruction (Zenker’s).",
+      explanation: "DIAGNOSTICS: Videofluoroscopic swallow study (VFSS) is gold standard. Check for aspiration risk.",
+      options: {
+        "CVA/Parkinson’s": "Speech Therapy + NG/G-tube",
+        "Zenker’s diverticulum": "Surgical Repair",
+        "No cause identified": "Neurology Referral"  // Link to neuro workup
+      }
+    },
+    "Speech Therapy + NG/G-tube": {
+      text: "Initiate swallow rehab. Temporary NG tube if unsafe swallow; G-tube if long-term need.",
+      explanation: "WARNING: Aspiration pneumonia risk is high. NPO if severe dysphagia.",
+      options: {
+        "Improved": "Diet Advancement",
+        "No improvement": "Permanent G-tube"
+      }
+    },
+
+    // Extrinsic Compression Pathway (Normal EGD/manometry)
+    "Extrinsic Compression Workup": {
+      text: "Obtain CT chest/abdomen to evaluate for mediastinal masses, vascular compression, or osteophytes.",
+      explanation: "COMMON CAUSES: Left atrial enlargement (mitral stenosis), aortic aneurysm, lymphadenopathy.",
+      options: {
+        "Mass/compression found": "Specialist Referral",  // Cardio/thoracic surgery
+        "No findings": "Functional Dysphagia Evaluation"  // Link to final pathway
+      }
+    },
+
+    // Functional/Globus Pathway
+    "Functional Dysphagia Evaluation": {
+      text: "Assess for globus sensation (constant throat lump) or psychiatric comorbidity (anxiety).",
+      explanation: "GLOBUS FEATURES: Worse with stress, no true dysphagia. Rule out GERD with pH testing.",
+      options: {
+        "Globus + GERD": "PPI Trial",
+        "Anxiety/depression": "SSRI/TCA + CBT",
+        "No clear cause": "Reassurance + Follow-up"
+      }
+    },
+
+    // Cross-Linking Critical Pathways
+    "Repeat Dilation + Biopsies": {
+      text: "Repeat dilation and obtain esophageal biopsies (rule out eosinophilic esophagitis).",
+      explanation: "EOSINOPHILIC ESOPHAGITIS: Requires topical steroids (fluticasone/swallowed budesonide).",
+      options: {
+        "EoE confirmed": "Steroid Therapy",
+        "Refractory stricture": "Surgical Referral"  // Link to surgery
+      }
+    },
+    "Steroid Therapy": {
+      text: "Start swallowed fluticasone 880mcg BID or budesonide slurry.",
+      explanation: "ADJUNCT: Allergy testing + elimination diet (e.g., dairy/wheat).",
+      options: {
+        "Improved": "Maintenance Therapy",
+        "No response": "Immunomodulators"  // e.g., Dupilumab
+      }
+    }
+  },
+  
+  
+  
+// Noncardiac Chest Pain-----------------
+  "Noncardiac Chest Pain": {
+    start: {
+      text: "Has cardiac disease been excluded (normal coronary arteries on angiography/functional testing)?",
+      explanation: "CRITICAL: Coronary disease must be ruled out first. Microvascular angina is rare. Over 150,000 patients/year with normal angiograms may need esophageal evaluation.",
+      options: {
+        yes: "Initial Evaluation",
+        no: "Cardiac Workup Required"
+      }
+    },
+
+    // Initial Evaluation Pathway
+    "Initial Evaluation": {
+      text: "Does the patient have alarm symptoms (dysphagia, odynophagia, weight loss)?",
+      explanation: "Alarm symptoms suggest structural disease (e.g., strictures, tumors). Absence does not exclude esophageal causes (50% lack typical GERD symptoms).",
+      options: {
+        yes: "Urgent Endoscopy",
+        no: "GERD Therapeutic Trial"
+      }
+    },
+    "Urgent Endoscopy": {
+      text: "Perform endoscopy to assess for structural/mucosal abnormalities (e.g., esophagitis, tumors, achalasia).",
+      explanation: "YIELD: Low for NCCP but essential to exclude complications (e.g., bleeding, malignancy). Achalasia may mimic angina.",
+      options: {
+        "Abnormality found": "Treat Specific Diagnosis",
+        "Normal endoscopy": "GERD Therapeutic Trial"
+      }
+    },
+    "Treat Specific Diagnosis": {
+      text: "Manage based on findings (PPI for esophagitis, dilation for strictures, etc.).",
+      explanation: "NOTE: Achalasia requires manometry for confirmation. Hiatal hernias may contribute to GERD.",
+      options: {
+        "Symptoms resolve": "Monitor",
+        "Persistent pain": "Ambulatory pH Monitoring"
+      }
+    },
+
+    // GERD Evaluation Pathway
+    "GERD Therapeutic Trial": {
+      text: "Start high-dose PPI (e.g., omeprazole 40mg BID) for 2-4 weeks.",
+      explanation: "DIAGNOSTIC LIMITATION: 50-70% sensitivity. False positives if placebo effect. Meta-analysis shows modest accuracy (Numans et al., 2004).",
+      options: {
+        "Response to PPI": "GERD Likely",
+        "No response": "Ambulatory pH Monitoring"
+      }
+    },
+    "GERD Likely": {
+      text: "Continue GERD treatment. Consider maintenance PPI if symptoms recur.",
+      explanation: "WARNING: Long-term PPI use requires periodic reevaluation for side effects (e.g., osteoporosis, B12 deficiency).",
+      options: {
+        "Symptoms controlled": "Monitor",
+        "Refractory symptoms": "Reflux Testing"
+      }
+    },
+    "Ambulatory pH Monitoring": {
+      text: "Perform 24-hour pH monitoring (wireless preferred) to correlate symptoms with reflux events.",
+      explanation: "GOLD STANDARD: Detects non-erosive GERD. >50% symptom-reflux correlation confirms diagnosis. Limited availability in some settings.",
+      options: {
+        "Positive correlation": "GERD Confirmed",
+        "No correlation": "Esophageal Motility Testing"
+      }
+    },
+    "GERD Confirmed": {
+      text: "Optimize GERD therapy (PPI + lifestyle changes). Consider surgical referral for refractory cases.",
+      explanation: "SURGERY: Nissen fundoplication if medical therapy fails. Caution in motility disorders.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Motility Disorder Pathway
+    "Esophageal Motility Testing": {
+      text: "Perform esophageal manometry to assess for motility disorders.",
+      explanation: "KEY FINDINGS: Nutcracker esophagus (30%), nonspecific disorders (20-30%), diffuse spasm (5-10%), achalasia (2-3%). Pain rarely occurs during testing.",
+      options: {
+        "Abnormal motility": "Motility-Specific Management",
+        "Normal motility": "Provocative Testing"
+      }
+    },
+    "Motility-Specific Management": {
+      text: "Treat based on findings: Calcium channel blockers for spasm, dilation/pneumolysis for achalasia.",
+      explanation: "NUTCRACKER ESOPHAGUS: Often responds poorly to therapy. Low-dose TCAs (e.g., amitriptyline 10-25mg QHS) may reduce visceral hypersensitivity.",
+      options: {
+        "Symptoms improve": "Monitor",
+        "Refractory pain": "Provocative Testing"
+      }
+    },
+
+    // Provocative Testing Pathway
+    "Provocative Testing": {
+      text: "Consider Bernstein test (acid perfusion), Tensilon (cholinergic), or balloon distention.",
+      explanation: "POSITIVE TEST: Reproduces chest pain, suggesting esophageal hypersensitivity. 33% of NCCP patients meet panic disorder criteria (Richter et al., 1988).",
+      options: {
+        "Pain reproduced": "Esophageal Hypersensitivity",
+        "Negative test": "Psychiatric Evaluation"
+      }
+    },
+    "Esophageal Hypersensitivity": {
+      text: "Trial of low-dose TCA (e.g., imipramine) or SNRI for visceral pain modulation.",
+      explanation: "MECHANISM: TCAs reduce central pain amplification. Start low to avoid side effects (sedation, dry mouth).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Psychiatric Evaluation": {
+      text: "Assess for anxiety, depression, or panic disorder. Consider CBT or SSRIs if indicated.",
+      explanation: "EVIDENCE: 35% of NCCP patients have panic disorder (Cannon et al., 1990). SSRIs (e.g., sertraline) may improve both mood and pain perception.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Exit/Reentry Points
+    "Cardiac Workup Required": {
+      text: "Refer to cardiology for stress testing/angiography before proceeding.",
+      explanation: "RED FLAG: Recurrent chest pain despite normal coronaries may indicate microvascular angina (evaluate with coronary flow reserve testing).",
+      options: {
+        "Cardiac exclusion confirmed": "Initial Evaluation"
+      }
+    },
+    "Monitor": {
+      text: "Schedule follow-up to assess symptom recurrence or new alarm features.",
+      explanation: "NOTE: 20-30% of NCCP patients have overlapping cardiac/esophageal causes. Re-evaluate if symptoms change.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+  
+  
+  
+ // Dyspepsia - - - - - - - - - - - - - 
+  "Dyspepsia": {
+    start: {
+      text: "Does the patient have alarm symptoms (weight loss, dysphagia, vomiting, anemia, mass, or age >55)?",
+      explanation: "RED FLAGS: Alarm symptoms suggest malignancy or organic disease (e.g., gastric cancer, peptic ulcer). Age >55 with new-onset dyspepsia mandates endoscopy (Talley et al., 2005).",
+      options: {
+        yes: "Urgent Endoscopy",
+        no: "Assess Medication Use"
+      }
+    },
+
+    // Alarm Symptoms Pathway
+    "Urgent Endoscopy": {
+      text: "Perform esophagogastroduodenoscopy (EGD) to rule out malignancy, ulcers, or structural disease.",
+      explanation: "YIELD: <2% find cancer, 15-25% peptic ulcers. NOTE: Normal EGD does not exclude GERD or functional dyspepsia (60% of cases).",
+      options: {
+        "Abnormal findings": "Targeted Treatment",
+        "Normal endoscopy": "Functional Dyspepsia Evaluation"
+      }
+    },
+    "Targeted Treatment": {
+      text: "Treat based on findings: PPI for ulcers, eradication for H. pylori, surgery for malignancy.",
+      explanation: "H. PYLORI: Use quadruple therapy if resistance suspected (Malfertheiner et al., 2002). PPI dose: 8 weeks for ulcers.",
+      options: {
+        "Symptoms resolve": "Monitor",
+        "Persistent symptoms": "Refractory Dyspepsia Workup"
+      }
+    },
+
+    // Medication Assessment Pathway
+    "Assess Medication Use": {
+      text: "Is the patient taking NSAIDs, COX-2 inhibitors, or other dyspepsia-inducing drugs?",
+      explanation: "COMMON OFFENDERS: NSAIDs, iron, antibiotics, theophylline. STOP NSAIDs first-line; switch to acetaminophen or add PPI if unavoidable.",
+      options: {
+        yes: "Discontinue/Adjust Medications",
+        no: "H. Pylori Testing"
+      }
+    },
+    "Discontinue/Adjust Medications": {
+      text: "Stop/replace offending drugs. Trial PPI if NSAIDs must continue.",
+      explanation: "PPI CHOICE: Omeprazole 20mg BID for high-risk NSAID users. Monitor for rebound hyperacidity after discontinuation.",
+      options: {
+        "Symptoms improve": "Monitor",
+        "No improvement": "H. Pylori Testing"
+      }
+    },
+
+    // H. Pylori Pathway
+    "H. Pylori Testing": {
+      text: "Perform non-invasive testing (urea breath test or stool antigen).",
+      explanation: "TEST CRITERIA: Age <55, no alarm symptoms. Sensitivity >90% for active infection. Avoid PPIs for 2 weeks pre-test to reduce false negatives.",
+      options: {
+        "Positive": "H. Pylori Eradication",
+        "Negative": "PPI Trial"
+      }
+    },
+    "H. Pylori Eradication": {
+      text: "Start triple therapy (PPI + clarithromycin + amoxicillin) or quadruple therapy (PPI + bismuth + tetracycline + metronidazole).",
+      explanation: "DURATION: 14 days. Confirm eradication with breath test 4+ weeks post-treatment. Salvage therapy for failures (e.g., levofloxacin-based).",
+      options: {
+        "Symptoms resolve": "Monitor",
+        "Persistent symptoms": "PPI Trial"
+      }
+    },
+
+    // PPI Trial Pathway
+    "PPI Trial": {
+      text: "Initiate empiric PPI (omeprazole 20mg BID) for 4-6 weeks.",
+      explanation: "LIMITATIONS: Only 30-50% response in functional dyspepsia. High-dose PPI may mask GERD symptoms.",
+      options: {
+        "Response": "GERD Management",
+        "No response": "Functional Dyspepsia Evaluation"
+      }
+    },
+    "GERD Management": {
+      text: "Continue PPI at lowest effective dose. Add lifestyle modifications (weight loss, avoid late meals).",
+      explanation: "WARNING: Long-term PPI use requires monitoring for hypomagnesemia, C. diff risk, and bone density loss.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Functional Dyspepsia Pathway
+    "Functional Dyspepsia Evaluation": {
+      text: "Assess Rome III criteria: ≥3 months of symptoms, no organic cause, no IBS overlap.",
+      explanation: "SUBTYPES: Postprandial distress (early satiety/fullness) vs. epigastric pain syndrome. Prokinetics (e.g., metoclopramide) may help the former.",
+      options: {
+        "Meets criteria": "Functional Dyspepsia Treatment",
+        "Unclear diagnosis": "Refractory Dyspepsia Workup"
+      }
+    },
+    "Functional Dyspepsia Treatment": {
+      text: "Trial prokinetic (if postprandial symptoms) or low-dose TCA (amitriptyline 10-25mg QHS for visceral hypersensitivity).",
+      explanation: "EVIDENCE: TCAs improve symptoms in 30% vs. 10% placebo (Talley et al., 1999). Avoid SSRIs—may worsen symptoms.",
+      options: {
+        "Symptoms improve": "Monitor",
+        "No response": "Psychological Evaluation"
+      }
+    },
+
+    // Refractory/Complex Cases
+    "Refractory Dyspepsia Workup": {
+      text: "Re-evaluate for atypical GERD, biliary/pancreatic disease, or psychiatric comorbidity.",
+      explanation: "HIDDEN CAUSES: Consider EUS for chronic pancreatitis, HIDA scan for biliary dyskinesia. 35% have comorbid anxiety/depression.",
+      options: {
+        "Organic cause found": "Targeted Treatment",
+        "No cause identified": "Psychological Evaluation"
+      }
+    },
+    "Psychological Evaluation": {
+      text: "Screen for panic disorder, somatic symptom disorder. Consider CBT or SSRIs.",
+      explanation: "STUDIES: CBT reduces symptom severity by 40% in refractory cases (Ofman et al., 1999).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Exit/Reentry Points
+    "Monitor": {
+      text: "Schedule follow-up for symptom recurrence or new alarm features.",
+      explanation: "RELAPSE RATE: 20-30% at 1 year. Annual H. pylori testing if high-risk region.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  
+  
+  // Gastrointestinal Bleeding - - - - - 
+  "Gastrointestinal Bleeding": {
+    start: {
+      text: "Is the patient hemodynamically unstable (tachycardia, hypotension, altered mental status)?",
+      explanation: "Hemodynamic instability requires immediate resuscitation. RED FLAG: Systolic BP <90mmHg, HR >100bpm, or signs of shock indicate life-threatening bleeding.",
+      options: {
+        yes: "Emergent Resuscitation",
+        no: "Stable Evaluation"
+      }
+    },
+
+    // Hemodynamically Unstable Pathway
+    "Emergent Resuscitation": {
+      text: "Initiate ABCs (Airway, Breathing, Circulation). Place 2 large-bore IVs (16-18G), transfuse O-negative blood if critical.",
+      explanation: "CRITICAL: Target hemoglobin ≥7g/dL (≥8g/dL for CAD). Use vasopressors only if bleeding controlled but hypotension persists. Avoid over-resuscitation in variceal bleeding (target SBP 90-100mmHg).",
+      options: {
+        "Airway secured": "NG Tube Placement",
+        "Airway compromised": "Intubation"
+      }
+    },
+    "Intubation": {
+      text: "Secure airway before endoscopy (especially for hematemesis or altered mental status).",
+      explanation: "WARNING: Aspiration risk is high in active upper GI bleeding. Use rapid sequence intubation with cricoid pressure.",
+      options: {
+        "Proceed": "NG Tube Placement"
+      }
+    },
+    "NG Tube Placement": {
+      text: "Insert NG tube for lavage. Is aspirate bloody or coffee-ground?",
+      explanation: "DIAGNOSTIC CLUE: Clear aspirate reduces likelihood of active upper GI bleeding but doesn't rule it out (10% false negatives). Bilious output suggests bleeding distal to pylorus.",
+      options: {
+        "Bloody/coffee-ground": "Upper GI Endoscopy",
+        "Clear/bilious": "Lower GI Evaluation"
+      }
+    },
+    "Upper GI Endoscopy": {
+      text: "Perform emergent endoscopy within 6-12 hours for high-risk stigmata (active spurting, visible vessel).",
+      explanation: "THERAPEUTIC OPTIONS: Epinephrine injection + thermal therapy for ulcers, band ligation for varices. NOTE: PPIs should be started pre-endoscopy for suspected ulcers (80mg bolus + 8mg/hr infusion).",
+      options: {
+        "Bleeding controlled": "Post-Endoscopy Care",
+        "Bleeding persists": "Interventional Radiology/Surgery"
+      }
+    },
+    "Lower GI Evaluation": {
+      text: "Assess for hematochezia. Perform rectal exam and sigmoidoscopy if massive bleeding.",
+      explanation: "CLINICAL PEARL: Bright red blood per rectum with hemodynamic instability suggests diverticular bleed or vascular malformation. Maroon stool may indicate small bowel source.",
+      options: {
+        "Active bleeding": "Colonoscopy/CTA",
+        "Bleeding stopped": "Elective Colonoscopy"
+      }
+    },
+    "Colonoscopy/CTA": {
+      text: "If unstable, perform CT angiography (CTA) to localize bleeding (>0.5mL/min). For stable patients, urgent colonoscopy after bowel prep.",
+      explanation: "CTA ADVANTAGE: Identifies bleeding at 0.3-0.5mL/min. Colonoscopy has higher therapeutic yield (can treat angiodysplasia, diverticula).",
+      options: {
+        "Localized bleed": "Targeted Intervention",
+        "Diffuse/no source": "Capsule Endoscopy"
+      }
+    },
+    "Targeted Intervention": {
+      text: "Based on findings: embolization (for diverticular bleed), endoscopic clipping/coagulation, or surgery.",
+      explanation: "SURGICAL INDICATIONS: Persistent bleeding despite endoscopy/embolization, perforation, or malignancy. WARNING: Mortality increases to 30% with emergency surgery.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Hemodynamically Stable Pathway
+    "Stable Evaluation": {
+      text: "Is the bleeding overt (melena, hematemesis, hematochezia) or occult (iron deficiency/anemia)?",
+      explanation: "KEY HISTORY: NSAID use, alcohol, liver disease, prior bleeds. Melena suggests >50mL blood loss; hematochezia >1000mL indicates severe bleed.",
+      options: {
+        "Overt bleeding": "Localize Bleeding Source",
+        "Occult bleeding": "Occult Workup"
+      }
+    },
+   "Localize Bleeding Source": {
+  text: "Upper vs lower GI clues:\n Hematemesis/melena = upper. \nHematochezia = lower (unless massive upper bleed).",
+  explanation: `TRICKY SCENARIOS: 
+  Melena can originate from right colon. 
+  Hematochezia with BUN/Cr ratio >30 suggests upper source.`,
+  options: {
+    "Upper GI likely": "Elective Endoscopy",
+    "Lower GI likely": "Colonoscopy",
+    "Unclear/small bowel": "Capsule Endoscopy"
+  }
+},
+    "Elective Endoscopy": {
+      text: "Schedule endoscopy within 24 hours. Start PPI for suspected ulcers.",
+      explanation: "PREP: NPO 6 hours. RISK STRATIFICATION: Blatchford score ≥6 requires inpatient endoscopy. Rockall score predicts mortality.",
+      options: {
+        "Findings documented": "Treat Specific Lesion",
+        "Negative endoscopy": "Re-evaluate"
+      }
+    },
+    "Colonoscopy": {
+      text: "Perform after bowel prep (polyethylene glycol 4L). Avoid in acute diverticulitis.",
+      explanation: "TIMING: Within 24-48h for active bleeding. DIAGNOSTIC YIELD: 45-90% for lower GI bleed. Tagged RBC scan if intermittent bleeding.",
+      options: {
+        "Findings documented": "Treat Specific Lesion",
+        "Negative colonoscopy": "Capsule Endoscopy"
+      }
+    },
+    "Capsule Endoscopy": {
+      text: "For obscure bleeding (negative endoscopy/colonoscopy). Best for small bowel visualization.",
+      explanation: "LIMITATIONS: Cannot treat lesions. Contraindicated in strictures. PATIENT SELECTION: Hemodynamically stable with ongoing occult loss.",
+      options: {
+        "Positive findings": "Deep Enteroscopy",
+        "Negative study": "Re-evaluate"
+      }
+    },
+    "Deep Enteroscopy": {
+      text: "Balloon-assisted (DBE) or spiral enteroscopy for biopsy/therapy of small bowel lesions.",
+      explanation: "THERAPEUTIC OPTIONS: Argon plasma coagulation for angiodysplasia, polypectomy for tumors. Yield increases to 60-75% after positive capsule.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Occult Workup": {
+      text: "Evaluate for iron deficiency anemia (ferritin <30ng/mL). Check for fecal occult blood.",
+      explanation: "MALIGNANCY RISK: Colon cancer screening mandatory in adults >45 with iron deficiency. Consider gastric bypass/small bowel sources if colonoscopy negative.",
+      options: {
+        "FOBT positive": "Colonoscopy + EGD",
+        "Iron deficiency only": "Malabsorption Workup"
+      }
+    },
+    "Treat Specific Lesion": {
+      text: "Tailored therapy: Varices (banding + octreotide), ulcers (PPI + H. pylori tx), angiodysplasia (APC).",
+      explanation: "FOLLOW-UP: Repeat endoscopy for ulcer healing. Surveillance for varices q1-2y. Avoid NSAIDs indefinitely for angiodysplasia patients.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Interventional Radiology/Surgery": {
+      text: "For uncontrolled bleeding: angiography with embolization (90% success for diverticular bleed) or surgery.",
+      explanation: "SURGICAL OPTIONS: Oversewing ulcers, bowel resection for diverticula/AVMs. LAST RESORT: Total colectomy for diffuse angiodysplasia.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  // Rectal Bleeding - - - - - - - 
+  "Rectal Bleeding": {
+    start: {
+      text: "Is the patient hemodynamically unstable (tachycardia, hypotension, altered mental status)?",
+      explanation: "Immediate resuscitation takes priority. RED FLAG: Systolic BP <90mmHg, HR >100bpm, or orthostatic changes (>20bpm HR increase or >20mmHg SBP drop) indicates ≥15% blood loss.",
+      options: {
+        yes: "Emergent Resuscitation",
+        no: "Stable Evaluation"
+      }
+    },
+
+    // Hemodynamically Unstable Pathway
+    "Emergent Resuscitation": {
+      text: "Place 2 large-bore IVs (16-18G), transfuse PRBCs if Hb <7g/dL (or <8g/dL with CAD). Type & crossmatch. Administer O-negative blood if critical.",
+      explanation: "RESUSCITATION GOALS: Target urine output >30mL/h. Avoid over-transfusion in variceal bleeding (SBP 90-100mmHg). WARNING: Correct coagulopathy (INR >1.5: give FFP/vitamin K; platelets <50k: transfuse).",
+      options: {
+        "Airway secure": "NG Tube Assessment",
+        "Airway compromised": "Intubation"
+      }
+    },
+    "Intubation": {
+      text: "Secure airway for massive hematochezia or altered mental status to prevent aspiration.",
+      explanation: "PROCEDURE: Rapid sequence intubation with cricoid pressure. Avoid nasal intubation (risk of epistaxis in coagulopathy).",
+      options: {
+        "Proceed": "NG Tube Assessment"
+      }
+    },
+    "NG Tube Assessment": {
+      text: "Perform NG lavage. Is aspirate bloody or coffee-ground?",
+      explanation: "KEY POINT: Bilious non-bloody output suggests lower GI source but doesn’t rule out upper bleed (10% false negatives). Melena + NG blood = upper source.",
+      options: {
+        "Bloody/coffee-ground": "Upper GI Endoscopy",
+        "Clear/bilious": "Lower GI Workup"
+      }
+    },
+    "Upper GI Endoscopy": {
+      text: "Perform within 6-12h if NG aspirate positive. Look for ulcers, varices, or Mallory-Weiss tears.",
+      explanation: "THERAPY: Epinephrine injection + thermal coagulation for ulcers; band ligation for varices. NOTE: PPI infusion (80mg bolus + 8mg/hr) pre-endoscopy for suspected ulcers.",
+      options: {
+        "Bleeding controlled": "Monitor in ICU",
+        "Bleeding persists": "Interventional Radiology"
+      }
+    },
+    "Lower GI Workup": {
+      text: "For hematochezia: perform rectal exam, then CTA or colonoscopy based on stability.",
+      explanation: "CTA VS COLONOSCOPY: CTA detects bleeding >0.5mL/min (good for localization). Colonoscopy allows therapy but requires bowel prep (4L PEG within 4h).",
+      options: {
+        "Active bleeding on CTA": "Angioembolization",
+        "Stable for colonoscopy": "Urgent Colonoscopy"
+      }
+    },
+    "Angioembolization": {
+      text: "If CTA shows extravasation, proceed to angiography for superselective embolization (e.g., microcoils).",
+      explanation: "SUCCESS RATES: 70-90% for diverticular bleeds. RISKS: Bowel ischemia (5-10%). SURGICAL BACKUP: Required if embolization fails.",
+      options: {
+        "Bleeding controlled": "Monitor",
+        "Bleeding continues": "Surgical Consult"
+      }
+    },
+    "Urgent Colonoscopy": {
+      text: "Perform within 24h after rapid bowel prep (4L PEG via NG tube if needed).",
+      explanation: "THERAPEUTIC OPTIONS: Clip diverticular bleed, coagulate angiodysplasia. LIMITATION: Poor visualization if prep inadequate.",
+      options: {
+        "Source identified": "Endoscopic Therapy",
+        "No source found": "Tagged RBC Scan"
+      }
+    },
+
+    // Hemodynamically Stable Pathway
+    "Stable Evaluation": {
+      text: "Assess bleeding characteristics: Hematochezia vs melena? Associated symptoms (pain, diarrhea)?",
+      explanation: "CLINICAL CLUES: Painless hematochezia → diverticulosis/AVM. Pain + diarrhea → colitis. Melena → upper/small bowel source (check NG tube).",
+      options: {
+        "Hematochezia": "Anoscopy/Sigmoidoscopy",
+        "Melena/occult": "Upper GI Endoscopy"
+      }
+    },
+    "Anoscopy/Sigmoidoscopy": {
+      text: "In-office exam for hemorrhoids, fissures, proctitis. Flexible sigmoidoscopy if suspicion for distal colitis.",
+      explanation: "FINDINGS: Internal hemorrhoids (painless bleeding), fissures (pain + blood on tissue), ulcerative proctitis (mucopus). LIMITATION: Doesn’t exclude proximal lesions.",
+      options: {
+        "Diagnostic (e.g., hemorrhoids)": "Treat Local Cause",
+        "Non-diagnostic": "Colonoscopy"
+      }
+    },
+    "Treat Local Cause": {
+      text: "Hemorrhoids: fiber, topical steroids. Fissures: nitroglycerin ointment. Proctitis: 5-ASA suppositories.",
+      explanation: "FOLLOW-UP: Re-evaluate if bleeding persists despite therapy (may need banding/surgery).",
+      options: {
+        "Bleeding resolved": "Discharge",
+        "Bleeding continues": "Colonoscopy"
+      }
+    },
+    "Colonoscopy": {
+      text: "Schedule within 1-2 weeks. Bowel prep required (split-dose PEG).",
+      explanation: "HIGH-YIELD FINDINGS: Diverticulosis (40%), angiodysplasia (30%), cancer/polyps (20%). WARNING: Biopsy suspected IBD only if infection ruled out.",
+      options: {
+        "Diagnostic": "Therapeutic Intervention",
+        "Non-diagnostic": "Capsule Endoscopy"
+      }
+    },
+    "Therapeutic Intervention": {
+      text: "Diverticular bleed: clip or epinephrine injection. AVM: argon plasma coagulation. Cancer: surgical referral.",
+      explanation: "DIVERTICULAR REBLEED RISK: 25% at 4 years. AVM: Recurrence common (annual colonoscopy if multiple lesions).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Capsule Endoscopy": {
+      text: "For obscure bleeding (negative EGD/colonoscopy). Best for small bowel visualization.",
+      explanation: "PREP: NPO 12h. LIMITATIONS: No therapy, contraindicated in strictures. YIELD: 60-70% for small bowel sources (e.g., Dieulafoy’s, Crohn’s).",
+      options: {
+        "Positive findings": "Deep Enteroscopy",
+        "Negative study": "Re-evaluate for Rare Causes"
+      }
+    },
+    "Deep Enteroscopy": {
+      text: "Balloon-assisted (DBE) or spiral enteroscopy for biopsy/therapy of small bowel lesions.",
+      explanation: "THERAPY: APC for angiodysplasia, polypectomy for tumors. COMBINE WITH: Intraoperative enteroscopy if surgical candidate.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Interventional Radiology": {
+      text: "For uncontrolled bleeding: angiography with embolization or vasopressin infusion.",
+      explanation: "TARGETS: Marginal artery (diverticular bleed), ileocolic branch (AVM). COMPLICATIONS: Ischemia (higher with vasopressin).",
+      options: {
+        "Bleeding controlled": "Monitor",
+        "Failure": "Surgical Resection"
+      }
+    },
+    "Surgical Resection": {
+      text: "For massive/recurrent bleeding: segmental colectomy (localized) or subtotal colectomy (diffuse).",
+      explanation: "MORTALITY: 10-30% in emergency cases. PREOP REQUIREMENT: Localize source (tattoo/angiography) to avoid blind resection.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+  
+  
+  //Acute Diarrhea - - - - - - - - 
+  "Acute Diarrhea": {
+    start: {
+      text: "Does the patient have systemic symptoms (fever, dehydration, blood/pus in stool, or weight loss)?",
+      explanation: "Systemic symptoms suggest invasive infection or inflammatory bowel disease (IBD). RED FLAG: Bloody diarrhea + fever = high risk for bacterial pathogens (e.g., Shigella, C. difficile).",
+      options: {
+        yes: "Inflammatory Workup",
+        no: "Non-Inflammatory Evaluation"
+      }
+    },
+
+    // Inflammatory Pathway (Systemic Symptoms)
+    "Inflammatory Workup": {
+      text: "Perform stool microscopy for WBCs/RBCs and fecal lactoferrin/calprotectin if available.",
+      explanation: "KEY INTERPRETATION: WBCs/RBCs indicate mucosal invasion (infectious or IBD). Lactoferrin/calprotectin >50μg/g suggests inflammation.",
+      options: {
+        "WBCs/RBCs present": "Stool Culture + Empiric Therapy",
+        "No WBCs/RBCs": "Consider Viral/Non-Invasive Causes"
+      }
+    },
+    "Stool Culture + Empiric Therapy": {
+      text: "Order stool culture (routine: Salmonella, Shigella, Campylobacter). Add C. difficile PCR if recent antibiotics/hospitalization.",
+      explanation: "EMPIRIC TREATMENT: For travelers → fluoroquinolone (e.g., ciprofloxacin). For suspected C. difficile → vancomycin/fidaxomicin. AVOID antimotility agents if bloody diarrhea.",
+      options: {
+        "Culture positive": "Targeted Treatment",
+        "Culture negative": "Flexible Sigmoidoscopy"
+      }
+    },
+    "Targeted Treatment": {
+      text: "Treat based on pathogen: Ciprofloxacin for Shigella, azithromycin for Campylobacter, vancomycin for C. difficile.",
+      explanation: "DURATION: Shigella (3-5d), Campylobacter (5d), C. difficile (10d). WARNING: Fluoroquinolone resistance rising in Campylobacter.",
+      options: {
+        "Improvement": "Monitor Resolution",
+        "No improvement": "Flexible Sigmoidoscopy"
+      }
+    },
+    "Flexible Sigmoidoscopy": {
+      text: "Perform with biopsies (even if mucosa appears normal) to rule out IBD or microscopic colitis.",
+      explanation: "HISTOLOGY CLUES: Crypt distortion = IBD. Neutrophils in lamina propria = infection. COLLECT: Terminal ileum biopsies if Crohn’s suspected.",
+      options: {
+        "Diagnostic (e.g., IBD)": "IBD Management",
+        "Non-diagnostic": "Chronic Diarrhea Workup"
+      }
+    },
+    "IBD Management": {
+      text: "Initiate steroids (e.g., prednisone 40mg/day) for moderate-severe IBD. Refer to gastroenterology.",
+      explanation: "FOLLOW-UP: Colonoscopy after stabilization. TEST FOR: CMV colitis in steroid-refractory cases.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Non-Inflammatory Pathway (No Systemic Symptoms)
+    "Non-Inflammatory Evaluation": {
+      text: "Assess for recent travel, antibiotics, sick contacts, or food triggers.",
+      explanation: "COMMON CAUSES: Viral (norovirus, rotavirus), osmotic (lactose intolerance), or secretory (ETEC, preformed toxins).",
+      options: {
+        "Suspected viral/toxin": "Supportive Care",
+        "Persistent (>14d)": "Chronic Diarrhea Workup"
+      }
+    },
+    "Supportive Care": {
+      text: "Hydration (oral rehydration solution or IV if severe). Loperamide PRN (avoid if bloody stool).",
+      explanation: "DIET: BRAT diet optional. Probiotics (e.g., Saccharomyces boulardii) may reduce duration by 1d.",
+      options: {
+        "Improves in 48h": "Discharge",
+        "Worsens/continues": "Re-evaluate for Red Flags"
+      }
+    },
+    "Consider Viral/Non-Invasive Causes": {
+      text: "Test for norovirus (PCR) if outbreak setting. Evaluate for osmotic causes (e.g., lactose intolerance).",
+      explanation: "CLUES: Sudden onset + vomiting = norovirus. Bloating + dairy = lactose intolerance. WARNING: Antimotility agents can prolong some infections (e.g., Shiga-toxin E. coli).",
+      options: {
+        "Positive findings": "Targeted Management",
+        "Negative": "Reassess for IBD/Infection"
+      }
+    },
+    "Chronic Diarrhea Workup": {
+      text: "Evaluate for parasites (Giardia PCR), celiac serology (TTG-IgA), or bile acid malabsorption (SeHCAT test).",
+      explanation: "TEST SELECTION: Giardia if camping/drinking stream water. Celiac if bloating + anemia. SeHCAT if post-cholecystectomy.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Re-evaluate for Red Flags": {
+      text: "Check for new fever, blood in stool, or dehydration. Repeat stool studies if indicated.",
+      explanation: "WARNING: Delayed onset of bloody diarrhea after antibiotics = C. difficile. Recent raw shellfish = Vibrio risk.",
+      options: {
+        "Red flags present": "Inflammatory Workup",
+        "No red flags": "Supportive Care"
+      }
+    }
+  },
+  
+  
+  //Chronic Diarrhea------
+  "Chronic Diarrhea": {
+    start: {
+      text: "Does the patient have alarm features (weight loss >10 lbs, nocturnal diarrhea, blood in stool, or family history of IBD/celiac)?",
+      explanation: "Alarm features suggest organic disease (IBD, malignancy, malabsorption). RED FLAG: Nocturnal diarrhea rules out IBS.",
+      options: {
+        yes: "Organic Workup",
+        no: "Functional Evaluation"
+      }
+    },
+
+    // Organic Pathway (Alarm Features Present)
+    "Organic Workup": {
+      text: "Order initial labs: CBC, electrolytes, TSH, celiac serology (TTG-IgA), and fecal calprotectin/lactoferrin.",
+      explanation: "KEY TESTS: TTG-IgA (sensitivity >90% for celiac). Fecal calprotectin >50μg/g suggests IBD/infection. Check albumin for malnutrition.",
+      options: {
+        "Abnormal labs (e.g., anemia, elevated TTG)": "Targeted Testing",
+        "Normal labs": "Stool Analysis"
+      }
+    },
+    "Targeted Testing": {
+      text: "Based on findings: EGD with duodenal biopsies (celiac), colonoscopy (IBD), or CT abdomen (malignancy).",
+      explanation: "CELIAC CONFIRMATION: Villous atrophy + intraepithelial lymphocytes on biopsy. IBD: Crypt distortion on histology.",
+      options: {
+        "Diagnosis confirmed": "Disease-Specific Management",
+        "Unclear": "Advanced Testing"
+      }
+    },
+    "Stool Analysis": {
+      text: "Perform 48h stool collection for weight, fat (Sudan stain), electrolytes (osmotic gap), and WBCs.",
+      explanation: "OSMOTIC GAP: <50 = secretory; >125 = osmotic. Fecal fat >7g/24h = steatorrhea. WBCs = inflammation.",
+      options: {
+        "Steatorrhea (fatty)": "Fatty Diarrhea Workup",
+        "Inflammatory (WBCs)": "Inflammatory Workup",
+        "Watery (normal fat/WBCs)": "Watery Diarrhea Workup"
+      }
+    },
+    "Fatty Diarrhea Workup": {
+      text: "Test for pancreatic insufficiency (fecal elastase <100μg/g), bacterial overgrowth (glucose H2 breath test), or celiac.",
+      explanation: "PANCREATIC CAUSE: Fecal elastase is gold standard. TREAT: Pancreatic enzymes (40,000-80,000 units/meal).",
+      options: {
+        "Pancreatic insufficiency": "Pancreatic Enzyme Therapy",
+        "Bacterial overgrowth": "Rifaximin Therapy",
+        "Celiac/other": "Gluten-Free Diet"
+      }
+    },
+    "Inflammatory Workup": {
+      text: "Perform colonoscopy with biopsies (even if mucosa normal) to rule out IBD, microscopic colitis, or infection.",
+      explanation: "MICROSCOPIC COLITIS: Lymphocytic/collagenous changes on biopsy. IBD: Granulomas (Crohn’s) or crypt abscesses (UC).",
+      options: {
+        "IBD confirmed": "Anti-TNF/Immunomodulators",
+        "Infection (e.g., C. difficile)": "Targeted Antibiotics",
+        "Microscopic colitis": "Budesonide Trial"
+      }
+    },
+    "Watery Diarrhea Workup": {
+      text: "Check stool osmotic gap. For secretory (<50): Test for neuroendocrine tumors (VIPoma, carcinoid). For osmotic (>125): Screen for laxatives/magnesium.",
+      explanation: "SECRETORY CAUSES: VIPoma (watery diarrhea-hypokalemia-achlorhydria), carcinoid (flushing + elevated 5-HIAA).",
+      options: {
+        "Secretory": "24h Urine 5-HIAA/Serum VIP",
+        "Osmotic": "Stool Magnesium/Laxative Screen"
+      }
+    },
+
+    // Functional Pathway (No Alarm Features)
+    "Functional Evaluation": {
+      text: "Assess for IBS criteria (Rome IV): Recurrent abdominal pain + improved defecation, onset >6mo ago.",
+      explanation: "IBS SUBTYPES: Diarrhea-predominant (IBS-D), constipation-predominant (IBS-C), mixed (IBS-M).",
+      options: {
+        "Meets IBS criteria": "IBS Management",
+        "Does not meet criteria": "Dietary/Lifestyle Review"
+      }
+    },
+    "IBS Management": {
+      text: "Start low-FODMAP diet, probiotics (e.g., Bifidobacterium), and antispasmodics (dicyclomine). Consider rifaximin for IBS-D.",
+      explanation: "RIFAXIMIN: 550mg TID x 14d for bloating + diarrhea. REPEAT: Up to 2 courses/year if effective.",
+      options: {
+        "Improves": "Maintenance Therapy",
+        "No improvement": "Second-Line Agents"
+      }
+    },
+    "Dietary/Lifestyle Review": {
+      text: "Screen for lactose intolerance (trial of lactose-free diet), excessive caffeine/sorbitol, or stress.",
+      explanation: "LACTOSE TESTING: Hydrogen breath test or empiric elimination. SORBITOL: Found in sugar-free gums/candies.",
+      options: {
+        "Identified trigger": "Elimination Diet",
+        "No clear trigger": "Re-evaluate for Organic Causes"
+      }
+    },
+    "Advanced Testing": {
+      text: "Consider capsule endoscopy (small bowel Crohn’s), SeHCAT scan (bile acid diarrhea), or peptide hormone levels (gastrin, VIP).",
+      explanation: "BILE ACID DIARRHEA: SeHCAT retention <5% = cholestyramine trial. PEPTIDE TUMORS: Gastrin (Zollinger-Ellison), VIP (VIPoma).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Disease-Specific Management": {
+      text: "Tailored therapy: Celiac (gluten-free diet), IBD (biologics), microscopic colitis (budesonide).",
+      explanation: "BUDESONIDE: 9mg/day x 6w for microscopic colitis. RELAPSE RATE: 50-80% after stopping.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+  
+  
+  // Constipation--------------
+  "Constipation": {
+    start: {
+      text: "Is the patient >50 years old or have alarm features (rectal bleeding, weight loss, anemia, family history of colon cancer)?",
+      explanation: "Alarm features suggest organic pathology (e.g., malignancy, obstruction). RED FLAG: New-onset constipation in elderly requires colon cancer screening.",
+      options: {
+        yes: "Structural Evaluation",
+        no: "Functional Evaluation"
+      }
+    },
+
+    // Structural Pathway (Alarm Features Present)
+    "Structural Evaluation": {
+      text: "Perform digital rectal exam (DRE) and order labs: CBC, TSH, electrolytes, calcium. Consider colonoscopy.",
+      explanation: "DRE FINDINGS: Mass = malignancy; hard stool = impaction; tenderness = fissure/abscess. COLONOSCOPY: Gold standard for detecting masses/strictures.",
+      options: {
+        "Mass/obstruction found": "Mass Management",
+        "Anorectal disorder (fissure/hemorrhoids)": "Anorectal Therapy",
+        "No structural cause": "Motility Workup"
+      }
+    },
+    "Mass Management": {
+      text: "For malignant obstruction: Surgical resection vs stenting (if palliative). For benign strictures: Balloon dilation.",
+      explanation: "STENTING: Temporary measure for palliative cases or pre-op decompression. SURGERY: Preferred for resectable lesions without metastases.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Anorectal Therapy": {
+      text: "Fissures: Topical nitrates/CCBs + stool softeners. Hemorrhoids: Fiber + rubber band ligation if grade III-IV.",
+      explanation: "FISSURE HEALING: 70% resolve with medical therapy. GRADE III HEMORRHOIDS: Require procedural intervention.",
+      options: {
+        "Improves": "Maintenance Therapy",
+        "Persists": "Surgical Referral"
+      }
+    },
+
+    // Functional Pathway (No Alarm Features)
+    "Functional Evaluation": {
+      text: "Assess for IBS-C (Rome IV: abdominal pain + constipation >6mo) or medication causes (opioids, anticholinergics).",
+      explanation: "MEDICATION CULPRITS: Opioids (most common), CCBs, anticholinergics, iron. IBS-C: Pain improves with defecation.",
+      options: {
+        "IBS-C suspected": "IBS Management",
+        "Medication-related": "Medication Adjustment",
+        "Idiopathic": "Empiric Therapy"
+      }
+    },
+    "IBS Management": {
+      text: "Start fiber supplementation (psyllium) + osmotic laxatives (PEG). Consider linaclotide or lubiprostone if refractory.",
+      explanation: "LINACLOTIDE: 145μg daily (avoid in IBD). LUBIPROSTONE: 8μg BID (pregnancy category C).",
+      options: {
+        "Improves": "Continue Therapy",
+        "No improvement": "Motility Testing"
+      }
+    },
+    "Medication Adjustment": {
+      text: "Taper opioids if possible. Switch to non-constipating alternatives (e.g., NSAIDs instead of opioids).",
+      explanation: "OPIOID-INDUCED: Start prophylactic PEG. MU-OPIOID ANTAGONISTS: Methylnaltrexone for refractory cases.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Empiric Therapy": {
+      text: "Begin fiber (25-30g/day) + PEG 17g daily. Add stimulant laxatives (senna) PRN if no response.",
+      explanation: "FIBER TIP: Increase gradually to avoid bloating. STIMULANT LAXATIVES: Safe for short-term use despite myths.",
+      options: {
+        "Improves": "Maintenance",
+        "Persists >3mo": "Motility Testing"
+      }
+    },
+
+    // Motility Workup (Refractory Cases)
+    "Motility Workup": {
+      text: "Order radiopaque marker transit study. Perform anorectal manometry if suspected pelvic floor dysfunction.",
+      explanation: "TRANSIT STUDY: Day 5 X-ray - markers in rectum = outlet dysfunction; scattered = slow transit. MANOMETRY: Diagnoses dyssynergia.",
+      options: {
+        "Slow transit": "Prokinetic Agents",
+        "Outlet dysfunction": "Biofeedback Therapy",
+        "Normal transit": "Reassure + Behavioral Mods"
+      }
+    },
+    "Prokinetic Agents": {
+      text: "Try prucalopride (2mg daily) or lubiprostone. Reserve neostigmine for severe colonic pseudo-obstruction.",
+      explanation: "PRUCALOPRIDE: 5-HT4 agonist (avoid in CVD). NEOSTIGMINE: For acute colonic pseudo-obstruction (monitor for bradycardia).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Biofeedback Therapy": {
+      text: "6-12 sessions for dyssynergic defecation (85% success rate). Combine with PEG for optimal results.",
+      explanation: "TARGET: Coordinated abdominal push + anal relaxation. HOME DEVICES: Biofeedback balloons can supplement clinic visits.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Special Cases
+    "Motility Testing": {
+      text: "For refractory cases: Defecography (rectoceles), colonic manometry (Hirschsprung's), or full-thickness biopsy.",
+      explanation: "HIRSCHSPRUNG'S: Absent ganglions on biopsy. DEFECOGRAPHY: Gold standard for structural pelvic floor disorders.",
+      options: {
+        "Hirschsprung's": "Surgical Resection",
+        "Pelvic floor disorder": "Surgical Repair",
+        "Idiopathic": "Experimental Therapies"
+      }
+    }
+  },
+  
+  
+  
+  
+  "Anorectal Pain": {
+    start: {
+      text: "Does the patient have alarm features (fever, rectal bleeding, neurologic deficits, or immunocompromise)?",
+      explanation: "Alarm features suggest serious pathology (abscess, malignancy, or infection). RED FLAG: Fever + pain = emergent evaluation for abscess.",
+      options: {
+        yes: "Emergent Evaluation",
+        no: "Non-Emergent Evaluation"
+      }
+    },
+
+    // Emergent Pathway (Alarm Features Present)
+    "Emergent Evaluation": {
+      text: "Perform digital rectal exam (DRE) and anoscopy. Assess for abscess, fistulas, or masses.",
+      explanation: "KEY FINDINGS: Fluctuance = abscess; bloody discharge = malignancy; severe tenderness = proctitis. NOTE: 40% of anorectal abscesses are missed on initial exam.",
+      options: {
+        "Abscess suspected": "Immediate Drainage",
+        "Mass/foreign body": "Imaging + Biopsy",
+        "No local cause": "Referred Pain Workup"
+      }
+    },
+    "Immediate Drainage": {
+      text: "For abscess: Incision & drainage (I&D) under local anesthesia. Add antibiotics if cellulitis, immunocompromise, or valvular heart disease.",
+      explanation: "ANTIBIOTIC CHOICE: Ciprofloxacin + metronidazole for coverage of anaerobes and gram-negatives. CULTURE: Required for recurrent abscesses.",
+      options: {
+        "Improves": "Follow-up in 48h",
+        "Worsens": "Hospital Admission"
+      }
+    },
+    "Imaging + Biopsy": {
+      text: "Order pelvic MRI (gold standard) or CT if MRI unavailable. Biopsy any masses.",
+      explanation: "MRI ADVANTAGE: 95% sensitivity for fistulas. BIOPSY: Squamous cell carcinoma most common anal malignancy.",
+      options: {
+        "Malignancy confirmed": "Oncology Referral",
+        "Benign lesion": "Surgical Excision"
+      }
+    },
+
+    // Non-Emergent Pathway (No Alarm Features)
+    "Non-Emergent Evaluation": {
+      text: "Assess pain characteristics: Sudden severe episodes (proctalgia fugax) vs chronic pain (coccygodynia).",
+      explanation: "PROCTALGIA FUGAX: Lasts seconds-minutes, no trigger. COCCYGODYNIA: Worse when sitting, may follow trauma.",
+      options: {
+        "Acute episodic pain": "Proctalgia Fugax Management",
+        "Chronic pain": "Chronic Pain Workup",
+        "Pain with defecation": "Anorectal Disorder Evaluation"
+      }
+    },
+    "Proctalgia Fugax Management": {
+      text: "Reassurance + warm baths. Consider topical nitrates or calcium channel blockers for severe episodes.",
+      explanation: "NO PROVEN THERAPY: Self-limited condition. HYGIENE: Avoid excessive wiping which can exacerbate.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Chronic Pain Workup": {
+      text: "Perform DRE + anoscopy. Order lumbosacral MRI if neurologic symptoms present.",
+      explanation: "NEUROLOGIC RED FLAGS: Bowel/bladder dysfunction, saddle anesthesia = cauda equina syndrome (emergency).",
+      options: {
+        "Coccygeal tenderness": "Coccygodynia Management",
+        "Pelvic floor spasm": "Pelvic Floor Therapy",
+        "Neurologic deficits": "Neurology Referral"
+      }
+    },
+    "Anorectal Disorder Evaluation": {
+      text: "Inspect for fissures (posterior midline tear), hemorrhoids (bleeding with BM), or proctitis (mucus discharge).",
+      explanation: "FISSURE CLUES: 'Tearing' pain with BMs, visible crack. HEMORRHOIDS: Painless bleeding unless thrombosed.",
+      options: {
+        "Fissure": "Topical Nitrates + Fiber",
+        "Thrombosed hemorrhoid": "Excision if <72h",
+        "Proctitis": "Sigmoidoscopy + Biopsy"
+      }
+    },
+
+    // Referred Pain Pathway
+    "Referred Pain Workup": {
+      text: "Evaluate for PID (vaginal discharge), prostatitis (dysuria), nephrolithiasis (flank pain), or endometriosis (cyclical pain).",
+      explanation: "TESTING: Urinalysis, vaginal/cervical cultures, pelvic ultrasound. NOTE: 15% of anorectal pain is referred.",
+      options: {
+        "PID/prostatitis": "Antibiotic Therapy",
+        "Nephrolithiasis": "CT Abdomen/Pelvis",
+        "Endometriosis": "GYN Referral"
+      }
+    },
+    "Coccygodynia Management": {
+      text: "Coccygeal cushion + NSAIDs. Consider steroid injection if trauma history.",
+      explanation: "INJECTION: 80% improve with methylprednisolone + lidocaine. SURGERY: Last resort for refractory cases.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Pelvic Floor Therapy": {
+      text: "Refer for biofeedback (12 sessions). Combine with diazepam suppositories PRN for spasm.",
+      explanation: "SUCCESS RATE: 70-80% for myalgia. TECHNIQUE: Teaches coordinated relaxation during defecation.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+  
+  
+  
+  // Positive FOBT - - - - - - - 
+  "Positive FOBT": {
+    start: {
+      text: "Was the Positive Fecal Occult Blood Test (FOBT) performed on spontaneously passed stool (not digital rectal exam)?",
+      explanation: "DRE-based FOBT has 25% false-positive rate. VALID TEST REQUIRES: 3 consecutive spontaneous stools with proper dietary prep (no red meat/NSAIDs 3d prior).",
+      options: {
+        yes: "Confirmatory Evaluation",
+        no: "Repeat Proper FOBT"
+      }
+    },
+
+    // Initial Evaluation Pathway
+    "Repeat Proper FOBT": {
+      text: "Provide patient with 3 FOBT cards and dietary instructions (avoid red meat, vitamin C, NSAIDs for 3d).",
+      explanation: "FALSE-POSITIVE REDUCERS: Delay testing if active hemorrhoidal bleeding. IMMUNOCHEMICAL FOBT: More specific than guaiac (no dietary restrictions).",
+      options: {
+        "Still positive": "Confirmatory Evaluation",
+        "Negative": "Routine Screening in 1yr"
+      }
+    },
+    "Confirmatory Evaluation": {
+      text: "Does patient have iron deficiency anemia (low ferritin/MCV) or GI symptoms (weight loss, pain)?",
+      explanation: "IRON DEFICIENCY: Ferritin <30ng/mL + MCV <80fL increases cancer risk 10-fold. SYMPTOMS: Change in bowel habits warrants urgent colonoscopy.",
+      options: {
+        yes: "Full GI Workup",
+        no: "Colonoscopy Alone"
+      }
+    },
+
+    // Colonoscopy Pathways
+    "Colonoscopy Alone": {
+      text: "Perform diagnostic colonoscopy within 1 month. Prepare with split-dose PEG solution.",
+      explanation: "YIELD: 5-10% cancer, 20-30% polyps (60-70% false positives). MISS RATES: 6% of cancers, 22% of adenomas >1cm.",
+      options: {
+        "Polyp/Cancer found": "Therapeutic Intervention",
+        "Colitis/AVMs found": "Treat Underlying Condition",
+        "Normal colonoscopy": "Risk-Based Followup"
+      }
+    },
+    "Full GI Workup": {
+      text: "Perform colonoscopy + EGD (even if colonoscopy shows diverticula/AVMs - they may not be the source).",
+      explanation: "CO-MISS RATE: 30% of upper GI cancers bleed intermittently. NOTE: Diverticula coexist with neoplasms in 15%.",
+      options: {
+        "Upper/Lower GI lesion": "Targeted Treatment",
+        "Normal studies": "Small Bowel Evaluation"
+      }
+    },
+
+    // Findings Management
+    "Therapeutic Intervention": {
+      text: "Polyps: Remove all >5mm. Cancers: Refer for staging (CT chest/abdomen/pelvis).",
+      explanation: "SURVEILLANCE: 3yr follow-up for high-risk adenomas (villous, >1cm, dysplasia). 10yr for 1-2 small tubular adenomas.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Treat Underlying Condition": {
+      text: "Colitis: Biopsy for IBD vs infection. AVMs: APC if bleeding. Diverticula: Only treat if active bleeding seen.",
+      explanation: "AVM PITFALL: 40% have multiple sources. DIVERTICULAR BLEED: 80% stop spontaneously but 25% rebleed.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Negative Initial Workup
+    "Small Bowel Evaluation": {
+      text: "Perform capsule endoscopy (CE) or CT enterography. Consider push enteroscopy if CE shows proximal lesions.",
+      explanation: "CE YIELD: 60% for obscure bleeding (AVMs 70%, tumors 15%). LIMITATION: Cannot biopsy/treat.",
+      options: {
+        "Small bowel lesion": "Deep Enteroscopy/Surgery",
+        "Normal CE": "Angiography or Monitor"
+      }
+    },
+    "Risk-Based Followup": {
+      text: "High-risk patients (family history, smokers): Repeat colonoscopy in 5yr. Others: Resume annual FOBT.",
+      explanation: "FAMILY HISTORY: 1st-degree relative with CRC = 10yr earlier screening. IBD: Annual colonoscopy after 8yrs disease.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Advanced Testing
+    "Angiography or Monitor": {
+      text: "For active bleeding: CT angiography (0.5mL/min sensitivity). If negative, consider tagged RBC scan.",
+      explanation: "ANGIOGRAPHY THERAPY: Embolization for active extravasation. TAGGED RBC: Localizes intermittent bleeding (0.1mL/min).",
+      options: {
+        "Bleeding localized": "Embolization/Surgery",
+        "No source found": "Hematology Consult"
+      }
+    }
+  },
+  
+  
+  // Flatulence - - - - 
+  "Flatulence": {
+    start: {
+      text: "Does the patient have alarm symptoms (weight loss, bloody stools, nocturnal pain, or vomiting)?",
+      explanation: "Alarm symptoms suggest organic disease (IBD, malignancy, obstruction). RED FLAG: Weight loss + flatulence warrants cancer workup.",
+      options: {
+        yes: "Organic Disease Workup",
+        no: "Functional Evaluation"
+      }
+    },
+
+    // Organic Disease Pathway
+    "Organic Disease Workup": {
+      text: "Order CBC, ESR/CRP, and stool tests (calprotectin, O&P, C. difficile). Perform abdominal exam.",
+      explanation: "KEY TESTS: Elevated calprotectin (>50μg/g) suggests IBD. Fecal lactoferrin detects inflammation. H. pylori stool Ag if epigastric pain present.",
+      options: {
+        "Abnormal labs/stool": "Structural Evaluation",
+        "Normal labs": "Motility Testing"
+      }
+    },
+    "Structural Evaluation": {
+      text: "Perform colonoscopy (or sigmoidoscopy + barium enema) and EGD based on symptoms.",
+      explanation: "COLONOSCOPY FINDINGS: Crohn's (ileal ulcers), microscopic colitis (normal mucosa but chronic diarrhea). EGD: Celiac disease (scalloped duodenal folds).",
+      options: {
+        "Structural lesion found": "Disease-Specific Treatment",
+        "Normal studies": "Small Bowel Evaluation"
+      }
+    },
+
+    // Functional Pathway
+    "Functional Evaluation": {
+      text: "Assess for dietary triggers (lactose, legumes, artificial sweeteners) and IBS criteria.",
+      explanation: "COMMON OFFENDERS: Lactose (bloating + diarrhea), sorbitol (sugar-free gum), beans (raffinose). IBS: Pain relief with defecation + symptom onset >6mo ago.",
+      options: {
+        "Dietary trigger identified": "Elimination Diet Trial",
+        "Meets IBS criteria": "IBS Management",
+        "No clear cause": "Empiric Therapy"
+      }
+    },
+    "Elimination Diet Trial": {
+      text: "Eliminate suspected food (e.g., lactose-free diet for 2 weeks). Reintroduce to confirm.",
+      explanation: "LACTOSE TESTING: Hydrogen breath test if unclear. FODMAPs: Fermentable carbs (onions, wheat) often culprits in IBS.",
+      options: {
+        "Symptoms improve": "Confirm with Challenge",
+        "No improvement": "Re-evaluate for IBS/SIBO"
+      }
+    },
+
+    // Diagnostic Testing Pathways
+    "Motility Testing": {
+      text: "Perform gastric emptying study (for bloating/vomiting) or hydrogen breath test (for SIBO).",
+      explanation: "SIBO: Early hydrogen peak (<90min) on lactulose test. GASTROPARESIS: >10% retention at 4h on egg meal study.",
+      options: {
+        "Delayed emptying": "Prokinetic Agents",
+        "SIBO positive": "Rifaximin Therapy",
+        "Normal motility": "Reassure + Symptomatic Care"
+      }
+    },
+    "Small Bowel Evaluation": {
+      text: "Order capsule endoscopy or CT enterography if Crohn's suspected despite normal colonoscopy.",
+      explanation: "CAPSULE ENDOSCOPY: Detects 60% of small bowel lesions missed on EGD/colonoscopy. LIMITATION: Cannot biopsy.",
+      options: {
+        "Abnormal findings": "Specialist Referral",
+        "Normal studies": "Neuromodulators"
+      }
+    },
+
+    // Treatment Pathways
+    "IBS Management": {
+      text: "Start low-FODMAP diet (6-8wk trial) + peppermint oil (0.2-0.4mL TID). Consider rifaximin for bloating.",
+      explanation: "RIFAXIMIN: 550mg TID x 14d (30% sustained response). PEPTIDE OIL: Relaxes smooth muscle (avoid in GERD).",
+      options: {
+        "Improves": "Gradual FODMAP Reintroduction",
+        "No improvement": "Tricyclic Antidepressants"
+      }
+    },
+    "Empiric Therapy": {
+      text: "Trial simethicone (125mg QID) + activated charcoal (260mg after meals). Add probiotics if antibiotic history.",
+      explanation: "SIMETHICONE: Disrupts gas bubbles (works best for postprandial bloating). PROBIOTICS: B. infantis 35624 best evidence for IBS.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Disease-Specific Treatment": {
+      text: "Crohn's: Biologics. Celiac: Gluten-free diet. SIBO: Rifaximin 550mg TID x 14d.",
+      explanation: "SIBO RECURRENCE: 40% at 6mo - consider rotating antibiotics. CELIAC: Must confirm with duodenal biopsy pre-diet.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+  
+  
+  // Fecal Incontinence - - - - 
+  "fecal-incontinence": {
+    start: {
+      text: "Is there evidence of fecal impaction or overflow diarrhea on digital rectal exam (DRE)?",
+      explanation: "Overflow incontinence accounts for 20-30% of cases in elderly. RED FLAG: Rock-hard stool in rectum with liquid leakage suggests impaction.",
+      options: {
+        yes: "Disimpaction + Bowel Regimen",
+        no: "Etiology Evaluation"
+      }
+    },
+
+    // Impaction Pathway
+    "Disimpaction + Bowel Regimen": {
+      text: "Perform manual disimpaction if needed. Start daily PEG 17g + scheduled toileting.",
+      explanation: "PEG DOSING: Titrate to 1-2 soft BMs daily. TOILETING: 20min after meals to utilize gastrocolic reflex.",
+      options: {
+        "Improves": "Maintenance Therapy",
+        "Persists": "Anorectal Testing"
+      }
+    },
+
+    // Main Evaluation Pathway
+    "Etiology Evaluation": {
+      text: "Assess for risk factors: Obstetric trauma, diabetes, neurologic disease, or rectal surgery?",
+      explanation: "KEY HISTORY: 50% of vaginal deliveries cause occult sphincter injury. DIABETES: Autonomic neuropathy reduces rectal sensation.",
+      options: {
+        "Diarrhea present": "Diarrhea Workup",
+        "No diarrhea": "Sphincter Assessment"
+      }
+    },
+
+    // Diarrhea Pathway
+    "Diarrhea Workup": {
+      text: "Order stool studies (C. difficile PCR, fecal calprotectin, O&P) and consider colonoscopy.",
+      explanation: "CALPROTECTIN: >50μg/g suggests IBD. COLONOSCOPY: Rule out microscopic colitis (normal appearance but biopsy shows lymphocytes).",
+      options: {
+        "Inflammatory/Infectious": "Targeted Treatment",
+        "Non-inflammatory": "Motility Testing"
+      }
+    },
+
+    // Sphincter Assessment Pathway
+    "Sphincter Assessment": {
+      text: "Perform anorectal manometry (ARM) and endoanal ultrasound (EAUS).",
+      explanation: "ARM MEASURES: Resting pressure (internal sphincter), squeeze pressure (external sphincter). EAUS: Gold standard for sphincter defects.",
+      options: {
+        "Sphincter defect": "Surgical Referral",
+        "Low pressures": "Biofeedback Therapy",
+        "Normal anatomy": "Neurologic Evaluation"
+      }
+    },
+
+    // Diagnostic Testing Pathways
+    "Anorectal Testing": {
+      text: "Perform ARM + rectal sensory testing. Consider defecography if prolapse suspected.",
+      explanation: "SENSORY TESTING: Balloon distension identifies neuropathic causes (e.g., diabetes). DEFECOGRAPHY: Diagnoses rectocele/intussusception.",
+      options: {
+        "Impaired sensation": "Bulking Agents + Training",
+        "Prolapse/Structural": "Surgical Consult",
+        "Normal studies": "Behavioral Therapy"
+      }
+    },
+
+    // Treatment Pathways
+    "Biofeedback Therapy": {
+      text: "Refer for 6-12 sessions of biofeedback (75% success rate). Combine with pelvic floor exercises.",
+      explanation: "PROTOCOL: Teaches coordination of abdominal push with anal relaxation. HOME DEVICES: Perineometer can reinforce training.",
+      options: {
+        "Improves": "Maintenance Exercises",
+        "No improvement": "Sacral Nerve Stimulation"
+      }
+    },
+    "Sacral Nerve Stimulation": {
+      text: "Consider temporary percutaneous nerve evaluation (PNE) test before permanent implant.",
+      explanation: "SUCCESS RATE: 60-75% for refractory cases. MECHANISM: Modulates afferent/efferent pathways to anorectum.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Behavioral Therapy": {
+      text: "Implement scheduled toileting + dietary fiber (25-30g/day). Add loperamide PRN for urgency.",
+      explanation: "LOPERAMIDE: Start 2mg BID, max 16mg/day. FIBER: Psyllium increases stool consistency without bulk.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Special Cases
+    "Neurologic Evaluation": {
+      text: "Order lumbosacral MRI if cauda equina suspected (saddle anesthesia, urinary retention).",
+      explanation: "EMERGENCY: Cauda equina requires decompression within 48h. CHRONIC: Multiple sclerosis often causes mixed incontinence.",
+      options: {
+        "Abnormal": "Neurology Referral",
+        "Normal": "Behavioral Therapy"
+      }
+    }
+  }
+};
+
+
+
+
+
+    let currentSymptom = null;
+    let currentQuestion = "start";
+
+    function playClick() {
+      const sound = document.getElementById("click-sound");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+      }
+    }
+
+    function startSymptom(symptom) {
+      currentSymptom = symptom;
+      currentQuestion = "start";
+      document.getElementById("symptom-title").textContent = symptom;
+      showQuestion();
+
+      document.getElementById("main-page").style.display = "none";
+      document.getElementById("question-page").style.display = "block";
+      document.getElementById("headline").style.display = "none";
+      document.getElementById("subheadline").style.display = "none";
+    }
+
+    // NEW/MODIFIED: This function is updated to show images.
+    function showQuestion() {
+      const symptomQuestions = questions[currentSymptom];
+      if (!symptomQuestions || !symptomQuestions[currentQuestion]) {
+        alert("Invalid symptom or question flow.");
+        return;
+      }
+
+      const questionData = symptomQuestions[currentQuestion];
+      const imageContainer = document.getElementById("question-image-container");
+      
+      // Clear previous image
+      imageContainer.innerHTML = "";
+
+      // If an image path exists, create and display the image
+      if (questionData.image) {
+        const img = document.createElement("img");
+        img.src = questionData.image;
+        img.alt = questionData.text; // for accessibility
+        img.className = "question-image";
+        imageContainer.appendChild(img);
+      }
+
+      document.getElementById("question").textContent = questionData.text;
+      document.getElementById("footer").textContent = questionData.explanation || "No explanation available.";
+
+      const buttons = Object.keys(questionData.options)
+        .map(option =>
+          `<button class='option-button' onclick="playClick(); nextQuestion('${option}')">${option}</button>`)
+        .join("");
+      document.querySelector(".button-container").innerHTML = buttons;
+    }
+
+    function nextQuestion(answer) {
+      const symptomQuestions = questions[currentSymptom];
+      const current = symptomQuestions[currentQuestion];
+      if (!current || !current.options[answer]) {
+        alert("Invalid choice.");
+        return;
+      }
+
+      const next = current.options[answer];
+      // Check if the next step is another question or a final diagnosis
+      if (symptomQuestions[next] && symptomQuestions[next].options) {
+          currentQuestion = next;
+          showQuestion();
+      } else {
+          // This handles both terminal nodes that are defined as full objects
+          // and those that are simple strings (your original implementation)
+          if (symptomQuestions[next]) {
+              currentQuestion = next;
+              showQuestion(); // This will display the final diagnosis with its image
+          } else {
+              // This is a fallback for legacy string-only terminals
+              document.getElementById("question").textContent = next;
+              document.getElementById("footer").textContent = "End of diagnostic path.";
+              document.querySelector(".button-container").innerHTML =
+                `<button class='option-button' onclick="playClick(); restart()">Restart</button>`;
+              document.getElementById("question-image-container").innerHTML = ""; // Clear image
+          }
+      }
+    }
+
+
+    function restart() {
+      document.getElementById("main-page").style.display = "flex";
+      document.getElementById("question-page").style.display = "none";
+      document.getElementById("headline").style.display = "block";
+      document.getElementById("subheadline").style.display = "block";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      sidebar.classList.toggle("active");
+      overlay.style.display = sidebar.classList.contains("active") ? "block" : "none";
+    }
+
+    document.addEventListener("click", function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const toggleBtn = document.querySelector(".toggle-button");
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnToggle = toggleBtn.contains(event.target);
+      if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains("active")) {
+        toggleSidebar();
+      }
+    });
+
+    let startX = 0;
+    document.addEventListener("touchstart", function(e) {
+      if (e.touches.length === 1) { startX = e.touches[0].clientX; }
+    });
+    document.addEventListener("touchend", function(e) {
+      const sidebar = document.getElementById("sidebar");
+      const diff = e.changedTouches[0].clientX - startX;
+      if (diff > 50 && sidebar.classList.contains("active")) { toggleSidebar(); }
+    });
+
+    function goHome() {
+      window.location.href = "../index.html";
+    }
+
+    function navigateTo(page) {
+      window.location.href = page;
+      const loadingScreen = document.querySelector('.loading');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'flex';
+        setTimeout(() => { window.location.href = page; }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>

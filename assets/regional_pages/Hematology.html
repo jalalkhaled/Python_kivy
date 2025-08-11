@@ -1,0 +1,2535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hematological Symptoms</title>
+  <link rel="stylesheet" href="../style/regional_style.css" type="text/css" media="all" />
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="nav-title">ALGOMED <span>HEMATOLOGY</span></div>
+  <button class="toggle-button" onclick="playClick(); toggleSidebar()">☰</button>
+</nav>
+
+<!-- Overlay for click outside -->
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <ul>
+      <li onclick="navigateTo('respiratory.html')">Respiratory</li>
+      <li onclick="navigateTo('cardiovascular.html')">Cardiovascular</li>
+      <li onclick="navigateTo('git.html')">Gastroenterology</li>
+      <li onclick="navigateTo('gynecology.html')">Gynecology</li>
+      <li onclick="navigateTo('hepatology.html')">Hepatology</li>
+      <li onclick="navigateTo('nephrology.html')">Nephrology</li>
+      <li onclick="navigateTo('obstetric.html')">Obstetric</li>
+      <li onclick="navigateTo('rheumatology.html')">Rheumatology</li>
+      <li onclick="navigateTo('hematology.html')">Hematology</li>
+      <li onclick="navigateTo('pediatric.html')">Pediatric</li>
+      <li onclick="navigateTo('ophthalmology.html')">Ophthalmology</li>
+      <li onclick="navigateTo('neurology.html')">Neurology</li>
+      <li onclick="navigateTo('dermatology.html')">Dermatology</li>
+      <li onclick="navigateTo('ent.html')">ENT</li>
+      <li onclick="navigateTo('psychiatric.html')">Psychiatric</li>
+      <li onclick="navigateTo('General.html')">General</li>
+    </ul>
+<button class="sidebar-about-button" onclick="navigateTo('../about.html')">About Us</button>
+  </aside>
+
+  <!-- Audio -->
+  <audio id="click-sound" src="../sounds/click_sound.wav" preload="auto"></audio>
+
+  <!-- Headlines Outside Container -->
+  <h3 id="headline">Select a Primary Symptom</h3>
+<p id="subheadline">Choose from the list below to begin diagnosis.</p>
+
+  <!-- Main Page -->
+  <div id="main-page" class="container">
+    <button class="symptom-button" onclick="playClick(); startSymptom('Polycythemia')">Polycythemia</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Anemia')">Anemia</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Deep Venous Thrombosis')">Deep Venous Thrombosis</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Pancytopenia')">Pancytopenia</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Neutrophilia')">Neutrophilia</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Leukopenia')">Leukopenia</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Bleeding Disorder')">Bleeding Disorder</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Coagulation Abnormalities')">Coagulation Abnormalities</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Platelet Transfusion Therapy')">Platelet Transfusion Therapy</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Red Blood Cell Transfusion')">RBCs Transfusion</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Transfusion Reactions')">Transfusion Reactions</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Classical Hodgkins Lymphoma')">Classical Hodgkins Lymphoma</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Chronic Myelogenous Leukemia')">Chronic Myelogenous Leukemia</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Monoclonal Gammopathy')">Monoclonal Gammopathy</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Lymphadenopathy')">Lymphadenopathy</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Neutropenia and Fever')">Neutropenia and Fever</button>
+    
+    
+   
+    
+    
+  </div>
+
+  <!-- Question Page -->
+  <div id="question-page">
+  <div class="title" id="symptom-title">Symptom Diagnostic</div>
+  <div id="question-image-container"></div>
+  <div id="question" class="question"></div>
+  <div class="button-container"></div>
+  <div id="footer" class="footer"></div>
+</div>
+
+  <!-- Home Button -->
+  <button class="home-button" onclick="goHome()">
+  <img src="../bodyicons/home_button.png" alt="Home" class="home-icon">
+  <span class="sr-only">Home</span>
+</button>
+  
+  
+  <!-- Script -->
+  <script>
+  const questions = {
+    
+    // Polycythaemia-----------------
+    
+  "Polycythemia": {
+    start: {
+      text: "Is the patient's hemoglobin (Hb) or hematocrit (Hct) elevated on repeat testing?",
+      explanation: "Initial step confirms persistent elevation. NOTE: Hb >18.5 g/dL (men) or >16.5 g/dL (women) often indicates true polycythemia without needing RBC mass measurement.",
+      options: {
+        "Yes": "Measure RBC Mass",
+        "No": "Exit Algorithm"
+      }
+    },
+    
+    // RBC Mass Evaluation Pathway
+    "Measure RBC Mass": {
+      text: "Perform radiolabeled RBC mass and plasma volume measurement (if available).",
+      explanation: "CRITICAL: True polycythemia requires RBC mass >25% above normal. Spurious polycythemia shows normal RBC mass with reduced plasma volume (e.g., diuretic use).",
+      options: {
+        "Increased RBC mass": "True Polycythemia Evaluation",
+        "Normal RBC mass": "Spurious Polycythemia Management"
+      }
+    },
+    "Spurious Polycythemia Management": {
+      text: "Discontinue diuretics, address dehydration, and evaluate for other plasma volume reducers.",
+      explanation: "WARNING: Spurious polycythemia still carries thrombotic risk due to poor blood rheology. Rehydrate and switch to non-diuretic antihypertensives if needed.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "True Polycythemia Evaluation": {
+      text: "Check arterial blood gas (ABG) for O₂ saturation.",
+      explanation: "KEY DISTINCTION: Hypoxia (O₂ sat <90%) suggests secondary polycythemia. Normal saturation points to PV or non-hypoxic EPO-driven causes.",
+      options: {
+        "O₂ saturation <90%": "Hypoxia Workup",
+        "O₂ saturation ≥90%": "EPO Level Assessment"
+      }
+    },
+    
+    // Hypoxia-Driven Polycythemia Pathway
+    "Hypoxia Workup": {
+      text: "Evaluate for causes of chronic hypoxia (e.g., COPD, sleep apnea, right-to-left shunt). Provide supplemental O₂ if indicated.",
+      explanation: "RED FLAGS: Nocturnal hypoxia (check sleep study), CO poisoning (carboxyhemoglobin ≥6%), or high-altitude living. Treat underlying cause to reduce EPO drive.",
+      options: {
+        "Hypoxia resolved": "Monitor Hb",
+        "Persistent polycythemia": "EPO Level Assessment"
+      }
+    },
+    
+    // EPO-Driven Polycythemia Pathway
+    "EPO Level Assessment": {
+      text: "Measure serum erythropoietin (EPO) levels.",
+      explanation: "CLUES: High EPO suggests renal/tumor-related secretion. Low/normal EPO with normal O₂ sat indicates PV or autonomous erythropoiesis.",
+      options: {
+        "High EPO": "Secondary Polycythemia Workup",
+        "Low/Normal EPO": "Polycythemia Vera (PV) Evaluation"
+      }
+    },
+    "Secondary Polycythemia Workup": {
+      text: "Perform renal ultrasound/CT to exclude cysts, tumors, or stenosis. Consider rare EPO-secreting tumors (hepatoma, hemangioblastoma).",
+      explanation: "NOTE: Androgen therapy, Bartter’s syndrome, or Hb variants (e.g., high-affinity hemoglobinopathy) can also elevate EPO.",
+      options: {
+        "Cause identified": "Treat Underlying Condition",
+        "No cause found": "Refer to Hematology"
+      }
+    },
+    "Treat Underlying Condition": {
+      text: "Address specific etiology (e.g., nephrectomy for renal tumors, phlebotomy for symptomatic erythrocytosis).",
+      explanation: "EXAMPLE: CO poisoning requires smoking cessation/carbon monoxide exposure elimination.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    
+    // Polycythemia Vera (PV) Pathway
+    "Polycythemia Vera (PV) Evaluation": {
+      text: "Assess for PV using PVSG criteria: splenomegaly, clonal markers (JAK2 V617F), or bone marrow biopsy.",
+      explanation: "DIAGNOSTIC CLUES: Thrombocytosis (>400K), leukocytosis (>12K), low EPO, or erythroid colony growth without EPO. JAK2 mutation present in >95% of PV cases.",
+      options: {
+        "Meets PV criteria": "PV Risk Stratification",
+        "Does not meet criteria": "Idiopathic Erythrocytosis Management"
+      }
+    },
+    "PV Risk Stratification": {
+      text: "Stratify by age/thrombosis history: Low-risk (<60yo, no thrombosis) vs. High-risk (≥60yo or prior thrombosis).",
+      explanation: "MANAGEMENT: Low-risk = phlebotomy + aspirin (if no bleeding). High-risk = phlebotomy + cytoreduction (hydroxyurea/interferon-α).",
+      options: {
+        "Low-risk PV": "Phlebotomy + Aspirin",
+        "High-risk PV": "Cytoreductive Therapy"
+      }
+    },
+    "Phlebotomy + Aspirin": {
+      text: "Target Hct <45% (men) or <42% (women). Start low-dose aspirin (81mg/day) unless contraindicated.",
+      explanation: "GOAL: Reduce thrombotic risk. AVOID aspirin if platelets >1M (risk of acquired von Willebrand disease). Monitor iron stores.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Cytoreductive Therapy": {
+      text: "Hydroxyurea (500-1500mg/day) or interferon-α (3MU TIW) for high-risk PV. Monitor CBC every 2-4 weeks.",
+      explanation: "WARNING: Busulfan reserved for refractory cases (leukemogenic). Ruxolitinib (JAK2 inhibitor) for hydroxyurea-resistant PV.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Idiopathic Erythrocytosis Management": {
+      text: "Empiric phlebotomy for symptomatic hyperviscosity. Monitor for evolving PV features.",
+      explanation: "NOTE: Some cases represent early PV or JAK2-negative clonal disorders. Repeat molecular testing if new symptoms arise.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+
+  
+  
+    //  DVT Approach 
+    "Deep Venous Thrombosis (DVT)": {
+      start: {
+        text: "Calculate Wells Score for DVT. Does patient have any of these?",
+        explanation: "Wells Score helps determine pretest probability for DVT.",
+        options: {
+          "Calculate Score": "Wells score calculation"
+        }
+      },
+      "Wells score calculation": {
+        text: "Select all that apply (1 point each): 1️⃣- Active cancer treatment,  2️⃣- Paralysis/paresis/leg cast,  3️⃣- Recent bedrest >3 days/surgery,   4️⃣- Tenderness along veins,   5️⃣- Entire leg swelling,   6️⃣- Calf swelling >3cm difference,   7️⃣- Pitting edema (unilateral),   8️⃣- Collateral superficial veins,   9️⃣- Previous DVT,   🔟- Alternative diagnosis more likely",
+        explanation: "Score ≥3 = High probability; 1-2 = Moderate; ≤0 = Low",
+        options: {
+          
+          "Done calculating": "Determine probability"
+        }
+      },
+      "Determine probability": {
+        text: "Final Wells Score:",
+        explanation: "Guides diagnostic approach based on probability.",
+        options: {
+          "High (≥3)": "High probability pathway",
+          "Moderate (1-2)": "Moderate probability pathway",
+          "Low (≤0)": "Low probability pathway"
+        }
+      },
+      "High probability pathway": {
+        text: "High probability Wells Score (≥3). Next step:",
+        explanation: "High probability requires imaging regardless of D-dimer.",
+        options: {
+          "Order Doppler ultrasound": "Order ultrasound"
+        }
+      },
+      "Moderate probability pathway": {
+        text: "Moderate probability Wells Score (1-2). Next step:",
+        explanation: "D-dimer helps rule out DVT in moderate probability.",
+        options: {
+          "Order D-dimer": "D-dimer results moderate prob"
+        }
+      },
+      "Low probability pathway": {
+        text: "Low probability Wells Score (≤0). Next step:",
+        explanation: "D-dimer can reliably exclude DVT in low probability.",
+        options: {
+          "Order D-dimer": "D-dimer results low prob"
+        }
+      },
+      "D-dimer results low prob": {
+        text: "D-dimer results for low probability patient:",
+        explanation: "D-dimer has high sensitivity but low specificity.",
+        options: {
+          "Negative": "DVT excluded",
+          "Positive": "Order ultrasound"
+        }
+      },
+      "D-dimer results moderate prob": {
+        text: "D-dimer results for moderate probability patient:",
+        explanation: "Positive D-dimer requires confirmation with imaging.",
+        options: {
+          "Negative": "DVT unlikely",
+          "Positive": "Order ultrasound"
+        }
+      },
+      "Order ultrasound": {
+        text: "Doppler ultrasound results:",
+        explanation: "Ultrasound is diagnostic for proximal DVT.",
+        options: {
+          "Positive": "DVT confirmed",
+          "Negative (high prob)": "Consider CT/MR venography",
+          "Negative (mod prob)": "Repeat US in 1 week if symptoms persist"
+        }
+      },
+      "DVT confirmed": {
+        text: "Diagnosis: Deep Vein Thrombosis.",
+        explanation: "Start anticoagulation (LMWH, DOACs). Assess for PE. Consider thrombophilia workup if unprovoked.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "DVT excluded": {
+        text: "DVT effectively ruled out.",
+        explanation: "Consider alternative diagnoses (cellulitis, Baker's cyst, etc.).",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      }
+    }, 
+    
+    
+    // Deep Venous Thrombosis--------- 
+  "Deep Venous Thrombosis": {
+    start: {
+      text: "Does the patient have signs/symptoms suggestive of DVT (unilateral leg swelling, pain, discoloration)?",
+      explanation: "DVT commonly presents with unilateral leg swelling, pain, or erythema. RED FLAG: Sudden dyspnea may indicate PE, requiring immediate evaluation.",
+      options: {
+        yes: "Assess Clinical Probability",
+        no: "Consider Alternative Diagnoses"
+      }
+    },
+
+    // Clinical Probability Assessment
+    "Assess Clinical Probability": {
+      text: "Evaluate risk factors: immobility, malignancy, recent surgery, estrogen use, family history of thrombosis, or known hypercoagulable state.",
+      explanation: "HIGH-RISK FACTORS: Active cancer, recent major surgery, or genetic thrombophilia (e.g., Factor V Leiden). Homan's sign is unreliable (sensitivity 8-10%).",
+      options: {
+        "High probability": "Proceed to Diagnostic Testing",
+        "Low probability": "D-Dimer Screening"
+      }
+    },
+
+    // Diagnostic Testing Pathway
+    "Proceed to Diagnostic Testing": {
+      text: "Order duplex ultrasound (D-US) of the affected extremity.",
+      explanation: "D-US is first-line (sensitivity 95%, specificity 98%). Limited for calf vein thrombi; repeat in 3-5 days if negative but high suspicion.",
+      options: {
+        "Positive D-US": "Initiate Anticoagulation",
+        "Negative D-US": "Consider Further Testing"
+      }
+    },
+    "Consider Further Testing": {
+      text: "If D-US is negative but clinical suspicion remains high, consider venography or MRI.",
+      explanation: "Venography is the gold standard but invasive. MRI is useful for pelvic vein thrombosis or contraindications to contrast.",
+      options: {
+        "Positive result": "Initiate Anticoagulation",
+        "Negative result": "Monitor for Progression"
+      }
+    },
+
+    // D-Dimer Screening Pathway
+    "D-Dimer Screening": {
+      text: "Perform D-dimer testing (high-sensitivity assay).",
+      explanation: "D-dimer >500 ng/mL suggests fibrin degradation but is nonspecific. Negative D-dimer (with low clinical probability) effectively rules out DVT.",
+      options: {
+        "Positive D-dimer": "Proceed to D-US",
+        "Negative D-dimer": "DVT Unlikely"
+      }
+    },
+
+    // Anticoagulation Initiation
+    "Initiate Anticoagulation": {
+      text: "Start immediate anticoagulation: LMWH (e.g., enoxaparin 1 mg/kg BID) or unfractionated heparin (UFH).",
+      explanation: "ACTION: For UFH, bolus 5000 U IV, then 1000 U/h infusion (target aPTT 1.5-2x control). Monitor platelets for HIT. Warfarin can be started concurrently (INR goal 2-3).",
+      options: {
+        "Proximal DVT": "Continue Anticoagulation for 3-6 Months",
+        "Calf Vein DVT": "Serial Ultrasounds or Short-Term Anticoagulation"
+      }
+    },
+    "Continue Anticoagulation for 3-6 Months": {
+      text: "Transition to oral anticoagulant (warfarin, DOAC) after 5-7 days of heparin overlap.",
+      explanation: "NOTE: For cancer-associated DVT, LMWH is preferred over warfarin/DOACs. Duration depends on provoked/unprovoked status and bleeding risk.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Calf Vein DVT Management
+    "Serial Ultrasounds or Short-Term Anticoagulation": {
+      text: "Repeat ultrasound in 1-2 weeks to assess for proximal extension. Consider short-course anticoagulation if symptoms worsen.",
+      explanation: "CAUTION: 20-30% of calf DVTs extend proximally, increasing PE risk. Bed rest and elevation are adjuncts.",
+      options: {
+        "Extension detected": "Treat as Proximal DVT",
+        "No extension": "Discontinue Anticoagulation"
+      }
+    },
+
+    // Hypercoagulable Workup
+    "Monitor for Progression": {
+      text: "If DVT is ruled out but risk factors persist, consider hypercoagulable testing (e.g., Factor V Leiden, antiphospholipid antibodies).",
+      explanation: "TEST SELECTION: Protein C/S, antithrombin III, lupus anticoagulant, and genetic panels if recurrent/unprovoked DVT or family history.",
+      options: {
+        "Abnormal results": "Long-Term Anticoagulation Planning",
+        "Normal results": "Reassess Risk Factors"
+      }
+    },
+
+    // Alternative Diagnoses
+    "Consider Alternative Diagnoses": {
+      text: "Evaluate for ruptured Baker’s cyst, cellulitis, muscle injury, or postphlebitic syndrome.",
+      explanation: "CLINICAL CLUES: Baker’s cyst may cause posterior knee swelling; cellulitis presents with fever and erythema.",
+      options: {
+        "Diagnosis confirmed": "Targeted Therapy",
+        "Uncertain diagnosis": "Re-evaluate for DVT"
+      }
+    },
+
+    // Special Cases
+    "Long-Term Anticoagulation Planning": {
+      text: "For thrombophilia or recurrent DVT, indefinite anticoagulation may be needed (e.g., DOACs for Factor V Leiden).",
+      explanation: "WARFARIN CAUTION: Protein C deficiency requires heparin overlap to avoid skin necrosis. Avoid in pregnancy (use LMWH).",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "DVT Unlikely": {
+      text: "No further DVT workup unless new symptoms arise.",
+      explanation: "ADVICE: Encourage mobility and hydration in high-risk patients (e.g., post-op).",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    }
+  },
+
+    
+    
+    
+   // Anemia Approach
+  "Anemia": {
+    start: {
+      text: "Is the patient volume-depleted (orthostatic hypotension, clinical signs of blood loss)?",
+      explanation: "Volume assessment is critical. If volume-depleted, correct intravascular volume first before evaluating anemia. NOTE: RBC and plasma loss may occur together in acute hemorrhage.",
+      options: {
+        yes: "Volume Resuscitation",
+        no: "Evaluate RBC Mass"
+      }
+    },
+    
+    // Volume Depletion Pathway
+    "Volume Resuscitation": {
+      text: "Administer IV fluids or blood transfusion as needed to restore volume.",
+      explanation: "PRIORITY: Stabilize hemodynamics before anemia workup. Transfuse if Hb <7g/dL (or <8g/dL in CAD) per guidelines. WARNING: Avoid over-transfusion in chronic anemia.",
+      options: {
+        "Volume restored": "Evaluate RBC Mass",
+        "Ongoing bleeding": "Identify Bleeding Source"
+      }
+    },
+    "Identify Bleeding Source": {
+      text: "Investigate for acute/chronic bleeding (GI, trauma, surgery, etc.).",
+      explanation: "KEY TESTS: Guaiac, endoscopy, imaging. REMEMBER: Iron deficiency may develop 3-5 days post-bleeding due to depletion of iron stores.",
+      options: {
+        "Source found": "Treat Bleeding",
+        "No source found": "Evaluate RBC Mass"
+      }
+    },
+    "Treat Bleeding": {
+      text: "Address the bleeding source (endoscopic intervention, surgery, etc.).",
+      explanation: "IRON REPLACEMENT: Start oral/IV iron post-bleeding if deficiency is confirmed (ferritin <30ng/mL).",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to RBC Mass": "Evaluate RBC Mass"
+      }
+    },
+    
+    // Primary Anemia Evaluation
+    "Evaluate RBC Mass": {
+      text: "Check reticulocyte count to assess bone marrow response.",
+      explanation: "INTERPRETATION: Normal reticulocytes = 50,000/mm³ (1%). Increased (>100,000/mm³) suggests hemolysis or blood loss; decreased suggests production defect.",
+      options: {
+        "Reticulocytes increased": "Hemolysis Evaluation",
+        "Reticulocytes decreased/normal": "Production Defect Evaluation"
+      }
+    },
+    
+    // Hemolysis Pathway
+    "Hemolysis Evaluation": {
+      text: "Perform Coombs' test (direct antiglobulin test) to assess for immune hemolysis.",
+      explanation: "PATHOPHYSIOLOGY: Positive Coombs' indicates antibody/complement on RBCs (immune). Negative suggests non-immune causes (e.g., G6PD, mechanical trauma).",
+      options: {
+        "Coombs positive": "Immune Hemolysis Subtype",
+        "Coombs negative": "Non-Immune Hemolysis"
+      }
+    },
+    "Immune Hemolysis Subtype": {
+      text: "Determine antibody type: Warm (IgG, 37°C) or Cold (IgM, 4°C).",
+      explanation: "CLINICAL CLUES: Warm Ab (chronic lymphocytic leukemia, drugs). Cold Ab (mycoplasma, viral infections). NOTE: Only IgG causes extravascular hemolysis via macrophage Fc receptors.",
+      options: {
+        "Warm antibody": "Autoimmune Hemolysis",
+        "Cold antibody": "Cold Agglutinin Disease"
+      }
+    },
+    "Autoimmune Hemolysis": {
+      text: "Treat with corticosteroids (prednisone 1mg/kg). Consider rituximab if refractory.",
+      explanation: "EMERGENCY: Severe hemolysis may require IVIG or plasmapheresis. MONITOR: Haptoglobin, LDH, bilirubin for response.",
+      options: {
+        "Restart Algorithm": "start",
+        "Assess Response": "exit"
+      }
+    },
+    "Cold Agglutinin Disease": {
+      text: "Avoid cold exposure. Treat underlying infection (if secondary) or consider rituximab.",
+      explanation: "CAUTION: Cold IgM fixes complement → intravascular hemolysis. Avoid transfusions unless life-threatening (may worsen hemolysis).",
+      options: {
+        "Restart Algorithm": "start",
+        "Assess Response": "exit"
+      }
+    },
+    "Non-Immune Hemolysis": {
+      text: "Evaluate for mechanical, enzymatic, or hemoglobinopathic causes.",
+      explanation: "KEY TESTS: G6PD assay, Hb electrophoresis, peripheral smear (schistocytes in MAHA). NOTE: Splenomegaly suggests hypersplenism or hereditary spherocytosis.",
+      options: {
+        "Spleen palpable": "Hypersplenism/Thalassemia",
+        "Spleen normal": "Enzyme/Hb Defect"
+      }
+    },
+    "Hypersplenism/Thalassemia": {
+      text: "Assess for thalassemia (Hb electrophoresis) or hypersplenism (imaging).",
+      explanation: "THALASSEMIA CLUES: Microcytosis out of proportion to anemia, target cells. HYPERSPLENISM: Platelets/WBCs often also decreased.",
+      options: {
+        "Confirmed thalassemia": "Thalassemia Management",
+        "Hypersplenism": "Splenectomy Consideration"
+      }
+    },
+    "Thalassemia Management": {
+      text: "Transfuse if severe (Hb <7g/dL). Consider chelation for iron overload.",
+      explanation: "GENETIC TESTING: Alpha/beta globin gene analysis. WARNING: Avoid iron supplements unless deficiency is confirmed.",
+      options: {
+        "Restart Algorithm": "start",
+        "Long-term follow-up": "exit"
+      }
+    },
+    "Splenectomy Consideration": {
+      text: "Evaluate for splenectomy if severe cytopenias or transfusion-dependent.",
+      explanation: "RISKS: Post-splenectomy sepsis (vaccinate for pneumococcus/Hib/meningococcus).",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to surgery": "exit"
+      }
+    },
+    "Enzyme/Hb Defect": {
+      text: "Test for G6PD deficiency, pyruvate kinase deficiency, or abnormal Hbs (e.g., HbSS).",
+      explanation: "ACUTE MANAGEMENT: Stop offending drugs (G6PD triggers: sulfa, dapsone). Hydrate and transfuse if HbSS crisis.",
+      options: {
+        "G6PD deficiency": "Avoid Oxidants",
+        "HbSS disease": "Sickle Cell Protocol",
+        "Other defect": "Specific Therapy"
+      }
+    },
+    
+    // Production Defect Pathway
+    "Production Defect Evaluation": {
+      text: "Check MCV to classify as microcytic, normocytic, or macrocytic anemia.",
+      explanation: "MCV CUTOFFS: Microcytic (<80fL), normocytic (80-100fL), macrocytic (>100fL). EXCEPTION: Anemia of chronic disease may be normo/microcytic.",
+      options: {
+        "Microcytic": "Microcytic Workup",
+        "Normocytic": "Normocytic Workup",
+        "Macrocytic": "Macrocytic Workup"
+      }
+    },
+    "Microcytic Workup": {
+      text: "Order iron studies (ferritin, TIBC, serum Fe) to differentiate causes.",
+      explanation: "IRON DEFICIENCY: Low Fe, high TIBC, low ferritin. ANEMIA OF CHRONIC DISEASE: Low Fe, low/normal TIBC, high ferritin. THALASSEMIA: Normal/high Fe.",
+      options: {
+        "Iron deficiency": "Oral/IV Iron",
+        "Anemia of chronic disease": "Treat Underlying Condition",
+        "Thalassemia": "Thalassemia Management",
+        "Other (lead poisoning)": "Chelation Therapy"
+      }
+    },
+    "Normocytic Workup": {
+      text: "Assess for anemia of chronic disease, renal failure, or marrow disorders.",
+      explanation: "CRITICAL TEST: Creatinine (uremia), CRP (chronic disease), bone marrow biopsy if unexplained. NOTE: EPO deficiency in CKD requires erythropoietin-stimulating agents.",
+      options: {
+        "Chronic disease": "Address Inflammation",
+        "Renal failure": "EPO Therapy",
+        "Marrow disorder": "Bone Marrow Biopsy"
+      }
+    },
+    "Macrocytic Workup": {
+      text: "Check B12, folate, and TSH. Consider marrow exam if vitamins are normal.",
+      explanation: "B12 DEFICIENCY: Elevated MMA/homocysteine. FOLATE DEFICIENCY: Ethanol/dietary causes. MYELODYSPLASIA: Dysplastic changes on marrow.",
+      options: {
+        "B12 deficiency": "B12 Replacement",
+        "Folate deficiency": "Folate Supplementation",
+        "MDS/normal vitamins": "Hematology Referral"
+      }
+    }
+  },
+  
+  
+  // Pancytopenia - - - - - 
+  "Pancytopenia": {
+    start: {
+      text: "Is the patient clinically stable?",
+      explanation: "Stability assessment is essential. Unstable patients (e.g., bleeding, sepsis, myocardial ischemia) require immediate hospitalization and hematology referral.",
+      options: {
+        yes: "Initial Evaluation",
+        no: "Emergency Evaluation"
+      }
+    },
+
+    "Emergency Evaluation": {
+      text: "Does the patient meet any emergency criteria?",
+      explanation: `CRITICAL RED FLAGS:
+- ANC <1000/μL + fever/infection
+- Platelets <10,000/μL or active bleeding <50,000/μL
+- Suspected leukemia, DIC, HLH, severe aplastic anemia, or tumor lysis syndrome.`,
+      options: {
+        "Yes (Any met)": "Urgent Hospitalization",
+        "No": "Initial Evaluation"
+      }
+    },
+
+    "Urgent Hospitalization": {
+      text: "Stabilize patient and refer immediately to hematology.",
+      explanation: "Life-threatening complications require rapid intervention including transfusions, antibiotics, and specialty management.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    "Initial Evaluation": {
+      text: "Perform history, physical exam, and initial labs.",
+      explanation: "Search for time course, medication use, comorbidities, exposure, and signs of organ dysfunction. Order CBC with diff, smear, retic count, PT/PTT, LFTs, LDH, uric acid, etc.",
+      options: {
+        "Done": "Assess Peripheral Smear"
+      }
+    },
+
+    "Assess Peripheral Smear": {
+      text: "Are there abnormal cells (blasts, dysplasia, schistocytes, hypersegmented neutrophils)?",
+      explanation: "Peripheral smear is a critical tool. Look for malignant cells, MAHA, megaloblastic changes, or other morphologic clues.",
+      options: {
+        "Yes": "Interpret Blood Smear",
+        "No": "Reticulocyte Assessment"
+      }
+    },
+
+    "Interpret Blood Smear": {
+      text: "What abnormalities are seen?",
+      explanation: "Identify patterns suggestive of malignancy (blasts), MAHA (schistocytes), myelofibrosis (teardrops), or megaloblastic anemia (hypersegmented neutrophils).",
+      options: {
+        "Blasts": "Suspected Leukemia",
+        "Dysplastic cells": "Suspected MDS",
+        "Schistocytes": "Suspected TMA or DIC",
+        "Hypersegmented neutrophils": "Suspected B12/Folate Deficiency"
+      }
+    },
+
+    "Suspected Leukemia": {
+      text: "Refer urgently for bone marrow biopsy, flow cytometry, and cytogenetics.",
+      explanation: "Acute leukemia can present with pancytopenia and requires emergency management.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    "Suspected MDS": {
+      text: "Refer for bone marrow biopsy and karyotyping.",
+      explanation: "MDS is a common cause of pancytopenia in adults, especially with dysplastic features.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    "Suspected TMA or DIC": {
+      text: "Check PT/PTT, LDH, haptoglobin, and consider infectious triggers.",
+      explanation: "Disseminated intravascular coagulation or thrombotic microangiopathy require urgent diagnosis and treatment.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    "Suspected B12/Folate Deficiency": {
+      text: "Check serum B12, folate, and possibly RBC folate.",
+      explanation: "Megaloblastic anemia often causes pancytopenia with macrocytosis. Treat deficiency if confirmed.",
+      options: {
+        "Confirmed deficiency": "Treat Nutritional Cause",
+        "Not confirmed": "Reticulocyte Assessment"
+      }
+    },
+
+    "Treat Nutritional Cause": {
+      text: "Start vitamin replacement and monitor counts.",
+      explanation: "B12/folate treatment usually leads to hematologic recovery within days to weeks.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    "Reticulocyte Assessment": {
+      text: "Is reticulocyte count <20,000/μL?",
+      explanation: "A low retic count indicates hypoproliferation, pointing toward marrow failure or suppression.",
+      options: {
+        "Yes": "Hypoproliferative Evaluation",
+        "No": "Consider Destruction or Sequestration"
+      }
+    },
+
+    "Hypoproliferative Evaluation": {
+      text: "Consider aplastic anemia, drug-induced marrow failure, viral suppression, or bone marrow infiltration.",
+      explanation: "Check for history of medication use (chemo, antibiotics), recent infections, autoimmune conditions, and consider early bone marrow biopsy.",
+      options: {
+        "Suspicious features": "Bone Marrow Biopsy",
+        "No obvious cause": "Further Workup Needed"
+      }
+    },
+
+    "Bone Marrow Biopsy": {
+      text: "Proceed with biopsy and flow cytometry, cytogenetics, viral serology, and special stains.",
+      explanation: "Most causes of hypoproliferative pancytopenia are diagnosed via marrow evaluation.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    "Further Workup Needed": {
+      text: "Check serum copper, PNH screen (CD59), autoimmune markers, viral serologies.",
+      explanation: "Unexplained hypoproliferation may require advanced diagnostics and hematology input.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    "Consider Destruction or Sequestration": {
+      text: "Is there splenomegaly or evidence of autoimmune disease?",
+      explanation: "Sequestration in hypersplenism or autoimmune destruction (e.g., Felty syndrome) may reduce blood counts.",
+      options: {
+        "Splenomegaly present": "Hypersplenism Evaluation",
+        "No splenomegaly": "Autoimmune/HLH Consideration"
+      }
+    },
+
+    "Hypersplenism Evaluation": {
+      text: "Investigate for liver disease, infections (e.g., malaria), hematologic malignancy, or storage diseases.",
+      explanation: "Splenic sequestration may accompany liver cirrhosis, lymphoma, or chronic infection.",
+      options: {
+        "Cause identified": "Treat Underlying Condition",
+        "Unclear": "Bone Marrow Biopsy"
+      }
+    },
+
+    "Autoimmune/HLH Consideration": {
+      text: "Evaluate for SLE, RA/Felty syndrome, HLH (fever, ferritin, organomegaly).",
+      explanation: "Autoimmune cytopenias are often multifactorial. HLH is a medical emergency.",
+      options: {
+        "HLH suspected": "Urgent Hematology Referral",
+        "Autoimmune illness": "Manage Autoimmune Cytopenia"
+      }
+    },
+
+    "Manage Autoimmune Cytopenia": {
+      text: "Optimize autoimmune disease treatment, consider steroid-sparing agents, and rule out drug toxicity.",
+      explanation: "Cytopenias may improve with better control of inflammation or medication changes.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    }
+  },
+  
+  
+  //NEUTROPHILIA - - - - - - 
+  "Neutrophilia": {
+    start: {
+      text: "Does the patient meet diagnostic criteria for neutrophilia (neutrophil count >10,000/mm³)?",
+      explanation: "Neutrophilia is defined as an absolute neutrophil count >2 SD above the mean (typically >10,000/mm³). Diurnal variation or mild postprandial increases do not qualify.",
+      options: {
+        yes: "Exclude Laboratory Error",
+        no: "Normal Neutrophil Count"
+      }
+    },
+    
+
+    // Diagnostic Pathway
+    "Exclude Laboratory Error": {
+      text: "Repeat CBC and review peripheral blood smear for artifacts (e.g., inadequate anticoagulant).",
+      explanation: "Preanalytic errors (e.g., clotted samples) can cause factitious neutrophilia. Automated counts are reliable but may miss platelet-neutrophil clumping.",
+      options: {
+        "Error confirmed": "Correct and Repeat Test",
+        "No error": "History and Physical Exam"
+      }
+    },
+    "Correct and Repeat Test": {
+      text: "Repeat CBC with proper sample collection.",
+      explanation: "Ensure proper anticoagulant (EDTA) and avoid prolonged tourniquet use. NOTE: Persistent neutrophilia after correction requires further evaluation.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "History and Physical Exam": {
+      text: "Assess for symptoms/signs of infection, inflammation, malignancy, or drug exposure (e.g., glucocorticoids, lithium).",
+      explanation: "KEY CLUES: Fever (infection), weight loss (malignancy), joint pain (vasculitis), smoking history, or recent surgery/stress. Bone marrow exam is rarely needed unless primary disorder is suspected.",
+      options: {
+        "Findings present": "Classify Primary vs Secondary",
+        "No findings": "Consider Familial/Idiopathic"
+      }
+    },
+
+    // Primary Neutrophilia Pathway
+    "Classify Primary vs Secondary": {
+      text: "Is there evidence of an underlying disease (e.g., infection, inflammation)?",
+      explanation: "Primary neutrophilia lacks secondary causes and suggests marrow dyscrasia (e.g., CML, myeloproliferative disorders). Secondary causes are more common (e.g., infection, stress).",
+      options: {
+        "No underlying disease": "Primary Neutrophilia",
+        "Underlying disease": "Secondary Neutrophilia"
+      }
+    },
+    "Primary Neutrophilia": {
+      text: "Evaluate for bone marrow disorders: CBC with differential, JAK2 mutation, BCR-ABL PCR, and bone marrow biopsy if indicated.",
+      explanation: "RED FLAGS: Leukemoid reaction (WBC >50,000/mm³), basophilia, or splenomegaly suggest CML/myeloproliferative neoplasm. Idiopathic cases may be benign or familial.",
+      options: {
+        "CML/MPN suspected": "Hematology Referral",
+        "Idiopathic/Familial": "Monitor or Genetic Testing"
+      }
+    },
+    "Hematology Referral": {
+      text: "Urgent referral for suspected malignancy (e.g., CML, polycythemia vera).",
+      explanation: "CRITICAL: BCR-ABL testing for CML; JAK2 V617F for MPN. Bone marrow biopsy confirms diagnosis. Treatment may include tyrosine kinase inhibitors (e.g., imatinib).",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "Monitor or Genetic Testing": {
+      text: "For idiopathic/familial cases, assess family history and consider genetic testing if recurrent.",
+      explanation: "Familial neutrophilia is autosomal dominant (e.g., ELANE mutations). Asymptomatic cases require no treatment but annual CBC monitoring.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Secondary Neutrophilia Pathway
+    "Secondary Neutrophilia": {
+      text: "Identify and treat underlying cause: infection, inflammation, stress, or malignancy.",
+      explanation: "COMMON CAUSES: Smoking (mild chronic neutrophilia), bacterial infections (acute), rheumatoid arthritis (chronic), or solid tumors (e.g., lung cancer).",
+      options: {
+        "Infection": "Treat Infection",
+        "Inflammation": "Manage Inflammation",
+        "Drug-induced": "Adjust Medications",
+        "Malignancy": "Oncology Referral"
+      }
+    },
+    "Treat Infection": {
+      text: "Targeted antibiotics for bacterial infections; antifungals/antimycobacterials if chronic.",
+      explanation: "NOTE: Neutrophilia should resolve with infection control. Persistent elevation suggests abscess, treatment failure, or alternate diagnosis.",
+      options: {
+        "Resolved": "Monitor CBC",
+        "Persistent": "Re-evaluate for Abscess/Malignancy"
+      }
+    },
+    "Manage Inflammation": {
+      text: "Treat underlying condition (e.g., steroids for vasculitis, DMARDs for rheumatoid arthritis).",
+      explanation: "CHRONIC CASES: Neutrophilia may persist despite therapy (e.g., gout, colitis). Focus on symptom control rather than neutrophil count alone.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "Adjust Medications": {
+      text: "Discontinue/replace glucocorticoids, lithium, or G-CSF if possible.",
+      explanation: "DRUG TIMING: Neutrophilia peaks 4–6h after glucocorticoid dose. Lithium-induced neutrophilia is benign but reversible upon cessation.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "Oncology Referral": {
+      text: "Evaluate for solid tumors (e.g., lung, gastric, renal) with imaging/tumor markers.",
+      explanation: "PARANEOPLASTIC EFFECT: Tumor-secreted G-CSF or IL-6 can drive neutrophilia. Resolves with cancer treatment.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Special Cases
+    "Consider Familial/Idiopathic": {
+      text: "Check family members' CBCs and assess for hereditary neutrophilia or chronic idiopathic neutrophilia.",
+      explanation: "NOTE: 2.5% of healthy individuals have neutrophil counts >2 SD above mean. Genetic testing may reveal benign mutations (e.g., CSF3R).",
+      options: {
+        "Familial pattern": "Genetic Counseling",
+        "Isolated case": "Annual Monitoring"
+      }
+    },
+    "Genetic Counseling": {
+      text: "Offer genetic testing if familial pattern is identified (e.g., ELANE, CSF3R mutations).",
+      explanation: "BENIGN VARIANTS: Most require no intervention. Rare syndromes (e.g., leukocyte adhesion deficiency) need specialist care.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "Annual Monitoring": {
+      text: "Monitor CBC annually unless symptoms develop.",
+      explanation: "LOW RISK: Idiopathic neutrophilia without cytopenias or organomegaly is typically benign.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "Normal Neutrophil Count": {
+      text: "No further evaluation needed for neutrophilia.",
+      explanation: "Physiologic variations (e.g., stress, diurnal changes) do not meet diagnostic thresholds.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    }
+  },
+  
+  
+  
+  // LEUKOPENIA-------------
+  "Leukopenia": {
+    start: {
+      text: "Does the patient have leukopenia (WBC count <3700 cells/mm³)?",
+      explanation: "Leukopenia is defined as a total WBC count below 3700 cells/mm³. Most cases involve neutropenia (ANC <2500 cells/mm³) or lymphopenia (ALC <1000 cells/mm³).",
+      options: {
+        yes: "Initial Evaluation",
+        no: "Normal WBC Count"
+      }
+    },
+
+    // Initial Evaluation Pathway
+    "Initial Evaluation": {
+      text: "Perform history, physical exam, CBC with differential, and peripheral blood smear.",
+      explanation: "KEY FOCUS: Drug history (e.g., antibiotics, antimetabolites), signs of infection, adenopathy, splenomegaly, or bleeding (petechiae/ecchymoses). Blood smear assesses cell morphology and rules out artifacts.",
+      options: {
+        "Neutropenia (ANC <2500)": "Assess for Infection",
+        "Lymphopenia (ALC <1000)": "Isolated Lymphopenia Workup",
+        "Pancytopenia": "Pancytopenia Evaluation"
+      }
+    },
+
+    // Neutropenia Pathway
+    "Assess for Infection": {
+      text: "Does the patient have fever or signs of infection?",
+      explanation: "CRITICAL: Febrile neutropenia is a medical emergency. Start broad-spectrum antibiotics after cultures (e.g., piperacillin-tazobactam + vancomycin if MRSA risk).",
+      options: {
+        yes: "Treat Infection Immediately",
+        no: "Drug-Induced Neutropenia"
+      }
+    },
+    "Treat Infection Immediately": {
+      text: "Obtain cultures (blood, urine, etc.) and initiate empiric antibiotics.",
+      explanation: "ACTION: Add antifungals (e.g., fluconazole) if persistent fever >4–5 days. Consider G-CSF for severe neutropenia (ANC <500).",
+      options: {
+        "Improves": "Monitor ANC Recovery",
+        "Worsens/No improvement": "Bone Marrow Biopsy"
+      }
+    },
+    "Monitor ANC Recovery": {
+      text: "Track ANC daily until resolution. Investigate cause if recurrent.",
+      explanation: "NOTE: Drug-induced neutropenia typically resolves 5–7 days after discontinuation. Persistent cases require marrow evaluation.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Drug-Induced Neutropenia Pathway
+    "Drug-Induced Neutropenia": {
+      text: "Review medications (e.g., sulfonamides, antithyroids, chemotherapeutics). Discontinue suspect drugs.",
+      explanation: "HIGH-RISK DRUGS: Clozapine (requires weekly monitoring), beta-lactams, PPIs. Check for concomitant thrombocytopenia/anemia.",
+      options: {
+        "ANC improves": "Continue Monitoring",
+        "ANC unchanged after 7 days": "Bone Marrow Biopsy"
+      }
+    },
+    "Continue Monitoring": {
+      text: "Repeat CBC weekly until ANC normalizes.",
+      explanation: "WARNING: Rechallenge with the offending drug can cause rapid recurrence. Document allergen.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Pancytopenia Pathway
+    "Pancytopenia Evaluation": {
+      text: "Evaluate for primary hematologic disorders (e.g., aplastic anemia, leukemia) or infections (HIV, parvovirus B19).",
+      explanation: "RED FLAGS: Blasts on smear (leukemia), macrocytosis (B12/folate deficiency), or hypocellular marrow (aplastic anemia).",
+      options: {
+        "Marrow hypocellular": "Aplastic Anemia Workup",
+        "Marrow hypercellular": "Myelodysplasia/Leukemia Workup",
+        "Infection identified": "Targeted Therapy"
+      }
+    },
+    "Aplastic Anemia Workup": {
+      text: "Order PNH clone, chromosomal breakage (Fanconi anemia), and viral serologies (hepatitis, EBV).",
+      explanation: "TREATMENT: Immunosuppression (ATG + cyclosporine) or bone marrow transplant for severe cases.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "Myelodysplasia/Leukemia Workup": {
+      text: "Perform cytogenetics, flow cytometry, and molecular testing (e.g., TP53, SF3B1).",
+      explanation: "URGENT: Refer to hematology for AML/MDS management (hypomethylating agents, chemotherapy).",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Isolated Lymphopenia Pathway
+    "Isolated Lymphopenia Workup": {
+      text: "Assess for HIV, steroids, autoimmune disease (e.g., SLE), or radiation exposure.",
+      explanation: "PRIORITY: HIV PCR if serology negative but high risk. Lymphocyte subsets (CD4/CD8) if persistent.",
+      options: {
+        "HIV+": "Antiretroviral Therapy",
+        "Drug-induced": "Discontinue Offending Drug",
+        "Idiopathic": "Immunology Referral"
+      }
+    },
+    "Antiretroviral Therapy": {
+      text: "Initiate ART for HIV-associated lymphopenia.",
+      explanation: "NOTE: CD4 recovery may take 3–6 months. Monitor for IRIS with early ART in advanced HIV.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Splenomegaly/Other Causes
+    "Bone Marrow Biopsy": {
+      text: "Perform biopsy if neutropenia persists or pancytopenia is present.",
+      explanation: "FINDINGS: Maturation arrest (autoimmune), hypocellularity (aplasia), or dysplasia (MDS). Culture marrow for infections (TB, fungi).",
+      options: {
+        "Normal marrow": "Chronic Idiopathic Neutropenia",
+        "Autoimmune signs": "Immunosuppressive Therapy",
+        "Malignancy": "Oncology Referral"
+      }
+    },
+    "Chronic Idiopathic Neutropenia": {
+      text: "Monitor with CBC q3–6 months if asymptomatic.",
+      explanation: "BENIGN: No treatment needed unless recurrent infections. Consider G-CSF for severe cases.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Normal WBC Pathway
+    "Normal WBC Count": {
+      text: "No further workup for leukopenia required.",
+      explanation: "Consider transient causes (e.g., viral infection) if recent borderline-low counts.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    }
+  },
+  
+  
+  // Coagulation Abnormalities - - - - 
+  "Coagulation Abnormalities": {
+    start: {
+      text: "Is there a prolonged PT, PTT, or TT on coagulation testing?",
+      explanation: "PT measures extrinsic/common pathways (VII, X, V, II, I). PTT measures intrinsic/common pathways (XII, XI, IX, VIII, X, V, II, I). TT assesses fibrinogen to fibrin conversion.",
+      options: {
+        yes: "Assess Bleeding History",
+        no: "Normal Coagulation"
+      }
+    },
+
+    // Bleeding History Assessment
+    "Assess Bleeding History": {
+      text: "Does the patient have a history of bleeding (spontaneous, post-surgical/trauma) or known coagulopathy?",
+      explanation: "CRITICAL: Family history of bleeding disorders (e.g., hemophilia) or thrombotic events (e.g., Factor V Leiden) guides testing. Medications (warfarin, heparin) can artifactually prolong times.",
+      options: {
+        yes: "Known Etiology Management",
+        no: "Unknown Etiology Workup"
+      }
+    },
+
+    // Known Etiology Pathway
+    "Known Etiology Management": {
+      text: "Is the cause a factor deficiency (e.g., hemophilia) or inhibitor (e.g., lupus anticoagulant)?",
+      explanation: "ACTION: For factor deficiencies, replace with specific concentrates (e.g., Factor VIII for hemophilia A). For inhibitors, consult hematology for immunosuppression/bypassing agents.",
+      options: {
+        "Factor deficiency": "Factor Replacement",
+        "Inhibitor": "Inhibitor Management"
+      }
+    },
+    "Factor Replacement": {
+      text: "Administer specific factor concentrate or FFP if concentrate unavailable (e.g., Factor V deficiency).",
+      explanation: "NOTE: FFP contains all factors but carries higher volume/risk. Use cryoprecipitate for fibrinogen <100 mg/dL.",
+      options: {
+        "Hemophilia A (VIII)": "Factor VIII Concentrate",
+        "Hemophilia B (IX)": "Factor IX Concentrate",
+        "Other deficiency": "FFP/Cryoprecipitate"
+      }
+    },
+    "Inhibitor Management": {
+      text: "For lupus anticoagulant or factor-specific inhibitors (e.g., anti-Factor VIII), initiate immunosuppression or bypassing agents (e.g., rFVIIa).",
+      explanation: "WARNING: Lupus anticoagulant paradoxically increases thrombosis risk. Avoid FFP unless bleeding; anticoagulate for clots.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Unknown Etiology Workup
+    "Unknown Etiology Workup": {
+      text: "Perform mixing studies (1:1 patient plasma with normal plasma).",
+      explanation: "INTERPRETATION: Correction suggests factor deficiency; no correction indicates inhibitor (antibody or drug effect).",
+      options: {
+        "PT prolonged": "PT Mixing Study",
+        "PTT prolonged": "PTT Mixing Study",
+        "Both prolonged": "Dual Pathway Evaluation"
+      }
+    },
+
+    // PT Prolonged Pathway
+    "PT Mixing Study": {
+      text: "Does the PT correct with mixing?",
+      explanation: "CORRECTION: Suggests Factor VII deficiency (inherited or warfarin effect). NO CORRECTION: Lupus anticoagulant or specific Factor VII inhibitor.",
+      options: {
+        yes: "Factor VII Assay",
+        no: "Lupus Anticoagulant Testing"
+      }
+    },
+    "Factor VII Assay": {
+      text: "Confirm Factor VII deficiency. Treat with FFP or PCC for bleeding/procedures.",
+      explanation: "NOTE: Vitamin K reverses warfarin-induced deficiency within 12–24 hours.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // PTT Prolonged Pathway
+    "PTT Mixing Study": {
+      text: "Does the PTT correct with mixing?",
+      explanation: "CORRECTION: Suggests Factor VIII, IX, XI, or XII deficiency. NO CORRECTION: Lupus anticoagulant or heparin effect (check TT).",
+      options: {
+        yes: "Factor VIII/IX/XI/XII Assay",
+        no: "Heparin Contamination Check"
+      }
+    },
+    "Heparin Contamination Check": {
+      text: "Perform reptilase time (RT). Is RT normal?",
+      explanation: "NORMAL RT: Confirms heparin effect (heparinase treatment may be needed). ABNORMAL RT: Dysfibrinogenemia or FDPs (check fibrinogen level).",
+      options: {
+        yes: "Heparin Neutralization",
+        no: "Fibrinogen Evaluation"
+      }
+    },
+
+    // Dual Pathway Prolongation
+    "Dual Pathway Evaluation": {
+      text: "Do mixing studies correct both PT and PTT?",
+      explanation: "CORRECTION: Suggests multiple factor deficiencies (liver disease, DIC, vitamin K deficiency). NO CORRECTION: Global inhibitor (e.g., lupus anticoagulant).",
+      options: {
+        yes: "Liver Disease/DIC Workup",
+        no: "Global Inhibitor Management"
+      }
+    },
+    "Liver Disease/DIC Workup": {
+      text: "Assess LFTs, platelets, fibrinogen, D-dimer. Treat underlying cause (e.g., vitamin K for deficiency, FFP for DIC).",
+      explanation: "RED FLAGS: Elevated INR with thrombocytopenia and schistocytes suggest DIC.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Transfusion Therapy
+    "FFP/Cryoprecipitate": {
+      text: "Select indication for transfusion:",
+      explanation: "FFP: Multifactorial deficiency (10–20 mL/kg). Cryoprecipitate: Fibrinogen <100 mg/dL (10-unit pool).",
+      options: {
+        "Vitamin K deficiency/warfarin reversal": "FFP + Vitamin K",
+        "Liver disease": "FFP (caution: volume overload)",
+        "DIC": "FFP + Cryoprecipitate if fibrinogen low",
+        "Fibrinogen deficiency": "Cryoprecipitate"
+      }
+    },
+
+    // Normal Coagulation
+    "Normal Coagulation": {
+      text: "No further coagulation workup needed.",
+      explanation: "Consider platelet dysfunction or vascular causes if bleeding persists.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    }
+  },
+  
+  
+  
+  // Platelet Transfusion Therapy----
+  "Platelet Transfusion Therapy": {
+    start: {
+      text: "What is the clinical context for platelet transfusion consideration?",
+      explanation: "Platelet transfusions are used for prophylaxis in thrombocytopenia or treatment of active bleeding. Key factors include platelet count, bleeding risk, and procedure type.",
+      options: {
+        "Prophylaxis in thrombocytopenia": "Prophylactic Transfusion",
+        "Surgical procedure": "Surgical Transfusion",
+        "Active bleeding": "Therapeutic Transfusion",
+        "Assess transfusion response": "Response Evaluation"
+      }
+    },
+
+    // Prophylactic Transfusion Pathway
+    "Prophylactic Transfusion": {
+      text: "What is the patient's platelet count and clinical status?",
+      explanation: "Standard threshold is <10,000/µL for prophylaxis. Higher thresholds (20,000-50,000/µL) may be used for fever, coagulopathy, or other risk factors.",
+      options: {
+        "<10,000/µL (no risk factors)": "Transfuse Platelets",
+        "10,000-20,000/µL (with risk factors*)": "Consider Transfusion",
+        ">20,000/µL": "Monitor Without Transfusion"
+      }
+    },
+    "Consider Transfusion": {
+      text: "Does the patient have risk factors (fever, coagulopathy, rapid platelet consumption)?",
+      explanation: "*Risk factors may justify transfusion at higher counts. Leukemia patients may have different thresholds during induction therapy.",
+      options: {
+        "Yes": "Transfuse Platelets",
+        "No": "Monitor Without Transfusion"
+      }
+    },
+
+    // Surgical Transfusion Pathway
+    "Surgical Transfusion": {
+      text: "What type of procedure is planned?",
+      explanation: "Thresholds vary by procedure risk: 25,000/µL for minor procedures, 50,000/µL for major surgery, 100,000/µL for CNS/ophthalmic procedures.",
+      options: {
+        "Minor procedure (e.g., central line)": "Maintain ≥25,000/µL",
+        "Major non-CNS surgery": "Maintain ≥50,000/µL",
+        "Neurosurgery/ophthalmic": "Maintain ≥100,000/µL"
+      }
+    },
+    "Maintain ≥25,000/µL": {
+      text: "Transfuse if platelet count <25,000/µL before procedure.",
+      explanation: "Minor procedures include lumbar puncture, central venous access, etc. Consider patient-specific bleeding risk.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "Maintain ≥50,000/µL": {
+      text: "Transfuse if platelet count <50,000/µL before procedure.",
+      explanation: "Major procedures include laparotomy, joint replacement, etc. Higher thresholds may be needed for procedures with poor hemostatic control.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "Maintain ≥100,000/µL": {
+      text: "Transfuse if platelet count <100,000/µL before procedure.",
+      explanation: "Critical for CNS and eye surgeries due to catastrophic bleeding risks. Consider repeat transfusion if ongoing blood loss.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Therapeutic Transfusion Pathway
+    "Therapeutic Transfusion": {
+      text: "Is bleeding due to thrombocytopenia or platelet dysfunction?",
+      explanation: "Target platelet count >50,000/µL for active bleeding. Higher targets may be needed for CNS bleeding.",
+      options: {
+        "Thrombocytopenia": "Transfuse to >50,000/µL",
+        "Drug-induced dysfunction (e.g., aspirin)": "Transfuse Platelets",
+        "Uremic platelet dysfunction": "Consider DDAVP/Dialysis"
+      }
+    },
+    "Transfuse to >50,000/µL": {
+      text: "Administer platelet transfusion (1 SDP or 4-6 RDPs). Check post-transfusion count.",
+      explanation: "Expected increment: 30,000-60,000/µL per SDP. Consider repeat transfusion for ongoing bleeding.",
+      options: {
+        "Bleeding continues": "Assess for Refractoriness",
+        "Bleeding stops": "Monitor Platelet Count"
+      }
+    },
+    "Consider DDAVP/Dialysis": {
+      text: "For uremic bleeding, try DDAVP 0.3 mcg/kg IV or dialysis before platelet transfusion.",
+      explanation: "Uremia causes platelet dysfunction that may not respond well to transfusion alone.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Response Evaluation Pathway
+    "Response Evaluation": {
+      text: "Measure post-transfusion platelet count (10 min-1 hour). Calculate CCI.",
+      explanation: "Corrected Count Increment (CCI) = (BSA × platelet increment) / platelets transfused × 10¹¹. CCI ≥7500 indicates adequate response.",
+      options: {
+        "CCI ≥7500": "Adequate Response",
+        "CCI <7500 on multiple occasions": "Assess Refractoriness"
+      }
+    },
+    "Assess Refractoriness": {
+      text: "Evaluate for causes of poor platelet response:",
+      explanation: "Non-immune causes: fever, sepsis, DIC, splenomegaly. Immune causes: HLA antibodies (check PRA).",
+      options: {
+        "Non-immune cause identified": "Treat Underlying Condition",
+        "Suspected immune cause (PRA ≥20%)": "HLA-Matched Platelets"
+      }
+    },
+    "HLA-Matched Platelets": {
+      text: "For immune refractoriness, use HLA-matched or crossmatched platelets.",
+      explanation: "Leukoreduced products help prevent alloimmunization. Platelet crossmatching may be used if HLA typing unavailable.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Transfusion Execution
+    "Transfuse Platelets": {
+      text: "Administer platelets (SDP or RDP pool). Monitor for transfusion reactions.",
+      explanation: "SDP = single donor apheresis (≥3×10¹¹ platelets). RDP pool = 4-6 whole blood-derived units.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "Monitor Without Transfusion": {
+      text: "Monitor platelet count regularly. Transfuse if count drops below threshold or bleeding occurs.",
+      explanation: "For stable patients without bleeding, observation may be appropriate even with counts <10,000/µL.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    }
+  },
+  
+  
+  
+  // Red Blood Cell Transfusion 
+  "Red Blood Cell Transfusion": {
+    start: {
+      text: "What is the clinical context for considering RBC transfusion?",
+      explanation: "RBC transfusions should be based on clinical assessment of oxygen delivery needs, not just hemoglobin levels. Consider symptoms, acuity, and comorbidities.",
+      options: {
+        "Chronic anemia (normovolemic)": "Chronic Anemia Evaluation",
+        "Acute blood loss": "Acute Hemorrhage Management",
+        "Critical care setting": "ICU Transfusion Strategy",
+        "Evaluate transfusion need": "Hemoglobin Assessment"
+      }
+    },
+
+    // Chronic Anemia Pathway
+    "Chronic Anemia Evaluation": {
+      text: "Is the anemia due to nutritional deficiency (iron, B12, folate)?",
+      explanation: "Chronic anemia often has compensatory mechanisms. Transfusion can frequently be avoided with proper nutritional replacement.",
+      options: {
+        "Yes": "Initiate Nutritional Therapy",
+        "No": "Investigate Other Causes"
+      }
+    },
+    "Initiate Nutritional Therapy": {
+      text: "Start appropriate supplementation (iron, B12, or folate) based on deficiency.",
+      explanation: "Iron deficiency: ferrous sulfate 325mg TID. B12 deficiency: 1000mcg IM monthly. Folate deficiency: 1mg daily orally.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Acute Hemorrhage Pathway
+    "Acute Hemorrhage Management": {
+      text: "Is the patient hemodynamically unstable (tachycardia, hypotension)?",
+      explanation: "Initial priority is volume resuscitation with crystalloids (e.g., normal saline) to restore perfusion before considering RBC transfusion.",
+      options: {
+        "Yes": "Volume Resuscitation First",
+        "No": "Assess Hemoglobin Level"
+      }
+    },
+    "Volume Resuscitation First": {
+      text: "Administer crystalloid bolus (1-2L NS/LR) and control bleeding source.",
+      explanation: "CRITICAL: Transfusion should not delay hemorrhage control. Use O-negative blood if immediate transfusion needed before crossmatch.",
+      options: {
+        "Hemodynamic stability achieved": "Assess Hemoglobin Level",
+        "Continued instability": "Emergency Release Blood"
+      }
+    },
+
+    // ICU Transfusion Strategy
+    "ICU Transfusion Strategy": {
+      text: "Is the patient in critical care without active coronary ischemia?",
+      explanation: "TRICC trial showed restrictive strategy (Hgb <7g/dL) is safe for most ICU patients except possibly those with acute coronary syndromes.",
+      options: {
+        "Yes": "Restrictive Strategy (Hgb <7g/dL)",
+        "No (active cardiac ischemia)": "Liberal Strategy (Hgb <10g/dL)"
+      }
+    },
+
+    // Hemoglobin Assessment Pathway
+    "Hemoglobin Assessment": {
+      text: "What is the patient's current hemoglobin level?",
+      explanation: "General guidelines: <7g/dL often requires transfusion, >10g/dL rarely needs transfusion. Clinical judgment needed for intermediate levels.",
+      options: {
+        "<7 g/dL": "Strongly Consider Transfusion",
+        "7-10 g/dL": "Symptom-Guided Decision",
+        ">10 g/dL": "Transfusion Usually Not Needed"
+      }
+    },
+    "Symptom-Guided Decision": {
+      text: "Does the patient have symptoms of anemia (fatigue, dyspnea, tachycardia, chest pain)?",
+      explanation: "Patients with cardiovascular disease may need higher hemoglobin levels. Consider comorbidities and physiologic reserve.",
+      options: {
+        "Yes": "Consider Transfusion",
+        "No": "Monitor Without Transfusion"
+      }
+    },
+
+    // Special Product Modifications
+    "Consider Transfusion": {
+      text: "Are any special RBC product modifications needed?",
+      explanation: "Modifications prevent complications: leukoreduction (febrile reactions), irradiation (GVHD), washing (allergic reactions).",
+      options: {
+        "Standard transfusion": "Administer RBCs",
+        "Febrile reaction history": "Leukoreduced RBCs",
+        "Immunocompromised": "Irradiated RBCs",
+        "Severe allergies": "Washed RBCs"
+      }
+    },
+    "Administer RBCs": {
+      text: "Transfuse 1 unit at a time for stable patients, reassessing after each unit.",
+      explanation: "Expected Hgb rise: ~1g/dL per unit. Check post-transfusion Hgb and clinical response before giving additional units.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Emergency Release
+    "Emergency Release Blood": {
+      text: "Use O-negative uncrossmatched blood for life-threatening hemorrhage.",
+      explanation: "WARNING: Highest risk of transfusion reactions. Switch to type-specific/crossmatched blood as soon as available.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Monitoring Pathway
+    "Monitor Without Transfusion": {
+      text: "Monitor hemoglobin trends and clinical status. Reassess if symptoms develop.",
+      explanation: "For asymptomatic patients with Hgb >7g/dL, observation is often appropriate unless rapid drop is anticipated.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    }
+  },
+  
+  
+  
+  // Transfusion Reactions 
+  "Transfusion Reactions": {
+    start: {
+      text: "Has the patient developed symptoms during or after a blood transfusion?",
+      explanation: "All adverse events during transfusion should be considered reactions until proven otherwise. Immediate action is required.",
+      options: {
+        yes: "Immediate Response Protocol",
+        no: "Monitor for Delayed Reactions"
+      }
+    },
+
+    // Immediate Response Pathway
+    "Immediate Response Protocol": {
+      text: "Stop the transfusion immediately and perform these critical steps:",
+      explanation: "1. Notify blood bank\n2. Reconfirm patient and unit identification\n3. Send blood sample + remaining product to lab\n4. Maintain IV access with NS",
+      options: {
+        "Steps completed": "Assess Reaction Type"
+      }
+    },
+
+    // Reaction Type Assessment
+    "Assess Reaction Type": {
+      text: "What are the predominant symptoms?",
+      explanation: "Key features differentiate reaction types: fever (hemolytic/septic), dyspnea (TRALI), hypotension (anaphylaxis), rash (allergic).",
+      options: {
+        "Fever + hemoglobinuria": "Acute Hemolytic Reaction",
+        "Fever alone": "Febrile/Septic Reaction",
+        "Hypotension + bronchospasm": "Anaphylactic Reaction",
+        "Hypoxemia + pulmonary edema": "TRALI Evaluation",
+        "Urticaria only": "Allergic Reaction"
+      }
+    },
+
+    // Acute Hemolytic Reaction
+    "Acute Hemolytic Reaction": {
+      text: "Blood bank reports positive DAT and visible hemolysis. Manage as:",
+      explanation: "ABO incompatibility most common. Can lead to DIC, renal failure. Mortality up to 40%.",
+      options: {
+        "IV fluids + diuretics": "Maintain Renal Perfusion",
+        "Hypotension present": "Vasopressor Support",
+        "Signs of DIC": "Manage Coagulopathy"
+      }
+    },
+    "Maintain Renal Perfusion": {
+      text: "Administer NS at 100-150 mL/hr ± furosemide to maintain urine output >100 mL/hr.",
+      explanation: "Goal: Prevent acute tubular necrosis. Monitor BUN/Cr, urine output, coagulation studies.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Febrile/Septic Reaction
+    "Febrile/Septic Reaction": {
+      text: "Differentiate febrile non-hemolytic (FNHTR) from septic reaction:",
+      explanation: "FNHTR: Temp ↑≥1°C, benign. Septic: High fever, rigors, hypotension (platelet transfusions highest risk).",
+      options: {
+        "Stable (FNHTR)": "Give Acetaminophen",
+        "Unstable (septic)": "Broad-Spectrum Antibiotics"
+      }
+    },
+    "Give Acetaminophen": {
+      text: "Administer acetaminophen 650mg PO/PR. Consider leukoreduced products for future transfusions.",
+      explanation: "FNHTR caused by cytokines or anti-leukocyte antibodies. Prestorage leukoreduction prevents 90% of cases.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Anaphylactic Reaction
+    "Anaphylactic Reaction": {
+      text: "Administer epinephrine 0.3-0.5mg IM (1:1000) immediately for anaphylaxis.",
+      explanation: "Typically IgA deficiency in recipient. Requires washed RBCs for future transfusions.",
+      options: {
+        "Add steroids/antihistamines": "Secondary Management",
+        "Persistent hypotension": "IV Epinephrine Infusion"
+      }
+    },
+
+    // TRALI Evaluation
+    "TRALI Evaluation": {
+      text: "Assess for TRALI (hypoxemia, bilateral infiltrates, no fluid overload):",
+      explanation: "Onset within 6h of transfusion. 5-10% mortality. Differentiate from TACO (fluid overload).",
+      options: {
+        "Oxygen required": "High-Flow O2/Intubation",
+        "Supportive care": "Monitor in ICU"
+      }
+    },
+
+    // Allergic Reaction
+    "Allergic Reaction": {
+      text: "For urticaria without systemic symptoms:",
+      explanation: "Caused by plasma proteins. Mild reactions occur in 1-3% of transfusions.",
+      options: {
+        "Diphenhydramine 25-50mg IV": "May Resume Transfusion",
+        "Recurrent reactions": "Premedicate Future Transfusions"
+      }
+    },
+
+    // Delayed Reactions
+    "Monitor for Delayed Reactions": {
+      text: "Watch for delayed complications:",
+      explanation: "Delayed hemolytic (1-2 weeks), TA-GVHD (7-10 days), post-transfusion purpura (5-10 days).",
+      options: {
+        "Fever + jaundice": "Delayed Hemolytic Workup",
+        "Rash + diarrhea": "TA-GVHD Evaluation",
+        "Thrombocytopenia": "PTP Consideration"
+      }
+    },
+    "Delayed Hemolytic Workup": {
+      text: "Check DAT, bilirubin, LDH. Usually self-limited but monitor for renal failure.",
+      explanation: "Anamnestic response to minor RBC antigens (e.g., Kidd, Duffy).",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Special Considerations
+    "TA-GVHD Evaluation": {
+      text: "Immunocompromised patient with rash, pancytopenia 7-10 days post-transfusion:",
+      explanation: ">90% mortality. Prevent with irradiated products for at-risk patients.",
+      options: {
+        "Supportive care": "Hospice Consideration"
+      }
+    },
+
+    // Blood Bank Communication
+    "Blood Bank Communication": {
+      text: "Ensure blood bank performs these tests for all reactions:",
+      explanation: "1. Clerical check\n2. Visual hemolysis check\n3. DAT\n4. Repeat crossmatch\n5. Bacterial culture if septic",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    }
+  },
+  
+  
+  
+  // Classical Hodgkins Lymphoma 
+  "Classical Hodgkins Lymphoma": {
+    start: {
+      text: "Does the patient present with persistent, painless lymphadenopathy (cervical/supraclavicular/axillary)?",
+      explanation: "Classic presentation includes rubbery, non-tender lymph nodes. Mediastinal involvement may cause cough/dyspnea. B symptoms (fever, night sweats, weight loss) may be present.",
+      options: {
+        yes: "Diagnostic Workup",
+        no: "Consider Alternative Diagnoses"
+      }
+    },
+
+    // Diagnostic Pathway
+    "Diagnostic Workup": {
+      text: "Perform excisional lymph node biopsy with expert hematopathology review.",
+      explanation: "CRUCIAL: Core/FNA biopsies are insufficient. Must identify Reed-Sternberg cells and subtype (nodular sclerosis, mixed cellularity, etc.). Rule out NHL and reactive lymphadenopathy.",
+      options: {
+        "Diagnosis confirmed": "Staging Evaluation",
+        "Uncertain diagnosis": "Repeat Biopsy"
+      }
+    },
+
+    // Staging Pathway
+    "Staging Evaluation": {
+      text: "Initiate staging workup:",
+      explanation: "Includes: CBC, ESR, LDH, LFTs, albumin, alkaline phosphatase, renal function, CXR, CT chest/abdomen/pelvis, PET scan. Bone marrow biopsy optional in early stage without cytopenias.",
+      options: {
+        "Tests completed": "Determine Cotswolds Stage"
+      }
+    },
+    "Determine Cotswolds Stage": {
+      text: "Assign stage based on Cotswolds modification of Ann Arbor system:",
+      explanation: "Stage I (single node region), II (≥2 regions same side diaphragm), III (both sides diaphragm), IV (extranodal). 'X' denotes bulky disease (>10cm or mediastinal mass >1/3 thoracic diameter).",
+      options: {
+        "Stage I/II": "Assess Early-Stage Risk Factors",
+        "Stage IIX/B": "Advanced Treatment Pathway",
+        "Stage III/IV": "Calculate IPS Score"
+      }
+    },
+
+    // Early Stage Management
+    "Assess Early-Stage Risk Factors": {
+      text: "Does the patient have any risk factors?",
+      explanation: "Risk factors: Bulky disease, B symptoms, ESR≥50 (or ≥30 with B symptoms), >3 involved sites, age≥50, extranodal extension.",
+      options: {
+        "No risk factors": "Favorable Early-Stage Treatment",
+        "Risk factors present": "Unfavorable Early-Stage Treatment"
+      }
+    },
+    "Favorable Early-Stage Treatment": {
+      text: "ABVD x2-4 cycles + 20-30Gy IFRT OR ABVD x4-6 cycles (no RT).",
+      explanation: "Preferred for low-risk patients. ABVD = doxorubicin, bleomycin, vinblastine, dacarbazine. IFRT = involved field radiation.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "Unfavorable Early-Stage Treatment": {
+      text: "ABVD x4 cycles + 30-36Gy IFRT OR ABVD x6 cycles if non-bulky.",
+      explanation: "For patients with ≥1 risk factor. Consider PET-adapted therapy (de-escalate if interim PET negative).",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Advanced Stage Management
+    "Advanced Treatment Pathway": {
+      text: "Treat as advanced disease: ABVD x4-6 + 30-36Gy IFRT to bulky sites.",
+      explanation: "Stage IIX/B has similar prognosis to stage III/IV. IFRT targets initial bulky (>5cm) disease.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "Calculate IPS Score": {
+      text: "Determine International Prognostic Score (0-7):",
+      explanation: "1 point each for: albumin<4, Hb<10.5, male, age≥45, stage IV, WBC≥15k, lymphs<600/<8%. Score correlates with 5-yr FFP: 0-1=84%, 2-3=77%, 4-7=67%.",
+      options: {
+        "IPS 0-3": "Standard Advanced Treatment",
+        "IPS 4-7": "High-Risk Advanced Treatment"
+      }
+    },
+    "Standard Advanced Treatment": {
+      text: "ABVD x6 cycles OR Stanford V x12 weeks + IFRT to initial bulky sites.",
+      explanation: "ABVD remains standard. Stanford V = more intensive regimen (mechlorethamine, doxorubicin, vinblastine, vincristine, bleomycin, etoposide, prednisone).",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "High-Risk Advanced Treatment": {
+      text: "Escalated BEACOPP x6-8 cycles + IFRT to initial bulky sites (age ≤60).",
+      explanation: "BEACOPP = bleomycin, etoposide, doxorubicin, cyclophosphamide, vincristine, procarbazine, prednisone. Higher toxicity but improved PFS in high-risk patients.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Special Considerations
+    "Pre-Treatment Evaluation": {
+      text: "Before starting therapy:",
+      explanation: "Cardiac function (MUGA/echo for anthracyclines), PFTs (bleomycin risk), fertility counseling, infection/vaccination status.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "Relapsed/Refractory Disease": {
+      text: "Consider salvage chemo (ICE, DHAP) + autologous stem cell transplant.",
+      explanation: "Prognosis depends on response to salvage therapy and time to relapse. Brentuximab vedotin, checkpoint inhibitors available for multiply relapsed disease.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Alternative Diagnoses
+    "Consider Alternative Diagnoses": {
+      text: "Evaluate for infections (EBV, CMV), other lymphomas, or reactive lymphadenopathy.",
+      explanation: "Persistent lymphadenopathy without classic HL features may require excisional biopsy for definitive diagnosis.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    }
+  },
+  
+  
+  
+  // Chronic Myelogenous Leukemia 
+  "Chronic Myelogenous Leukemia": {
+    start: {
+      text: "Does the patient present with leukocytosis (>100,000/μL), splenomegaly, or constitutional symptoms (fatigue, night sweats, weight loss)?",
+      explanation: "CML typically presents with leukocytosis, thrombocytosis, and basophilia. 50% are asymptomatic at diagnosis. Median age is 45-55 years.",
+      options: {
+        yes: "Diagnostic Workup",
+        no: "Consider Alternative Diagnoses"
+      }
+    },
+
+    // Diagnostic Pathway
+    "Diagnostic Workup": {
+      text: "Order CBC with differential, peripheral smear, and molecular/cytogenetic testing:",
+      explanation: "Key findings: WBC >100k (70-90% patients), thrombocytosis, basophilia, leukoerythroblastic smear. Must confirm BCR-ABL1 via PCR, FISH, or cytogenetics.",
+      options: {
+        "BCR-ABL1 positive": "Disease Phase Assessment",
+        "BCR-ABL1 negative": "Re-evaluate Diagnosis"
+      }
+    },
+
+    // Disease Phase Assessment
+    "Disease Phase Assessment": {
+      text: "Determine disease phase based on clinical/lab features:",
+      explanation: "Chronic phase (90% at dx): <10% blasts. Accelerated phase: 10-19% blasts, basophils ≥20%, thrombocytopenia. Blast crisis: ≥20% blasts.",
+      options: {
+        "Chronic phase": "Chronic Phase Management",
+        "Accelerated phase": "Advanced Phase Management",
+        "Blast crisis": "Blast Crisis Management"
+      }
+    },
+
+    // Chronic Phase Management
+    "Chronic Phase Management": {
+      text: "Select initial therapy based on age and transplant eligibility:",
+      explanation: "Tyrosine kinase inhibitors (TKIs) are first-line. Allo-SCT considered for high-risk or TKI failure.",
+      options: {
+        "Age <60, transplant candidate": "TKI vs Transplant Evaluation",
+        "Age ≥60 or transplant ineligible": "TKI Therapy"
+      }
+    },
+    "TKI vs Transplant Evaluation": {
+      text: "Consider SCT for high-risk patients (Sokal/EUTOS score) or those with poor TKI response:",
+      explanation: "Imatinib 400mg daily is standard first-line. 2nd-gen TKIs (nilotinib, dasatinib) for high-risk. SCT offers cure but has mortality risk.",
+      options: {
+        "Proceed with TKI": "Imatinib First-Line",
+        "Consider SCT": "Transplant Workup"
+      }
+    },
+    "Imatinib First-Line": {
+      text: "Start imatinib 400mg daily. Monitor response:",
+      explanation: "Goals: CHR by 3mo, MCyR by 12mo, CCyR by 18mo. Check qPCR every 3mo.",
+      options: {
+        "Optimal response": "Continue Monitoring",
+        "Suboptimal response": "Dose Escalation or Switch"
+      }
+    },
+
+    // Advanced Phase Management
+    "Advanced Phase Management": {
+      text: "Treat accelerated phase with:",
+      explanation: "Higher-dose imatinib (600-800mg) or 2nd-gen TKI. Allo-SCT if responsive to therapy.",
+      options: {
+        "TKI therapy": "Imatinib 600-800mg or 2nd-gen TKI",
+        "Transplant candidate": "Bridge to SCT"
+      }
+    },
+
+    // Blast Crisis Management
+    "Blast Crisis Management": {
+      text: "Identify blast lineage and initiate therapy:",
+      explanation: "Lymphoid (1/3): ALL regimens. Myeloid (2/3): AML regimens. Add TKI. Urgent SCT considered if response.",
+      options: {
+        "Lymphoid blast crisis": "ALL-type Chemo + TKI",
+        "Myeloid blast crisis": "AML-type Chemo + TKI"
+      }
+    },
+
+    // Response Monitoring
+    "Continue Monitoring": {
+      text: "Monitor molecular response quarterly via qPCR:",
+      explanation: "Optimal: BCR-ABL1 ≤10% IS at 3mo, ≤1% at 6mo, ≤0.1% at 12mo. Failure: no CHR at 3mo, no CyR at 6mo, no MCyR at 12mo.",
+      options: {
+        "Maintained response": "Annual Monitoring",
+        "Loss of response": "Resistance Evaluation"
+      }
+    },
+    "Resistance Evaluation": {
+      text: "Assess for TKI resistance:",
+      explanation: "Check compliance, drug interactions. Perform mutation analysis (e.g., T315I). Consider dose escalation, 2nd-gen TKI, or SCT.",
+      options: {
+        "Switch TKI": "2nd/3rd Generation TKI",
+        "Proceed to SCT": "Transplant Workup"
+      }
+    },
+
+    // Transplant Pathway
+    "Transplant Workup": {
+      text: "For eligible patients, initiate SCT evaluation:",
+      explanation: "Best outcomes in chronic phase (50-80% cure). Reduced-intensity regimens for older patients. Donor lymphocyte infusions for relapse.",
+      options: {
+        "Matched sibling donor": "Proceed to SCT",
+        "No matched donor": "Unrelated Donor Search"
+      }
+    },
+
+    // Special Considerations
+    "TKI Therapy": {
+      text: "Select appropriate TKI based on risk profile:",
+      explanation: "Imatinib: standard first-line. Dasatinib/Nilotinib: higher response rates but more toxicity. Consider comorbidities (e.g., dasatinib avoids cardiac effects).",
+      options: {
+        "Standard risk": "Imatinib 400mg daily",
+        "High risk": "Nilotinib/Dasatinib"
+      }
+    },
+
+    // Alternative Diagnoses
+    "Consider Alternative Diagnoses": {
+      text: "Evaluate for leukemoid reaction, CMML, or other MPNs:",
+      explanation: "JAK2 testing for PV/ET, CALR/MPL for MF. BCR-ABL1 must be negative.",
+      options: {"Restart Algorithm": "start"}
+    }
+  },
+  
+  
+  
+  
+  //Monoclonal Gammopathy - - - - 
+  "Monoclonal Gammopathy": {
+    start: {
+      text: "Has serum protein electrophoresis (SPEP) identified an M protein?",
+      explanation: "Initial detection of M protein requires further characterization to determine underlying etiology (benign vs. malignant).",
+      options: {
+        yes: "QuantifyMProtein",
+        no: "Exit" // No further action if no M protein
+      }
+    },
+
+    // Initial Workup Pathway
+    "QuantifyMProtein": {
+      text: "Perform quantitative immunoglobulins, serum free light chain assay, and urine protein electrophoresis (UPEP).",
+      explanation: "CRITICAL: Quantify M protein size (g/dL) and type (IgG/A/M/D/E). Free light chains help diagnose light-chain-only disease. UPEP detects Bence Jones proteins.",
+      options: {
+        "M protein detected": "CharacterizeMProtein",
+        "No M protein": "AssessSoftTissue" // Rare cases like extramedullary plasmacytoma
+      }
+    },
+
+    "CharacterizeMProtein": {
+      text: "Is the M protein IgG/A/D/E or IgM?",
+      explanation: "IgG/A/D/E suggest plasma cell disorders (myeloma, MGUS). IgM indicates lymphoproliferative disorders (Waldenström’s, lymphoma).",
+      options: {
+        "IgG/A/D/E": "PlasmaCellDisorderWorkup",
+        "IgM": "LymphoproliferativeWorkup"
+      }
+    },
+
+    // Plasma Cell Disorders Pathway
+    "PlasmaCellDisorderWorkup": {
+      text: "Order bone marrow biopsy, skeletal survey, and serum β₂-microglobulin.",
+      explanation: "KEY DATA: ≥10% plasma cells (myeloma), lytic lesions (myeloma), β₂M (prognostic). NOTE: MRI spine if solitary lesion suspected.",
+      options: {
+        "Lytic lesions + ≥10% plasma cells": "MultipleMyeloma",
+        "Single bone lesion + normal marrow": "SolitaryPlasmacytoma",
+        "No lesions + marrow <10% plasma cells": "MGUSEvaluation"
+      }
+    },
+
+    "MultipleMyeloma": {
+      text: "Does the patient meet CRAB criteria (hyperCalcemia, Renal failure, Anemia, Bone lesions)?",
+      explanation: "CRAB defines symptomatic myeloma requiring treatment. ASYMPTOMATIC: M protein <4.5 g/dL + no CRAB may be observed.",
+      options: {
+        "CRAB positive": "StartChemotherapy",
+        "CRAB negative": "RiskStratifyMyeloma"
+      }
+    },
+
+    "StartChemotherapy": {
+      text: "Initiate therapy: Bortezomib/lenalidomide/dexamethasone ± autologous stem cell transplant.",
+      explanation: "TRIAL DATA: Transplant improves 5-year survival to 52% vs. 12% with chemo alone. Monitor for neuropathy (bortezomib) or thrombosis (lenalidomide).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    "RiskStratifyMyeloma": {
+      text: "Assess high-risk features: IgA subtype, M protein >3 g/dL, or abnormal MRI spine.",
+      explanation: "HIGH RISK: Progression to symptomatic disease in 18 months. Consider early chemo if 2+ features.",
+      options: {
+        "High-risk": "ConsiderEarlyChemo",
+        "Low-risk": "ObserveAsymptomatic"
+      }
+    },
+
+    "SolitaryPlasmacytoma": {
+      text: "Confirm solitary lesion with MRI spine. Treat with radiotherapy (45 Gy).",
+      explanation: "RED FLAG: 50% progress to myeloma. Follow SPEP/IEP yearly. M protein disappearance post-radiation predicts better prognosis.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    "MGUSEvaluation": {
+      text: "Does the patient have M protein <3 g/dL, no CRAB, and normal uninvolved immunoglobulins?",
+      explanation: "MGUS DIAGNOSIS: Stable M protein + no end-organ damage. NOTE: 1% annual risk of progression to myeloma.",
+      options: {
+        yes: "MonitorMGUS",
+        no: "ReevaluateForMyeloma"
+      }
+    },
+
+    "MonitorMGUS": {
+      text: "Annual SPEP + clinical follow-up. No treatment required.",
+      explanation: "WARNING: Risk persists indefinitely—25% progression at 25 years. Higher risk if IgM MGUS (lymphoma transformation).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Lymphoproliferative Disorders Pathway
+    "LymphoproliferativeWorkup": {
+      text: "Evaluate for lymphadenopathy, hepatosplenomegaly, and serum viscosity symptoms.",
+      explanation: "FOCUS: IgM >3 g/dL suggests Waldenström’s. Cold agglutinins or cryoglobulins may complicate.",
+      options: {
+        "Lymphadenopathy + IgM <3 g/dL": "MGUSOrLymphoma",
+        "IgM >3 g/dL + symptoms": "WaldenstromsMacroglobulinemia"
+      }
+    },
+
+    "WaldenstromsMacroglobulinemia": {
+      text: "Start therapy: Rituximab + bendamustine or nucleoside analogs (cladribine/fludarabine).",
+      explanation: "TARGET: 90% response with combination therapy. Plasmapheresis for hyperviscosity syndrome.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    "MGUSOrLymphoma": {
+      text: "Perform lymph node biopsy if adenopathy present. Otherwise, monitor as IgM MGUS.",
+      explanation: "CAUTION: 14% of IgM MGUS progress to lymphoma/Waldenström’s. Median latency: 4 years.",
+      options: {
+        "Lymphoma confirmed": "LymphomaTreatment",
+        "No lymphoma": "MonitorIgMMGUS"
+      }
+    },
+
+    // Amyloidosis Pathway
+    "AssessSoftTissue": {
+      text: "Does the patient have peripheral neuropathy, macroglossia, or nephrotic syndrome?",
+      explanation: "CLUES: Amyloidosis presents with soft tissue involvement (fat pad biopsy: 80% sensitive).",
+      options: {
+        yes: "SuspectAmyloidosis",
+        no: "ReevaluateDiagnosis"
+      }
+    },
+
+    "SuspectAmyloidosis": {
+      text: "Perform abdominal fat pad or bone marrow biopsy for Congo red staining.",
+      explanation: "CONFIRMATION: Apple-green birefringence under polarized light. NOTE: Serum free light chains often abnormal.",
+      options: {
+        "Amyloid confirmed": "AmyloidosisTreatment",
+        "Negative biopsy": "AlternativeDiagnosis"
+      }
+    },
+
+    "AmyloidosisTreatment": {
+      text: "High-dose melphalan + autologous stem cell transplant if eligible. Alternatives: Bortezomib or dexamethasone.",
+      explanation: "PROGNOSIS: Cardiac involvement worsens outcomes. Monitor NT-proBNP/troponin.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  // Lymphadenopathy - - - - - - 
+  "Lymphadenopathy": {
+    start: {
+      text: "Is the lymphadenopathy new-onset (<7 days) or persistent/recurrent (>7–14 days)?",
+      explanation: "Acute lymphadenopathy is often infectious. Persistent/recurrent cases require malignancy workup. RED FLAG: B symptoms (fever, weight loss, night sweats) suggest lymphoma.",
+      options: {
+        "<7 days": "AcuteLymphadenopathy",
+        ">7–14 days": "ChronicLymphadenopathy"
+      }
+    },
+
+    // Acute Lymphadenopathy Pathway
+    "AcuteLymphadenopathy": {
+      text: "Assess for localized infection (e.g., pharyngitis, skin infection) or systemic symptoms (fever, fatigue).",
+      explanation: "COMMON CAUSES: Viral URI (EBV, CMV), streptococcal pharyngitis, or localized abscess. NOTE: Drug reactions (phenytoin) can mimic infection.",
+      options: {
+        "Localized infection": "TreatInfection",
+        "Systemic symptoms": "InfectionWorkup",
+        "No clear cause": "Observe2Weeks"
+      }
+    },
+    "TreatInfection": {
+      text: "Treat underlying infection (e.g., antibiotics for bacterial pharyngitis). Re-evaluate if no improvement in 2 weeks.",
+      explanation: "FIRST-LINE: Penicillin for strep throat. For skin infections, consider MRSA coverage (e.g., clindamycin).",
+      options: {
+        "Resolved": "Exit",
+        "Persistent": "ChronicLymphadenopathy"
+      }
+    },
+    "InfectionWorkup": {
+      text: "Order CBC, monospot/EBV serology, HIV, CMV IgG/IgM, and toxoplasmosis serology.",
+      explanation: "KEY TESTS: Atypical lymphocytosis (EBV/CMV), heterophile antibodies (monospot), or HIV RNA if acute retroviral syndrome suspected.",
+      options: {
+        "Positive for infection": "TargetedTreatment",
+        "Negative": "ChronicLymphadenopathy"
+      }
+    },
+    "Observe2Weeks": {
+      text: "Monitor for resolution. If persistent, proceed to chronic lymphadenopathy workup.",
+      explanation: "SAFETY NET: 85% of acute cases resolve spontaneously. Reassess for new symptoms (e.g., B symptoms).",
+      options: {
+        "Resolved": "Exit",
+        "Persistent": "ChronicLymphadenopathy"
+      }
+    },
+
+    // Chronic Lymphadenopathy Pathway
+    "ChronicLymphadenopathy": {
+      text: "Identify lymph node location: Head/neck, supraclavicular, axillary, inguinal, or generalized.",
+      explanation: "LOCATION CLUES: Supraclavicular nodes (malignancy risk: 90%). Inguinal nodes often benign (infection).",
+      options: {
+        "Head/neck": "HeadNeckWorkup",
+        "Supraclavicular": "SupraclavicularWorkup",
+        "Axillary": "AxillaryWorkup",
+        "Inguinal": "InguinalWorkup",
+        "Generalized": "GeneralizedWorkup"
+      }
+    },
+
+    // Location-Specific Workups
+    "HeadNeckWorkup": {
+      text: "Perform ENT exam + nasopharyngoscopy. Biopsy suspicious lesions or consider triple endoscopy (nasal, bronchial, esophageal) if no ENT findings.",
+      explanation: "HIGH-YIELD: Nasopharyngeal carcinoma or lymphoma may present with normal ENT exam. FNA biopsy has 80% sensitivity for malignancy.",
+      options: {
+        "Mass found": "BiopsyMass",
+        "No mass": "ImagingOrBiopsy"
+      }
+    },
+    "SupraclavicularWorkup": {
+      text: "Order chest/abdominal CT (evaluate lung, GI, breast primaries). Biopsy node if no primary found.",
+      explanation: "VIRCHOW'S NODE: Left supraclavicular adenopathy suggests gastric/pancreatic cancer. RIGHT: Lung/mediastinal malignancy.",
+      options: {
+        "Primary identified": "TreatPrimary",
+        "No primary": "BiopsyNode"
+      }
+    },
+    "AxillaryWorkup": {
+      text: "Perform mammography (women) or chest CT (men). Biopsy if no breast/lung primary.",
+      explanation: "PITFALL: Melanoma or lymphoma can present with isolated axillary nodes. Check skin exam.",
+      options: {
+        "Primary found": "TreatPrimary",
+        "No primary": "BiopsyNode"
+      }
+    },
+    "InguinalWorkup": {
+      text: "Evaluate anorectal/genitourinary regions (sigmoidoscopy, urinalysis). Pelvic CT if no local cause.",
+      explanation: "CAUTION: Inguinal nodes are often reactive. Biopsy only if >2 cm, firm, or fixed.",
+      options: {
+        "Primary found": "TreatPrimary",
+        "No primary": "BiopsyNode"
+      }
+    },
+    "GeneralizedWorkup": {
+      text: "Order serologies (EBV, CMV, HIV, syphilis), LDH, and CBC with differential. PET-CT to guide biopsy if no diagnosis.",
+      explanation: "PET-CT: Targets metabolically active nodes (↑ diagnostic yield vs. random biopsy).",
+      options: {
+        "Infection/malignancy identified": "TargetedTreatment",
+        "Negative workup": "BiopsyMostAccessibleNode"
+      }
+    },
+
+    // Biopsy and Treatment Pathways
+    "BiopsyNode": {
+      text: "Perform excisional biopsy (≥1 cm³ tissue). Send for flow cytometry, histopathology, and cultures.",
+      explanation: "CRITICAL: Avoid FNA for initial lymphoma diagnosis (insufficient architecture). Core needle biopsy may suffice in high-risk patients.",
+      options: {
+        "Lymphoma": "LymphomaStaging",
+        "Metastatic carcinoma": "IdentifyPrimary",
+        "Reactive hyperplasia": "MonitorOrRepeatBiopsy"
+      }
+    },
+    "LymphomaStaging": {
+      text: "Stage with PET-CT, bone marrow biopsy, and LDH. Treat based on subtype (e.g., R-CHOP for DLBCL).",
+      explanation: "AGGRESSIVE LYMPHOMA: Start therapy within 72h if SVC syndrome or organ compromise.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "MonitorOrRepeatBiopsy": {
+      text: "Repeat biopsy if nodes grow or new symptoms develop. Atypical hyperplasia requires annual follow-up.",
+      explanation: "RISK: 10% of atypical hyperplasia progresses to lymphoma. Consider immunopathologist review.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Miscellaneous
+    "TargetedTreatment": {
+      text: "Treat underlying condition (e.g., antivirals for EBV, antibiotics for syphilis, chemo for malignancy).",
+      explanation: "NOTE: Avoid steroids until lymphoma ruled out (can obscure diagnosis).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  // Neutropenia and Fever - - - - 
+  "Neutropenia and Fever": {
+    start: {
+      text: "Does the patient have fever (≥38.3°C orally or ≥38°C for ≥1 hour) with ANC <500/µl?",
+      explanation: "Fever in neutropenia is an oncologic emergency. Immediate action is required to prevent sepsis. RED FLAG: ANC <100/µl or mucositis increases infection risk.",
+      options: {
+        yes: "InitialWorkup",
+        no: "Exit" // No action if no fever/neutropenia
+      }
+    },
+
+    // Initial Workup Pathway
+    "InitialWorkup": {
+      text: "Perform: (1) Blood cultures x2 sites, (2) Urine culture, (3) Chest X-ray, (4) Physical exam (skin, oral, perianal, catheter sites).",
+      explanation: "CRITICAL: Localizing symptoms may be absent due to impaired inflammation. Focus on subtle signs (e.g., perianal tenderness → anaerobic infection).",
+      options: {
+        "Localizing signs": "TargetedTesting",
+        "No localizing signs": "StartEmpiricTherapy"
+      }
+    },
+    "TargetedTesting": {
+      text: "Add tests based on symptoms: Stool culture (diarrhea), LP (neuro signs), CT sinuses/abdomen (pain), bronchoscopy (pulmonary infiltrates).",
+      explanation: "WARNING: Delirium in steroid-treated patients may indicate CNS infection. LP is mandatory if altered mental status.",
+      options: {
+        "Positive findings": "DirectedTherapy",
+        "Negative": "StartEmpiricTherapy"
+      }
+    },
+
+    // Empiric Therapy Pathways
+    "StartEmpiricTherapy": {
+      text: "Select initial regimen based on risk:",
+      explanation: "RISK STRATIFICATION: High-risk = ANC <100/µl, mucositis, unstable vitals, or comorbidities.",
+      options: {
+        "Low-risk (ANC 100-500/µl, stable)": "Monotherapy",
+        "High-risk (ANC <100/µl or unstable)": "ComboTherapy"
+      }
+    },
+    "Monotherapy": {
+      text: "Start monotherapy: Cefepime, carbapenem (meropenem), or piperacillin-tazobactam.",
+      explanation: "COVERAGE: Gram-negative (Pseudomonas) + some gram-positive. AVOID ceftriaxone (no Pseudomonas coverage).",
+      options: {
+        "Defervesces in 48h": "ContinueMonitoring",
+        "Persistent fever": "ReassessDay4"
+      }
+    },
+    "ComboTherapy": {
+      text: "Start dual therapy: Anti-pseudomonal beta-lactam (e.g., cefepime) + aminoglycoside (gentamicin/tobramycin).",
+      explanation: "SYNERGY: Combo reduces resistance risk in high-risk patients. Monitor renal function.",
+      options: {
+        "Defervesces in 48h": "ContinueMonitoring",
+        "Persistent fever": "ReassessDay4"
+      }
+    },
+
+    // Reassessment Pathways
+    "ReassessDay4": {
+      text: "Re-evaluate: Repeat cultures, exam (skin/oral/perianal), and consider imaging (CT) if no improvement.",
+      explanation: "KEY DECISION: Modify therapy based on new findings (e.g., add antifungals for persistent fever).",
+      options: {
+        "New localizing signs": "ModifyTherapy",
+        "No change": "ConsiderAntifungals"
+      }
+    },
+    "ModifyTherapy": {
+      text: "Tailor therapy:",
+      explanation: "TARGETED APPROACH:",
+      options: {
+        "Mucositis/catheter site inflammation": "AddVancomycin",
+        "Pneumonia/sepsis": "AddAminoglycoside",
+        "Abdominal pain/typhlitis": "AddAnaerobicCoverage"
+      }
+    },
+    "AddVancomycin": {
+      text: "Add vancomycin for suspected gram-positive infection (MRSA, coagulase-negative staphylococci).",
+      explanation: "RESTRICT USE: Only for specific scenarios to avoid resistance. Check prior colonization/MRSA history.",
+      options: {
+        "Improvement": "ContinueTherapy",
+        "No response": "ConsiderAntifungals"
+      }
+    },
+    "ConsiderAntifungals": {
+      text: "Add antifungals if fever persists ≥5 days: Fluconazole (if no prior prophylaxis) or amphotericin B/liposomal amphotericin (if high-risk mold exposure).",
+      explanation: "MOLD RISK: Prolonged neutropenia (>7 days), steroid use, or sinus pain suggests aspergillosis.",
+      options: {
+        "Improvement": "ContinueUntilANCRecovery",
+        "No response": "InvestigateRarePathogens"
+      }
+    },
+
+    // Resolution Pathways
+    "ContinueMonitoring": {
+      text: "If afebrile ×48h, ANC ≥500/µl, and no infection sites: Stop antibiotics at day 7.",
+      explanation: "SAFE DISCONTINUATION: Requires meeting all criteria. Re-start if fever recurs.",
+      options: {
+        "ANC remains <500/µl": "ContinueUntilRecovery",
+        "ANC ≥500/µl": "StopAntibiotics"
+      }
+    },
+    "ContinueUntilRecovery": {
+      text: "Continue antibiotics until ANC ≥500/µl AND clinical stability (even if afebrile).",
+      explanation: "HIGH-RISK PATIENTS: ANC <100/µl or mucositis may need prolonged therapy.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Special Cases
+    "InvestigateRarePathogens": {
+      text: "Consider: Viral PCRs (CMV, HSV), fungal markers (galactomannan, β-D-glucan), or atypical bacteria (Legionella urine antigen).",
+      explanation: "RARE BUT LETHAL: Mucormycosis (black eschar), RSV (bronchiolitis in BMT patients).",
+      options: {
+        "Diagnosis confirmed": "TargetedTreatment",
+        "Negative": "ConsultID"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Bleeding Disorder----------------
+  "Bleeding Disorder": {
+    start: {
+      text: "Is the patient actively bleeding?",
+      explanation: "Active bleeding requires immediate stabilization before diagnostic evaluation. RED FLAG: Major bleeding (critical organ involvement, Hb drop ≥2 g/dL, or transfusion requirement) needs urgent intervention.",
+      options: {
+        yes: "Active Bleeding Pathway",
+        no: "Non-Active Bleeding Evaluation"
+      }
+    },
+
+    // Active Bleeding Pathway
+    "Active Bleeding Pathway": {
+      text: "Obtain immediate labs: CBC, PT, aPTT, fibrinogen, blood smear. Assess for surgical source.",
+      explanation: "CRITICAL TESTS: Platelet count <50K requires transfusion for active bleeding. Fibrinogen <100 mg/dL needs replacement. NOTE: DIC should be ruled out with D-dimer if suspected.",
+      options: {
+        "Thrombocytopenia": "Thrombocytopenia Management",
+        "Prolonged PT/aPTT": "Coagulopathy Management",
+        "Normal labs": "Platelet/VWD Workup"
+      }
+    },
+    "Thrombocytopenia Management": {
+      text: "Transfuse platelets if count <50K (<100K for CNS/closed space bleeding). Avoid in TTP/HIT unless life-threatening.",
+      explanation: "CAUTION: Platelets may worsen TTP/HIT. For ITP, consider IVIG + steroids. ACTION: Transfuse 1 unit/10kg (typical adult dose = 1 apheresis unit).",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Diagnosis": "Non-Active Bleeding Evaluation"
+      }
+    },
+    "Coagulopathy Management": {
+      text: "Administer vitamin K if deficiency suspected. Give fibrinogen concentrate/cryo if fibrinogen <100 mg/dL. Consider PCC for warfarin reversal.",
+      explanation: "URGENT: For unexplained prolonged aPTT, test for factor VIII inhibitor (mixing study). PCC contains heparin - contraindicated in HIT. Fibrinogen goal >200 mg/dL in pregnancy.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Diagnosis": "Non-Active Bleeding Evaluation"
+      }
+    },
+    "Platelet/VWD Workup": {
+      text: "If labs normal but bleeding persists: Check PFA-100, VWF antigen/activity, factor VIII.",
+      explanation: "CLINICAL CLUE: Mucocutaneous bleeding suggests platelet/VWD defect. NOTE: PFA-100 has high closure time in VWD and platelet disorders.",
+      options: {
+        "Abnormal PFA/VWF": "VWD/Platelet Disorder Management",
+        "Normal PFA/VWF": "Consider Vascular Disorder"
+      }
+    },
+    "VWD/Platelet Disorder Management": {
+      text: "For VWD: Desmopressin (type 1) or VWF-containing concentrates (types 2/3). For platelet disorders: Consider platelet transfusion.",
+      explanation: "DESMOPRESSIN CAUTION: Avoid in type 2B (risk thrombocytopenia). TXA (antifibrinolytic) useful for mucosal bleeding. CONTRAINDICATION: Avoid TXA in upper urinary tract bleeding.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Diagnosis": "Non-Active Bleeding Evaluation"
+      }
+    },
+    "Consider Vascular Disorder": {
+      text: "Evaluate for HHT (telangiectasias), Ehlers-Danlos (joint hypermobility), or scurvy (perifollicular hemorrhages).",
+      explanation: "DIAGNOSTIC TIP: HHT shows AVMs on endoscopy. Vascular EDS (COL3A1 mutation) has high rupture risk. Scurvy shows corkscrew hairs.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Diagnosis": "Non-Active Bleeding Evaluation"
+      }
+    },
+
+    // Non-Active Bleeding Evaluation
+    "Non-Active Bleeding Evaluation": {
+      text: "Calculate ISTH-BAT bleeding score. Assess bleeding pattern and family history.",
+      explanation: "SCORING: ≥4 suggests bleeding disorder (sensitivity 75%, specificity 54% for VWD). KEY PATTERNS: Mucosal = platelet/VWD; Deep tissue = coagulation factor; Delayed = fibrinolysis disorder.",
+      options: {
+        "Score ≥4": "High Probability Workup",
+        "Score <4": "Low Probability Workup"
+      }
+    },
+    "High Probability Workup": {
+      text: "Initial labs: CBC, PT, aPTT, fibrinogen. Based on pattern:",
+      explanation: "TEST SELECTION: Mucosal bleeding → add PFA-100, VWF studies. Deep bleeding → factor assays. Delayed bleeding → factor XIII, fibrinolysis tests.",
+      options: {
+        "Thrombocytopenia": "Thrombocytopenia DDx",
+        "Prolonged PT/aPTT": "Coagulation Factor Workup",
+        "Normal initial labs": "Advanced Hemostasis Testing"
+      }
+    },
+    "Thrombocytopenia DDx": {
+      text: "Review smear for platelet size/clumping. Check LFTs, HIV, HCV, H. pylori. Consider ITP vs. marrow infiltration.",
+      explanation: "CLINICAL PEARLS: Giant platelets suggest MYH9 disorders. Schistocytes indicate TTP. Isolated thrombocytopenia with normal other lines suggests ITP.",
+      options: {
+        "Immune cause": "ITP Management",
+        "Production defect": "Bone Marrow Evaluation",
+        "Restart Algorithm": "start"
+      }
+    },
+    "Coagulation Factor Workup": {
+      text: "Perform mixing studies. If corrects: Factor assays. If doesn't correct: Inhibitor workup.",
+      explanation: "CRITICAL INTERPRETATION: Correcting mixing study suggests factor deficiency. Non-correcting suggests inhibitor (e.g., acquired hemophilia). Lupus anticoagulant causes prolonged aPTT but rarely bleeding.",
+      options: {
+        "Factor deficiency": "Specific Factor Replacement",
+        "Inhibitor present": "Inhibitor Management",
+        "Restart Algorithm": "start"
+      }
+    },
+    "Advanced Hemostasis Testing": {
+      text: "Proceed with: VWF studies, platelet aggregation, factor XIII, fibrinolysis tests.",
+      explanation: "SPECIALIZED TESTS: Chromogenic factor VIII for mild hemophilia A. Electron microscopy for platelet granule defects. Multimer analysis for VWD type 2.",
+      options: {
+        "VWD diagnosed": "VWD Management",
+        "Platelet disorder": "Platelet Disorder Management",
+        "Factor XIII deficiency": "Factor XIII Replacement",
+        "No diagnosis": "BDUC Evaluation"
+      }
+    },
+    "Low Probability Workup": {
+      text: "Assess for: Skin fragility, trauma, abuse, medication effect. Consider limited testing if upcoming procedure.",
+      explanation: "COMMON MIMICS: Solar purpura (elderly), self-injury pattern bruises, NSAID use. DECISION POINT: Testing may be deferred unless hemostatic challenge planned.",
+      options: {
+        "Identified cause": "Address Cause",
+        "Persistent concern": "Consider Selective Testing",
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Management Sub-Pathways
+    "ITP Management": {
+      text: "First-line: Corticosteroids ± IVIG for bleeding. Second-line: TPO-RAs or rituximab.",
+      explanation: "ACUTE MANAGEMENT: IVIG 1g/kg x1 or methylprednisolone 1g x3 days for severe bleeding. CAUTION: Platelet transfusions may be ineffective.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "Specific Factor Replacement": {
+      text: "Replace specific deficient factor: VIII for hemophilia A, IX for B, etc. Use recombinant products when available.",
+      explanation: "DOSING: Hemophilia A: 50 IU/kg factor VIII raises level by 100%. Half-life 8-12h. VWD: Use VWF-containing concentrates for types 2/3.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "Inhibitor Management": {
+      text: "For factor VIII inhibitor: Emicizumab (prophylaxis) or bypassing agents (rFVIIa, FEIBA) for bleeding.",
+      explanation: "CRITICAL: Avoid factor VIII concentrates in high-titer inhibitors. Immunosuppression (rituximab, cyclophosphamide) for inhibitor eradication.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "VWD Management": {
+      text: "Type 1: Desmopressin trial. Types 2/3: VWF-containing concentrates. All types: TXA for mucosal bleeding.",
+      explanation: "DESMOPRESSIN TEST: Give 0.3 mcg/kg IV; check VWF levels at 1h. Avoid in type 2B (risk thrombocytopenia) and 2N (ineffective).",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "Factor XIII Replacement": {
+      text: "Give FXIII concentrate (Corifact) 40 IU/kg monthly. Plasma-derived products if unavailable.",
+      explanation: "MONITORING: Trough FXIII >5-10% prevents spontaneous bleeding. Half-life ~11 days. Screen for anti-FXIII antibodies annually.",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+    "BDUC Evaluation": {
+      text: "Consider specialized testing: Global hemostasis assays (TEG/ROTEM), genetic testing for rare disorders.",
+      explanation: "EMERGING TOOLS: Microfluidic flow devices may detect subtle platelet defects. Up to 60% of tertiary referrals remain undiagnosed (true BDUC).",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    }
+  }
+}; 
+
+
+
+  
+ 
+
+
+
+
+   let currentSymptom = null;
+    let currentQuestion = "start";
+
+    function playClick() {
+      const sound = document.getElementById("click-sound");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+      }
+    }
+
+    function startSymptom(symptom) {
+      currentSymptom = symptom;
+      currentQuestion = "start";
+      document.getElementById("symptom-title").textContent = symptom;
+      showQuestion();
+
+      document.getElementById("main-page").style.display = "none";
+      document.getElementById("question-page").style.display = "block";
+      document.getElementById("headline").style.display = "none";
+      document.getElementById("subheadline").style.display = "none";
+    }
+
+    // NEW/MODIFIED: This function is updated to show images.
+    function showQuestion() {
+      const symptomQuestions = questions[currentSymptom];
+      if (!symptomQuestions || !symptomQuestions[currentQuestion]) {
+        alert("Invalid symptom or question flow.");
+        return;
+      }
+
+      const questionData = symptomQuestions[currentQuestion];
+      const imageContainer = document.getElementById("question-image-container");
+      
+      // Clear previous image
+      imageContainer.innerHTML = "";
+
+      // If an image path exists, create and display the image
+      if (questionData.image) {
+        const img = document.createElement("img");
+        img.src = questionData.image;
+        img.alt = questionData.text; // for accessibility
+        img.className = "question-image";
+        imageContainer.appendChild(img);
+      }
+
+      document.getElementById("question").textContent = questionData.text;
+      document.getElementById("footer").textContent = questionData.explanation || "No explanation available.";
+
+      const buttons = Object.keys(questionData.options)
+        .map(option =>
+          `<button class='option-button' onclick="playClick(); nextQuestion('${option}')">${option}</button>`)
+        .join("");
+      document.querySelector(".button-container").innerHTML = buttons;
+    }
+
+    function nextQuestion(answer) {
+      const symptomQuestions = questions[currentSymptom];
+      const current = symptomQuestions[currentQuestion];
+      if (!current || !current.options[answer]) {
+        alert("Invalid choice.");
+        return;
+      }
+
+      const next = current.options[answer];
+      // Check if the next step is another question or a final diagnosis
+      if (symptomQuestions[next] && symptomQuestions[next].options) {
+          currentQuestion = next;
+          showQuestion();
+      } else {
+          // This handles both terminal nodes that are defined as full objects
+          // and those that are simple strings (your original implementation)
+          if (symptomQuestions[next]) {
+              currentQuestion = next;
+              showQuestion(); // This will display the final diagnosis with its image
+          } else {
+              // This is a fallback for legacy string-only terminals
+              document.getElementById("question").textContent = next;
+              document.getElementById("footer").textContent = "End of diagnostic path.";
+              document.querySelector(".button-container").innerHTML =
+                `<button class='option-button' onclick="playClick(); restart()">Restart</button>`;
+              document.getElementById("question-image-container").innerHTML = ""; // Clear image
+          }
+      }
+    }
+
+
+    function restart() {
+      document.getElementById("main-page").style.display = "flex";
+      document.getElementById("question-page").style.display = "none";
+      document.getElementById("headline").style.display = "block";
+      document.getElementById("subheadline").style.display = "block";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      sidebar.classList.toggle("active");
+      overlay.style.display = sidebar.classList.contains("active") ? "block" : "none";
+    }
+
+    document.addEventListener("click", function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const toggleBtn = document.querySelector(".toggle-button");
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnToggle = toggleBtn.contains(event.target);
+      if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains("active")) {
+        toggleSidebar();
+      }
+    });
+
+    let startX = 0;
+    document.addEventListener("touchstart", function(e) {
+      if (e.touches.length === 1) { startX = e.touches[0].clientX; }
+    });
+    document.addEventListener("touchend", function(e) {
+      const sidebar = document.getElementById("sidebar");
+      const diff = e.changedTouches[0].clientX - startX;
+      if (diff > 50 && sidebar.classList.contains("active")) { toggleSidebar(); }
+    });
+
+    function goHome() {
+      window.location.href = "../index.html";
+    }
+
+    function navigateTo(page) {
+      window.location.href = page;
+      const loadingScreen = document.querySelector('.loading');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'flex';
+        setTimeout(() => { window.location.href = page; }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>

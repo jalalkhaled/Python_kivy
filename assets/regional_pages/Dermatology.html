@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dermatological Symptoms</title>
+  <link rel="stylesheet" href="../style/regional_style.css" type="text/css" media="all" />
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="nav-title">ALGOMED <span>DERMATOLOGY</span></div>
+  <button class="toggle-button" onclick="playClick(); toggleSidebar()">☰</button>
+</nav>
+
+<!-- Overlay for click outside -->
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <ul>
+      <li onclick="navigateTo('respiratory.html')">Respiratory</li>
+      <li onclick="navigateTo('cardiovascular.html')">Cardiovascular</li>
+      <li onclick="navigateTo('git.html')">Gastroenterology</li>
+      <li onclick="navigateTo('gynecology.html')">Gynecology</li>
+      <li onclick="navigateTo('hepatology.html')">Hepatology</li>
+      <li onclick="navigateTo('nephrology.html')">Nephrology</li>
+      <li onclick="navigateTo('obstetric.html')">Obstetric</li>
+      <li onclick="navigateTo('rheumatology.html')">Rheumatology</li>
+      <li onclick="navigateTo('hematology.html')">Hematology</li>
+      <li onclick="navigateTo('pediatric.html')">Pediatric</li>
+      <li onclick="navigateTo('ophthalmology.html')">Ophthalmology</li>
+      <li onclick="navigateTo('neurology.html')">Neurology</li>
+      <li onclick="navigateTo('dermatology.html')">Dermatology</li>
+      <li onclick="navigateTo('ent.html')">ENT</li>
+      <li onclick="navigateTo('psychiatric.html')">Psychiatric</li>
+      <li onclick="navigateTo('General.html')">General</li>
+    </ul>
+<button class="sidebar-about-button" onclick="navigateTo('../about.html')">About Us</button>
+  </aside>
+
+  <!-- Audio -->
+  <audio id="click-sound" src="../sounds/click_sound.wav" preload="auto"></audio>
+
+  <!-- Headlines Outside Container -->
+  <h3 id="headline">Select a Primary Symptom</h3>
+<p id="subheadline">Choose from the list below to begin diagnosis.</p>
+
+  <!-- Main Page -->
+  <div id="main-page" class="container">
+    <button class="symptom-button" onclick="playClick(); startSymptom('Generalized Pruritus')">Generalized Pruritus</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Pigmented Lesions')">Pigmented Lesions</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Sexual Dysfunction')">Sexual Dysfunction</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Palpable Purpura')">Palpable Purpura</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Leg Ulcer')">Leg Ulcer</button>
+    
+    
+  </div>
+
+  <!-- Question Page -->
+  <div id="question-page">
+  <div class="title" id="symptom-title">Symptom Diagnostic</div>
+  <div id="question-image-container"></div>
+  <div id="question" class="question"></div>
+  <div class="button-container"></div>
+  <div id="footer" class="footer"></div>
+</div>
+
+  <!-- Home Button -->
+  <button class="home-button" onclick="goHome()">
+  <img src="../bodyicons/home_button.png" alt="Home" class="home-icon">
+  <span class="sr-only">Home</span>
+</button>
+  
+  
+
+  <!-- Script -->
+  <script>
+  const questions = {
+    
+    // Pigmented Lesions Approach 
+     "Pigmented Lesions": {
+      start: {
+        text: "Perform history & physical examination of the lesion.",
+        explanation: "Assess size, shape, color changes, symptoms (itch/pain), and duration.",
+        options: {
+          "Proceed": "Determine distribution"
+        }
+      },
+      "Determine distribution": {
+        text: "Is the pigmentation localized or widespread?",
+        explanation: "Localized suggests nevi/melanoma; widespread suggests systemic causes.",
+        options: {
+          "Localized": "Assess localized lesion color",
+          "Widespread": "Evaluate systemic causes"
+        }
+      },
+      "Assess localized lesion color": {
+        text: "What is the predominant color of the lesion?",
+        explanation: "Color helps differentiate benign vs malignant lesions.",
+        options: {
+          "Blue": "Evaluate blue lesions",
+          "Tan/brown/black": "Evaluate brown lesions",
+          "Irregular pigmentation": "Assess for melanoma risk"
+        }
+      },
+      "Evaluate blue lesions": {
+        text: "Is the blue lesion congenital or acquired?",
+        explanation: "Congenital blue lesions are often benign; acquired need monitoring.",
+        options: {
+          "Congenital": "Consider: Mongolian spot, Nevus of Ota, Blue nevus",
+          "Acquired": "Consider: Blue nevus (monitor for changes)"
+        }
+      },
+      "Consider: Mongolian spot, Nevus of Ota, Blue nevus": {
+        text: "Likely benign congenital blue lesion.",
+        explanation: "Mongolian spots fade with age; Nevus of Ota may require cosmetic treatment.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Consider: Blue nevus (monitor for changes)": {
+        text: "Acquired blue nevus - typically benign but monitor.",
+        explanation: "Biopsy if changing in size/color or symptomatic.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Evaluate brown lesions": {
+        text: "Select most fitting description:",
+        explanation: "Tan/brown lesions range from freckles to malignant melanoma.",
+        options: {
+          "Uniform color, regular borders": "Benign: Freckle, Lentigo, Acquired nevus",
+          "Rough surface, stuck-on appearance": "Seborrheic keratosis",
+          "Firm nodule with peripheral pigmentation": "Dermatofibroma"
+        }
+      },
+      "Benign: Freckle, Lentigo, Acquired nevus": {
+        text: "Likely benign melanocytic lesion.",
+        explanation: "No treatment needed unless cosmetic concerns. Monitor for changes.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Assess for melanoma risk": {
+        text: "Does the lesion have ABCDE features? (Asymmetry, Border irregularity, Color variegation, Diameter >6mm, Evolution)",
+        explanation: "ABCDE criteria help identify potential melanoma.",
+        options: {
+          "Yes": "Urgent dermatology referral for possible melanoma",
+          "No": "Consider dysplastic nevus or drug reaction"
+        }
+      },
+      "Urgent dermatology referral for possible melanoma": {
+        text: "Suspicious for melanoma - requires biopsy.",
+        explanation: "Excisional biopsy preferred for histopathology confirmation.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Evaluate systemic causes": {
+        text: "Consider systemic causes of hyperpigmentation:",
+        explanation: "Drugs (e.g., minocycline), Addison's disease, hemochromatosis.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      }
+    },
+
+
+
+     // Generalized Pruritus Approach
+    "Generalized Pruritus": {
+      start: {
+        text: "Are there primary skin lesions present?",
+        explanation: "Primary lesions suggest dermatologic causes; absence suggests systemic/other causes.",
+        options: {
+          "Yes": "Evaluate skin lesions",
+          "No": "Proceed to systemic evaluation"
+        }
+      },
+      "Evaluate skin lesions": {
+        text: "Select the most prominent lesion type:",
+        explanation: "Different lesions suggest different etiologies.",
+        options: {
+          "Burrows": "Scabies evaluation",
+          "Wheals": "Urticaria workup",
+          "Eczematous patches": "Atopic dermatitis evaluation",
+          "Vesicles": "Dermatitis herpetiformis evaluation",
+          "Other": "Skin biopsy consideration"
+        }
+      },
+      "Scabies evaluation": {
+        text: "Perform scabies preparation (mineral oil slide of burrow).",
+        explanation: "Look for mites, eggs, or feces under microscopy.",
+        options: {
+          "Positive": "Treat with permethrin 5% cream",
+          "Negative": "Consider other diagnoses"
+        }
+      },
+      "Proceed to systemic evaluation": {
+        text: "Order initial labs: CBC, glucose, LFTs, BUN/Cr, thyroid function.",
+        explanation: "Screen for systemic causes like renal, hepatic, or hematologic disease.",
+        options: {
+          "Abnormal CBC": "Evaluate for hematologic causes",
+          "Abnormal glucose": "Diabetes evaluation",
+          "Abnormal LFTs": "Hepatic/biliary evaluation",
+          "Abnormal thyroid": "Thyroid disorder management",
+          "All normal": "Psychogenic/drug causes"
+        }
+      },
+      "Evaluate for hematologic causes": {
+        text: "Based on CBC abnormalities:",
+        explanation: "Pruritus can precede hematologic malignancy diagnosis.",
+        options: {
+          "Polycythemia": "Polycythemia vera (check JAK2)",
+          "Eosinophilia": "Parasitic/atopic causes",
+          "Other abnormality": "Consider leukemia/myeloma"
+        }
+      },
+      "Diabetes evaluation": {
+        text: "Confirm with HbA1c. Is glucose elevated?",
+        explanation: "Diabetic neuropathy can cause pruritus.",
+        options: {
+          "Yes": "Diabetes management",
+          "No": "Consider other metabolic causes"
+        }
+      },
+      "Hepatic/biliary evaluation": {
+        text: "Check bilirubin, ALP, GGT. Is cholestasis present?",
+        explanation: "Cholestatic pruritus often worse at night.",
+        options: {
+          "Yes": "Treat cholestasis (ursodiol, rifampin)",
+          "No": "Consider non-biliary causes"
+        }
+      },
+      "Thyroid disorder management": {
+        text: "Abnormal TSH/free T4?",
+        explanation: "Both hypo- and hyperthyroidism can cause pruritus.",
+        options: {
+          "High TSH, low T4": "Hypothyroidism (treat with levothyroxine)",
+          "Low TSH, high T4": "Hyperthyroidism (treat with methimazole)"
+        }
+      },
+      "Psychogenic/drug causes": {
+        text: "Consider:",
+        explanation: "When organic causes are excluded.",
+        options: {
+          "Drug reaction": "Review medications (opioids, ACE inhibitors common)",
+          "Psychogenic": "Consider SSRIs/cognitive therapy",
+          "Malignancy": "Age-appropriate cancer screening"
+        }
+      },
+      // Terminal nodes with restart options
+      "Treat with permethrin 5% cream": {
+        text: "Diagnosis: Scabies.",
+        explanation: "Treat patient and close contacts. Wash bedding/clothing.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Polycythemia vera (check JAK2)": {
+        text: "Diagnosis: Polycythemia vera.",
+        explanation: "Phlebotomy, hydroxyurea for pruritus. Consider JAK2 inhibitor.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      }
+
+    },
+    
+    
+    // Sexual Dysfunction Approach
+  
+  "Sexual Dysfunction": {
+    start: {
+      text: "Is the patient male or female?",
+      explanation: "Initial evaluation differs by gender - male sexual dysfunction focuses on erectile/ejaculatory function while female dysfunction centers on desire/pain disorders.",
+      options: {
+        "Male": "Male Sexual Dysfunction",
+        "Female": "Female Sexual Dysfunction"
+      }
+    },
+    
+    // Male Pathway
+    "Male Sexual Dysfunction": {
+      text: "What is the primary complaint?",
+      explanation: "KEY DIFFERENTIATORS:\n- Decreased libido: Often hormonal/psychological\n- Erectile dysfunction: Vascular vs neurologic\n- Ejaculation disorders: Premature vs delayed",
+      options: {
+        "Decreased libido": "Male Libido Evaluation",
+        "Erectile dysfunction": "ED Evaluation",
+        "Ejaculatory dysfunction": "Ejaculation Evaluation"
+      }
+    },
+    "Male Libido Evaluation": {
+      text: "Check morning testosterone. Any psychiatric symptoms or medication use?",
+      explanation: "HORMONAL CAUSES: Testosterone <300ng/dL warrants replacement. DRUG CULPRITS: SSRIs, antihypertensives, opioids. RED FLAG: Depression may manifest as low libido.",
+      options: {
+        "Low testosterone": "Testosterone Replacement",
+        "Normal testosterone": "Psychosocial Evaluation",
+        "Review medication risks": "Medication Effects" // NEW LINK
+      }
+    },
+    "ED Evaluation": {
+      text: "Are morning erections present? Check for vascular risk factors (HTN, DM).",
+      explanation: "PSYCHOGENIC CLUE: Preserved morning erections suggest psychological cause. ORGANIC RISKS: Diabetes (50% ED prevalence), smoking, CAD. NOTE: PDE5 inhibitors contraindicated with nitrates.",
+      options: {
+        "Morning erections present": "Psychogenic ED Management",
+        "Morning erations absent": "Organic ED Workup",
+        "Check medication effects": "Medication Effects" // NEW LINK
+      }
+    },
+    "Organic ED Workup": {
+      text: "Check HbA1c, lipids. Trial PDE5 inhibitor (sildenafil 50mg PRN). Effective?",
+      explanation: "FIRST-LINE: PDE5 inhibitors (70% efficacy). ALTERNATIVES: Intracavernosal alprostadil, vacuum devices. REFERRAL: Urology if refractory - consider vascular studies.",
+      options: {
+        yes: "Continue PDE5 Inhibitor",
+        no: "Second-Line Therapies",
+        "Referral criteria": "Specialist Referral" // NEW LINK
+      }
+    },
+    
+    // Female Pathway
+    "Female Sexual Dysfunction": {
+      text: "What is the primary complaint?",
+      explanation: "FEMALE PATTERNS:\n- Desire disorders: Most prevalent\n- Arousal/orgasm: Often comorbid\n- Pain disorders: Require gynecologic eval",
+      options: {
+        "Low desire": "Female Libido Evaluation",
+        "Anorgasmia": "Orgasm Evaluation",
+        "Painful intercourse": "Dyspareunia Evaluation"
+      }
+    },
+    "Female Libido Evaluation": {
+      text: "Check hormone levels (FSH, estrogen). Any dyspareunia or psychiatric symptoms?",
+      explanation: "POSTMENOPAUSAL: Atrophic vaginitis causes pain → secondary libido loss. WARNING: Androgen therapy off-label (risk of virilization). CBT often more effective than HRT.",
+      options: {
+        "Hormonal deficiency": "Consider HRT",
+        "Psychosocial factors": "Sex Therapy Referral",
+        "Medication review": "Medication Effects" // NEW LINK
+      }
+    },
+    "Dyspareunia Evaluation": {
+      text: "Is pain with initial penetration (insertional) or deep thrusting?",
+      explanation: "INSERTIONAL: Vulvovaginitis, vestibulitis. DEEP: Endometriosis, PID. RED FLAG: Vaginismus causes involuntary spasm - requires gradual dilation therapy.",
+      options: {
+        "Insertional": "Vulvar Examination",
+        "Deep": "Pelvic Ultrasound",
+        "When to refer": "Specialist Referral" // NEW LINK
+      }
+    },
+    
+    // Reference Nodes (NOW ACTIVELY LINKED)
+    "Medication Effects": {
+      text: "Common Offending Medications:",
+      explanation: `
+      LIBIDO/ERECTION:
+      - SSRIs (paroxetine worst)
+      - Beta-blockers (propranolol > atenolol)
+      - Antiandrogens (finasteride, spironolactone)
+      
+      ORGASMIC:
+      - SNRIs (venlafaxine 75% incidence)
+      - Antipsychotics (risperidone)
+      - 5α-reductase inhibitors`,
+      options: {
+        "Return to algorithm": "start",
+        "See referral criteria": "Specialist Referral" // CROSS-LINK
+      }
+    },
+    "Specialist Referral": {
+      text: "When to Refer:",
+      explanation: `
+      UROLOGY:
+      - Refractory ED after 2 PDE5 failures
+      - Peyronie's deformity (penile curvature)
+      - Post-prostatectomy dysfunction
+      
+      GYNECOLOGY:
+      - Unclear pelvic pain etiology
+      - Vulvar dystrophies (lichen sclerosus)
+      - Severe vaginismus (failed dilation)`,
+      options: {
+        "Return to algorithm": "start",
+        "Review medication risks": "Medication Effects" // CROSS-LINK
+      }
+    }
+  },
+  
+  
+  // Palpable Purpura Approach 
+  "Palpable Purpura": {
+    start: {
+      text: "Does the patient have systemic signs/symptoms (fever, hypotension, organ dysfunction)?",
+      explanation: "Systemic symptoms suggest sepsis or systemic vasculitis. RED FLAG: Fever + hypotension requires immediate sepsis workup.",
+      options: {
+        yes: "Systemic Evaluation",
+        no: "Cutaneous Evaluation"
+      }
+    },
+
+    // Systemic Pathway
+    "Systemic Evaluation": {
+      text: "Assess for signs of sepsis (fever, chills, hypotension, tachycardia).",
+      explanation: "CRITICAL: Palpable purpura in sepsis indicates disseminated infection (e.g., meningococcemia, gonococcemia). Immediate blood cultures and empiric antibiotics are required.",
+      options: {
+        "Sepsis suspected": "Septic Vasculitis Workup",
+        "No sepsis": "Non-Septic Systemic Vasculitis"
+      }
+    },
+    "Septic Vasculitis Workup": {
+      text: "Perform blood cultures, skin biopsy (Gram stain/culture), and start empiric antibiotics.",
+      explanation: "KEY CLUES: Staphylococcal sepsis shows purpuric pustules; meningococcemia has explosive widespread purpura; gonococcemia features acral papules/pustules.",
+      options: {
+        "Organism identified": "Targeted Antibiotic Therapy",
+        "No organism identified": "Broad-Spectrum Antibiotics"
+      }
+    },
+    "Targeted Antibiotic Therapy": {
+      text: "Treat based on identified pathogen (e.g., ceftriaxone for gonococcemia, vancomycin for staphylococcal sepsis).",
+      explanation: "NOTE: Add doxycycline if Rocky Mountain spotted fever is suspected (tick exposure + progression from macules to purpura).",
+      options: {
+        "Restart Algorithm": "start",
+        "Monitor Response": "exit"
+      }
+    },
+    "Broad-Spectrum Antibiotics": {
+      text: "Empiric coverage for Gram-negative/positive organisms (e.g., vancomycin + ceftriaxone).",
+      explanation: "ACTION: Admit to ICU if hemodynamically unstable. Consider IV fluids and vasopressors for septic shock.",
+      options: {
+        "Restart Algorithm": "start",
+        "Monitor Response": "exit"
+      }
+    },
+    "Non-Septic Systemic Vasculitis": {
+      text: "Evaluate for systemic vasculitis (renal, GI, or joint involvement).",
+      explanation: "CLINICAL TIP: Henoch-Schönlein purpura (HSP) presents with palpable purpura, abdominal pain, and hematuria. Wegener’s granulomatosis may have hemoptysis or sinusitis.",
+      options: {
+        "HSP suspected": "HSP Management",
+        "Other vasculitis suspected": "Vasculitis Workup"
+      }
+    },
+    "HSP Management": {
+      text: "Supportive care (NSAIDs for arthritis). Monitor renal function and blood pressure.",
+      explanation: "PEDIATRIC FOCUS: 90% of HSP cases follow URI. Steroids may be used for severe GI involvement but do not prevent nephritis.",
+      options: {
+        "Restart Algorithm": "start",
+        "Refer to Nephrology if renal involvement": "exit"
+      }
+    },
+    "Vasculitis Workup": {
+      text: "Order labs: CBC, creatinine, urinalysis, ANCA, complement levels, and skin biopsy.",
+      explanation: "LAB CLUES: Elevated ANCA suggests Wegener’s or microscopic polyangiitis. Hypocomplementemia occurs in urticarial vasculitis.",
+      options: {
+        "ANCA-positive": "ANCA-Associated Vasculitis",
+        "Hypocomplementemia": "Urticarial Vasculitis",
+        "Other findings": "Further Specialized Testing"
+      }
+    },
+    "ANCA-Associated Vasculitis": {
+      text: "Refer to rheumatology. Treat with steroids + immunosuppressants (e.g., cyclophosphamide or rituximab).",
+      explanation: "NOTE: Wegener’s granulomatosis requires ENT evaluation for sinus/nasal involvement.",
+      options: {
+        "Restart Algorithm": "start",
+        "Monitor for renal/lung disease": "exit"
+      }
+    },
+    "Urticarial Vasculitis": {
+      text: "Treat with antihistamines, NSAIDs, or colchicine. Severe cases may require steroids.",
+      explanation: "DIAGNOSTIC TIP: Lesions last >24h (vs. ordinary urticaria) and leave bruising.",
+      options: {
+        "Restart Algorithm": "start",
+        "Refer to Rheumatology if refractory": "exit"
+      }
+    },
+    "Further Specialized Testing": {
+      text: "Consider cryoglobulins, serum protein electrophoresis, or imaging (e.g., chest X-ray for pulmonary involvement).",
+      explanation: "RARE CAUSES: Essential mixed cryoglobulinemia presents with purpura + hepatitis C. Polyarteritis nodosa may require angiography.",
+      options: {
+        "Restart Algorithm": "start",
+        "Tailor workup to findings": "exit"
+      }
+    },
+
+    // Cutaneous-Only Pathway
+    "Cutaneous Evaluation": {
+      text: "Is there a history of medication use or foreign protein exposure?",
+      explanation: "DRUG INDUCED: Common culprits include antibiotics, NSAIDs, and diuretics. Serum sickness occurs 7–10 days after exposure.",
+      options: {
+        yes: "Hypersensitivity Vasculitis Workup",
+        no: "Idiopathic Cutaneous Vasculitis"
+      }
+    },
+    "Hypersensitivity Vasculitis Workup": {
+      text: "Discontinue offending agent. Supportive care with antihistamines or oral steroids if severe.",
+      explanation: "DIAGNOSIS: Clinical diagnosis; biopsy shows leukocytoclastic vasculitis. Lesions typically resolve within weeks of stopping the trigger.",
+      options: {
+        "Restart Algorithm": "start",
+        "Monitor for resolution": "exit"
+      }
+    },
+    "Idiopathic Cutaneous Vasculitis": {
+      text: "Perform limited workup: CBC, ESR, CRP, skin biopsy. Rule out cryoglobulinemia.",
+      explanation: "BIOPSY TIP: Early lesions (<48h old) show best histopathology. Chronic cases may require immunosuppressants.",
+      options: {
+        "Biopsy confirms vasculitis": "Treat Based on Severity",
+        "No vasculitis on biopsy": "Alternative Diagnosis"
+      }
+    },
+    "Treat Based on Severity": {
+      text: "Mild: Observation or NSAIDs. Severe: Oral steroids (e.g., prednisone 0.5–1 mg/kg/day).",
+      explanation: "CHRONIC CASES: Consider dapsone or colchicine for steroid-sparing effect.",
+      options: {
+        "Restart Algorithm": "start",
+        "Refer to Dermatology/Rheumatology if persistent": "exit"
+      }
+    },
+    "Alternative Diagnosis": {
+      text: "Consider non-vasculitic causes (e.g., thrombocytopenia, coagulopathy, trauma).",
+      explanation: "MIMICKERS: Pigmented purpuric dermatoses or capillaritis may resemble vasculitis but lack systemic involvement.",
+      options: {
+        "Restart Algorithm": "start",
+        "Tailor workup to clinical suspicion": "exit"
+      }
+    }
+  },
+  
+  
+  // Leg Ulcer Approach 
+  "Leg Ulcer": {
+    start: {
+      text: "Does the patient have signs of arterial insufficiency (rest pain, cool extremity, absent pulses)?",
+      explanation: "Arterial ulcers (5% of cases) are painful and worsen with elevation. RED FLAG: ABI <0.7 indicates critical limb ischemia requiring urgent vascular evaluation.",
+      options: {
+        yes: "Arterial Ulcer Workup",
+        no: "Venous or Other Causes"
+      }
+    },
+
+    // Arterial Pathway
+    "Arterial Ulcer Workup": {
+      text: "Perform Doppler ultrasound and calculate Ankle-Brachial Index (ABI).",
+      explanation: "KEY DIAGNOSTICS: ABI <0.9 suggests arterial disease; <0.4 indicates severe ischemia. CRITICAL: Pallor/eschar at ulcer base suggests tissue necrosis.",
+      options: {
+        "ABI <0.7": "Moderate-Severe Arterial Disease",
+        "ABI ≥0.7": "Mild Arterial Disease"
+      }
+    },
+    "Moderate-Severe Arterial Disease": {
+      text: "Refer to vascular surgery. Consider arteriography for revascularization.",
+      explanation: "ACTION: Avoid compression therapy (worsens ischemia). Optimize cardiovascular risk factors (smoking cessation, statins, antiplatelets).",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Revascularization": "exit"
+      }
+    },
+    "Mild Arterial Disease": {
+      text: "Initiate conservative management: wound care, pain control, and risk factor modification.",
+      explanation: "CAUTION: Debridement may be harmful if perfusion is borderline. Use hydrogel dressings for dry ulcers.",
+      options: {
+        "Restart Algorithm": "start",
+        "Monitor for Progression": "exit"
+      }
+    },
+
+    // Venous Pathway
+    "Venous or Other Causes": {
+      text: "Does the patient have venous stasis signs (edema, varicosities, hemosiderin deposition)?",
+      explanation: "Venous ulcers (90% of cases) are painless and typically occur near the medial malleolus. Brown pigmentation = chronic venous hypertension.",
+      options: {
+        yes: "Venous Ulcer Management",
+        no: "Neurotrophic or Other Etiologies"
+      }
+    },
+    "Venous Ulcer Management": {
+      text: "Start compression therapy (e.g., multilayer bandaging) if ABI >0.8.",
+      explanation: "GOLD STANDARD: Compression improves healing by 60%. CONTRAINDICATION: ABI <0.8 (risk of arterial compromise).",
+      options: {
+        "Infection suspected": "Infection Workup",
+        "No infection": "Continue Compression + Wound Care"
+      }
+    },
+    "Infection Workup": {
+      text: "Culture ulcer exudate. Start empiric antibiotics if cellulitis present (e.g., cephalexin).",
+      explanation: "WARNING: MRSA coverage (e.g., doxycycline) may be needed in high-risk populations. Avoid silver dressings in venous ulcers (delays healing).",
+      options: {
+        "Restart Algorithm": "start",
+        "Treat Infection": "exit"
+      }
+    },
+    "Continue Compression + Wound Care": {
+      text: "Use moist dressings (e.g., hydrocolloids) and elevate legs when possible.",
+      explanation: "ADJUNCT THERAPY: Pentoxifylline (400mg TID) may enhance healing in refractory cases.",
+      options: {
+        "Restart Algorithm": "start",
+        "Refer if Non-Healing": "exit"
+      }
+    },
+
+    // Neurotrophic Pathway
+    "Neurotrophic or Other Etiologies": {
+      text: "Assess for neuropathy (e.g., diabetes) or pressure/trauma history.",
+      explanation: "NEUROTROPHIC CLUES: Painless ulcer on weight-bearing area (e.g., plantar foot) + loss of sensation. Check monofilament test for diabetes.",
+      options: {
+        "Neuropathy present": "Diabetic/Neurotrophic Ulcer",
+        "No neuropathy": "Rare Causes Evaluation"
+      }
+    },
+    "Diabetic/Neurotrophic Ulcer": {
+      text: "Offload pressure (e.g., total contact cast). Optimize glucose control.",
+      explanation: "CRITICAL: Debride necrotic tissue to expose granulation bed. Screen for osteomyelitis if bone is exposed (probe-to-bone test or MRI).",
+      options: {
+        "Infection suspected": "Osteomyelitis Workup",
+        "No infection": "Standard Wound Care"
+      }
+    },
+    "Osteomyelitis Workup": {
+      text: "Order MRI or bone scan. Start antibiotics (e.g., 6 weeks of culture-directed therapy).",
+      explanation: "SURGICAL NOTE: Partial amputation may be needed for non-salvageable toes.",
+      options: {
+        "Restart Algorithm": "start",
+        "Manage Osteomyelitis": "exit"
+      }
+    },
+    "Standard Wound Care": {
+      text: "Use enzymatic debridement (e.g., collagenase) or autolytic dressings.",
+      explanation: "PREVENTION: Custom orthotics for recurrent ulcers. Annual foot exams in diabetics.",
+      options: {
+        "Restart Algorithm": "start",
+        "Monitor Healing": "exit"
+      }
+    },
+
+    // Rare Causes Pathway
+    "Rare Causes Evaluation": {
+      text: "Consider pyoderma gangrenosum, malignancy, or vasculitis if ulcer is atypical.",
+      explanation: "RED FLAGS: Violaceous undermined edges (pyoderma), rapid growth (squamous cell carcinoma), or systemic symptoms (vasculitis).",
+      options: {
+        "Pyoderma suspected": "Pyoderma Gangrenosum Workup",
+        "Malignancy suspected": "Biopsy for Neoplasia",
+        "Vasculitis suspected": "Autoimmune Workup"
+      }
+    },
+    "Pyoderma Gangrenosum Workup": {
+      text: "Biopsy ulcer edge (pathergy). Treat with high-dose steroids (e.g., prednisone 1mg/kg/day).",
+      explanation: "ASSOCIATIONS: 50% have IBD or hematologic malignancy. Avoid surgery (worsens pathergy).",
+      options: {
+        "Restart Algorithm": "start",
+        "Refer to Rheumatology": "exit"
+      }
+    },
+    "Biopsy for Neoplasia": {
+      text: "Perform punch biopsy of ulcer margin (include normal skin).",
+      explanation: "COMMON TUMORS: SCC (indurated edges), BCC (pearly borders), or melanoma (irregular pigment).",
+      options: {
+        "Restart Algorithm": "start",
+        "Oncology Referral if Positive": "exit"
+      }
+    },
+    "Autoimmune Workup": {
+      text: "Check ANCA, RF, cryoglobulins. Refer to rheumatology if positive.",
+      explanation: "VASCULITIS MIMICKERS: Livedo reticularis (SLE), digital ischemia (scleroderma).",
+      options: {
+        "Restart Algorithm": "start",
+        "Immunosuppression if Confirmed": "exit"
+      }
+    },
+
+    // Traumatic Pathway
+    "Traumatic Ulcer": {
+      text: "Assess for self-harm or external trauma (e.g., burns, pressure).",
+      explanation: "CLUES: Bizarre shape + minimal inflammation suggests factitial. Document psychosocial history.",
+      options: {
+        "Self-induced suspected": "Psychiatry Referral",
+        "External trauma confirmed": "Wound Care + Prevention"
+      }
+    },
+    "Psychiatry Referral": {
+      text: "Involve mental health services. Use occlusive dressings to deter manipulation.",
+      explanation: "ETHICAL NOTE: Maintain empathy; factitial ulcers often stem from underlying trauma or personality disorders.",
+      options: {
+        "Restart Algorithm": "start",
+        "Multidisciplinary Approach": "exit"
+      }
+    },
+    "Wound Care + Prevention": {
+      text: "Clean with saline, apply non-adherent dressings, and educate on prevention.",
+      explanation: "FOR PRESSURE ULCERS: Use foam dressings and reposition every 2 hours.",
+      options: {
+        "Restart Algorithm": "start",
+        "Monitor for Healing": "exit"
+      }
+    }
+  }
+}; 
+
+
+  
+
+    let currentSymptom = null;
+    let currentQuestion = "start";
+
+    function playClick() {
+      const sound = document.getElementById("click-sound");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+      }
+    }
+
+    function startSymptom(symptom) {
+      currentSymptom = symptom;
+      currentQuestion = "start";
+      document.getElementById("symptom-title").textContent = symptom;
+      showQuestion();
+
+      document.getElementById("main-page").style.display = "none";
+      document.getElementById("question-page").style.display = "block";
+      document.getElementById("headline").style.display = "none";
+      document.getElementById("subheadline").style.display = "none";
+    }
+
+    // NEW/MODIFIED: This function is updated to show images.
+    function showQuestion() {
+      const symptomQuestions = questions[currentSymptom];
+      if (!symptomQuestions || !symptomQuestions[currentQuestion]) {
+        alert("Invalid symptom or question flow.");
+        return;
+      }
+
+      const questionData = symptomQuestions[currentQuestion];
+      const imageContainer = document.getElementById("question-image-container");
+      
+      // Clear previous image
+      imageContainer.innerHTML = "";
+
+      // If an image path exists, create and display the image
+      if (questionData.image) {
+        const img = document.createElement("img");
+        img.src = questionData.image;
+        img.alt = questionData.text; // for accessibility
+        img.className = "question-image";
+        imageContainer.appendChild(img);
+      }
+
+      document.getElementById("question").textContent = questionData.text;
+      document.getElementById("footer").textContent = questionData.explanation || "No explanation available.";
+
+      const buttons = Object.keys(questionData.options)
+        .map(option =>
+          `<button class='option-button' onclick="playClick(); nextQuestion('${option}')">${option}</button>`)
+        .join("");
+      document.querySelector(".button-container").innerHTML = buttons;
+    }
+
+    function nextQuestion(answer) {
+      const symptomQuestions = questions[currentSymptom];
+      const current = symptomQuestions[currentQuestion];
+      if (!current || !current.options[answer]) {
+        alert("Invalid choice.");
+        return;
+      }
+
+      const next = current.options[answer];
+      // Check if the next step is another question or a final diagnosis
+      if (symptomQuestions[next] && symptomQuestions[next].options) {
+          currentQuestion = next;
+          showQuestion();
+      } else {
+          // This handles both terminal nodes that are defined as full objects
+          // and those that are simple strings (your original implementation)
+          if (symptomQuestions[next]) {
+              currentQuestion = next;
+              showQuestion(); // This will display the final diagnosis with its image
+          } else {
+              // This is a fallback for legacy string-only terminals
+              document.getElementById("question").textContent = next;
+              document.getElementById("footer").textContent = "End of diagnostic path.";
+              document.querySelector(".button-container").innerHTML =
+                `<button class='option-button' onclick="playClick(); restart()">Restart</button>`;
+              document.getElementById("question-image-container").innerHTML = ""; // Clear image
+          }
+      }
+    }
+
+
+    function restart() {
+      document.getElementById("main-page").style.display = "flex";
+      document.getElementById("question-page").style.display = "none";
+      document.getElementById("headline").style.display = "block";
+      document.getElementById("subheadline").style.display = "block";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      sidebar.classList.toggle("active");
+      overlay.style.display = sidebar.classList.contains("active") ? "block" : "none";
+    }
+
+    document.addEventListener("click", function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const toggleBtn = document.querySelector(".toggle-button");
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnToggle = toggleBtn.contains(event.target);
+      if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains("active")) {
+        toggleSidebar();
+      }
+    });
+
+    let startX = 0;
+    document.addEventListener("touchstart", function(e) {
+      if (e.touches.length === 1) { startX = e.touches[0].clientX; }
+    });
+    document.addEventListener("touchend", function(e) {
+      const sidebar = document.getElementById("sidebar");
+      const diff = e.changedTouches[0].clientX - startX;
+      if (diff > 50 && sidebar.classList.contains("active")) { toggleSidebar(); }
+    });
+
+    function goHome() {
+      window.location.href = "../index.html";
+    }
+
+    function navigateTo(page) {
+      window.location.href = page;
+      const loadingScreen = document.querySelector('.loading');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'flex';
+        setTimeout(() => { window.location.href = page; }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,2722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nephro & Urology Symptoms</title>
+  <link rel="stylesheet" href="../style/regional_style.css" type="text/css" media="all" />
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="nav-title">ALGOMED <span>NEPHRO & URO</span></div>
+  <button class="toggle-button" onclick="playClick(); toggleSidebar()">☰</button>
+</nav>
+
+<!-- Overlay for click outside -->
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <ul>
+      <li onclick="navigateTo('respiratory.html')">Respiratory</li>
+      <li onclick="navigateTo('cardiovascular.html')">Cardiovascular</li>
+      <li onclick="navigateTo('git.html')">Gastroenterology</li>
+      <li onclick="navigateTo('gynecology.html')">Gynecology</li>
+      <li onclick="navigateTo('hepatology.html')">Hepatology</li>
+      <li onclick="navigateTo('nephrology.html')">Nephrology</li>
+      <li onclick="navigateTo('obstetric.html')">Obstetric</li>
+      <li onclick="navigateTo('rheumatology.html')">Rheumatology</li>
+      <li onclick="navigateTo('hematology.html')">Hematology</li>
+      <li onclick="navigateTo('pediatric.html')">Pediatric</li>
+      <li onclick="navigateTo('ophthalmology.html')">Ophthalmology</li>
+      <li onclick="navigateTo('neurology.html')">Neurology</li>
+      <li onclick="navigateTo('dermatology.html')">Dermatology</li>
+      <li onclick="navigateTo('ent.html')">ENT</li>
+      <li onclick="navigateTo('psychiatric.html')">Psychiatric</li>
+      <li onclick="navigateTo('General.html')">General</li>
+    </ul>
+<button class="sidebar-about-button" onclick="navigateTo('../about.html')">About Us</button>
+  </aside>
+
+  <!-- Audio -->
+  <audio id="click-sound" src="../sounds/click_sound.wav" preload="auto"></audio>
+
+  <!-- Headlines Outside Container -->
+  <h3 id="headline">Select a Primary Symptom</h3>
+<p id="subheadline">Choose from the list below to begin diagnosis.</p>
+
+  <!-- Main Page -->
+  <div id="main-page" class="container">
+    <button class="symptom-button" onclick="playClick(); startSymptom('Scrotal Mass')">Scrotal Mass</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Acute Renal Failure')">Acute Renal Failure</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Proteinuria')">Proteinuria</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Hematuria')">Hematuria</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Renal Cysts and Masses')">Renal Cysts and Masses</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Urinary Retention')">Urinary Retention</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Urinary Incontinence')">Urinary Incontinence</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Benign Prostatic Hyperplasia (BPH)')">Benign Prostatic Hyperplasia (BPH)</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Renal Cysts and Masses')">Renal Cysts and Masses</button>
+    <button class="symptom-button" onclick="startSymptom('Metabolic Acidosis')">Metabolic Acidosis</button>
+    <button class="symptom-button" onclick="startSymptom('Hyponatremia')">Hyponatremia</button>
+    <button class="symptom-button" onclick="startSymptom('Hypernatremia')">Hypernatremia</button>
+    <button class="symptom-button" onclick="startSymptom('Hypokalemia')">Hypokalemia</button>
+    <button class="symptom-button" onclick="startSymptom('Hyperkalemia')">Hyperkalemia</button>
+    <button class="symptom-button" onclick="startSymptom('Hypomagnesemia')">Hypomagnesemia</button>
+    <button class="symptom-button" onclick="startSymptom('Hypermagnesemia')">Hypermagnesemia</button>
+    <button class="symptom-button" onclick="startSymptom('Hypophosphatemia')">Hypophosphatemia</button>
+    <button class="symptom-button" onclick="startSymptom('Chronic Dialysis Modality')">Chronic Dialysis Modality</button>
+    <button class="symptom-button" onclick="startSymptom('Transplant Evaluation')">Transplant Evaluation</button>
+    
+    
+  </div>
+
+  <!-- Question Page -->
+  <div id="question-page">
+  <div class="title" id="symptom-title">Symptom Diagnostic</div>
+  <div id="question-image-container"></div>
+  <div id="question" class="question"></div>
+  <div class="button-container"></div>
+  <div id="footer" class="footer"></div>
+</div>
+
+  <!-- Home Button -->
+  <button class="home-button" onclick="goHome()">
+  <img src="../bodyicons/home_button.png" alt="Home" class="home-icon">
+  <span class="sr-only">Home</span>
+</button>
+  
+  
+
+  <!-- Script -->
+  <script>
+ const questions = {
+  "Scrotal Mass": {
+    start: {
+      text: "Does the patient have a painful or painless scrotal mass?",
+      explanation: "Pain character helps narrow the differential diagnosis. RED FLAG: Acute pain suggests torsion or infection, requiring urgent evaluation.",
+      options: {
+        "Painful": "Painful Mass Evaluation",
+        "Painless": "Painless Mass Evaluation"
+      }
+    },
+
+    // Painful Mass Pathway
+    "Painful Mass Evaluation": {
+      text: "Assess for acute onset (<24h) or trauma history. Examine for testicular position, swelling, and erythema.",
+      explanation: "CRITICAL: High-riding testis with absent cremasteric reflex suggests torsion (surgical emergency). Epididymitis typically shows gradual onset with fever/dysuria.",
+      options: {
+        "Acute onset (<24h) + no trauma": "Suspect Torsion",
+        "Trauma history": "Evaluate for Testicular Rupture",
+        "Subacute/chronic pain": "Inflammatory/Infectious Workup"
+      }
+    },
+    "Suspect Torsion": {
+      text: "Immediate scrotal Doppler US. If US delayed/unavailable, proceed to surgical exploration.",
+      explanation: "ACTION: Time-sensitive (testicular salvage drops to <10% after 12h). Doppler shows absent/decreased flow in torsion vs. hyperemia in epididymitis.",
+      options: {
+        "Confirmed torsion": "Emergency Detorsion/Orchiopexy",
+        "No torsion": "Inflammatory/Infectious Workup"
+      }
+    },
+    "Emergency Detorsion/Orchiopexy": {
+      text: "Urology consult STAT. Manual detorsion may be attempted (rotate medially to laterally) while preparing for OR.",
+      explanation: "NOTE: Bilateral orchiopexy is standard due to contralateral risk. Salvage rate: 90% if <6h, 50% at 12h, <10% after 24h.",
+      options: {
+        "Restart Algorithm": "start",
+        "Post-op Follow-up": "exit"
+      }
+    },
+    "Evaluate for Testicular Rupture": {
+      text: "Perform scrotal US to assess tunica albuginea integrity. Palpate for discontinuity.",
+      explanation: "FINDINGS: Heterogeneous testicular parenchyma with disrupted tunica suggests rupture. Hematoceles may obscure exam.",
+      options: {
+        "Rupture confirmed": "Surgical Exploration/Repair",
+        "No rupture": "Symptomatic Management"
+      }
+    },
+    "Surgical Exploration/Repair": {
+      text: "Urgent urology consult for possible tunica repair or orchiectomy if non-viable.",
+      explanation: "CRITERIA: >50% parenchymal salvageability warrants repair. Post-op fertility assessment recommended.",
+      options: {
+        "Restart Algorithm": "start",
+        "Post-op Follow-up": "exit"
+      }
+    },
+    "Inflammatory/Infectious Workup": {
+      text: "Check urinalysis, urine culture, and STI testing (GC/chlamydia). Evaluate for epididymal tenderness.",
+      explanation: "KEY: Epididymitis shows epididymal > testicular pain. Prehn's sign (pain relief with elevation) is unreliable.",
+      options: {
+        "Epididymitis/orchitis": "Antibiotic Therapy",
+        "Non-infectious inflammation": "NSAIDs/Supportive Care",
+        "Unclear diagnosis": "Advanced Imaging"
+      }
+    },
+    "Antibiotic Therapy": {
+      text: "Treat based on age/risk: Ceftriaxone 250mg IM + doxycycline 100mg BID x10d (STI) or fluoroquinolone x10d (UTI).",
+      explanation: "NOTE: Add scrotal elevation, ice, NSAIDs. Hospitalize if septic or immunocompromised.",
+      options: {
+        "Restart Algorithm": "start",
+        "Treatment Failure": "Re-evaluate for Abscess"
+      }
+    },
+
+    // Painless Mass Pathway
+    "Painless Mass Evaluation": {
+      text: "Perform transillumination and palpate for consistency (solid vs. cystic). Check for reducibility (hernia).",
+      explanation: "CLUES: Non-transilluminating solid mass suggests tumor. 'Bag of worms' feel indicates varicocele. Reducible mass suggests hernia.",
+      options: {
+        "Solid mass": "Testicular Tumor Workup",
+        "Cystic + transilluminates": "Hydrocele/Spermatocele",
+        "Reducible mass": "Hernia Evaluation",
+        "Dilated cord veins": "Varicocele Assessment"
+      }
+    },
+    "Testicular Tumor Workup": {
+      text: "Order scrotal US (hypoechoic lesions suspicious) and tumor markers (AFP, hCG, LDH).",
+      explanation: "WARNING: Never perform transscrotal biopsy. Inguinal orchiectomy is diagnostic/therapeutic. 10% have reactive hydrocele obscuring exam.",
+      options: {
+        "US confirms mass": "Urology Referral",
+        "Normal US": "Re-evaluate for Epididymal Pathology"
+      }
+    },
+    "Urology Referral": {
+      text: "Urgent urology consult for radical orchiectomy. Staging with CT abdomen/pelvis and CXR.",
+      explanation: "PROGNOSIS: >95% cure for stage I seminoma. Markers post-orchiectomy guide further chemo/radiation.",
+      options: {
+        "Restart Algorithm": "start",
+        "Post-treatment Surveillance": "exit"
+      }
+    },
+    "Hydrocele/Spermatocele": {
+      text: "US if exam inadequate or concern for underlying tumor. Monitor unless symptomatic.",
+      explanation: "INTERVENTION: Aspiration risks infection/recurrence. Surgery (hydrocelectomy) only for discomfort or large size.",
+      options: {
+        "Symptomatic": "Surgical Referral",
+        "Asymptomatic": "Observation"
+      }
+    },
+    "Hernia Evaluation": {
+      text: "Assess for incarceration/strangulation (tenderness, vomiting). Consider CT if diagnosis unclear.",
+      explanation: "RED FLAG: Strangulated hernia requires emergent surgery. Elective repair recommended for symptomatic hernias.",
+      options: {
+        "Incarcerated/strangulated": "General Surgery STAT",
+        "Reducible": "Elective Repair Counseling"
+      }
+    },
+    "Varicocele Assessment": {
+      text: "Evaluate for infertility/pain. Semen analysis if fertility concerns. US if atypical features.",
+      explanation: "NOTE: Sudden right-sided varicocele warrants renal US to exclude IVC obstruction/renal tumor.",
+      options: {
+        "Symptomatic": "Urology Referral",
+        "Asymptomatic": "Observation"
+      }
+    },
+
+    // Shared Pathways
+    "Advanced Imaging": {
+      text: "MRI if US inconclusive (e.g., complex cystic lesions or retroperitoneal involvement suspected).",
+      explanation: "USEFUL FOR: Differentiating benign vs. malignant intratesticular lesions when US equivocal. Less operator-dependent than US.",
+      options: {
+        "Diagnosis confirmed": "Targeted Management",
+        "Still unclear": "Diagnostic Biopsy/Exploration"
+      }
+    },
+    "Diagnostic Biopsy/Exploration": {
+      text: "Inguinal approach only (never transscrotal). Frozen section guides intraoperative decisions.",
+      explanation: "RISK: Transscrotal biopsy disrupts lymphatic drainage, altering tumor staging.",
+      options: {
+        "Restart Algorithm": "start",
+        "Post-op Management": "exit"
+      }
+    }
+  },
+
+  
+  
+  
+  
+  
+    // Acute Renal Failure 
+  "Acute Renal Failure": {
+    start: {
+      text: "Does the patient present with elevated serum creatinine (>0.5 mg/dL) and/or decreased urine output?",
+      explanation: "ARF is defined by a rapid decline in renal function. KEY: Differentiate between oliguric (<400 mL/day) and non-oliguric forms. RED FLAG: Anuria suggests complete obstruction or severe ATN/RPGN.",
+      options: {
+        yes: "Initial Evaluation",
+        no: "Reassess for alternative diagnoses"
+      }
+    },
+    
+    // Initial Evaluation Pathway
+    "Initial Evaluation": {
+      text: "Perform history, physical exam, and urinalysis with microscopy.",
+      explanation: "CRITICAL STEPS: Assess for obstruction (e.g., prostatism, flank pain), nephrotoxins (NSAIDs, aminoglycosides), or systemic diseases (rash, arthritis). Urine sediment findings guide etiology: muddy brown casts (ATN), dysmorphic RBCs (glomerulonephritis), WBC casts (AIN/pyelonephritis).",
+      options: {
+        "Anuria present": "Evaluate Obstruction/Arterial Occlusion",
+        "Oliguria/normal output": "Assess Urine Sediment"
+      }
+    },
+    
+    // Obstruction/Arterial Occlusion Pathway
+    "Evaluate Obstruction/Arterial Occlusion": {
+      text: "Order renal ultrasound with Doppler and/or technetium perfusion scan.",
+      explanation: "OBSTRUCTION CLUES: Hydronephrosis on US. ARTERIAL OCCLUSION: Absent flow on Doppler. ACTION: Relieve obstruction promptly (e.g., Foley catheter, nephrostomy) or revascularize if ischemic.",
+      options: {
+        "Obstruction confirmed": "Relieve Obstruction",
+        "Arterial occlusion": "Revascularization Consult",
+        "No obstruction/occlusion": "Assess Urine Sediment"
+      }
+    },
+    "Relieve Obstruction": {
+      text: "Place Foley catheter (bladder outlet) or nephrostomy (ureteral obstruction).",
+      explanation: "POST-OBSTRUCTION DIURESIS: Monitor electrolytes closely. WARNING: May take days for creatinine to normalize.",
+      options: {
+        "Recheck renal function": "Monitor Recovery"
+      }
+    },
+    "Revascularization Consult": {
+      text: "Urgent vascular surgery/interventional radiology consult for arterial thrombosis.",
+      explanation: "TIME-SENSITIVE: Delayed revascularization increases irreversible cortical necrosis risk.",
+      options: {
+        "Post-revascularization": "Monitor Recovery"
+      }
+    },
+    
+    // Urine Sediment Pathway
+    "Assess Urine Sediment": {
+      text: "Classify findings: Bland, ATN, glomerulonephritis, or AIN/pyelonephritis.",
+      explanation: "SEDIMENT PATTERNS: Prerenal (hyaline casts), ATN (muddy brown casts), glomerulonephritis (dysmorphic RBCs/RBC casts), AIN (WBC casts).",
+      options: {
+        "Bland/hyaline casts": "Prerenal Evaluation",
+        "Muddy brown casts": "ATN Evaluation",
+        "Dysmorphic RBCs/RBC casts": "Glomerulonephritis Workup",
+        "WBC casts/pyuria": "AIN/Pyelonephritis Workup"
+      }
+    },
+    
+    // Prerenal Pathway
+    "Prerenal Evaluation": {
+      text: "Check UOsm >500 mOsm/kg, UNa <20 mEq/L, FeNa <1% (or FeUrea <35% if on diuretics).",
+      explanation: "PRERENAL LABS: High UOsm/low UNa reflect intact tubular function. CAUTION: FeNa may be <1% in early ATN (e.g., contrast, rhabdo).",
+      options: {
+        "Prerenal labs confirmed": "Volume Resuscitation",
+        "ATN labs (UOsm <350, UNa >40)": "ATN Evaluation"
+      }
+    },
+    "Volume Resuscitation": {
+      text: "Restore intravascular volume with IV fluids (NS or LR). Monitor response in 24-72h.",
+      explanation: "FAILURE TO IMPROVE: Suggests progressing to ATN. NOTE: Cardiogenic shock may require inotropes/afterload reduction.",
+      options: {
+        "Improved": "Monitor Recovery",
+        "No improvement": "ATN Evaluation"
+      }
+    },
+    
+    // ATN Pathway
+    "ATN Evaluation": {
+      text: "Identify cause: Ischemia (prolonged hypotension), nephrotoxins (aminoglycosides, contrast), or pigments (rhabdo/hemolysis).",
+      explanation: "KEY TESTS: CK/haptoglobin for rhabdo/hemolysis; uric acid/oxalate crystals for tumor lysis/ethylene glycol. SUPPORTIVE CARE: No proven therapies; RRT if refractory volume/electrolyte issues.",
+      options: {
+        "Rhabdo/hemolysis suspected": "Check CK/Haptoglobin",
+        "Toxin exposure": "Discontinue Toxin",
+        "Ischemic ATN": "Optimize Perfusion"
+      }
+    },
+    "Check CK/Haptoglobin": {
+      text: "If CK >5000 U/L or haptoglobin low, treat rhabdo with aggressive IV fluids +/- bicarbonate.",
+      explanation: "RHABDO PROTOCOL: Target urine output 200-300 mL/h. Alkalinization controversial (use if pH <7.0).",
+      options: {
+        "Stabilized": "Monitor Recovery"
+      }
+    },
+    "Discontinue Toxin": {
+      text: "Stop nephrotoxins (e.g., NSAIDs, aminoglycosides). For contrast, ensure hydration.",
+      explanation: "PREVENTION: Use iso-osmolar contrast, acetylcysteine (debatable efficacy), or bicarbonate in high-risk patients.",
+      options: {
+        "Supportive care": "Monitor Recovery"
+      }
+    },
+    "Optimize Perfusion": {
+      text: "Maintain euvolemia and MAP >65 mmHg. Avoid further insults.",
+      explanation: "CAUTION: Overdiuresis worsens ATN. Vasopressors may be needed in shock.",
+      options: {
+        "Stabilized": "Monitor Recovery"
+      }
+    },
+    
+    // Glomerulonephritis Pathway
+    "Glomerulonephritis Workup": {
+      text: "Order serologies: Complement (C3/C4), ANA, ANCA, anti-GBM, hepatitis serologies.",
+      explanation: "URGENCY: RPGN (e.g., anti-GBM, ANCA+) requires immediate immunosuppression. NOTE: Low C3/C4 suggests lupus/MPGN; anti-GBM indicates Goodpasture’s.",
+      options: {
+        "Serologies positive": "Renal Biopsy/Immunosuppression",
+        "Serologies negative": "Consider Biopsy"
+      }
+    },
+    "Renal Biopsy/Immunosuppression": {
+      text: "Proceed with biopsy if diagnosis unclear. Start steroids +/- cyclophosphamide/plasmapheresis for RPGN.",
+      explanation: "EMERGENCIES: Anti-GBM disease requires plasmapheresis. ANCA vasculitis uses cyclophosphamide/rituximab.",
+      options: {
+        "Biopsy confirmed": "Disease-Specific Therapy"
+      }
+    },
+    
+    // AIN/Pyelonephritis Pathway
+    "AIN/Pyelonephritis Workup": {
+      text: "Check urine culture, medication list, and eosinophils (for AIN).",
+      explanation: "AIN TRIAD: Fever, rash, eosinophilia (but <10% have all). DRUG CULPRITS: PPIs, antibiotics (e.g., penicillins), NSAIDs.",
+      options: {
+        "Pyelonephritis confirmed": "Culture-Directed Antibiotics",
+        "AIN suspected": "Discontinue Offending Drug"
+      }
+    },
+    "Culture-Directed Antibiotics": {
+      text: "Treat with IV antibiotics (e.g., ceftriaxone for E. coli) based on sensitivities.",
+      explanation: "SEVERE CASES: Single kidney or transplant patients may need prolonged therapy.",
+      options: {
+        "Resolved": "Monitor Recovery"
+      }
+    },
+    "Discontinue Offending Drug": {
+      text: "Stop suspected drug. Consider biopsy if no improvement in 5-7 days.",
+      explanation: "STEROIDS: Prednisone 1 mg/kg/day if no improvement after drug cessation (biopsy-confirmed AIN preferred).",
+      options: {
+        "Improved": "Monitor Recovery",
+        "No improvement": "Renal Biopsy"
+      }
+    },
+    
+    // Common Terminal Pathways
+    "Monitor Recovery": {
+      text: "Track creatinine, electrolytes, and urine output. Consider RRT if worsening.",
+      explanation: "RRT INDICATIONS: Refractory hyperkalemia, acidosis, volume overload, or uremic symptoms. MODALITIES: Intermittent HD vs. CRRT for instability.",
+      options: {
+        "Recovered": "exit",
+        "Persistent ARF": "Re-evaluate Etiology"
+      }
+    },
+    "Re-evaluate Etiology": {
+      text: "Repeat history, labs, and imaging. Consider biopsy if unclear.",
+      explanation: "MIMICKERS: Atheroemboli (e.g., post-cath), myeloma (check SPEP/UPEP), or chronic disease (small kidneys on US).",
+      options: {
+        "New findings": "Redirect to Appropriate Pathway",
+        "No new findings": "Nephrology Consult"
+      }
+    }
+  },
+  
+  
+  
+
+
+  // Proteinuria
+  "Proteinuria": {
+    start: {
+      text: "Is the urine dipstick positive for protein (trace to 4+)?",
+      explanation: "Dipstick detects albumin but may miss low molecular weight proteins (e.g., Bence Jones). FALSE POSITIVES: Alkaline/concentrated urine, hematuria, contaminants (pus/semen). FALSE NEGATIVES: Dilute urine, non-albumin proteins.",
+      options: {
+        yes: "Confirm Persistent Proteinuria",
+        no: {
+          text: "Consider microalbuminuria (diabetics) or SSA test (paraproteinemia suspicion).",
+          explanation: "MICROALBUMINURIA: Screen diabetics with urine albumin:creatinine ratio (UACR). SSA TEST: Detects light chains if myeloma suspected.",
+          options: {
+            "Diabetic/UACR >30 mg/g": "Quantify Proteinuria",
+            "Non-diabetic/low suspicion": "Reassess clinically"
+          }
+        }
+      }
+    },
+    
+    // Confirm Persistent Proteinuria Pathway
+    "Confirm Persistent Proteinuria": {
+      text: "Repeat dipstick and assess for transient causes (fever, exercise, dehydration).",
+      explanation: "TRANSIENT PROTEINURIA: Resolves with addressing triggers (e.g., hydration). PERSISTENT: Requires quantification.",
+      options: {
+        "Transient cause identified": "Treat Cause/Recheck",
+        "Persistent positive": "Quantify Proteinuria"
+      }
+    },
+    "Treat Cause/Recheck": {
+      text: "Address reversible causes (hydration, treat fever). Recheck dipstick in 1-2 weeks.",
+      explanation: "ORTHOSTATIC PROTEINURIA: Confirm with split urine collections (daytime vs. overnight). BENIGN if <2 g/day and normal renal function.",
+      options: {
+        "Resolved": "exit",
+        "Persistent": "Quantify Proteinuria"
+      }
+    },
+    
+    // Quantify Proteinuria Pathway
+    "Quantify Proteinuria": {
+      text: "Obtain urine protein:creatinine ratio (PCR) or 24-hour urine collection.",
+      explanation: "PCR CORRELATION: ~1 g/day if PCR = 1.0. 24-HOUR GOLD STANDARD: Ensure adequate collection (15-25 mg/kg/day creatinine).",
+      options: {
+        "<300 mg/day (non-diabetic)": "Monitor",
+        "≥300 mg/day": "Evaluate Significant Proteinuria",
+        "Nephrotic-range (≥3.5 g/day)": "Nephrotic Syndrome Workup"
+      }
+    },
+    "Monitor": {
+      text: "Repeat testing in 6 months if asymptomatic and renal function normal.",
+      explanation: "WARNING: Isolated proteinuria may progress. Annual screening recommended for diabetics/hypertensives.",
+      options: {
+        "Stable": "Continue Monitoring",
+        "Worsening": "Evaluate Significant Proteinuria"
+      }
+    },
+    
+    // Significant Proteinuria Pathway (300 mg/day - 3.5 g/day)
+    "Evaluate Significant Proteinuria": {
+      text: "Perform: History (drugs, systemic symptoms), physical exam, urinalysis, renal function tests, renal ultrasound.",
+      explanation: "KEY CLUES: Hematuria (glomerulonephritis), rash/arthralgias (lupus), large kidneys (amyloidosis/HIV). DIABETICS: Fundoscopy for retinopathy.",
+      options: {
+        "Hematuria/Renal insufficiency": "Nephrology Referral",
+        "No hematuria/normal function": "Assess for Secondary Causes"
+      }
+    },
+    "Assess for Secondary Causes": {
+      text: "Check: CBC, electrolytes, glucose, ANA, complement, hepatitis/HIV serologies, SPEP/UPEP if >50 years.",
+      explanation: "SECONDARY CAUSES: Diabetes, autoimmune (lupus), infections (HBV/HCV), drugs (NSAIDs), myeloma (SPEP/UPEP).",
+      options: {
+        "Secondary cause identified": "Treat Underlying Disease",
+        "No cause found": "Consider Biopsy"
+      }
+    },
+    "Treat Underlying Disease": {
+      text: "e.g., Optimize glucose (diabetes), immunosuppressants (lupus), antivirals (hepatitis).",
+      explanation: "DRUG-INDUCED: Discontinue culprit (e.g., NSAIDs). MONITOR: Proteinuria may take months to improve.",
+      options: {
+        "Improved": "Monitor",
+        "No improvement": "Nephrology Referral"
+      }
+    },
+    
+    // Nephrotic Syndrome Pathway (≥3.5 g/day)
+    "Nephrotic Syndrome Workup": {
+      text: "Confirm nephrotic syndrome: Proteinuria ≥3.5 g/day + hypoalbuminemia (<3 g/dL) + edema +/- hyperlipidemia.",
+      explanation: "PRIMARY VS. SECONDARY: Minimal-change (children) vs. membranous (adults). SECONDARY: Diabetes, amyloidosis, lupus.",
+      options: {
+        "Pediatric patient": "Minimal-Change Likely",
+        "Adult patient": "Evaluate for Membranous/FSGS"
+      }
+    },
+    "Minimal-Change Likely": {
+      text: "Empiric steroids (prednisone 1 mg/kg/day) if no contraindications. Biopsy if atypical.",
+      explanation: "RESPONSE: >90% improve within 8 weeks. RESISTANCE: Consider FSGS (biopsy needed).",
+      options: {
+        "Responder": "Taper Steroids",
+        "Non-responder": "Renal Biopsy"
+      }
+    },
+    "Evaluate for Membranous/FSGS": {
+      text: "Check PLA2R antibodies (membranous), HIV/hepatitis serologies, SPEP/UPEP (amyloid/myeloma).",
+      explanation: "RACIAL VARIATION: FSGS more common in Blacks. BIOPSY: Needed for definitive diagnosis.",
+      options: {
+        "PLA2R+ or high suspicion": "Immunosuppression",
+        "Unclear etiology": "Renal Biopsy"
+      }
+    },
+    "Immunosuppression": {
+      text: "Membranous: Rituximab/cyclophosphamide + steroids. FSGS: ACEi + steroids +/- cyclosporine.",
+      explanation: "GOAL: Reduce proteinuria by >50%. WARN: Monitor for infections (rituximab), nephrotoxicity (cyclosporine).",
+      options: {
+        "Stabilized": "Monitor",
+        "Progression": "Biopsy/Adjust Therapy"
+      }
+    },
+    
+    // Common Terminal Pathways
+    "Nephrology Referral": {
+      text: "Urgent if RPGN (rapidly rising creatinine), hematuria, or systemic disease.",
+      explanation: "BIOPSY INDICATIONS: Hematuria + proteinuria, unexplained renal failure, nephrotic syndrome.",
+      options: {
+        "Biopsy confirmed": "Disease-Specific Therapy",
+        "No biopsy": "Supportive Care"
+      }
+    },
+    "Supportive Care": {
+      text: "ACEi/ARB (reduce proteinuria), statins (hyperlipidemia), diuretics (edema), low-salt diet.",
+      explanation: "TARGETS: BP <130/80, LDL <100 mg/dL. AVOID: NSAIDs, nephrotoxins.",
+      options: {
+        "Stable": "Annual Monitoring",
+        "Worsening": "Re-evaluate"
+      }
+    }
+  },
+
+  
+  
+  
+  // Hematuria
+  "Hematuria": {
+    start: {
+      text: "Is hematuria detected on dipstick or microscopic examination?",
+      explanation: "Dipstick detects heme (RBCs, hemoglobin, myoglobin). Confirm with microscopy for RBCs. FALSE POSITIVES: Myoglobinuria, hemoglobinuria, contaminants. FALSE NEGATIVES: Dilute urine.",
+      options: {
+        yes: "Confirm Persistent Hematuria",
+        no: "Reassess for pseudohematuria (e.g., food dyes, medications)"
+      }
+    },
+
+    // Initial Confirmation Pathway
+    "Confirm Persistent Hematuria": {
+      text: "Repeat urinalysis with microscopy to confirm ≥3 RBCs/hpf in 2 of 3 samples.",
+      explanation: "TRANSIENT CAUSES: Exercise, menstruation, recent intercourse. PERSISTENT: Requires further evaluation if no transient cause.",
+      options: {
+        "Transient cause identified": "Monitor for Resolution",
+        "Persistent hematuria": "Assess for Infection"
+      }
+    },
+    "Monitor for Resolution": {
+      text: "Recheck urinalysis after resolving transient cause (e.g., post-exercise).",
+      explanation: "BENIGN IF RESOLVES: No further workup needed if hematuria clears.",
+      options: {
+        "Resolved": "exit",
+        "Persistent": "Assess for Infection"
+      }
+    },
+
+    // Infection Evaluation Pathway
+    "Assess for Infection": {
+      text: "Check for pyuria/bacteriuria; send urine culture if positive.",
+      explanation: "UTI MANAGEMENT: Treat infection and recheck urinalysis post-treatment. NOTE: Hematuria may persist if underlying pathology exists.",
+      options: {
+        "Infection confirmed": "Treat and Re-evaluate",
+        "No infection": "Evaluate Proteinuria/Renal Function"
+      }
+    },
+    "Treat and Re-evaluate": {
+      text: "Complete antibiotic course and repeat urinalysis post-treatment.",
+      explanation: "RED FLAG: Persistent hematuria after UTI treatment warrants full workup.",
+      options: {
+        "Resolved": "exit",
+        "Persistent": "Evaluate Proteinuria/RenalFunction"
+      }
+    },
+
+    // Proteinuria/Renal Function Pathway
+    "Evaluate Proteinuria/Renal Function": {
+      text: "Check urine PCR (protein:creatinine ratio), serum creatinine, and CBC/coagulation tests.",
+      explanation: "GLOMERULAR CLUES: PCR >0.3, dysmorphic RBCs, or RBC casts. NON-GLOMERULAR: Normal PCR, isomorphic RBCs.",
+      options: {
+        "PCR >0.3 or elevated creatinine": "Glomerular Workup",
+        "Normal PCR/creatinine": "Non-Glomerular Evaluation"
+      }
+    },
+
+    // Glomerular Pathway
+    "Glomerular Workup": {
+      text: "Assess urine sediment for dysmorphic RBCs/RBC casts. Order serologies: ANA, ANCA, anti-GBM, C3/C4, hepatitis/HIV serologies.",
+      explanation: "URGENT CASES: RPGN (anti-GBM/ANCA+) requires immediate immunosuppression. IgA NEPHROPATHY: Most common in young adults with isolated hematuria.",
+      options: {
+        "RBC casts/dysmorphic RBCs": "Nephrology Referral",
+        "Isolated hematuria (no proteinuria/RF impairment)": "Monitor or Biopsy"
+      }
+    },
+    "Nephrology Referral": {
+      text: "Refer for renal biopsy if RPGN suspected (anti-GBM/ANCA+) or nephrotic-range proteinuria.",
+      explanation: "BIOPSY INDICATIONS: RPGN, unexplained CKD, or nephrotic syndrome. CONTRAINDICATIONS: Bleeding risk, solitary kidney.",
+      options: {
+        "Biopsy performed": "Disease-Specific Management"
+      }
+    },
+    "Monitor or Biopsy": {
+      text: "For isolated hematuria (e.g., thin basement membrane disease), monitor annually unless progression.",
+      explanation: "LOW-RISK: Thin basement membrane disease has excellent prognosis. HIGH-RISK: Alport’s syndrome (check family history, hearing loss).",
+      options: {
+        "Stable": "Annual Monitoring",
+        "Worsening": "Renal Biopsy"
+      }
+    },
+
+    // Non-Glomerular Pathway
+    "Non-Glomerular Evaluation": {
+      text: "Assess risk factors for malignancy (age >40, smoking, chemical exposure). Order CT urogram or renal ultrasound.",
+      explanation: "MALIGNANCY RISK: Highest in smokers >40yo. IMAGING: CT urogram (gold standard) or US if contraindicated. CYSTOSCOPY: Mandatory for high-risk patients.",
+      options: {
+        "High-risk patient (age >40, smoker)": "CT Urogram + Cystoscopy",
+        "Low-risk patient (age <40, no risk factors)": "Ultrasound + Monitoring"
+      }
+    },
+    "CT Urogram + Cystoscopy": {
+      text: "Perform CT urogram (non-contrast + contrast phases) and cystoscopy.",
+      explanation: "CT FINDINGS: Stones, masses, or urothelial thickening. CYSTOSCOPY: Detects bladder tumors (90% sensitivity). ACTION: Biopsy suspicious lesions.",
+      options: {
+        "Abnormal findings": "Specialty Referral (Urology/Nephrology)",
+        "Normal findings": "Monitor for Recurrence"
+      }
+    },
+    "Ultrasound + Monitoring": {
+      text: "Perform renal ultrasound. If normal, monitor with annual urinalysis.",
+      explanation: "LOW-RISK: <40yo with no risk factors rarely have malignancy. WARNING: Gross hematuria or new symptoms warrant CT/cystoscopy.",
+      options: {
+        "Stable": "Annual Monitoring",
+        "New symptoms": "CT Urogram + Cystoscopy"
+      }
+    },
+
+    // Terminal Pathways
+    "Disease-Specific Management": {
+      text: "Tailor therapy to diagnosis (e.g., immunosuppression for lupus nephritis, tumor resection for RCC).",
+      explanation: "RPGN: Pulse steroids + cyclophosphamide/rituximab. BLADDER CANCER: TURBT + intravesical therapy. STONES: Hydration + lithotripsy.",
+      options: {
+        "Treatment initiated": "Monitor Response",
+        "Refractory": "Second-Line Therapies"
+      }
+    },
+    "Monitor Response": {
+      text: "Track hematuria resolution, renal function, and malignancy surveillance if applicable.",
+      explanation: "GOALS: Stabilized creatinine, resolved hematuria. MALIGNANCY: Annual cystoscopy for high-grade bladder tumors.",
+      options: {
+        "Resolved": "Long-Term Follow-Up",
+        "Persistent": "Re-evaluate Diagnosis"
+      }
+    }
+  },
+  
+  
+  
+  // Renal Cysts and Masses
+  "Renal Cysts and Masses": {
+    start: {
+      text: "Does the patient have symptoms (hematuria, flank pain, palpable abdominal mass) or is the lesion incidental?",
+      explanation: "Symptomatic presentation (e.g., hematuria) requires urgent evaluation. Incidental findings are common on imaging (>50% in patients >50 years).",
+      options: {
+        "Symptomatic": "Symptomatic Evaluation",
+        "Incidental": "Incidental Lesion Evaluation"
+      }
+    },
+
+    // Symptomatic Pathway
+    "Symptomatic Evaluation": {
+      text: "Perform initial imaging (ultrasound or CT scan).",
+      explanation: "Ultrasound (US) sensitivity: 79% for masses >5mm. CT with contrast is gold standard (94% sensitivity). RED FLAG: CT is mandatory if US shows calcifications, septa, or mass <1cm.",
+      options: {
+        "Cyst detected": "Cyst Characterization",
+        "Solid mass detected": "Solid Mass Evaluation",
+        "Indeterminate lesion": "Advanced Imaging"
+      }
+    },
+
+    // Cyst Characterization Pathway
+    "Cyst Characterization": {
+      text: "Does the cyst meet benign criteria on US/CT?",
+      explanation: "BENIGN CRITERIA: (1) Spherical/oval, (2) No internal echoes (US)/homogeneous water attenuation (CT), (3) Thin smooth wall, (4) Posterior enhancement (US)/no contrast enhancement (CT).",
+      options: {
+        "Meets all criteria": "Simple Cyst Management",
+        "Does not meet criteria": "Suspicious Cyst Evaluation"
+      }
+    },
+    "Simple Cyst Management": {
+      text: "Asymptomatic simple cyst: No further action needed. Symptomatic: Consider CT with contrast.",
+      explanation: "NOTE: Simple cysts are benign (50% prevalence in >50 years). Symptomatic cysts may require drainage/sclerosis if causing pain.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Suspicious Cyst Evaluation": {
+      text: "CT/MRI for further characterization. Suspicious features: Septations, nodularity, wall thickening, or calcifications.",
+      explanation: "ACTION: Bosniak classification (I-IV) guides management. Bosniak III/IV cysts require surgical exploration (malignancy risk: 50-90%).",
+      options: {
+        "Bosniak I-II": "Periodic Imaging",
+        "Bosniak III-IV": "Surgical Consultation"
+      }
+    },
+    "Periodic Imaging": {
+      text: "Monitor with imaging (US/CT) every 6-12 months for stability.",
+      explanation: "WARNING: Enlarging lesions or new symptoms mandate reevaluation.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Surgical Consultation": {
+      text: "Refer to urology for partial/total nephrectomy.",
+      explanation: "NOTE: MRI is superior for indeterminate lesions but misses calcifications.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Solid Mass Pathway
+    "Solid Mass Evaluation": {
+      text: "Assess mass features on CT/MRI: Fat density? Enhancement pattern?",
+      explanation: "KEY DIAGNOSES: Angiomyolipoma (fat density, benign). Renal cell carcinoma (RCC) shows contrast enhancement. Lymphoma: Multiple hypoechoic masses.",
+      options: {
+        "Fat density present": "Angiomyolipoma Management",
+        "No fat density": "RCC Suspected",
+        "Multiple hypoechoic masses": "Lymphoma Workup"
+      }
+    },
+    "Angiomyolipoma Management": {
+      text: "If <4cm and asymptomatic: Monitor. If >4cm or symptomatic: Embolization/surgery.",
+      explanation: "RISK: Spontaneous hemorrhage increases with size. Tuberous sclerosis association (bilateral/multiple).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "RCC Suspected": {
+      text: "CT/MRI for staging. Labs: CBC, LFTs, calcium (paraneoplastic syndromes).",
+      explanation: "NOTE: 85% of solid masses are RCC. Metastasis workup: Chest CT, bone scan if symptomatic.",
+      options: {
+        "Localized disease": "Nephrectomy Evaluation",
+        "Metastatic disease": "Oncology Referral"
+      }
+    },
+    "Nephrectomy Evaluation": {
+      text: "Radical/partial nephrectomy for localized RCC.",
+      explanation: "CAUTION: Preserve renal function when possible (eGFR <60 increases cardiovascular risk).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Oncology Referral": {
+      text: "Systemic therapy (e.g., tyrosine kinase inhibitors, immunotherapy).",
+      explanation: "PROGNOSIS: Median survival 6-9 months with metastases.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Lymphoma Workup": {
+      text: "Lymph node biopsy, bone marrow aspiration, and systemic staging.",
+      explanation: "NOTE: Renal lymphoma is typically diffuse (hypoechoic on US) and responds to chemotherapy.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Incidental Lesion Pathway
+    "Incidental Lesion Evaluation": {
+      text: "Characterize lesion on initial imaging (US/CT).",
+      explanation: "PRIORITY: Exclude malignancy. Simple cysts require no follow-up if asymptomatic.",
+      options: {
+        "Simple cyst": "Simple Cyst Management",
+        "Complex cyst/solid mass": "Symptomatic Evaluation"
+      }
+    },
+
+    // Special Populations Pathway
+    "Advanced Imaging": {
+      text: "MRI for indeterminate lesions or contrast allergy. Consider biopsy if high suspicion for malignancy.",
+      explanation: "LIMITATION: MRI does not detect calcifications. Biopsy is avoided in cystic lesions (risk of seeding).",
+      options: {
+        "Benign features": "Periodic Imaging",
+        "Malignant features": "Surgical Consultation"
+      }
+    },
+
+    // Dialysis/Genetic Disorders Pathway
+    "Dialysis Patient Evaluation": {
+      text: "Screen for acquired cystic disease (US every 1-2 years after 3 years of dialysis).",
+      explanation: "RISK: 90% prevalence after 5-10 years of dialysis. Monitor for hemorrhage/malignancy.",
+      options: {
+        "Cysts present": "Acquired Cystic Disease Management",
+        "No cysts": "Continue Screening"
+      }
+    },
+    "Acquired Cystic Disease Management": {
+      text: "Monitor for hematuria/flank pain. Resolves post-transplant.",
+      explanation: "WARNING: 5x increased RCC risk in dialysis patients.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "ADPKD Evaluation": {
+      text: "Diagnose with US/CT using age-specific criteria: ≥2 cysts (age <30) or ≥4 cysts/kidney (age >60).",
+      explanation: "EXTRA-RENAL: Liver cysts (40%), cerebral aneurysms (10%). Genetic testing if uncertain.",
+      options: {
+        "Confirmed ADPKD": "ADPKD Management",
+        "Uncertain diagnosis": "Genetic Testing"
+      }
+    },
+    "ADPKD Management": {
+      text: "BP control (ACEi/ARB), pain management, and monitor for ESRD. Screen family members.",
+      explanation: "PROGNOSIS: 50% progress to ESRD by age 70.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  // Metabolic Acidosis 
+  "Metabolic Acidosis": {
+    start: {
+      text: "Is metabolic acidosis suspected (low HCO₃⁻, pH <7.40 on ABG, or clinical symptoms like hyperventilation)?",
+      explanation: "Initial suspicion arises from lab findings (HCO₃⁻ <20 mEq/L) or symptoms (e.g., Kussmaul breathing, hemodynamic instability). RED FLAG: pH <7.1 requires urgent intervention.",
+      options: {
+        "Yes": "Anion Gap Calculation",
+        "No": "Exit"
+      }
+    },
+
+    // Anion Gap Pathway
+    "Anion Gap Calculation": {
+      text: "Calculate anion gap (AG): AG = [Na⁺] - ([Cl⁻] + [HCO₃⁻]). Normal AG: 8–16 mEq/L.",
+      explanation: "KEY POINTS: AG >12 suggests high-AG acidosis (e.g., ketoacidosis, toxins). AG <12 suggests normal-AG (e.g., diarrhea, RTA). MUDPILES mnemonic for high-AG causes.",
+      options: {
+        "AG >12": "High Anion Gap Evaluation",
+        "AG ≤12": "Normal Anion Gap Evaluation"
+      }
+    },
+
+    // High Anion Gap Pathway
+    "High Anion Gap Evaluation": {
+      text: "Assess for high-AG causes (MUDPILES): Methanol, Uremia, DKA, Paraldehyde, INH/Iron, Lactic acidosis, Ethylene glycol, Salicylates.",
+      explanation: "CRITICAL: Calculate osmolar gap if toxin suspected (ethylene glycol/methanol). Δ:Δ ratio (AG change/HCO₃⁻ change) helps identify mixed disorders.",
+      options: {
+        "Toxin suspected (e.g., methanol/ethylene glycol)": "Toxin Workup",
+        "No toxin suspected": "High AG Non-Toxic Causes"
+      }
+    },
+    "Toxin Workup": {
+      text: "Check osmolar gap: Measured osmolality - Calculated osmolality (>10 suggests toxin). Order specific levels (salicylate, methanol, ethylene glycol).",
+      explanation: "ACTION: Ethanol blocks methanol/ethylene glycol metabolism. Administer fomepizole or ethanol ASAP if toxic alcohol ingestion.",
+      options: {
+        "Osmolar gap >10": "Toxin Management",
+        "Osmolar gap ≤10": "High AG Non-Toxic Causes"
+      }
+    },
+    "Toxin Management": {
+      text: "Immediate treatment: Fomepizole (preferred) or ethanol infusion. Hemodialysis for severe cases (pH <7.1, organ failure).",
+      explanation: "NOTE: Fomepizole dosing: 15 mg/kg IV load, then 10 mg/kg q12h. Dialysis clears toxic metabolites (formate, oxalate).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "High AG Non-Toxic Causes": {
+      text: "Evaluate for DKA, lactic acidosis, uremia, or starvation ketoacidosis. Check ketones, lactate, creatinine, glucose.",
+      explanation: "DKA: Glucose >250 mg/dL, ketonemia. Lactic acidosis: Lactate >4 mmol/L. Uremia: Cr >2.0 mg/dL with low GFR.",
+      options: {
+        "DKA": "DKA Management",
+        "Lactic acidosis": "Lactic Acidosis Workup",
+        "Uremia": "Uremia Management"
+      }
+    },
+    "DKA Management": {
+      text: "IV fluids (NS bolus), insulin drip (0.1 U/kg/hr), potassium repletion. Monitor glucose, anion gap, and electrolytes q2h.",
+      explanation: "CAUTION: Avoid rapid HCO₃⁻ correction (risk of cerebral edema). Transition to SC insulin when gap closes.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Lactic Acidosis Workup": {
+      text: "Classify as Type A (hypoxia) or Type B (non-hypoxic). Check for sepsis, shock, toxins (metformin), or seizures.",
+      explanation: "TYPE A: Treat underlying hypoxia (e.g., sepsis protocol). TYPE B: Discontinue offending drugs (e.g., metformin).",
+      options: {
+        "Type A (hypoxic)": "Treat Underlying Cause",
+        "Type B (non-hypoxic)": "Discontinue Toxins"
+      }
+    },
+    "Uremia Management": {
+      text: "Initiate hemodialysis for severe acidosis (pH <7.1) or uremic symptoms (encephalopathy, pericarditis).",
+      explanation: "NOTE: Dialysis corrects acidosis by removing uremic toxins and replenishing HCO₃⁻.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Normal Anion Gap Pathway
+    "Normal Anion Gap Evaluation": {
+      text: "Assess for causes: Diarrhea, RTA, ureteral diversion, or drugs (acetazolamide). Calculate urinary anion gap (UAG = UNa + UK - UCl).",
+      explanation: "UAG NEGATIVE: Extra-renal cause (e.g., diarrhea). UAG POSITIVE: Renal cause (e.g., RTA).",
+      options: {
+        "UAG negative": "Extra-Renal Cause",
+        "UAG positive": "Renal Tubular Acidosis Workup"
+      }
+    },
+    "Extra-Renal Cause": {
+      text: "Evaluate for diarrhea, ileostomy, or chloride-rich fluid loss. Replace HCO₃⁻ orally or IV if pH <7.1.",
+      explanation: "HCO₃⁻ deficit = (Desired HCO₃⁻ - Measured HCO₃⁻) × 0.5 × weight (kg). Oral NaHCO₃: 1–2 mEq/kg/day.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Renal Tubular Acidosis Workup": {
+      text: "Classify RTA: Distal (Type I), Proximal (Type II), or Type IV (hypoaldosteronism). Check urine pH, K⁺, aldosterone.",
+      explanation: "TYPE I: Urine pH >5.5 despite acidosis. TYPE II: Low HCO₃⁻ threshold. TYPE IV: Hyperkalemia + low aldosterone.",
+      options: {
+        "Type I (Distal)": "Distal RTA Management",
+        "Type II (Proximal)": "Proximal RTA Management",
+        "Type IV (Hypoaldosteronism)": "Type IV RTA Management"
+      }
+    },
+    "Distal RTA Management": {
+      text: "Treat with oral NaHCO₃ (1–3 mEq/kg/day) and potassium citrate if hypokalemic.",
+      explanation: "NOTE: Corrects nephrocalcinosis and prevents CKD progression.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Proximal RTA Management": {
+      text: "High-dose NaHCO₃ (10–15 mEq/kg/day), thiazides for refractory cases. Address Fanconi syndrome if present.",
+      explanation: "CAUTION: May require K⁺ supplementation due to bicarb-induced kaliuresis.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Type IV RTA Management": {
+      text: "Fludrocortisone for hypoaldosteronism. Loop diuretics or Kayexalate for hyperkalemia.",
+      explanation: "NOTE: Common in diabetes or CKD. Monitor K⁺ closely.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // General Treatment Pathway
+    "Severe Acidosis Management": {
+      text: "If pH <7.1: IV NaHCO₃ (1 mEq/kg, repeat as needed) and treat underlying cause.",
+      explanation: "CONTROVERSY: HCO₃⁻ use debated except in severe cases (risk of volume overload, hypocalcemia).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  // Hyponatremia
+  "Hyponatremia": {
+    start: {
+      text: "Is hyponatremia suspected (Na⁺ <135 mEq/L) or are symptoms present (headache, confusion, seizures)?",
+      explanation: "Initial suspicion arises from lab findings or neurological symptoms. RED FLAG: Acute onset (<48hr) or severe symptoms (seizures, coma) require urgent treatment.",
+      options: {
+        "Yes": "Assess Severity and Duration",
+        "No": "Exit"
+      }
+    },
+
+    // Severity and Duration Assessment
+    "Assess Severity and Duration": {
+      text: "Is the hyponatremia acute (<48hr) or chronic (>48hr)? Are symptoms present?",
+      explanation: "CRITICAL: Acute hyponatremia has higher risk of cerebral edema. Chronic hyponatremia risks osmotic demyelination if corrected too rapidly.",
+      options: {
+        "Acute/Symptomatic": "Emergency Treatment",
+        "Chronic/Asymptomatic": "Volume Status Assessment"
+      }
+    },
+
+    // Emergency Treatment Pathway
+    "Emergency Treatment": {
+      text: "For acute/symptomatic hyponatremia (seizures, coma): Administer 3% hypertonic saline (100mL bolus, repeat if needed). Target Na⁺ rise: 1-2 mEq/L/hr (max 10-12 mEq/24hr).",
+      explanation: "ACTION: Use central line if possible. Monitor Na⁺ q2-4h. STOP if symptoms improve or Na⁺ rises >10 mEq/24hr.",
+      options: {
+        "Symptoms improve": "Stabilization Phase",
+        "No improvement": "ICU Consultation"
+      }
+    },
+    "Stabilization Phase": {
+      text: "After initial correction: Switch to fluid restriction or oral salt tablets based on volume status.",
+      explanation: "CAUTION: Avoid overcorrection. If Na⁺ rises too fast, consider D5W or desmopressin.",
+      options: {
+        "Proceed to Volume Status Assessment": "Volume Status Assessment"
+      }
+    },
+    "ICU Consultation": {
+      text: "For refractory cases: Consult ICU for continuous monitoring and potential dialysis.",
+      explanation: "INDICATIONS: Severe symptoms persisting despite hypertonic saline, or renal failure.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Volume Status Assessment Pathway
+    "Volume Status Assessment": {
+      text: "Assess volume status: Hypovolemic, euvolemic, or hypervolemic? Check urine Na⁺ and osmolality.",
+      explanation: "CLUES: Hypovolemic (low urine Na⁺ <20, high urine osmolality). Euvolemic (urine Na⁺ >40, high osmolality suggests SIADH). Hypervolemic (edema, low urine Na⁺).",
+      options: {
+        "Hypovolemic": "Hypovolemic Management",
+        "Euvolemic": "Euvolemic Workup",
+        "Hypervolemic": "Hypervolemic Management"
+      }
+    },
+
+    // Hypovolemic Pathway
+    "Hypovolemic Management": {
+      text: "Identify cause: GI losses, diuretics, or third-spacing. Treat with isotonic saline (NS) to restore volume.",
+      explanation: "NOTE: Correct underlying cause (e.g., stop diuretics). Monitor for overcorrection.",
+      options: {
+        "Renal losses (urine Na⁺ >20)": "Adrenal Insufficiency Workup",
+        "Non-renal losses (urine Na⁺ <20)": "Fluid Repletion"
+      }
+    },
+    "Adrenal Insufficiency Workup": {
+      text: "Check cortisol/ACTH. Treat with hydrocortisone if adrenal insufficiency confirmed.",
+      explanation: "SIGNS: Hyperkalemia, hypoglycemia, hyperpigmentation.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Fluid Repletion": {
+      text: "Administer NS until euvolemic. Add KCl if hypokalemic.",
+      explanation: "CAUTION: Avoid rapid correction in chronic cases.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Euvolemic Pathway
+    "Euvolemic Workup": {
+      text: "Check urine osmolality and thyroid/renal function. Most common cause is SIADH.",
+      explanation: "SIADH CRITERIA: Urine osmolality >100 mOsm/kg, urine Na⁺ >40, normal thyroid/adrenal function.",
+      options: {
+        "Urine osmolality >100": "SIADH Management",
+        "Urine osmolality <100": "Psychogenic Polydipsia"
+      }
+    },
+    "SIADH Management": {
+      text: "1st line: Fluid restriction (800-1000mL/day). 2nd line: Demeclocycline (600-1200mg/day) or vaptans (tolvaptan 15-60mg/day).",
+      explanation: "WARNING: Vaptans require close Na⁺ monitoring (risk of rapid correction). Avoid in cirrhosis.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Psychogenic Polydipsia": {
+      text: "Water restriction + behavioral therapy. Rule out schizophrenia/bipolar disorder.",
+      explanation: "NOTE: Urine osmolality will be appropriately dilute (<100 mOsm/kg).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Hypervolemic Pathway
+    "Hypervolemic Management": {
+      text: "Identify cause: CHF, cirrhosis, or nephrotic syndrome. Treat with fluid/salt restriction + loop diuretics.",
+      explanation: "ACTION: Furosemide 40-80mg/day + Na⁺ restriction <2g/day. Address underlying disease.",
+      options: {
+        "CHF": "Optimize Heart Failure Therapy",
+        "Cirrhosis": "Hepatology Consultation",
+        "Nephrotic Syndrome": "Nephrology Consultation"
+      }
+    },
+    "Optimize Heart Failure Therapy": {
+      text: "Maximize ACEi/ARB, beta-blockers, MRA. Consider ultrafiltration if refractory.",
+      explanation: "GOAL: Euvolemia without worsening renal function.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Monitoring and Complications
+    "Overcorrection Management": {
+      text: "If Na⁺ rises >10 mEq/24hr: Administer D5W or desmopressin (1-2 mcg IV) to re-lower Na⁺.",
+      explanation: "EMERGENCY: Central pontine myelinolysis risk. Target Na⁺ decrease: 0.5 mEq/hr.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  // Hypernatremia
+  "Hypernatremia": {
+    start: {
+      text: "Is hypernatremia suspected (Na⁺ >145 mEq/L) or are symptoms present (thirst, confusion, seizures)?",
+      explanation: "Initial suspicion arises from lab findings or neurological symptoms. RED FLAG: Acute onset (<48hr) or severe symptoms (coma, seizures) require urgent treatment.",
+      options: {
+        "Yes": "Assess Severity and Duration",
+        "No": "Exit"
+      }
+    },
+
+    // Severity and Duration Assessment
+    "Assess Severity and Duration": {
+      text: "Is the hypernatremia acute (<48hr) or chronic (>48hr)? Are symptoms present?",
+      explanation: "CRITICAL: Acute hypernatremia has higher risk of cerebral dehydration. Chronic hypernatremia risks cerebral edema if corrected too rapidly.",
+      options: {
+        "Acute/Symptomatic": "Emergency Evaluation",
+        "Chronic/Asymptomatic": "Volume Status Assessment"
+      }
+    },
+
+    // Emergency Evaluation Pathway
+    "Emergency Evaluation": {
+      text: "For acute/symptomatic hypernatremia (seizures, coma): Check airway and stabilize. Begin IV fluids if hypovolemic.",
+      explanation: "ACTION: Use isotonic fluids first if hypovolemic. Avoid rapid correction (max 0.5 mEq/L/hr).",
+      options: {
+        "Hypovolemic": "Hypovolemic Management",
+        "Euvolemic/Hypervolemic": "Free Water Deficit Calculation"
+      }
+    },
+
+    // Volume Status Assessment Pathway
+    "Volume Status Assessment": {
+      text: "Assess volume status: Hypovolemic, euvolemic, or hypervolemic? Check urine osmolality and Na⁺.",
+      explanation: "CLUES: Hypovolemic (tachycardia, dry mucous membranes). Euvolemic (normal exam, DI likely). Hypervolemic (edema, iatrogenic Na⁺ overload).",
+      options: {
+        "Hypovolemic": "Hypovolemic Management",
+        "Euvolemic": "Diabetes Insipidus Workup",
+        "Hypervolemic": "Hypervolemic Management"
+      }
+    },
+
+    // Hypovolemic Pathway
+    "Hypovolemic Management": {
+      text: "Restore volume with isotonic saline first. Then switch to hypotonic fluids (0.45% saline or D5W) for free water replacement.",
+      explanation: "PRIORITY: Correct hypovolemia before addressing free water deficit. Monitor urine output.",
+      options: {
+        "Urine Na⁺ >20": "Renal Losses Evaluation",
+        "Urine Na⁺ <20": "Extrarenal Losses Evaluation"
+      }
+    },
+    "Renal Losses Evaluation": {
+      text: "Evaluate for diuretics, osmotic diuresis, or renal disease. Replace ongoing losses with appropriate fluids.",
+      explanation: "NOTE: Diuretic-induced losses may require potassium replacement.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Extrarenal Losses Evaluation": {
+      text: "Identify GI losses, burns, or sweating. Replace with hypotonic fluids plus electrolyte replacement as needed.",
+      explanation: "EXAMPLE: For diarrhea, use oral rehydration solution or half-normal saline with KCl.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Diabetes Insipidus Pathway
+    "Diabetes Insipidus Workup": {
+      text: "Measure urine output and osmolality. Perform water deprivation test if DI suspected.",
+      explanation: "DIAGNOSIS: Polyuria (>50 mL/kg/day) with dilute urine (<300 mOsm/kg). Central vs nephrogenic DI requires testing.",
+      options: {
+        "Urine output >4L/day": "DI Confirmation",
+        "Urine output <4L/day": "Other Euvolemic Causes"
+      }
+    },
+    "DI Confirmation": {
+      text: "Perform water deprivation test followed by DDAVP challenge to differentiate central vs nephrogenic DI.",
+      explanation: "CENTRAL DI: Urine concentrates after DDAVP. NEPHROGENIC: No response to DDAVP.",
+      options: {
+        "Central DI": "Central DI Management",
+        "Nephrogenic DI": "Nephrogenic DI Management"
+      }
+    },
+    "Central DI Management": {
+      text: "Treat with DDAVP (intranasal 5-20 mcg/day or oral 0.1-0.8 mg/day). Titrate to urine output.",
+      explanation: "CAUTION: Over-treatment risks hyponatremia. Allow mild polyuria to avoid this.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Nephrogenic DI Management": {
+      text: "Thiazides + low-Na⁺ diet. NSAIDs may help. Treat underlying cause (e.g., lithium toxicity).",
+      explanation: "MECHANISM: Thiazides induce mild volume depletion, increasing proximal tubule water reabsorption.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Hypervolemic Pathway
+    "Hypervolemic Management": {
+      text: "Identify cause: Hypertonic saline infusion, sodium bicarbonate, or hyperalimentation. Use diuretics + D5W.",
+      explanation: "ACTION: Loop diuretics promote Na⁺ excretion while D5W provides free water.",
+      options: {
+        "Iatrogenic cause": "Adjust IV Fluids",
+        "Other causes": "Dialysis Evaluation"
+      }
+    },
+    "Adjust IV Fluids": {
+      text: "Discontinue hypertonic solutions. Switch to hypotonic fluids if needed.",
+      explanation: "MONITOR: Frequent Na⁺ checks (q2-4h initially).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Free Water Calculation and Correction
+    "Free Water Deficit Calculation": {
+      text: "Calculate water deficit: [(Current Na⁺/140) - 1] × TBW (TBW = 0.5×weight in men, 0.4×weight in women).",
+      explanation: "EXAMPLE: 70kg man with Na⁺=160: [(160/140)-1]×35 = 5L deficit. Replace over 48-72hr.",
+      options: {
+        "Deficit calculated": "Correction Protocol"
+      }
+    },
+    "Correction Protocol": {
+      text: "Replace deficit orally if possible. IV route: D5W or 0.45% saline at rate to lower Na⁺ by 0.5 mEq/L/hr (max 12 mEq/24hr).",
+      explanation: "RED FLAG: Rapid correction risks cerebral edema. Add ongoing losses to calculation.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Special Populations
+    "Gestational DI Management": {
+      text: "Transient condition. Treat with DDAVP if severe symptoms. Typically resolves postpartum.",
+      explanation: "NOTE: Placental vasopressinase causes AVP degradation. DDAVP is resistant to this enzyme.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  // Hypokalemia
+  "Hypokalemia": {
+    start: {
+      text: "Is hypokalemia suspected (K⁺ <3.5 mEq/L) or are symptoms present (muscle weakness, arrhythmias)?",
+      explanation: "Initial evaluation based on lab findings or clinical symptoms. RED FLAG: ECG changes (flattened T waves, U waves) or severe weakness require urgent treatment.",
+      options: {
+        "Yes": "Emergency Evaluation",
+        "No": "Exit"
+      }
+    },
+
+    // Emergency Evaluation Pathway
+    "Emergency Evaluation": {
+      text: "Check ECG for changes (flattened T waves, ST depression, U waves, arrhythmias). Assess for severe weakness or respiratory failure.",
+      explanation: "CRITICAL: If ECG changes or severe symptoms present, initiate IV potassium immediately (20-40 mEq/hr with cardiac monitoring).",
+      options: {
+        "ECG changes/Severe symptoms": "Emergency Potassium Replacement",
+        "No ECG changes/Mild symptoms": "Initial Workup"
+      }
+    },
+    "Emergency Potassium Replacement": {
+      text: "Administer IV potassium chloride (10-20 mEq in 100mL NS over 1hr) via central line if possible. Repeat until K⁺ >3.0 mEq/L.",
+      explanation: "WARNING: Peripheral IV max 40 mEq/L to avoid phlebitis. Continuous cardiac monitoring required.",
+      options: {
+        "K⁺ >3.0 mEq/L": "Initial Workup",
+        "No improvement": "ICU Consultation"
+      }
+    },
+
+    // Initial Workup Pathway
+    "Initial Workup": {
+      text: "Check magnesium level (correct if <1.8 mg/dL). Assess for pseudohypokalemia (e.g., leukemia). Review medications (diuretics, laxatives, antibiotics).",
+      explanation: "KEY POINTS: Hypomagnesemia impairs potassium correction. Certain medications (e.g., amphotericin B) cause renal potassium wasting.",
+      options: {
+        "Pseudohypokalemia suspected": "Repeat Blood Draw",
+        "No pseudohypokalemia": "Urine Potassium Assessment"
+      }
+    },
+    "Repeat Blood Draw": {
+      text: "Draw blood in pre-chilled syringe, process immediately. If normal, no further action needed.",
+      explanation: "NOTE: Occurs when WBCs take up extracellular K⁺ in vitro (e.g., acute leukemia).",
+      options: {
+        "True hypokalemia confirmed": "Urine Potassium Assessment"
+      }
+    },
+
+    // Urine Potassium Assessment Pathway
+    "Urine Potassium Assessment": {
+      text: "Measure 24hr urine potassium or spot urine K⁺/creatinine ratio. Threshold: <15 mEq/day or <15 mEq/g Cr suggests extrarenal loss.",
+      explanation: "INTERPRETATION: High urine K⁺ (>25 mEq/day) indicates renal wasting. Low urine K⁺ suggests GI losses or transcellular shift.",
+      options: {
+        "Urine K⁺ <15 mEq/day": "Extrarenal Loss Evaluation",
+        "Urine K⁺ >15 mEq/day": "Renal Loss Evaluation"
+      }
+    },
+
+    // Extrarenal Loss Pathway
+    "Extrarenal Loss Evaluation": {
+      text: "Assess for diarrhea, vomiting, sweating, or low dietary intake. Check acid-base status.",
+      explanation: "NOTE: Vomiting causes renal K⁺ loss via secondary hyperaldosteronism (metabolic alkalosis).",
+      options: {
+        "Diarrhea present": "GI Loss Management",
+        "Vomiting/Nasogastric suction": "Alkalosis Workup",
+        "Low intake": "Dietary Supplementation"
+      }
+    },
+    "GI Loss Management": {
+      text: "Treat underlying cause. Replace losses with oral KCl (20-40 mEq 2-4x/day) or IV if severe.",
+      explanation: "CAUTION: Correct concomitant magnesium deficiency.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Renal Loss Pathway
+    "Renal Loss Evaluation": {
+      text: "Check blood pressure and acid-base status. Calculate TTKG if urine osmolality > serum and urine Na⁺ >25 mEq/L.",
+      explanation: "TTKG INTERPRETATION: >4 suggests inappropriate renal K⁺ wasting. Evaluate for hyperaldosteronism if hypertensive.",
+      options: {
+        "Hypertensive": "Hypertensive Workup",
+        "Normotensive": "Normotensive Workup"
+      }
+    },
+
+    // Hypertensive Pathway
+    "Hypertensive Workup": {
+      text: "Measure plasma renin and aldosterone levels. Check cortisol if Cushing's suspected.",
+      explanation: "DIAGNOSTIC: Low renin + high aldosterone = primary hyperaldosteronism. High renin + high aldosterone = secondary hyperaldosteronism.",
+      options: {
+        "Primary hyperaldosteronism": "Adrenal CT/Adrenal Vein Sampling",
+        "Cushing's syndrome": "Dexamethasone Suppression Test",
+        "Liddle's syndrome": "Genetic Testing"
+      }
+    },
+    "Adrenal CT/Adrenal Vein Sampling": {
+      text: "If adenoma found, consider adrenalectomy. If hyperplasia, treat with spironolactone (25-400 mg/day).",
+      explanation: "MONITOR: Potassium and blood pressure response. Adjust dose accordingly.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Normotensive Pathway
+    "Normotensive Workup": {
+      text: "Assess acid-base status and urine electrolytes. Consider diuretic use, RTA, or genetic disorders (Bartter/Gitelman).",
+      explanation: "CLUES: Metabolic acidosis + high urine K⁺ suggests RTA. Metabolic alkalosis + hypomagnesemia suggests Gitelman's.",
+      options: {
+        "Metabolic acidosis": "RTA Evaluation",
+        "Metabolic alkalosis": "Bartter/Gitelman Evaluation"
+      }
+    },
+    "RTA Evaluation": {
+      text: "Check urine pH and anion gap. Type 1 RTA: urine pH >5.5. Type 2 RTA: low HCO₃⁻ threshold.",
+      explanation: "TREATMENT: Potassium citrate for Type 1. High-dose bicarbonate for Type 2.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Bartter/Gitelman Evaluation": {
+      text: "Check urine Ca²⁺/Cr ratio: >0.2 suggests Bartter's, <0.15 suggests Gitelman's. Treat with NSAIDs, K⁺-sparing diuretics.",
+      explanation: "NOTE: Gitelman's typically presents in adults with hypomagnesemia and hypocalciuria.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Transcellular Shift Pathway
+    "Transcellular Shift Evaluation": {
+      text: "Assess for insulin excess, β₂-agonists, periodic paralysis, or thyrotoxicosis. Check thyroid function tests if indicated.",
+      explanation: "MECHANISM: Increased Na⁺/K⁺-ATPase activity drives K⁺ intracellularly.",
+      options: {
+        "β₂-agonist use": "Discontinue Drug",
+        "Thyrotoxicosis": "Treat Hyperthyroidism",
+        "Periodic paralysis": "Acetazolamide Trial"
+      }
+    },
+
+    // Monitoring and Complications
+    "Refractory Hypokalemia": {
+      text: "If K⁺ remains low despite treatment, recheck magnesium and consider rare causes (e.g., barium poisoning).",
+      explanation: "ACTION: Magnesium is co-factor for K⁺ channels. Barium blocks K⁺ efflux from cells.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  // Hyperkalemia
+  "Hyperkalemia": {
+    start: {
+      text: "Is hyperkalemia suspected (K⁺ ≥5.5 mEq/L) or are ECG changes present (peaked T waves, QRS widening)?",
+      explanation: "Initial evaluation based on lab findings or ECG changes. RED FLAG: K⁺ ≥6.0 mEq/L or ECG changes require immediate treatment regardless of symptoms.",
+      options: {
+        "Yes": "Emergency Evaluation",
+        "No": "Exit"
+      }
+    },
+
+    // Emergency Evaluation Pathway
+    "Emergency Evaluation": {
+      text: "Check ECG for peaked T waves, PR prolongation, QRS widening, or sine wave pattern. Assess muscle weakness/cardiac symptoms.",
+      explanation: "CRITICAL: Sine wave pattern precedes cardiac arrest. Any ECG changes mandate emergent treatment.",
+      options: {
+        "ECG changes present": "Emergency Treatment",
+        "K⁺ ≥6.0 mEq/L": "Emergency Treatment",
+        "No ECG changes/K⁺ <6.0": "Initial Workup"
+      }
+    },
+
+    // Emergency Treatment Pathway
+    "Emergency Treatment": {
+      text: "Initiate: (1) Calcium gluconate 1g IV over 2-3min (stabilizes myocardium), (2) Insulin 10U IV + D50 25g (shifts K⁺ intracellularly), (3) Albuterol 10-20mg nebulized.",
+      explanation: "ACTION SEQUENCE: Calcium first for cardiac protection, then shift K⁺ intracellularly. Repeat insulin/D50 if needed after 30min.",
+      options: {
+        "Stable ECG achieved": "Initial Workup",
+        "No improvement": "Second Line Treatments"
+      }
+    },
+    "Second Line Treatments": {
+      text: "Consider: Sodium bicarbonate 50-100 mEq IV if acidotic, furosemide 40-80mg IV if volume overloaded, or dialysis if refractory.",
+      explanation: "RESERVE: Bicarbonate only for severe acidosis (pH <7.1). Dialysis for ESRD or tumor lysis syndrome.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Initial Workup Pathway
+    "Initial Workup": {
+      text: "Rule out pseudohyperkalemia (hemolyzed sample, thrombocytosis >1M/μL). Check plasma K⁺ if suspected.",
+      explanation: "CLUE: Normal plasma K⁺ with elevated serum K⁺ suggests pseudohyperkalemia. No treatment needed.",
+      options: {
+        "Pseudohyperkalemia confirmed": "Repeat Blood Draw",
+        "True hyperkalemia": "Etiology Workup"
+      }
+    },
+    "Repeat Blood Draw": {
+      text: "Redraw without tourniquet/fist clenching. Process immediately. If normal, discontinue evaluation.",
+      explanation: "PREVENTION: Use heparinized tube for platelet counts >500K/μL.",
+      options: {
+        "True hyperkalemia confirmed": "Etiology Workup"
+      }
+    },
+
+    // Etiology Workup Pathway
+    "Etiology Workup": {
+      text: "Assess: (1) Transcellular shift (acidosis, rhabdomyolysis), (2) Increased intake (K⁺ supplements), (3) Decreased excretion (renal failure). Check urine K⁺ and TTKG.",
+      explanation: "KEY TESTS: Urine K⁺ <40 mEq/day suggests impaired excretion. TTKG <5 indicates aldosterone deficiency/resistance.",
+      options: {
+        "Transcellular shift suspected": "Shift Evaluation",
+        "Increased intake suspected": "Intake Evaluation",
+        "Decreased excretion suspected": "Excretion Evaluation"
+      }
+    },
+
+    // Transcellular Shift Pathway
+    "Shift Evaluation": {
+      text: "Evaluate for acidosis (ABG), rhabdomyolysis (CK), tumor lysis (uric acid, phosphate), or medications (succinylcholine, digoxin).",
+      explanation: "MECHANISM: Acidosis releases K⁺ from cells (H⁺/K⁺ exchange). Digoxin inhibits Na/K-ATPase.",
+      options: {
+        "Acidosis present": "Correct Acidosis",
+        "Medication-induced": "Discontinue Offender",
+        "Tumor lysis/rhabdo": "Treat Underlying Cause"
+      }
+    },
+    "Correct Acidosis": {
+      text: "Treat underlying cause. Consider bicarbonate only if pH <7.1.",
+      explanation: "CAUTION: Bicarbonate may cause volume overload or paradoxical CNS acidosis.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Increased Intake Pathway
+    "Intake Evaluation": {
+      text: "Review diet (salt substitutes, bananas), IV fluids, supplements, or blood transfusions.",
+      explanation: "HIDDEN SOURCES: Penicillin G potassium (1.7 mEq/million units), stored blood (>5 mEq/unit/day).",
+      options: {
+        "Identified source": "Reduce Intake",
+        "No clear source": "Excretion Evaluation"
+      }
+    },
+
+    // Decreased Excretion Pathway
+    "Excretion Evaluation": {
+      text: "Check renal function (GFR), aldosterone/renin levels, and medications (ACEi, K⁺-sparing diuretics). Calculate TTKG.",
+      explanation: "TTKG INTERPRETATION: <5 suggests aldosterone deficiency/resistance. >8 suggests adequate mineralocorticoid effect.",
+      options: {
+        "GFR <20 mL/min": "Renal Failure Management",
+        "TTKG <5": "Aldosterone Evaluation",
+        "Medication-induced": "Adjust Medications"
+      }
+    },
+    "Renal Failure Management": {
+      text: "Restrict dietary K⁺, loop diuretics if volume overloaded, consider kayexalate or patiromer. Dialysis if refractory.",
+      explanation: "NEW AGENTS: Patiromer (8.4-25.2g/day) binds K⁺ in gut. Fewer side effects than kayexalate.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Aldosterone Evaluation": {
+      text: "Check aldosterone/renin: Low aldosterone + low renin = hyporeninemic hypoaldosteronism (type IV RTA). High renin + low aldosterone = adrenal insufficiency.",
+      explanation: "TREATMENT: Fludrocortisone 0.1-0.2 mg/day for deficiency. Hydrocortisone if adrenal insufficiency.",
+      options: {
+        "Hypoaldosteronism": "Fludrocortisone Trial",
+        "Adrenal insufficiency": "Glucocorticoid Replacement"
+      }
+    },
+    "Fludrocortisone Trial": {
+      text: "Administer fludrocortisone 0.1mg PO. Repeat TTKG after 4-6hr. Increase to ≥8 confirms aldosterone deficiency.",
+      explanation: "CAUTION: May cause hypertension/edema. Monitor BP and weight.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Medication Adjustment
+    "Adjust Medications": {
+      text: "Hold ACEi/ARBs, NSAIDs, K⁺-sparing diuretics, trimethoprim. Substitute alternative agents if possible.",
+      explanation: "HIGH-RISK DRUGS: Spironolactone, amiloride, cyclosporine, heparin (inhibits aldosterone).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Monitoring Pathway
+    "Chronic Management": {
+      text: "For recurrent hyperkalemia: Low-K⁺ diet, loop diuretics, consider chronic kayexalate or patiromer.",
+      explanation: "DIETARY TIPS: Avoid tomatoes, potatoes, oranges, salt substitutes (>50% KCl).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  // Hypomagnesemia 
+  "Hypomagnesemia": {
+    start: {
+      text: "Is hypomagnesemia suspected (Mg²⁺ <1.8 mEq/L) or are symptoms present (muscle cramps, arrhythmias)?",
+      explanation: "Initial evaluation based on lab findings or clinical symptoms. RED FLAG: Cardiac arrhythmias (especially torsades) or seizures require immediate treatment.",
+      options: {
+        "Yes": "Emergency Evaluation",
+        "No": "Exit"
+      }
+    },
+
+    // Emergency Evaluation Pathway
+    "Emergency Evaluation": {
+      text: "Check ECG for prolonged QT, torsades de pointes, or other arrhythmias. Assess for neuromuscular symptoms (tetany, seizures).",
+      explanation: "CRITICAL: Torsades de pointes is a medical emergency that requires IV magnesium regardless of serum level.",
+      options: {
+        "ECG changes/Severe symptoms": "Emergency Magnesium Replacement",
+        "No ECG changes/Mild symptoms": "Initial Workup"
+      }
+    },
+    "Emergency Magnesium Replacement": {
+      text: "Administer MgSO₄ 1-2g IV over 15min for torsades or seizures. Repeat every 5-15min as needed. Maintenance: 4-8g over 24hr.",
+      explanation: "ACTION: Cardiac monitoring required. Correct concomitant hypokalemia/hypocalcemia which often coexist.",
+      options: {
+        "Symptoms resolved": "Initial Workup",
+        "No improvement": "ICU Consultation"
+      }
+    },
+
+    // Initial Workup Pathway
+    "Initial Workup": {
+      text: "Assess for risk factors: Diuretics, alcoholism, diarrhea, malnutrition, PPI use, or nephrotoxic drugs (aminoglycosides, cisplatin).",
+      explanation: "KEY POINTS: Chronic PPI use impairs Mg²⁺ absorption. Alcohol causes renal Mg²⁺ wasting.",
+      options: {
+        "Risk factors identified": "Urinary Magnesium Assessment",
+        "No obvious cause": "Urinary Magnesium Assessment"
+      }
+    },
+
+    // Urinary Magnesium Assessment Pathway
+    "Urinary Magnesium Assessment": {
+      text: "Measure 24hr urinary Mg²⁺ or spot urine Mg²⁺/creatinine ratio. Threshold: <10 mg/day or <2 mg/dL GF suggests renal conservation.",
+      explanation: "INTERPRETATION: High urine Mg²⁺ (>24 mg/day) indicates renal wasting. Low urine Mg²⁺ suggests GI losses or malnutrition.",
+      options: {
+        "Urine Mg²⁺ <10 mg/day": "Extrarenal Loss Evaluation",
+        "Urine Mg²⁺ >10 mg/day": "Renal Loss Evaluation"
+      }
+    },
+
+    // Extrarenal Loss Pathway
+    "Extrarenal Loss Evaluation": {
+      text: "Assess for diarrhea, malabsorption (celiac, Crohn's), malnutrition, or alcoholism. Check PTH and calcium (hungry bone syndrome post-parathyroidectomy).",
+      explanation: "NOTE: Chronic diarrhea causes both Mg²⁺ and K⁺ losses. Correct both simultaneously.",
+      options: {
+        "GI losses present": "GI Loss Management",
+        "Malnutrition/alcoholism": "Nutritional Repletion"
+      }
+    },
+    "GI Loss Management": {
+      text: "Treat underlying cause (e.g., gluten-free diet for celiac). Oral Mg²⁺ supplements (magnesium oxide 400-800 mg/day).",
+      explanation: "CAUTION: Mg²⁺ supplements may cause diarrhea. Magnesium gluconate is better tolerated.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Renal Loss Pathway
+    "Renal Loss Evaluation": {
+      text: "Check medications (diuretics, PPIs, aminoglycosides), alcohol use, and genetic causes (Gitelman's syndrome). Assess electrolytes (often hypokalemia/hypocalcemia).",
+      explanation: "CLUES: Hypokalemia + hypomagnesemia suggests diuretic use or Gitelman's. Hypocalcemia suggests severe Mg²⁺ deficiency impairing PTH.",
+      options: {
+        "Medication-induced": "Medication Adjustment",
+        "Alcohol-related": "Alcohol Cessation",
+        "Genetic suspicion": "Genetic Testing"
+      }
+    },
+    "Medication Adjustment": {
+      text: "Discontinue offending drugs if possible (loop/thiazide diuretics, PPIs, cisplatin). Consider amiloride (5-10 mg/day) if diuretics must continue.",
+      explanation: "MECHANISM: Amiloride reduces renal Mg²⁺ wasting by blocking ENaC channels.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Repletion Protocols
+    "Oral Repletion": {
+      text: "For mild deficiency (Mg²⁺ 1.2-1.7 mEq/L): Magnesium oxide 400-800 mg/day or magnesium gluconate 1-2g/day in divided doses.",
+      explanation: "ADVANTAGE: Gluconate causes less diarrhea than oxide. Citrate also well-absorbed but has laxative effect.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "IV Repletion": {
+      text: "For moderate-severe deficiency (Mg²⁺ <1.2 mEq/L): MgSO₄ 1-2g IV q6-12h until normal. Max rate: 1g/hr (faster for emergencies).",
+      explanation: "MONITOR: Deep tendon reflexes and respiratory rate during infusion. Stop if loss of reflexes.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Special Populations
+    "Hungry Bone Syndrome": {
+      text: "Post-parathyroidectomy: Requires aggressive repletion (Mg²⁺ 4-8g/day IV + oral). Correct hypocalcemia simultaneously.",
+      explanation: "PATHOPHYSIOLOGY: Rapid bone remineralization consumes Mg²⁺ and Ca²⁺.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Refractory Hypomagnesemia": {
+      text: "If Mg²⁺ remains low despite treatment, consider genetic testing (Gitelman's, familial hypomagnesemia) or hidden GI losses.",
+      explanation: "GENETIC CLUES: Gitelman's presents with hypokalemia, metabolic alkalosis, hypocalciuria.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  
+  // Hypermagnesemia 
+  "Hypermagnesemia": {
+    start: {
+      text: "Is hypermagnesemia suspected (Mg²⁺ >2.2 mEq/L) or are symptoms present (hypotension, weakness)?",
+      explanation: "Initial evaluation based on lab findings or clinical symptoms. RED FLAG: Respiratory depression or complete heart block requires immediate treatment.",
+      options: {
+        "Yes": "Emergency Evaluation",
+        "No": "Exit"
+      }
+    },
+
+    // Emergency Evaluation Pathway
+    "Emergency Evaluation": {
+      text: "Check ECG for prolonged PR/QRS intervals, heart block. Assess respiratory rate, reflexes, and blood pressure.",
+      explanation: "CRITICAL: Loss of deep tendon reflexes precedes respiratory paralysis. QRS >120ms indicates severe toxicity.",
+      options: {
+        "ECG changes/Respiratory depression": "Emergency Treatment",
+        "No ECG changes/Mild symptoms": "Initial Workup"
+      }
+    },
+
+    // Emergency Treatment Pathway
+    "Emergency Treatment": {
+      text: "Administer calcium gluconate 1g IV over 5min (counteracts cardiac/neuromuscular effects). Stop all Mg²⁺ sources. Prepare for dialysis if renal failure.",
+      explanation: "ACTION: Calcium stabilizes cardiac membranes. Repeat calcium every 5-10min if persistent ECG changes.",
+      options: {
+        "Stable vitals achieved": "Initial Workup",
+        "No improvement": "ICU Consultation"
+      }
+    },
+
+    // Initial Workup Pathway
+    "Initial Workup": {
+      text: "Assess renal function (Cr, GFR). Review medications (antacids, laxatives, IV Mg²⁺). Check for rhabdomyolysis (CK).",
+      explanation: "KEY SOURCES: Mg²⁺-containing antacids (Maalox), laxatives (Milk of Magnesia), tocolytics, or enemas.",
+      options: {
+        "Renal failure present": "Dialysis Evaluation",
+        "Normal renal function": "Volume Status Assessment"
+      }
+    },
+
+    // Dialysis Pathway
+    "Dialysis Evaluation": {
+      text: "For GFR <20 mL/min or ARF: Arrange emergent hemodialysis with low-Mg²⁺ bath (0.5 mEq/L). Peritoneal dialysis if hemodialysis unavailable.",
+      explanation: "EFFICACY: Hemodialysis clears Mg²⁺ 3-4x faster than peritoneal dialysis. Repeat q4-6h if needed.",
+      options: {
+        "Dialysis initiated": "Post-Dialysis Management",
+        "Delay in dialysis": "Temporary Measures"
+      }
+    },
+    "Temporary Measures": {
+      text: "While awaiting dialysis: IV normal saline + furosemide 40mg IV q6h if volume replete. Monitor urine output.",
+      explanation: "CAUTION: Avoid diuretics in hypovolemia. Maximize renal clearance if GFR >20 mL/min.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Volume Status Pathway
+    "Volume Status Assessment": {
+      text: "Assess volume status: Hypovolemic (diuretics, GI losses) or euvolemic/hypervolemic (excess intake).",
+      explanation: "CLUES: Dry mucous membranes suggest hypovolemia. Edema suggests fluid overload.",
+      options: {
+        "Hypovolemic": "Volume Repletion",
+        "Euvolemic/Hypervolemic": "Enhanced Elimination"
+      }
+    },
+    "Volume Repletion": {
+      text: "Normal saline bolus (20mL/kg) followed by maintenance fluids. Hold diuretics until Mg²⁺ normalizes.",
+      explanation: "GOAL: Restore renal perfusion to enhance Mg²⁺ excretion.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Enhanced Elimination": {
+      text: "Normal saline + furosemide 20-40mg IV q6h. Target urine output >100mL/hr.",
+      explanation: "MONITOR: Electrolytes q4-6h (risk of hypokalemia, hypocalcemia with diuresis).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Special Populations
+    "Obstetric Cases": {
+      text: "For Mg²⁺ toxicity from tocolysis: Stop infusion immediately. Calcium gluconate 1g IV. Monitor fetus.",
+      explanation: "NOTE: Mg²⁺ crosses placenta - monitor neonatal reflexes/respiration after delivery.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Chronic Management
+    "Prevention Strategies": {
+      text: "For recurrent cases: Avoid Mg²⁺-containing products in renal impairment. Educate on OTC medication risks.",
+      explanation: "HIGH-RISK MEDS: Magnesium citrate laxatives, some antacids, Epsom salt baths.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  // Hypophosphatemia
+  "Hypophosphatemia": {
+    start: {
+      text: "Is the patient's plasma phosphate level <2.5 mg/dl?",
+      explanation: "Hypophosphatemia is defined as a plasma phosphate level below 2.5 mg/dl. Confirm with laboratory testing.",
+      options: {
+        yes: "Severity Assessment",
+        no: "Exit (No Hypophosphatemia)"
+      }
+    },
+
+    // Severity Assessment Pathway
+    "Severity Assessment": {
+      text: "Assess severity of hypophosphatemia:",
+      explanation: "Moderate (1.5–2.5 mg/dl) vs. Severe (<1.5 mg/dl). Symptoms are rare in moderate cases but severe hypophosphatemia can lead to metabolic encephalopathy, muscle dysfunction, or hematologic abnormalities.",
+      options: {
+        "Moderate (1.5–2.5 mg/dl)": "Moderate Hypophosphatemia",
+        "Severe (<1.5 mg/dl)": "Severe Hypophosphatemia"
+      }
+    },
+
+    // Moderate Hypophosphatemia Pathway
+    "Moderate Hypophosphatemia": {
+      text: "Is the patient symptomatic or failing oral therapy?",
+      explanation: "Most moderate cases are asymptomatic. Symptoms may include mild weakness or fatigue. Oral therapy is preferred unless contraindicated.",
+      options: {
+        "Asymptomatic": "Oral Therapy",
+        "Symptomatic/Failing Oral Therapy": "IV Therapy"
+      }
+    },
+
+    // Severe Hypophosphatemia Pathway
+    "Severe Hypophosphatemia": {
+      text: "Does the patient have overt clinical manifestations (e.g., encephalopathy, rhabdomyolysis, respiratory failure)?",
+      explanation: "Severe hypophosphatemia can cause life-threatening complications due to ATP depletion and impaired cellular function.",
+      options: {
+        "Yes": "IV Therapy (Emergent)",
+        "No": "IV Therapy (Non-Emergent)"
+      }
+    },
+
+    // Oral Therapy Pathway
+    "Oral Therapy": {
+      text: "Initiate oral phosphate replacement (60 mmol/day in 3–4 divided doses for 7–10 days). Options include sodium/potassium phosphate salts or dairy products (e.g., milk).",
+      explanation: "Oral therapy is safer but may cause diarrhea (mitigated by divided dosing). Monitor for hypernatremia/hyperkalemia with salts. NOTE: Avoid in patients with malabsorption or intolerance.",
+      options: {
+        "Successful Correction": "Identify Underlying Cause",
+        "Failure/Intolerance": "IV Therapy"
+      }
+    },
+
+    // IV Therapy Pathways
+    "IV Therapy (Non-Emergent)": {
+      text: "Administer 2.5 mg/kg phosphate over 6 hours (sodium/potassium phosphate IV). Monitor calcium-phosphate product and electrolytes closely.",
+      explanation: "Indicated for severe hypophosphatemia without overt symptoms or oral therapy failure. WARNING: Overaggressive repletion can cause hypocalcemia or metastatic calcification.",
+      options: {
+        "Recheck Levels": "Post-Therapy Evaluation"
+      }
+    },
+
+    "IV Therapy (Emergent)": {
+      text: "Administer 5.0 mg/kg phosphate over 6 hours (sodium/potassium phosphate IV). Monitor for arrhythmias, hypocalcemia, and renal function.",
+      explanation: "CRITICAL: Rapid correction needed for life-threatening symptoms (e.g., respiratory failure). Avoid in renal insufficiency. Check calcium-phosphate product every 6h.",
+      options: {
+        "Stabilize Patient": "Post-Therapy Evaluation"
+      }
+    },
+
+    // Post-Therapy Evaluation
+    "Post-Therapy Evaluation": {
+      text: "Recheck phosphate levels and assess for clinical improvement.",
+      explanation: "Goal: Normalize phosphate levels and resolve symptoms. Repeat testing to avoid overcorrection.",
+      options: {
+        "Levels Normalized": "Identify Underlying Cause",
+        "Persistent Hypophosphatemia": "Re-evaluate Therapy"
+      }
+    },
+
+    // Identify Underlying Cause Pathway
+    "Identify Underlying Cause": {
+      text: "Determine etiology based on history, labs, and clinical context:",
+      explanation: "Hypophosphatemia results from increased losses, decreased intake, or cellular shifts. Key tests: PTH, vitamin D, renal function, and urine phosphate.",
+      options: {
+        "Increased Losses": "Losses Subtype",
+        "Decreased Intake": "Intake Subtype",
+        "Cellular Shifts": "Shifts Subtype"
+      }
+    },
+
+    // Losses Subtype Pathway
+    "Losses Subtype": {
+      text: "Categorize losses as acquired or hereditary:",
+      explanation: "Acquired causes (e.g., hyperparathyroidism, vitamin D deficiency) are more common. Hereditary causes (e.g., Fanconi syndrome) require genetic testing.",
+      options: {
+        "Acquired": "Acquired Losses",
+        "Hereditary": "Hereditary Losses"
+      }
+    },
+
+    "Acquired Losses": {
+      text: "Treat specific cause: Hyperparathyroidism (surgery), vitamin D deficiency (supplementation), diuretics (discontinue), or renal tubular disease (address underlying disorder).",
+      explanation: "NOTE: Oncogenic osteomalacia requires tumor resection. Bicarbonate administration worsens phosphaturia.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    "Hereditary Losses": {
+      text: "Manage with phosphate supplements and active vitamin D (e.g., calcitriol). Genetic counseling if familial (e.g., X-linked hypophosphatemia).",
+      explanation: "Lifelong therapy often needed. Monitor for nephrocalcinosis with high-dose phosphate.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Intake Subtype Pathway
+    "Intake Subtype": {
+      text: "Address cause: Malabsorption (treat underlying GI disease), alcoholism (nutritional support), or antacid use (switch to non-phosphate-binding agents).",
+      explanation: "RED FLAG: Refeeding syndrome in malnourished patients requires cautious phosphate repletion during nutritional support.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Shifts Subtype Pathway
+    "Shifts Subtype": {
+      text: "Identify trigger: Respiratory alkalosis (correct hyperventilation), insulin administration (monitor during DKA/HONK), or refeeding syndrome (slow nutritional reintroduction).",
+      explanation: "Hungry bone syndrome post-parathyroidectomy requires aggressive repletion. TPN must include phosphate.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Re-evaluate Therapy
+    "Re-evaluate Therapy": {
+      text: "Consider inadequate dosing, non-compliance, or misdiagnosed etiology (e.g., occult tumor for oncogenic osteomalacia).",
+      explanation: "Repeat labs and imaging if needed. Consult nephrology for refractory cases.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  // Chronic Dialysis Modality
+  "Chronic Dialysis Modality": {
+    start: {
+      text: "Has the patient reached stage 4 CKD (GFR 15–29 ml/min)?",
+      explanation: "Education about renal replacement options should begin at stage 4 CKD. Earlier preparation allows for informed decision-making and timely access placement.",
+      options: {
+        yes: "Educate on Renal Replacement Options",
+        no: "Monitor CKD Progression"
+      }
+    },
+
+    // Education Pathway
+    "Educate on Renal Replacement Options": {
+      text: "Present all renal replacement options: preemptive transplantation, hemodialysis (HD), and peritoneal dialysis (PD).",
+      explanation: "KEY POINTS: PD is underused but associated with higher patient satisfaction. HD is more common but may require vascular access planning. Preemptive transplantation is ideal if feasible.",
+      options: {
+        "Preemptive Transplantation": "Transplant Evaluation",
+        "Hemodialysis (HD)": "HD Evaluation",
+        "Peritoneal Dialysis (PD)": "PD Evaluation"
+      }
+    },
+
+    // Transplant Evaluation Pathway
+    "Transplant Evaluation": {
+      text: "Is the patient a candidate for preemptive transplantation (no medical contraindications, suitable living donor)?",
+      explanation: "CRITICAL: Screen for cardiovascular disease (major morbidity/mortality source post-transplant). Living donor transplants have better outcomes.",
+      options: {
+        yes: "Refer for Transplant Workup",
+        no: "Re-evaluate Dialysis Options"
+      }
+    },
+    "Refer for Transplant Workup": {
+      text: "Initiate transplant evaluation (cardiovascular screening, donor compatibility, etc.).",
+      explanation: "ACTION: Coordinate with transplant center. If no living donor, list for deceased donor transplant while preparing for dialysis as backup.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+    "Re-evaluate Dialysis Options": {
+      text: "Return to dialysis modality choice (HD or PD).",
+      explanation: "NOTE: Even if transplant is eventual goal, dialysis may be needed temporarily.",
+      options: {
+        "Hemodialysis (HD)": "HD Evaluation",
+        "Peritoneal Dialysis (PD)": "PD Evaluation"
+      }
+    },
+
+    // HD Evaluation Pathway
+    "HD Evaluation": {
+      text: "Assess patient for HD suitability:",
+      explanation: "FOCUS: Vascular access viability (AV fistula preferred), cardiovascular stability (risk of intradialytic hypotension), and patient preference for in-center vs. home HD.",
+      options: {
+        "Suitable for HD": "HD Access Planning",
+        "Unsuitable (e.g., no vascular access)": "Reconsider PD"
+      }
+    },
+    "HD Access Planning": {
+      text: "Refer for AV fistula creation (3–6 months maturation time) or AV graft/tunneled catheter if fistula not feasible.",
+      explanation: "PRIORITY: Fistula has lowest complication rates (thrombosis/infection). Avoid venipuncture/BPs in access arm. Tunneled catheters are last resort.",
+      options: {
+        "Proceed with HD": "HD Settings",
+        "Restart Algorithm": "start"
+      }
+    },
+    "HD Settings": {
+      text: "Choose HD setting: in-center, home HD, or hospital-based.",
+      explanation: "HOME HD: Offers flexibility but requires training. In-center is standard but less patient autonomy.",
+      options: {
+        "In-Center HD": "Schedule Dialysis",
+        "Home HD": "Arrange Training",
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // PD Evaluation Pathway
+    "PD Evaluation": {
+      text: "Assess medical suitability for PD:",
+      explanation: "RED FLAGS: Major abdominal surgery (adhesions), morbid obesity (need presternal catheter), cognitive impairment (requires caregiver support), or uncontrolled diabetes (worsens glycemic control).",
+      options: {
+        "Suitable for PD": "PD Catheter Placement",
+        "Unsuitable (e.g., adhesions)": "Reconsider HD"
+      }
+    },
+    "PD Catheter Placement": {
+      text: "Refer for PD catheter placement (2–3 weeks healing time). Consider laparoscopic lysis of adhesions if needed.",
+      explanation: "TIMING: Place catheter ≥2 months before dialysis initiation. Presternal exit site may be needed for obese patients.",
+      options: {
+        "Proceed with PD": "PD Training",
+        "Restart Algorithm": "start"
+      }
+    },
+    "PD Training": {
+      text: "Arrange PD training for patient/caregiver. Address diabetes management if applicable.",
+      explanation: "NOTE: Illiterate patients can learn PD with visual aids. Intraperitoneal insulin may be required for diabetics.",
+      options: {
+        "Training Complete": "Initiate PD",
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Shared Pathways
+    "Reconsider PD": {
+      text: "Re-evaluate PD suitability with surgeon (e.g., laparoscopic adhesion lysis). If still unsuitable, proceed with HD.",
+      explanation: "Newer techniques may overcome prior contraindications (e.g., adhesions).",
+      options: {
+        "HD Evaluation": "HD Evaluation",
+        "Restart Algorithm": "start"
+      }
+    },
+    "Monitor CKD Progression": {
+      text: "Continue routine CKD management. Reassess GFR periodically.",
+      explanation: "NEXT STEP: Re-enter algorithm when GFR reaches 15–29 ml/min.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  // Transplant Evaluation
+  "Transplant Evaluation": {
+    start: {
+      text: "Does the patient have chronic kidney disease (CKD) and is being considered for renal transplantation?",
+      explanation: "Early evaluation allows for preemptive transplantation if a living donor is available. Even without a living donor, early completion of evaluation enables prompt listing for deceased donor transplant once dialysis begins.",
+      options: {
+        yes: "Preliminary Screening",
+        no: "Exit (Not a Candidate)"
+      }
+    },
+
+    // Preliminary Screening Pathway
+    "Preliminary Screening": {
+      text: "Does the patient have any obvious contraindications (e.g., severe comorbidity, recent cancer, active infection, severe psychiatric illness)?",
+      explanation: "RED FLAGS: Major morbidities that would worsen post-transplant or lead to very short survival (e.g., severe heart/liver failure, uncontrolled cancer, active TB).",
+      options: {
+        no: "ABO and HLA Typing",
+        yes: "Absolute Contraindication"
+      }
+    },
+    "Absolute Contraindication": {
+      text: "Transplant is not currently advised due to absolute contraindications (e.g., severe organ failure, recent cancer, active infection).",
+      explanation: "NOTE: Some contraindications may be temporary (e.g., cancer remission after 2–5 years). Re-evaluate if patient's condition improves.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // ABO and HLA Typing Pathway
+    "ABO and HLA Typing": {
+      text: "Perform ABO blood typing and HLA tissue typing.",
+      explanation: "CRITICAL: ABO incompatibility or positive T-cell crossmatch (anti-HLA antibodies) are immunologic contraindications. Living donor exchanges or antibody removal may be options.",
+      options: {
+        "Compatible": "Full Evaluation",
+        "Incompatible": "Immunologic Contraindication"
+      }
+    },
+    "Immunologic Contraindication": {
+      text: "ABO/HLA incompatibility detected. Consider living donor exchange programs or desensitization protocols if feasible.",
+      explanation: "ACTION: Refer to specialized centers for antibody removal (e.g., plasmapheresis) or paired exchange programs.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Full Evaluation Pathway
+    "Full Evaluation": {
+      text: "Conduct comprehensive evaluation: history, physical exam, and standard tests (CBC, chemistry panel, CXR, ECG, infectious disease screening, cancer screening).",
+      explanation: "FOCUS: Cause of ESRD (recurrence risk?), cardiovascular health (stress test if >50 years), and psychosocial support. Women: breast/cervical cancer screening. Men >50: PSA.",
+      options: {
+        "No Contraindications": "Living Donor Assessment",
+        "Relative Contraindications": "Case-by-Case Judgment"
+      }
+    },
+    "Case-by-Case Judgment": {
+      text: "Weigh risks/benefits for relative contraindications (e.g., obesity, mild cardiac disease). Optimize medical status (e.g., revascularization for CAD).",
+      explanation: "EXAMPLE: Diabetics with stable CAD may proceed after optimization. Severe obesity may require weight loss pre-transplant.",
+      options: {
+        "Proceed if Optimized": "Living Donor Assessment",
+        "Defer/Contraindicated": "Absolute Contraindication"
+      }
+    },
+
+    // Living Donor Assessment Pathway
+    "Living Donor Assessment": {
+      text: "Is a living donor available and suitable?",
+      explanation: "BEST OUTCOMES: Living donor transplants have superior graft survival. Evaluate donor-recipient compatibility (ABO/HLA, medical suitability).",
+      options: {
+        yes: "Proceed with Living Donor Transplant",
+        no: "Deceased Donor Listing"
+      }
+    },
+    "Proceed with Living Donor Transplant": {
+      text: "Arrange living donor transplant. Coordinate with transplant center for surgery planning and immunosuppression regimen.",
+      explanation: "URGENCY: Preemptive transplantation avoids dialysis. Ensure donor evaluation is complete (medical/psychosocial).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    },
+
+    // Deceased Donor Listing Pathway
+    "Deceased Donor Listing": {
+      text: "List patient for deceased donor transplant. Consider expanded criteria donor (ECD) kidneys if >60 years or diabetic and >50 years.",
+      explanation: "ECD KIDNEYS: Lower graft survival but still better than dialysis. Prioritize based on patient age/comorbidities.",
+      options: {
+        "Listed": "Regular Re-evaluation",
+        "Restart Algorithm": "start"
+      }
+    },
+    "Regular Re-evaluation": {
+      text: "Reassess medical status every 1–2 years (especially diabetics for CVD progression). Update listing status as needed.",
+      explanation: "VIGILANCE: Cardiovascular disease is the leading cause of post-transplant mortality. Repeat stress tests/cancer screenings per guidelines.",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Benign Prostatic Hyperplasia (BPH)----
+  "Benign Prostatic Hyperplasia (BPH)": {
+    start: {
+      text: "Does the patient have lower urinary tract symptoms (LUTS)?",
+      explanation: "Initial assessment focuses on identifying obstructive (hesitancy, weak stream) vs. irritative (frequency, urgency) symptoms. RED FLAG: Hematuria or recurrent UTIs may indicate complications.",
+      options: {
+        "Yes": "LUTS Evaluation",
+        "No": "Asymptomatic Monitoring"
+      }
+    },
+
+    // LUTS Pathway
+    "LUTS Evaluation": {
+      text: "Perform history, physical exam (including DRE), urinalysis, and PSA. Assess for hematuria or infection.",
+      explanation: "KEY POINTS: DRE evaluates prostate size/nodules. PSA >4ng/mL or abnormal DRE warrants cancer workup. Hematuria requires malignancy/urolithiasis exclusion.",
+      options: {
+        "PSA elevated or abnormal DRE": "Prostate Cancer Workup",
+        "Hematuria present": "Hematuria Evaluation",
+        "Urinalysis suggests UTI": "UTI Management",
+        "No red flags": "Symptom Severity Assessment"
+      }
+    },
+    "Prostate Cancer Workup": {
+      text: "If PSA >4ng/mL, velocity >0.75ng/mL/year, or nodule: refer for prostate biopsy. Double PSA if on 5-alpha reductase inhibitors.",
+      explanation: "NOTE: PSA may be elevated due to prostatitis, UTI, or recent ejaculation. Biopsy confirms malignancy. 5-ARIs reduce PSA by 50% after 6 months.",
+      options: {
+        "Biopsy negative": "BPH Management",
+        "Biopsy positive": "Prostate Cancer Referral"
+      }
+    },
+    "Hematuria Evaluation": {
+      text: "Check urine cytology (if smoker) and imaging (CT urogram/US) to rule out bladder cancer, stones, or upper tract pathology.",
+      explanation: "DEFINITION: Significant hematuria = >3 RBCs/hpf on 2/3 specimens or >100 RBCs/hpf. TCC risk highest in smokers with irritative symptoms.",
+      options: {
+        "Malignancy detected": "Oncology Referral",
+        "Stones detected": "Urolithiasis Management",
+        "No pathology found": "BPH Management"
+      }
+    },
+    "UTI Management": {
+      text: "Treat with antibiotics based on culture. Recurrent UTIs with BPH may require surgical intervention.",
+      explanation: "ACTION: Exclude urinary retention (check PVR). Consider TURP if UTIs recur due to high PVR (>100cc).",
+      options: {
+        "Resolved": "BPH Management",
+        "Recurrent": "Surgical Evaluation"
+      }
+    },
+    "Symptom Severity Assessment": {
+      text: "Administer AUA Symptom Score (AUASS). Score ≤7 = mild; ≥8 = moderate/severe.",
+      explanation: "AUASS ITEMS: Incomplete emptying, frequency, hesitancy, urgency, weak stream, straining, nocturia. Quality of life (QOL) score guides treatment urgency.",
+      options: {
+        "Mild (AUASS ≤7)": "Watchful Waiting",
+        "Moderate/Severe (AUASS ≥8)": "Objective Testing"
+      }
+    },
+    "Objective Testing": {
+      text: "Perform post-void residual (PVR), uroflowmetry, and urodynamics if neurogenic bladder suspected.",
+      explanation: "DIAGNOSTIC CLUES: PVR >50cc or Qmax <10mL/s suggests obstruction. Urodynamics differentiate BPH from detrusor underactivity.",
+      options: {
+        "Obstruction confirmed": "Medical Therapy",
+        "No obstruction": "Neurogenic Bladder Workup"
+      }
+    },
+
+    // Treatment Pathways
+    "Medical Therapy": {
+      text: "Select based on prostate size: Alpha-blockers (all sizes) or 5-ARI (>40g). Combine if severe symptoms/large prostate.",
+      explanation: "DRUG DETAILS:\n- Alpha-blockers (tamsulosin): Improve flow in 1 week; SE = hypotension/retrograde ejaculation.\n- 5-ARIs (finasteride): Shrink prostate in 6mo; SE = sexual dysfunction. PSA must be adjusted.",
+      options: {
+        "Effective": "Continued Monitoring",
+        "Ineffective/Intolerant": "Surgical Evaluation"
+      }
+    },
+    "Surgical Evaluation": {
+      text: "Indications: Refractory retention, recurrent UTIs, bladder stones, or renal insufficiency. Choose TURP (gold standard) or laser (PVP).",
+      explanation: "PROCEDURE SELECTION:\n- TURP/PVP for 30-80g prostates.\n- Simple prostatectomy for >80g or bladder stones.\n- MISTs (e.g., Rezūm) for comorbidities.",
+      options: {
+        "Surgery completed": "Post-op Follow-up",
+        "High-risk patient": "Minimally Invasive Options"
+      }
+    },
+
+    // Special Scenarios
+    "Neurogenic Bladder Workup": {
+      text: "Evaluate for diabetes, spinal cord injury, or Parkinson's. Urodynamics confirm diagnosis.",
+      explanation: "WARNING: Treating BPH in neurogenic bladder may worsen retention. Clean intermittent catheterization (CIC) may be needed.",
+      options: {
+        "Confirmed": "Neurology Referral",
+        "Ruled out": "Re-evaluate for Functional Causes"
+      }
+    },
+    "Asymptomatic Monitoring": {
+      text: "Annual PSA/DRE if life expectancy >10y. Reassess if symptoms develop.",
+      explanation: "SCREENING: PSA debate exists; shared decision-making recommended. African Americans/family history need earlier screening.",
+      options: {
+        "Symptoms develop": "LUTS Evaluation",
+        "Remains asymptomatic": "Continue Monitoring"
+      }
+    },
+
+    // Shared Pathways
+    "Watchful Waiting": {
+      text: "Lifestyle modifications: Limit evening fluids, avoid caffeine/alcohol, timed voiding. Annual reassessment.",
+      explanation: "EDUCATION: Double voiding techniques may help. Monitor for symptom progression or complications.",
+      options: {
+        "Symptoms worsen": "Reassess AUASS",
+        "Stable": "Continue Monitoring"
+      }
+    },
+    "Post-op Follow-up": {
+      text: "Assess for retrograde ejaculation (common), UTIs, or strictures. Repeat uroflowmetry at 3mo.",
+      explanation: "COMPLICATIONS: TUR syndrome (hyponatremia) is rare but life-threatening. Monitor sodium if prolonged resection.",
+      options: {
+        "Successful": "Annual Monitoring",
+        "Complications": "Manage Specifically"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Urinary Incontinence----------------
+  "Urinary Incontinence": {
+    start: {
+      text: "Does the patient report involuntary urine leakage?",
+      explanation: "Initial assessment focuses on identifying the presence and type of incontinence. RED FLAG: Hematuria, recurrent UTIs, or neurological symptoms require urgent evaluation.",
+      options: {
+        "Yes": "Type Evaluation",
+        "No": "Reassure and Monitor"
+      }
+    },
+
+    // Type Evaluation Pathway
+    "Type Evaluation": {
+      text: "Characterize the incontinence: Stress (leakage with exertion), Urge (sudden strong need to void), Overflow (dribbling), or Mixed.",
+      explanation: "KEY CLUES:\n- Stress: Leakage with cough/sneeze.\n- Urge: Inability to reach toilet in time.\n- Overflow: Frequent dribbling, weak stream.\n- Mixed: Combination of symptoms.",
+      options: {
+        "Stress": "Stress Incontinence Workup",
+        "Urge": "Urge Incontinence Workup",
+        "Overflow": "Overflow Incontinence Workup",
+        "Mixed": "Mixed Incontinence Workup"
+      }
+    },
+
+    // Stress Incontinence Pathway
+    "Stress Incontinence Workup": {
+      text: "Perform pelvic exam (check for prolapse), stress test (leakage with cough), urinalysis, and PVR. Consider cystometry if diagnosis unclear.",
+      explanation: "DIAGNOSTIC TIPS:\n- Pelvic exam reveals urethral hypermobility.\n- Stress test positive if leakage occurs with coughing.\n- Rule out UTI with urinalysis.",
+      options: {
+        "Confirmed": "Stress Incontinence Management",
+        "Unclear": "Urodynamic Testing"
+      }
+    },
+    "Stress Incontinence Management": {
+      text: "Stage severity (I-III). Mild: Kegel exercises, weight loss. Moderate-severe: Surgical options (sling, Burch).",
+      explanation: "TREATMENT OPTIONS:\n- Stage I/II: Pelvic floor therapy, pessary if poor surgical candidate.\n- Stage III: Midurethral sling (gold standard).\n- COMPLICATIONS: Sling erosion (5%), retention (3%).",
+      options: {
+        "Conservative": "Pelvic Floor Therapy",
+        "Surgical": "Sling Procedure Referral"
+      }
+    },
+
+    // Urge Incontinence Pathway
+    "Urge Incontinence Workup": {
+      text: "Check urinalysis, PVR, and consider cystoscopy/urodynamics if hematuria or neuro signs present.",
+      explanation: "RED FLAGS:\n- Hematuria → rule out malignancy (cystoscopy + imaging).\n- Neurological symptoms → evaluate for detrusor overactivity.",
+      options: {
+        "No red flags": "Behavioral Therapy",
+        "Hematuria/Neuro": "Advanced Testing"
+      }
+    },
+    "Behavioral Therapy": {
+      text: "Bladder training, fluid management, and anticholinergics (oxybutynin) or beta-3 agonists (mirabegron).",
+      explanation: "MEDICATION NOTES:\n- Anticholinergics: Dry mouth, constipation (avoid in glaucoma).\n- Mirabegron: Fewer side effects, but costly.\n- FAILURE: Consider sacral neuromodulation.",
+      options: {
+        "Effective": "Continued Monitoring",
+        "Ineffective": "Third-Line Therapy"
+      }
+    },
+    "Third-Line Therapy": {
+      text: "Sacral neuromodulation or botulinum toxin injections.",
+      explanation: "PROCEDURE RISKS:\n- Neuromodulation: Infection (3%), lead migration (5%).\n- Botox: Retention (10-20%), UTIs (15%).",
+      options: {
+        "Proceed": "Specialist Referral",
+        "Decline": "Re-evaluate Options"
+      }
+    },
+
+    // Overflow Incontinence Pathway
+    "Overflow Incontinence Workup": {
+      text: "Assess for obstruction (BPH, stricture) or neurogenic bladder. Check PVR (>300cc suggests retention).",
+      explanation: "CAUSES:\n- Obstruction: BPH, urethral stricture.\n- Neurogenic: Diabetes, spinal cord injury.\n- DRUGS: Anticholinergics, opioids.",
+      options: {
+        "Obstructive": "Relieve Obstruction",
+        "Neurogenic": "Neurogenic Bladder Management"
+      }
+    },
+    "Relieve Obstruction": {
+      text: "BPH: Alpha-blockers (tamsulosin) or 5-ARIs (finasteride). Stricture: Dilation or urethroplasty.",
+      explanation: "WARNING: Avoid anticholinergics in obstruction.\n- BPH surgery (TURP) if medical therapy fails.\n- Post-void residual guides success.",
+      options: {
+        "Effective": "Monitor PVR",
+        "Ineffective": "Surgical Referral"
+      }
+    },
+    "Neurogenic Bladder Management": {
+      text: "Clean intermittent catheterization (CIC) or anticholinergics if detrusor overactivity present.",
+      explanation: "KEY POINTS:\n- CIC q4-6h prevents retention.\n- Urodynamics confirm diagnosis.\n- Botox for refractory overactivity.",
+      options: {
+        "Stable": "Regular Follow-up",
+        "Worsening": "Re-evaluate"
+      }
+    },
+
+    // Mixed Incontinence Pathway
+    "Mixed Incontinence Workup": {
+      text: "Perform urodynamics to quantify stress vs. urge component. Treat dominant symptom first.",
+      explanation: "APPROACH:\n- Predominant stress: Start with pelvic floor therapy.\n- Predominant urge: Behavioral + medications.",
+      options: {
+        "Stress-dominant": "Stress Incontinence Management",
+        "Urge-dominant": "Urge Incontinence Management"
+      }
+    },
+
+    // Shared Pathways
+    "Urodynamic Testing": {
+      text: "Cystometry + pressure-flow study to confirm diagnosis (e.g., detrusor overactivity, low leak point pressure).",
+      explanation: "INDICATIONS:\n- Complex cases (e.g., post-prostatectomy).\n- Prior failed treatments.\n- Neurogenic suspicion.",
+      options: {
+        "Diagnosis confirmed": "Targeted Treatment",
+        "Unclear": "Re-evaluate History"
+      }
+    },
+    "Reassure and Monitor": {
+      text: "Educate on normal bladder function. Reassess if symptoms develop.",
+      explanation: "PREVENTION:\n- Limit caffeine/alcohol.\n- Timed voiding (q2-3h).\n- Pelvic floor exercises.",
+      options: {
+        "Symptoms develop": "Type Evaluation",
+        "Asymptomatic": "Annual Screening"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Urinary Retention--------------------
+  "Urinary Retention": {
+    start: {
+      text: "Is the urinary retention acute (sudden onset) or chronic (gradual/progressive)?",
+      explanation: "Acute retention presents with severe discomfort and inability to void, while chronic retention may be asymptomatic or show overflow incontinence. RED FLAG: Acute retention with fever suggests infection requiring urgent decompression.",
+      options: {
+        "Acute": "Acute Retention Management",
+        "Chronic": "Chronic Retention Evaluation"
+      }
+    },
+
+    // Acute Retention Pathway
+    "Acute Retention Management": {
+      text: "Immediate bladder decompression via urethral catheterization. Consider suprapubic (SP) catheter if urethral access fails or contraindicated (stricture, trauma).",
+      explanation: "CRITICAL ACTION:\n- Urethral Foley preferred first-line (16-18Fr).\n- SP catheter if urethral injury suspected or anatomical obstruction.\n- No need for gradual decompression; empty bladder completely.",
+      options: {
+        "Successful decompression": "Post-Decompression Evaluation",
+        "Failed urethral catheterization": "Suprapubic Catheter Placement"
+      }
+    },
+    "Suprapubic Catheter Placement": {
+      text: "Place SP catheter under ultrasound guidance if available. Consult urology if unsuccessful.",
+      explanation: "NOTE: SP catheters preferred for long-term drainage (>2 weeks) to reduce urethral complications. Contraindicated in uncorrected bleeding disorders or bladder cancer.",
+      options: {
+        "Successful": "Post-Decompression Evaluation",
+        "Unsuccessful": "Urology Consult"
+      }
+    },
+    "Post-Decompression Evaluation": {
+      text: "Assess for infection (fever, leukocytosis), renal function, and precipitating factors (medications, constipation, recent surgery).",
+      explanation: "KEY TESTS:\n- Urinalysis/culture (post-catheter).\n- Basic metabolic panel (check for post-obstructive diuresis).\n- PSA if >50y/o (after 48h to avoid false elevation).",
+      options: {
+        "Infection present": "Antibiotics + Admission",
+        "No infection": "Outpatient Management"
+      }
+    },
+
+    // Chronic Retention Pathway
+    "Chronic Retention Evaluation": {
+      text: "Measure post-void residual (PVR) volume. Evaluate for causes: BPH, neurogenic bladder, medications, or urethral stricture.",
+      explanation: "DIAGNOSTIC CLUES:\n- PVR >300mL suggests significant retention.\n- Neurologic exam (sacral reflexes, sensation).\n- Review medications (anticholinergics, opioids).",
+      options: {
+        "BPH suspected": "BPH Workup",
+        "Neurogenic bladder suspected": "Neurologic Evaluation",
+        "Medication-induced": "Medication Review"
+      }
+    },
+    "BPH Workup": {
+      text: "Perform DRE, PSA, and uroflowmetry. Consider urodynamics if diagnosis unclear.",
+      explanation: "BPH FEATURES:\n- Enlarged prostate on DRE (though size ≠ obstruction).\n- Qmax <12mL/s on uroflowmetry.\n- Rule out prostate cancer if PSA elevated.",
+      options: {
+        "Confirmed BPH": "BPH Treatment",
+        "Unclear diagnosis": "Urodynamics Referral"
+      }
+    },
+    "BPH Treatment": {
+      text: "Start alpha-blocker (tamsulosin) for immediate symptom relief. Add 5-ARI (finasteride) if prostate >40g for long-term reduction.",
+      explanation: "MEDICATION NOTES:\n- Alpha-blockers improve flow in 48h (SE: dizziness, retrograde ejaculation).\n- 5-ARIs reduce prostate volume over 6mo (SE: sexual dysfunction).",
+      options: {
+        "Effective": "Monitor PVR",
+        "Ineffective": "Surgical Referral"
+      }
+    },
+    "Surgical Referral": {
+      text: "Refer for TURP (gold standard) or laser enucleation if medical therapy fails or complications arise (recurrent retention, stones).",
+      explanation: "TIMING: Wait ≥30 days post-retention to reduce bleeding risk. Avoid surgery if detrusor underactivity confirmed on urodynamics.",
+      options: {
+        "Surgery completed": "Post-TURP Follow-up",
+        "High-risk patient": "Minimally Invasive Options"
+      }
+    },
+
+    // Shared Pathways
+    "Voiding Trial": {
+      text: "After 3-7 days of catheterization, remove catheter and assess voiding ability. Measure PVR.",
+      explanation: "SUCCESS PREDICTORS:\n- Age <65y, drained volume <1L.\n- Avoid trial if high PVR (>200mL) persists.",
+      options: {
+        "Successful (PVR <100mL)": "Discharge with Follow-up",
+        "Failed (PVR >200mL)": "Long-term Catheter or CIC"
+      }
+    },
+    "Long-term Catheter or CIC": {
+      text: "For chronic retention: Indwelling catheter or clean intermittent catheterization (CIC) q4-6h.",
+      explanation: "CIC ADVANTAGES:\n- Lower infection risk than indwelling catheters.\n- Preserves bladder function.\n- Requires patient/caregiver training.",
+      options: {
+        "Tolerates CIC": "CIC Regimen",
+        "Cannot perform CIC": "Indwelling Catheter"
+      }
+    },
+    "Neurogenic Bladder Management": {
+      text: "Treat based on urodynamics: Anticholinergics for overactivity, CIC for underactivity.",
+      explanation: "CAUTION: Anticholinergics may worsen retention if outlet obstruction coexists. Always rule out BPH first.",
+      options: {
+        "Stable": "Regular PVR Checks",
+        "Worsening": "Re-evaluate"
+      }
+    },
+    "Medication Review": {
+      text: "Discontinue offending drugs (anticholinergics, opioids, decongestants) if possible.",
+      explanation: "COMMON CULPRITS:\n- Anticholinergics (oxybutynin).\n- Opioids (constipation + detrusor inhibition).\n- Alpha-agonists (pseudoephedrine).",
+      options: {
+        "Improved": "Monitor Symptoms",
+        "No improvement": "Re-evaluate for Other Causes"
+      }
+    }
+  }
+  
+  };
+
+
+
+
+
+
+
+    let currentSymptom = null;
+    let currentQuestion = "start";
+
+    function playClick() {
+      const sound = document.getElementById("click-sound");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+      }
+    }
+
+    function startSymptom(symptom) {
+      currentSymptom = symptom;
+      currentQuestion = "start";
+      document.getElementById("symptom-title").textContent = symptom;
+      showQuestion();
+
+      document.getElementById("main-page").style.display = "none";
+      document.getElementById("question-page").style.display = "block";
+      document.getElementById("headline").style.display = "none";
+      document.getElementById("subheadline").style.display = "none";
+    }
+
+    // NEW/MODIFIED: This function is updated to show images.
+    function showQuestion() {
+      const symptomQuestions = questions[currentSymptom];
+      if (!symptomQuestions || !symptomQuestions[currentQuestion]) {
+        alert("Invalid symptom or question flow.");
+        return;
+      }
+
+      const questionData = symptomQuestions[currentQuestion];
+      const imageContainer = document.getElementById("question-image-container");
+      
+      // Clear previous image
+      imageContainer.innerHTML = "";
+
+      // If an image path exists, create and display the image
+      if (questionData.image) {
+        const img = document.createElement("img");
+        img.src = questionData.image;
+        img.alt = questionData.text; // for accessibility
+        img.className = "question-image";
+        imageContainer.appendChild(img);
+      }
+
+      document.getElementById("question").textContent = questionData.text;
+      document.getElementById("footer").textContent = questionData.explanation || "No explanation available.";
+
+      const buttons = Object.keys(questionData.options)
+        .map(option =>
+          `<button class='option-button' onclick="playClick(); nextQuestion('${option}')">${option}</button>`)
+        .join("");
+      document.querySelector(".button-container").innerHTML = buttons;
+    }
+
+    function nextQuestion(answer) {
+      const symptomQuestions = questions[currentSymptom];
+      const current = symptomQuestions[currentQuestion];
+      if (!current || !current.options[answer]) {
+        alert("Invalid choice.");
+        return;
+      }
+
+      const next = current.options[answer];
+      // Check if the next step is another question or a final diagnosis
+      if (symptomQuestions[next] && symptomQuestions[next].options) {
+          currentQuestion = next;
+          showQuestion();
+      } else {
+          // This handles both terminal nodes that are defined as full objects
+          // and those that are simple strings (your original implementation)
+          if (symptomQuestions[next]) {
+              currentQuestion = next;
+              showQuestion(); // This will display the final diagnosis with its image
+          } else {
+              // This is a fallback for legacy string-only terminals
+              document.getElementById("question").textContent = next;
+              document.getElementById("footer").textContent = "End of diagnostic path.";
+              document.querySelector(".button-container").innerHTML =
+                `<button class='option-button' onclick="playClick(); restart()">Restart</button>`;
+              document.getElementById("question-image-container").innerHTML = ""; // Clear image
+          }
+      }
+    }
+
+
+    function restart() {
+      document.getElementById("main-page").style.display = "flex";
+      document.getElementById("question-page").style.display = "none";
+      document.getElementById("headline").style.display = "block";
+      document.getElementById("subheadline").style.display = "block";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      sidebar.classList.toggle("active");
+      overlay.style.display = sidebar.classList.contains("active") ? "block" : "none";
+    }
+
+    document.addEventListener("click", function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const toggleBtn = document.querySelector(".toggle-button");
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnToggle = toggleBtn.contains(event.target);
+      if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains("active")) {
+        toggleSidebar();
+      }
+    });
+
+    let startX = 0;
+    document.addEventListener("touchstart", function(e) {
+      if (e.touches.length === 1) { startX = e.touches[0].clientX; }
+    });
+    document.addEventListener("touchend", function(e) {
+      const sidebar = document.getElementById("sidebar");
+      const diff = e.changedTouches[0].clientX - startX;
+      if (diff > 50 && sidebar.classList.contains("active")) { toggleSidebar(); }
+    });
+
+    function goHome() {
+      window.location.href = "../index.html";
+    }
+
+    function navigateTo(page) {
+      window.location.href = page;
+      const loadingScreen = document.querySelector('.loading');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'flex';
+        setTimeout(() => { window.location.href = page; }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Endocrinological Symptoms</title>
+  <link rel="stylesheet" href="../style/regional_style.css" type="text/css" media="all" />
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="nav-title">ALGOMED <span>ENDOCRINOLOGY</span></div>
+  <button class="toggle-button" onclick="playClick(); toggleSidebar()">☰</button>
+</nav>
+
+<!-- Overlay for click outside -->
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <ul>
+      <li onclick="navigateTo('respiratory.html')">Respiratory</li>
+      <li onclick="navigateTo('cardiovascular.html')">Cardiovascular</li>
+      <li onclick="navigateTo('git.html')">Gastroenterology</li>
+      <li onclick="navigateTo('gynecology.html')">Gynecology</li>
+      <li onclick="navigateTo('hepatology.html')">Hepatology</li>
+      <li onclick="navigateTo('nephrology.html')">Nephrology</li>
+      <li onclick="navigateTo('obstetric.html')">Obstetric</li>
+      <li onclick="navigateTo('rheumatology.html')">Rheumatology</li>
+      <li onclick="navigateTo('hematology.html')">Hematology</li>
+      <li onclick="navigateTo('pediatric.html')">Pediatric</li>
+      <li onclick="navigateTo('ophthalmology.html')">Ophthalmology</li>
+      <li onclick="navigateTo('neurology.html')">Neurology</li>
+      <li onclick="navigateTo('dermatology.html')">Dermatology</li>
+      <li onclick="navigateTo('ent.html')">ENT</li>
+      <li onclick="navigateTo('psychiatric.html')">Psychiatric</li>
+      <li onclick="navigateTo('General.html')">General</li>
+    </ul>
+<button class="sidebar-about-button" onclick="navigateTo('../about.html')">About Us</button>
+  </aside>
+
+  <!-- Audio -->
+  <audio id="click-sound" src="../sounds/click_sound.wav" preload="auto"></audio>
+
+  <!-- Headlines Outside Container -->
+  <h3 id="headline">Select a Primary Symptom</h3>
+<p id="subheadline">Choose from the list below to begin diagnosis.</p>
+
+  <!-- Main Page -->
+  <div id="main-page" class="container">
+    <button class="symptom-button" onclick="playClick(); startSymptom('Polyuria')">Polyuria</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Short Stature')">Short Stature</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Hyperosmolar Hyperglycemic State (HHS)')">Hyperosmolar Hyperglycemic State (HHS)</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('ABG Analysis')">ABG Analysis</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Hypercalcemia')">Hypercalcemia</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Hypocalcemia')">Hypocalcemia</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Hyponatremia Management')">Hyponatremia Management</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Hirsutism')">Hirsutism</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Gynecomastia')">Gynecomastia</button>
+   
+    
+  </div>
+
+  <!-- Question Page -->
+  <div id="question-page">
+  <div class="title" id="symptom-title">Symptom Diagnostic</div>
+  <div id="question-image-container"></div>
+  <div id="question" class="question"></div>
+  <div class="button-container"></div>
+  <div id="footer" class="footer"></div>
+</div>
+
+  <!-- Home Button -->
+  <button class="home-button" onclick="goHome()">
+  <img src="../bodyicons/home_button.png" alt="Home" class="home-icon">
+  <span class="sr-only">Home</span>
+</button>
+  
+  
+  <!-- Script -->
+  <script>
+  const questions = {
+    
+    // Polyuria 
+    "Polyuria": {
+      start: {
+        text: "Is urine output >3L/24h?",
+        explanation: "Polyuria is defined as excessive urine production (>3L/24h).",
+        options: {
+          yes: "Check plasma glucose",
+          no: "Normal urine output, consider other diagnoses."
+        }
+      },
+      "Check plasma glucose": {
+        text: "Is plasma glucose elevated?",
+        explanation: "Hyperglycemia suggests diabetes mellitus as the cause of polyuria.",
+        options: {
+          yes: "Diabetes mellitus diagnosis",
+          no: "Measure urine osmolality"
+        }
+      },
+      
+      "Diabetes mellitus diagnosis": {
+        text: "Diabetes mellitus (Confirm with check Fasting Blood sugar and/or HbA1c).",
+        explanation: "Treat underlying diabetes with insulin/oral agents and more evaluation",
+        options: {
+          "Restart Algorithm": "start",  "Return to Symptoms": "exit"
+        }
+      },  
+
+      "Measure urine osmolality": {
+        text: "Is urine osmolality <250 mOsm/L?",
+        explanation: "Low osmolality suggests water diuresis (e.g., diabetes insipidus or polydipsia).",
+        options: {
+          yes: "Check serum sodium",
+          no: "Evaluate solute diuresis causes"
+        }
+      },
+      "Evaluate solute diuresis causes": {
+        text: "Normal/high urine osmolality (>300 mOsm/L) suggests solute diuresis.",
+        explanation: "Causes include diuretics, mannitol, contrast agents, or urea diuresis.",
+        options: {"Restart Algorithm": "start",  "Return to Symptoms": "exit"} // Terminal node
+      },
+      "Check serum sodium": {
+        text: "Is serum sodium normal or low?",
+        explanation: "Hyponatremia suggests psychogenic polydipsia; normal sodium suggests diabetes insipidus.",
+        options: {
+          "Normal": "Water deprivation test",
+          "Low": "Psychogenic polydipsia likely"
+        }
+      },
+      "Psychogenic polydipsia likely": {
+        text: "Low serum sodium with dilute urine suggests psychogenic polydipsia.",
+        explanation: "Water restriction and behavioral interventions are key.",
+        options: {"Restart Algorithm": "start",  "Return to Symptoms": "exit"} // Terminal node
+      },
+      "Water deprivation test": {
+        text: "Perform water deprivation test followed by desmopressin.",
+        explanation: "Differentiates cranial vs nephrogenic diabetes insipidus.",
+        options: {
+          "Normal urine osmolality after desmopressin": "Cranial diabetes insipidus",
+          "Low urine osmolality after desmopressin": "Nephrogenic diabetes insipidus"
+        }
+      },
+      "Cranial diabetes insipidus": {
+        text: "Responds to desmopressin - indicates cranial (central) diabetes insipidus.",
+        explanation: "Treat with desmopressin and address underlying pituitary/hypothalamic cause.",
+        options: {"Restart Algorithm": "start",  "Return to Symptoms": "exit"} // Terminal node
+      },
+      "Nephrogenic diabetes insipidus": {
+        text: "No response to desmopressin - indicates nephrogenic diabetes insipidus.",
+        explanation: "Consider lithium, hypercalcemia, or genetic causes. Treat with thiazides and NSAIDs.",
+        options: {
+           "Restart Algorithm": "start",
+           "Return to Symptoms": "exit"} // Terminal node
+      }
+    }, 
+    
+   // Short stature
+   
+    "Short Stature": {
+      start: {
+        text: "Perform history & physical examination.",
+        explanation: "Look for dysmorphic features, chronic illness signs, or nutritional deficiencies.",
+        options: {
+          "Proceed": "Calculate mid-parental height"
+        }
+      },
+      "Calculate mid-parental height": {
+        text: "Calculate mid-parental height and assess growth potential.",
+        explanation: "Compare patient's height percentile to genetic potential.",
+        options: {
+          "Proceed": "Assess growth rate"
+        }
+      },
+      "Assess growth rate": {
+        text: "Is growth rate <4 cm/year?",
+        explanation: "Abnormal growth velocity suggests pathological cause.",
+        options: {
+          yes: "Assess bone age",
+          no: "Consider constitutional delay or familial short stature"
+        }
+      },
+      "Consider constitutional delay or familial short stature": {
+        text: "Normal variant likely (familial or constitutional delay).",
+        explanation: "Reassure if consistent with family history and puberty timing.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Assess bone age": {
+        text: "Is bone age delayed compared to chronological age?",
+        explanation: "Delayed bone age suggests hormonal deficiency/chronic illness.",
+        options: {
+          "Delayed": "Check thyroid function",
+          "Normal for height": "Consider non-endocrine causes",
+          "Normal for age": "Consider Turner syndrome (if female)"
+        }
+      },
+      "Consider Turner syndrome (if female)": {
+        text: "Evaluate for Turner syndrome (karyotype if indicated).",
+        explanation: "Look for webbed neck, shield chest, short 4th metacarpals.",
+        options: {
+          "Confirmed": "Refer to endocrinology for growth hormone/estrogen therapy",
+          "Ruled out": "Check thyroid function"
+        }
+      },
+      "Check thyroid function": {
+        text: "Thyroid function test results:",
+        explanation: "Hypothyroidism is a common reversible cause.",
+        options: {
+          "Low T4, High TSH": "Primary hypothyroidism",
+          "Normal": "Evaluate growth hormone axis"
+        }
+      },
+      "Primary hypothyroidism": {
+        text: "Diagnosis: Primary hypothyroidism.",
+        explanation: "Treat with L-thyroxine replacement and monitor growth.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Evaluate growth hormone axis": {
+        text: "Assess GH secretion (IGF-1, IGFBP-3, provocative tests).",
+        explanation: "GH deficiency requires provocative testing for diagnosis.",
+        options: {
+          "Abnormal": "Growth hormone deficiency",
+          "Normal": "Consider non-GH causes"
+        }
+      },
+      "Growth hormone deficiency": {
+        text: "Diagnosis: Growth hormone deficiency.",
+        explanation: "Refer to endocrinology for GH therapy. Consider pituitary MRI.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Consider non-GH causes": {
+        text: "Evaluate for:",
+        explanation: "Psychosocial deprivation, chronic disease, skeletal dysplasias.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      }
+    },
+    
+    
+    <!-- Full HHS Treatment Algorithm -->
+
+  "Hyperosmolar Hyperglycemic State (HHS)": {
+    start: {
+      text: "Suspect HHS in patient with hyperglycemia and altered mental status.",
+      explanation: "HHS typically presents with severe hyperglycemia, hyperosmolality, minimal ketosis, and altered sensorium.",
+      options: {
+        "Proceed": "Check capillary glucose and serum/urine ketones"
+      }
+    },
+    "Check capillary glucose and serum/urine ketones": {
+      text: "Is glucose ≥600 mg/dL and ketonuria/ketonemia minimal (<2+ or BOHB <3 mmol/L)?",
+      explanation: "Diagnostic criteria include glucose ≥600 mg/dL, serum osmolality >300 mOsm/kg, pH >7.3, bicarbonate >15 mEq/L, and minimal ketones.",
+      options: {
+        yes: "Check ABG, electrolytes, BUN, creatinine, CBC, ECG, cultures if indicated",
+        no: "Consider DKA or mixed DKA/HHS - refer to DKA guidelines"
+      }
+    },
+    "Check ABG, electrolytes, BUN, creatinine, CBC, ECG, cultures if indicated": {
+      text: "Begin initial resuscitation with IV fluids.",
+      explanation: "Start with 1 L of 0.9% NaCl over first hour unless contraindicated (e.g., heart failure). Monitor urine output and volume status closely.",
+      options: {
+        Proceed: "Calculate corrected serum sodium"
+      }
+    },
+    "Calculate corrected serum sodium": {
+      text: "Correct sodium for hyperglycemia (add 2 mEq/L for every 100 mg/dL above 100 mg/dL).",
+      explanation: "Hyperglycemia can lower measured sodium; correcting it gives a better estimate of true sodium levels.",
+      options: {
+        Proceed: "Monitor glucose and initiate insulin if needed"
+      }
+    },
+    "Monitor glucose and initiate insulin if needed": {
+      text: "If glucose remains >600–700 mg/dL after initial fluids, begin IV insulin at 0.05–0.1 units/kg/hr.",
+      explanation: "Continue IV fluids with 0.45% NaCl if glucose drops below 300 mg/dL and patient is stable.",
+      options: {
+        Proceed: "Monitor potassium every 1–2 hours"
+      }
+    },
+    "Monitor potassium every 1–2 hours": {
+      text: "Is potassium <5.3 mEq/L?",
+      explanation: "Replace K+ aggressively once level falls below 5.3 mEq/L to prevent hypokalemia.",
+      options: {
+        yes: "Add KCl to IV fluids",
+        no: "Continue current regimen"
+      }
+    },
+    "Add KCl to IV fluids": {
+      text: "Administer KCl 20–30 mEq/L in IV fluids.",
+      explanation: "Ensure adequate potassium replacement while continuing insulin and fluid therapy.",
+      options: {
+        Proceed: "Monitor glucose, osmolality, and electrolytes every 1–2 hours"
+      }
+    },
+    "Monitor glucose, osmolality, and electrolytes every 1–2 hours": {
+      text: "Is glucose decreasing by 50–75 mg/dL per hour?",
+      explanation: "Aim for gradual decline in glucose to avoid cerebral edema. Adjust insulin dose accordingly.",
+      options: {
+        yes: "Continue current therapy",
+        no: "Increase insulin rate or reassess IV access"
+      }
+    },
+    "Continue current therapy": {
+      text: "Maintain glucose between 150–250 mg/dL.",
+      explanation: "Once glucose reaches ~250 mg/dL, add dextrose to IV fluids to maintain target range.",
+      options: {
+        Proceed: "Transition to subcutaneous insulin when stable"
+      }
+    },
+    "Transition to subcutaneous insulin when stable": {
+      text: "Overlap SC insulin with IV insulin for 1–2 hours before discontinuing IV drip.",
+      explanation: "Use rapid-acting insulin before meals or long-acting insulin daily depending on clinical scenario.",
+      options: {
+        Proceed: "Reassess for underlying cause"
+      }
+    },
+    "Reassess for underlying cause": {
+      text: "Evaluate for precipitating events (infection, MI, stroke, medication noncompliance).",
+      explanation: "Up to 50% of HHS cases are triggered by an underlying illness.",
+      options: {
+        "Infection suspected": "Obtain cultures and start empiric antibiotics",
+        "MI/CVA suspected": "Order ECG, troponins, head imaging as needed",
+        "No clear trigger": "Continue supportive care and monitor"
+      }
+    },
+    "Obtain cultures and start empiric antibiotics": {
+      text: "Treat suspected infection appropriately.",
+      explanation: "Antibiotic choice depends on local resistance patterns and clinical suspicion.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Order ECG, troponins, head imaging as needed": {
+      text: "Manage acute cardiovascular or neurological events as appropriate.",
+      explanation: "HHS often coexists with serious comorbidities requiring urgent attention.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Continue supportive care and monitor": {
+      text: "Provide ongoing hydration, electrolyte support, and reevaluate frequently.",
+      explanation: "Most patients require ICU-level monitoring due to high mortality risk.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+
+
+
+  "ABG Analysis": {
+    start: {
+      text: "Is pH <7.35 or >7.45?",
+      explanation: "Normal pH range is 7.35-7.45. Values outside this indicate acidemia (<7.35) or alkalemia (>7.45).",
+      options: {
+        "<7.35": "Acidosis",
+        ">7.45": "Alkalosis",
+        "Normal": "Normal pH, no acid-base disorder"
+      }
+    },
+    
+    "Acidosis": {
+      text: "Is PaCO2 >45 mmHg?",
+      explanation: "Elevated PaCO2 suggests respiratory acidosis. Normal or low PaCO2 suggests metabolic acidosis.",
+      options: {
+        ">45 mmHg": "Respiratory acidosis",
+        "≤45 mmHg": "Metabolic acidosis"
+      }
+    },
+    
+    "Respiratory acidosis": {
+      text: "Check for metabolic compensation (expected HCO3 increase)",
+      explanation: "Acute: HCO3 increases 1 mEq/L per 10 mmHg PaCO2 rise. Chronic: HCO3 increases 4 mEq/L per 10 mmHg PaCO2 rise.",
+      options: {
+        "Compensation appropriate": "Pure respiratory acidosis",
+        "HCO3 lower than expected": "Mixed respiratory + metabolic acidosis",
+        "HCO3 higher than expected": "Mixed respiratory acidosis + metabolic alkalosis",
+        "Calculate anion gap": "Calculate anion gap"
+      }
+    },
+    
+    "Metabolic acidosis": {
+      text: "Calculate anion gap: Na - (Cl + HCO3). Is it elevated (>12 mEq/L)?",
+      explanation: "Normal anion gap is 6-12 mEq/L. Elevated gap suggests specific acid-producing disorders.",
+      options: {
+        ">12 mEq/L": "Elevated anion gap metabolic acidosis",
+        "≤12 mEq/L": "Normal anion gap metabolic acidosis"
+      }
+    },
+    
+    "Elevated anion gap metabolic acidosis": {
+      text: "Consider MUDPILES causes:",
+      explanation: "Methanol, Uremia, DKA, Propylene glycol, Iron/Isoniazid, Lactic acidosis, Ethylene glycol, Salicylates",
+      options: {
+        "Check clinical context": "Evaluate for specific causes based on history and labs",
+        "Calculate delta gap": "Assess for mixed disorders"
+      }
+    },
+    
+    "Normal anion gap metabolic acidosis": {
+      text: "Consider HARD-ASS causes:",
+      explanation: "Hyperalimentation, Addison's, RTA, Diarrhea, Acetazolamide, Spironolactone, Saline infusion",
+      options: {
+        "Check urine anion gap": "Differentiate RTA types",
+        "Evaluate clinical context": "Assess for other causes"
+      }
+    },
+    
+    "Calculate delta gap": {
+      text: "Delta gap = (Anion gap - 12) + HCO3. Is it >26 or <22?",
+      explanation: "Normal range 22-26. >26 suggests concurrent metabolic alkalosis, <22 suggests concurrent non-gap metabolic acidosis.",
+      options: {
+        ">26": "Mixed anion gap acidosis + metabolic alkalosis",
+        "<22": "Mixed anion gap acidosis + non-gap acidosis",
+        "22-26": "Pure anion gap acidosis"
+      }
+    },
+    
+    "Check urine anion gap": {
+      text: "Urine anion gap = (Urine Na + Urine K) - Urine Cl. Is it positive?",
+      explanation: "Positive gap suggests renal cause (RTA). Negative gap suggests GI cause (diarrhea).",
+      options: {
+        "Positive": "Renal tubular acidosis likely",
+        "Negative": "GI losses (e.g., diarrhea) likely"
+      }
+    },
+    
+    // Alkalosis branch would continue similarly
+    // Additional nodes for respiratory/metabolic alkalosis would follow same pattern
+    
+    "Restart Algorithm": {
+      text: "Would you like to restart the ABG analysis algorithm?",
+      options: {
+        "Yes": "start",
+        "No": "exit"
+      }
+    }
+  },
+  
+  
+  
+     // Hypercalcemia Approach 
+  "Hypercalcemia": {
+    start: {
+      text: "Is total calcium >10.5 mg/dL?",
+      explanation: "Normal calcium range is 8.5-10.5 mg/dL. Values above indicate hypercalcemia.",
+      options: {
+        "Yes": "Exclude contributing medications",
+        "No": "Normal calcium level, consider other diagnoses"
+      }
+    },
+    
+    "Exclude contributing medications": {
+      text: "Review for medications that may cause hypercalcemia:",
+      explanation: "Thiazides, lithium, vitamin D/A supplements, calcium-containing antacids, estrogen/SERMs, theophylline.",
+      options: {
+        "Medications identified": "Discontinue if possible and recheck calcium",
+        "No contributing medications": "Measure PTH level"
+      }
+    },
+    
+    "Measure PTH level": {
+      text: "What is the parathyroid hormone (PTH) level?",
+      explanation: "PTH helps differentiate parathyroid-related (high/normal PTH) from non-parathyroid causes (low PTH).",
+      options: {
+        "Normal or High": "PTH-dependent hypercalcemia",
+        "Low": "PTH-independent hypercalcemia"
+      }
+    },
+    
+    "PTH-dependent hypercalcemia": {
+      text: "Check 24-hour urinary calcium excretion",
+      explanation: "Differentiates primary/tertiary hyperparathyroidism from familial hypocalciuric hypercalcemia (FHH).",
+      options: {
+        "Low urinary calcium": "Familial hypocalciuric hypercalcemia (FHH)",
+        "Normal/High urinary calcium": "Primary or tertiary hyperparathyroidism"
+      }
+    },
+    
+    "Familial hypocalciuric hypercalcemia (FHH)": {
+      text: "Familial hypocalciuric hypercalcemia likely (Ca/Cr clearance ratio <0.01).",
+      explanation: "Benign condition, usually requires no treatment. Genetic counseling may be considered.",
+      options: {
+        "Monitor": "Continue routine monitoring",
+        "Genetic testing": "Consider for family members",
+        "Restart Algorithm": "start"
+      }
+    },
+    
+    "Primary or tertiary hyperparathyroidism": {
+      text: "Evaluate for surgical indications:",
+      explanation: "Consider parathyroidectomy if any of: Ca>12, marked hypercalciuria, nephrolithiasis, renal impairment, Z-score<-2.5, age<50.",
+      options: {
+        "Surgical candidate": "Refer to endocrine surgery",
+        "Not surgical candidate": "Medical management with cinacalcet or bisphosphonates"
+      }
+    },
+    
+    "PTH-independent hypercalcemia": {
+      text: "Evaluate for PTH-independent causes:",
+      explanation: "Malignancy, granulomatous diseases, vitamin D intoxication, or bone lysis.",
+      options: {
+        "Check PTHrP and 1,25 Vitamin D": "Evaluate for malignancy or granulomatous disease",
+        "Check for bone lesions": "Evaluate for myeloma or metastatic disease"
+      }
+    },
+    
+    "Evaluate for malignancy or granulomatous disease": {
+      text: "Based on lab results:",
+      explanation: "PTHrP elevated in malignancy. 1,25 Vit D elevated in granulomatous diseases (sarcoid, TB).",
+      options: {
+        "PTHrP elevated": "Malignancy-associated hypercalcemia",
+        "1,25 Vit D elevated": "Granulomatous disease (sarcoidosis, TB)",
+        "Both normal": "Consider vitamin D intoxication or other causes"
+      }
+    },
+    
+    "Malignancy-associated hypercalcemia": {
+      text: "Malignancy identified as cause of hypercalcemia.",
+      explanation: "Treat underlying cancer. Acute management includes IV fluids, bisphosphonates, calcitonin.",
+      options: {
+        "Acute management": "IV fluids, bisphosphonates, calcitonin",
+        "Long-term management": "Treat underlying malignancy"
+      }
+    },
+    
+    "Granulomatous disease (sarcoidosis, TB)": {
+      text: "Granulomatous disease causing hypercalcemia.",
+      explanation: "Treat underlying condition. Consider glucocorticoids for sarcoidosis.",
+      options: {
+        "Start treatment": "Glucocorticoids for sarcoid, antituberculars for TB",
+        "Monitor calcium": "Repeat calcium after treatment initiation"
+      }
+    },
+    
+    "Restart Algorithm": {
+      text: "Would you like to restart the hypercalcemia algorithm?",
+      options: {
+        "Yes": "start",
+        "No": "exit"
+      }
+    }
+  }, 
+  
+  
+  
+  
+  // Hyponatremia Management Approach
+  "Hyponatremia Management": {
+    start: {
+      text: "What is the serum sodium level?",
+      explanation: "Hyponatremia is classified as mild (130-134 mmol/L), moderate (120-129 mmol/L), or severe (<120 mmol/L).",
+      options: {
+        "120-134 mmol/L (Mild-Moderate)": "Mild-moderate hyponatremia",
+        "<120 mmol/L (Severe)": "Severe hyponatremia",
+        "Normal (>134 mmol/L)": "No hyponatremia, consider other diagnoses"
+      }
+    },
+    
+    "Mild-moderate hyponatremia": {
+      text: "Is the patient symptomatic?",
+      explanation: "Symptoms may include nausea, headache, confusion, or seizures (in severe cases).",
+      options: {
+        "Asymptomatic": "Asymptomatic management",
+        "Mild symptoms": "Symptomatic management",
+        "Severe symptoms (seizures, coma)": "Severe hyponatremia"
+      }
+    },
+    
+    "Asymptomatic management": {
+      text: "Assess volume status:",
+      explanation: "Determining volume status guides appropriate fluid management.",
+      options: {
+        "Hypovolemic": "Hypovolemic hyponatremia",
+        "Euvolemic": "Euvolemic hyponatremia",
+        "Hypervolemic": "Hypervolemic hyponatremia"
+      }
+    },
+    
+    "Hypovolemic hyponatremia": {
+      text: "Hypovolemic hyponatremia management:",
+      explanation: "Treat underlying dehydration while correcting sodium gradually.",
+      options: {
+        "Oral rehydration possible": "Oral rehydration solution (ORS)",
+        "IV fluids needed": "0.9% NaCl with dextrose",
+        "Calculate fluid deficit": "Use formula: 3.9 x weight(kg) x (target Na - current Na)"
+      }
+    },
+    
+    "Euvolemic hyponatremia": {
+      text: "Euvolemic hyponatremia management:",
+      explanation: "Most commonly SIADH. Fluid restriction is mainstay.",
+      options: {
+        "Fluid restriction": "Limit to 50-70% maintenance",
+        "Consider salt tablets": "If fluid restriction insufficient",
+        "Evaluate for SIADH": "Check urine osmolality, sodium"
+      }
+    },
+    
+    "Hypervolemic hyponatremia": {
+      text: "Hypervolemic hyponatremia management:",
+      explanation: "Seen in CHF, cirrhosis, nephrotic syndrome. Treat underlying condition.",
+      options: {
+        "Fluid restriction": "Limit to 1-1.5 L/day",
+        "Diuretics": "Loop diuretics with salt replacement",
+        "Treat underlying cause": "CHF/cirrhosis/nephrosis management"
+      }
+    },
+    
+    "Symptomatic management": {
+      text: "Mildly symptomatic (no seizures/altered consciousness):",
+      explanation: "Can often be managed with oral hypertonic saline if able to take orally.",
+      options: {
+        "Oral hypertonic saline": "3-5 mmol/kg/day in 4-6 divided doses",
+        "IV correction if needed": "0.9% NaCl with goal <12 mmol/24hr correction",
+        "Monitor closely": "Frequent sodium checks (q4-6h initially)"
+      }
+    },
+    
+    "Severe hyponatremia": {
+      text: "Severe hyponatremia with seizures/altered consciousness:",
+      explanation: "Requires urgent treatment with 3% NaCl to raise Na by 4-6 mmol/L.",
+      options: {
+        "Immediate 3% NaCl bolus": "3-5 ml/kg over 15-30 minutes",
+        "Calculate total deficit": "Use formula for 48-hour correction",
+        "ICU monitoring": "Neurologic monitoring, frequent labs"
+      }
+    },
+    
+    "3% NaCl administration": {
+      text: "After initial 3% NaCl bolus:",
+      explanation: "Target correction rate: no more than 2 mmol/L/hr initially, 12 mmol/24hr total.",
+      options: {
+        "Repeat bolus if needed": "If ongoing seizures/coma",
+        "Transition to slow correction": "0.9% NaCl for remainder of 48-hour correction",
+        "Monitor for ODS": "Watch for overcorrection (risk of osmotic demyelination)"
+      }
+    },
+    
+    "Correction calculation": {
+      text: "Calculate total sodium deficit:",
+      explanation: "Na deficit (mmol) = 0.6 x weight(kg) x (target Na - current Na)",
+      options: {
+        "Example calculation": "70kg patient, Na 115 → 0.6x70x(125-115) = 420 mmol deficit",
+        "Fluid selection": "Choose NS or 3% NaCl based on urgency",
+        "Monitoring plan": "Check Na q2h during acute correction"
+      }
+    },
+    
+    "Restart Algorithm": {
+      text: "Would you like to restart the hyponatremia algorithm?",
+      options: {
+        "Yes": "start",
+        "No": "exit"
+      }
+    }
+  },
+  
+  // Hypocalcemia approach 
+  "Hypocalcemia": {
+    start: {
+      text: "Is the patient symptomatic (paresthesias, tetany, seizures, prolonged QT on ECG)?",
+      explanation: "Symptom assessment guides urgency of intervention. RED FLAG: Tetany or seizures require immediate IV calcium replacement.",
+      options: {
+        yes: "Symptomatic Hypocalcemia",
+        no: "Asymptomatic Hypocalcemia"
+      }
+    },
+
+    // Symptomatic Pathway
+    "Symptomatic Hypocalcemia": {
+      text: "Administer IV calcium gluconate (1-2g over 10-20 minutes) for acute symptoms.",
+      explanation: "CRITICAL: Monitor ECG for QT prolongation. Use central line if available (peripheral extravasation causes tissue necrosis).",
+      options: {
+        "Symptoms resolve": "Identify Underlying Cause",
+        "Symptoms persist": "Repeat IV Calcium + Magnesium Check"
+      }
+    },
+    "Repeat IV Calcium + Magnesium Check": {
+      text: "Re-administer calcium and measure serum magnesium (target Mg >2.0 mg/dL).",
+      explanation: "KEY POINT: Hypomagnesemia impairs PTH secretion/action. Correct Mg deficiency with 2g MgSO4 IV over 1 hour if levels are low.",
+      options: {
+        "Magnesium low": "Correct Hypomagnesemia",
+        "Magnesium normal": "Identify Underlying Cause"
+      }
+    },
+    "Correct Hypomagnesemia": {
+      text: "Give IV magnesium sulfate (2-4g) and recheck levels.",
+      explanation: "NOTE: Chronic hypomagnesemia often requires oral supplementation (e.g., magnesium oxide 400mg BID).",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Workup": "Identify Underlying Cause"
+      }
+    },
+    "Identify Underlying Cause": {
+      text: "Order labs: Ionized calcium, phosphate, PTH, 25-vitamin D, magnesium, creatinine.",
+      explanation: "CLINICAL CLUES: Low PTH suggests hypoparathyroidism; high PTH with hyperphosphatemia indicates renal failure.",
+      options: {
+        "Low PTH": "Hypoparathyroidism Workup",
+        "High PTH": "Secondary Hyperparathyroidism",
+        "Normal PTH": "Vitamin D or Malabsorption"
+      }
+    },
+    "Hypoparathyroidism Workup": {
+      text: "Assess for postsurgical (thyroidectomy), autoimmune, or genetic causes (DiGeorge).",
+      explanation: "DIAGNOSIS: Low PTH + hyperphosphatemia. Chronic management requires calcitriol (0.25-2 mcg/day) + calcium supplements.",
+      options: {
+        "Postsurgical": "Chronic Replacement Therapy",
+        "Idiopathic": "Autoimmune/Genetic Evaluation"
+      }
+    },
+    "Chronic Replacement Therapy": {
+      text: "Start oral calcium (1-3g/day) + calcitriol. Monitor urine calcium to avoid nephrolithiasis.",
+      explanation: "GOAL: Maintain serum calcium in low-normal range (8.0-8.5 mg/dL) to avoid hypercalciuria.",
+      options: {
+        "Restart Algorithm": "start",
+        "Endocrinology Referral": "exit"
+      }
+    },
+    "Autoimmune/Genetic Evaluation": {
+      text: "Check for polyglandular syndromes (e.g., adrenal antibodies) or genetic testing.",
+      explanation: "ASSOCIATIONS: Mucocutaneous candidiasis (APECED syndrome), short stature (pseudohypoparathyroidism).",
+      options: {
+        "Restart Algorithm": "start",
+        "Specialist Referral": "exit"
+      }
+    },
+    "Secondary Hyperparathyroidism": {
+      text: "Evaluate renal function (creatinine, eGFR). If normal, consider vitamin D deficiency.",
+      explanation: "RENAL DISEASE: Hyperphosphatemia suppresses calcium. Treat with phosphate binders + calcitriol.",
+      options: {
+        "Renal failure": "Renal Management",
+        "Normal renal function": "Vitamin D Deficiency"
+      }
+    },
+    "Renal Management": {
+      text: "Initiate phosphate binders (e.g., sevelamer) and calcitriol. Nephrology referral.",
+      explanation: "CAUTION: Avoid calcium-based binders if vascular calcification is present.",
+      options: {
+        "Restart Algorithm": "start",
+        "Monitor PTH/Calcium": "exit"
+      }
+    },
+    "Vitamin D Deficiency": {
+      text: "Measure 25-vitamin D. Treat with cholecalciferol (50,000 IU/week x 8 weeks).",
+      explanation: "SEVERE DEFICIENCY: Add calcitriol temporarily if symptomatic until 25-vitamin D repletes.",
+      options: {
+        "Restart Algorithm": "start",
+        "Recheck Levels in 3 Months": "exit"
+      }
+    },
+    "Vitamin D or Malabsorption": {
+      text: "Check 25-vitamin D and fecal fat (if malabsorption suspected).",
+      explanation: "MALABSORPTION: Celiac serology (TTG-IgA), pancreatic elastase. Treat underlying cause + high-dose vitamin D.",
+      options: {
+        "Deficiency confirmed": "Vitamin D Repletion",
+        "Malabsorption": "GI Workup"
+      }
+    },
+    "GI Workup": {
+      text: "Refer to gastroenterology for endoscopy/small bowel evaluation.",
+      explanation: "COMMON CAUSES: Celiac disease, Crohn’s, pancreatic insufficiency.",
+      options: {
+        "Restart Algorithm": "start",
+        "Treat Underlying Condition": "exit"
+      }
+    },
+
+    // Asymptomatic Pathway
+    "Asymptomatic Hypocalcemia": {
+      text: "Confirm with ionized calcium. Check albumin to rule out hypoalbuminemia.",
+      explanation: "CORRECTION FORMULA: Corrected Ca = Serum Ca + 0.8*(4 - albumin). Ionized Ca is gold standard.",
+      options: {
+        "True hypocalcemia": "Asymptomatic Workup",
+        "Hypoalbuminemia only": "Monitor"
+      }
+    },
+    "Asymptomatic Workup": {
+      text: "Measure PTH, phosphate, 25-vitamin D, magnesium, creatinine.",
+      explanation: "CLUES: Low PTH + high phosphate = hypoparathyroidism; low vitamin D = deficiency/malabsorption.",
+      options: {
+        "Low PTH": "Chronic Hypoparathyroidism",
+        "High PTH": "Renal/Vitamin D Evaluation",
+        "Normal PTH": "Magnesium/Vitamin D Check"
+      }
+    },
+    "Chronic Hypoparathyroidism": {
+      text: "Start oral calcium + calcitriol if confirmed. Monitor for symptoms.",
+      explanation: "LONG-TERM RISKS: Basal ganglia calcification, cataracts. Avoid thiazides (increase hypercalciuria).",
+      options: {
+        "Restart Algorithm": "start",
+        "Endocrinology Follow-up": "exit"
+      }
+    },
+    "Renal/Vitamin D Evaluation": {
+      text: "Assess renal function and vitamin D status. Treat underlying cause.",
+      explanation: "RENAL OSTEODYSTROPHY: Target PTH 2-9x upper limit of normal in CKD.",
+      options: {
+        "Restart Algorithm": "start",
+        "Nephrology Referral if CKD": "exit"
+      }
+    },
+    "Magnesium/Vitamin D Check": {
+      text: "Correct magnesium if low. Replete vitamin D if deficient.",
+      explanation: "SUBTLE CAUSES: Proton pump inhibitors (reduce Ca absorption), bisphosphonates (transient hypocalcemia).",
+      options: {
+        "Restart Algorithm": "start",
+        "Recheck Calcium": "exit"
+      }
+    },
+    "Monitor": {
+      text: "Repeat calcium/albumin in 1-3 months if asymptomatic.",
+      explanation: "NOTE: Isolated hypoalbuminemia (e.g., cirrhosis, nephrosis) does not require calcium replacement.",
+      options: {
+        "Restart Algorithm": "start",
+        "Discharge if Stable": "exit"
+      }
+    }
+  },
+  
+  
+  
+  // Hirsutism Approach
+  "Hirsutism": {
+    start: {
+      text: "Does the patient have moderate to severe hirsutism (Ferriman-Gallwey score ≥8) or signs of virilization?",
+      explanation: "RED FLAGS: Virilization (clitoromegaly, voice deepening) or rapid onset suggests androgen-secreting tumor or congenital adrenal hyperplasia (CAH).",
+      options: {
+        yes: "Moderate/Severe or Virilization",
+        no: "Mild Hirsutism"
+      }
+    },
+
+    // Moderate/Severe or Virilization Pathway
+    "Moderate/Severe or Virilization": {
+      text: "Measure early morning total testosterone and free testosterone (days 4–10 of menstrual cycle if applicable).",
+      explanation: "KEY POINT: Testosterone >200 ng/dL suggests ovarian/adrenal tumor. DHEAS >700 mcg/dL indicates adrenal source.",
+      options: {
+        "Testosterone >200 ng/dL or virilization": "Tumor Workup",
+        "Testosterone normal/mildly elevated": "PCOS Evaluation",
+        "Testosterone normal + signs of CAH": "CAH Workup"
+      }
+    },
+    "Tumor Workup": {
+      text: "Order DHEAS and pelvic/abdominal imaging (ultrasound or CT). Refer for resection if mass found.",
+      explanation: "URGENCY: Rapid-onset hirsutism with virilization requires prompt evaluation to exclude malignancy.",
+      options: {
+        "Tumor confirmed": "Surgical Referral",
+        "No tumor": "Re-evaluate for PCOS/CAH"
+      }
+    },
+    "Surgical Referral": {
+      text: "Refer to gynecologic oncology (ovarian) or endocrine surgery (adrenal).",
+      explanation: "POST-OP: Monitor for resolution of symptoms. Androgen levels should normalize post-resection.",
+      options: {
+        "Restart Algorithm": "start",
+        "Follow-up": "exit"
+      }
+    },
+    "PCOS Evaluation": {
+      text: "Assess for oligomenorrhea, polycystic ovaries on ultrasound, and insulin resistance (acanthosis nigricans).",
+      explanation: "DIAGNOSIS: Rotterdam criteria require 2/3 features (hyperandrogenism, oligo-anovulation, polycystic ovaries).",
+      options: {
+        "PCOS confirmed": "PCOS Management",
+        "PCOS unlikely": "Idiopathic Hirsutism"
+      }
+    },
+    "PCOS Management": {
+      text: "Start combined oral contraceptive (COC) with anti-androgenic progestin (e.g., drospirenone) + spironolactone 50–100 mg BID.",
+      explanation: "WARNINGS: Spironolactone is teratogenic (require contraception). Screen for glucose intolerance with OGTT.",
+      options: {
+        "Insulin resistance present": "Add Metformin",
+        "No insulin resistance": "Monitor Response"
+      }
+    },
+    "Add Metformin": {
+      text: "Prescribe metformin 500–2000 mg/day to improve ovulation and metabolic parameters.",
+      explanation: "BENEFITS: Reduces diabetes risk and may aid weight loss. Avoid in renal impairment (eGFR <30).",
+      options: {
+        "Restart Algorithm": "start",
+        "Follow-up in 6 Months": "exit"
+      }
+    },
+    "CAH Workup": {
+      text: "Measure 17-hydroxyprogesterone (17-OHP). Elevated levels suggest 21-hydroxylase deficiency.",
+      explanation: "DIAGNOSIS: 17-OHP >1000 ng/dL confirms CAH. ACTH stimulation test if borderline.",
+      options: {
+        "CAH confirmed": "Glucocorticoid Therapy",
+        "CAH excluded": "Re-evaluate for Other Causes"
+      }
+    },
+    "Glucocorticoid Therapy": {
+      text: "Start hydrocortisone or dexamethasone to suppress ACTH-driven androgen production.",
+      explanation: "MONITORING: Adjust dose to maintain 17-OHP in mid-normal range. Avoid overtreatment (Cushing’s side effects).",
+      options: {
+        "Restart Algorithm": "start",
+        "Endocrinology Follow-up": "exit"
+      }
+    },
+    "Idiopathic Hirsutism": {
+      text: "Consider cosmetic therapies (laser, eflornithine cream) + COC/spironolactone if desired.",
+      explanation: "NOTE: Idiopathic hirsutism is diagnosis of exclusion. Reassure patient about benign nature.",
+      options: {
+        "Restart Algorithm": "start",
+        "Dermatology Referral": "exit"
+      }
+    },
+
+    // Mild Hirsutism Pathway
+    "Mild Hirsutism": {
+      text: "Assess for hypertrichosis (non-androgenic, generalized hair growth) or medication causes (phenytoin, cyclosporine).",
+      explanation: "HYPERTRICHOSIS: Diffuse fine hair; no male pattern. Drug-induced cases resolve with discontinuation.",
+      options: {
+        "Hypertrichosis or drug-induced": "Discontinue Offending Drug",
+        "True mild hirsutism": "Cosmetic Therapy"
+      }
+    },
+    "Discontinue Offending Drug": {
+      text: "Switch medications if possible (e.g., alternative to phenytoin).",
+      explanation: "CAUTION: Wean antiepileptics gradually to avoid seizures. Hair regrowth may take months.",
+      options: {
+        "Restart Algorithm": "start",
+        "Monitor for Improvement": "exit"
+      }
+    },
+    "Cosmetic Therapy": {
+      text: "Offer bleaching, shaving, electrolysis, or laser hair removal based on patient preference.",
+      explanation: "EFLORNITHINE CREAM: Apply BID to face; takes 8 weeks for effect. Combine with laser for better results.",
+      options: {
+        "Restart Algorithm": "start",
+        "Satisfactory Response": "exit"
+      }
+    },
+
+    // Additional Workup for Other Causes
+    "Re-evaluate for Other Causes": {
+      text: "Check prolactin (for prolactinoma), IGF-1 (acromegaly), and overnight dexamethasone suppression test (Cushing’s).",
+      explanation: "RARE CAUSES: Acromegaly (coarse features), Cushing’s (striae, buffalo hump), prolactinoma (galactorrhea).",
+      options: {
+        "Prolactin elevated": "Prolactinoma Workup",
+        "IGF-1 elevated": "Acromegaly Workup",
+        "Cushing’s confirmed": "Cushing’s Management",
+        "All normal": "Idiopathic Hirsutism"
+      }
+    },
+    "Prolactinoma Workup": {
+      text: "Order pituitary MRI. Treat with cabergoline (start 0.25 mg twice weekly).",
+      explanation: "NOTE: Macroprolactinomas may cause visual field defects (formal perimetry needed).",
+      options: {
+        "Restart Algorithm": "start",
+        "Endocrinology Referral": "exit"
+      }
+    },
+    "Acromegaly Workup": {
+      text: "Confirm with oral glucose tolerance test + GH levels. Refer for pituitary MRI/surgery.",
+      explanation: "SURGERY: First-line for macroadenomas. Somatostatin analogs (e.g., octreotide) if residual disease.",
+      options: {
+        "Restart Algorithm": "start",
+        "Neurosurgery Referral": "exit"
+      }
+    },
+    "Cushing’s Management": {
+      text: "Determine ACTH-dependent (pituitary/adrenal) vs. independent (ectopic) source. Refer to endocrinology.",
+      explanation: "TREATMENT: Transsphenoidal surgery for Cushing’s disease; adrenalectomy for adenoma.",
+      options: {
+        "Restart Algorithm": "start",
+        "Specialist Management": "exit"
+      }
+    }
+  },
+  
+  
+  // Gynecomastia Approach 
+  "Gynecomastia": {
+    start: {
+      text: "Is the patient an adolescent (pubertal) or adult with new-onset gynecomastia?",
+      explanation: "Pubertal gynecomastia is common (60% of adolescents) and often resolves spontaneously. Adult-onset requires workup for underlying causes.",
+      options: {
+        "Adolescent": "Pubertal Gynecomastia",
+        "Adult": "Adult Gynecomastia Workup"
+      }
+    },
+
+    // Pubertal Pathway
+    "Pubertal Gynecomastia": {
+      text: "Assess for testicular masses or tenderness. Is the gynecomastia painful or progressive?",
+      explanation: "RED FLAGS: Unilateral enlargement, rapid progression, or testicular mass may indicate germ cell tumor (hCG-secreting).",
+      options: {
+        "Testicular mass or hCG elevation": "Testicular Tumor Evaluation",
+        "No mass, stable/painless": "Observation",
+        "Painful/progressive": "Medical Therapy Consideration"
+      }
+    },
+    "Testicular Tumor Evaluation": {
+      text: "Order testicular ultrasound, serum hCG, AFP, LDH. Refer to urology if mass found.",
+      explanation: "NOTE: hCG-secreting tumors cause estrogen excess via testicular stimulation. Gynecomastia is poor prognostic sign.",
+      options: {
+        "Tumor confirmed": "Oncology Referral",
+        "No tumor": "Reassess in 6 Months"
+      }
+    },
+    "Observation": {
+      text: "Reassure and monitor every 6 months. Most cases resolve within 2 years.",
+      explanation: "EDUCATION: Avoid unnecessary breast exams (may worsen psychological distress).",
+      options: {
+        "Restart Algorithm": "start",
+        "Resolution": "exit"
+      }
+    },
+    "Medical Therapy Consideration": {
+      text: "Consider tamoxifen 10-20 mg/day for 3-6 months if painful or psychologically distressing.",
+      explanation: "EFFICACY: 80% response rate in pubertal cases. Avoid aromatase inhibitors (less effective in this setting).",
+      options: {
+        "Restart Algorithm": "start",
+        "Surgical Referral if Persistent >2 Years": "exit"
+      }
+    },
+
+    // Adult Pathway
+    "Adult Gynecomastia Workup": {
+      text: "Review medications and assess for systemic signs (liver disease, malnutrition).",
+      explanation: "COMMON OFFENDERS: Spironolactone, cimetidine, marijuana, anabolic steroids. Check for cirrhosis (spider angiomata, ascites).",
+      options: {
+        "Medication-induced": "Discontinue Offending Drug",
+        "No clear cause": "Hormonal Workup",
+        "Systemic signs present": "Liver/Nutrition Evaluation"
+      }
+    },
+    "Discontinue Offending Drug": {
+      text: "Switch to alternative (e.g., eplerenone for spironolactone, famotidine for cimetidine).",
+      explanation: "TIMEFRAME: Regression may take 3-12 months after discontinuation.",
+      options: {
+        "Restart Algorithm": "start",
+        "Persistent >6 Months": "Medical Therapy"
+      }
+    },
+    "Hormonal Workup": {
+      text: "Order: LH, testosterone, estradiol, hCG, TSH, prolactin, LFTs.",
+      explanation: "PATTERNS: ↑LH + ↓T = primary hypogonadism; ↓LH + ↓T = secondary hypogonadism; ↑hCG = tumor.",
+      options: {
+        "hCG elevated": "Tumor Workup",
+        "Testosterone low": "Hypogonadism Evaluation",
+        "Estradiol high": "Aromatase Excess/Adrenal Tumor",
+        "All normal": "Idiopathic Gynecomastia"
+      }
+    },
+    "Tumor Workup": {
+      text: "Perform testicular ultrasound (Leydig/Sertoli cell tumor) and chest/abdominal CT (extragonadal germ cell tumor).",
+      explanation: "RARE: Adrenal tumors (check DHEA-S), lung cancer (hCG-secreting).",
+      options: {
+        "Mass found": "Oncology Referral",
+        "No mass": "Repeat Labs in 1 Month"
+      }
+    },
+    "Hypogonadism Evaluation": {
+      text: "Distinguish primary (↑LH) vs secondary (↓LH). MRI pituitary if secondary.",
+      explanation: "CAUSES: Primary - Klinefelter's, viral orchitis; Secondary - prolactinoma, hemochromatosis.",
+      options: {
+        "Primary": "Testosterone Replacement",
+        "Secondary": "Treat Underlying Cause"
+      }
+    },
+    "Testosterone Replacement": {
+      text: "Start testosterone gel/injections if symptomatic hypogonadism. Monitor for worsening gynecomastia.",
+      explanation: "PARADOX: Exogenous testosterone may aromatize to estrogen. Add anastrozole if gynecomastia worsens.",
+      options: {
+        "Restart Algorithm": "start",
+        "Endocrinology Follow-up": "exit"
+      }
+    },
+    "Aromatase Excess/Adrenal Tumor": {
+      text: "Measure DHEA-S (adrenal source) and consider aromatase inhibitor trial (anastrozole 1 mg/day).",
+      explanation: "GENETIC: Aromatase excess syndrome (rare) causes familial gynecomastia.",
+      options: {
+        "Adrenal mass": "Adrenal CT/MRI",
+        "No mass": "Genetic Testing Consideration"
+      }
+    },
+    "Idiopathic Gynecomastia": {
+      text: "Observe for 6 months. Offer tamoxifen or surgery if persistent and bothersome.",
+      explanation: "SURGERY: Indicated for fibrotic/stable gynecomastia (>12 months duration).",
+      options: {
+        "Restart Algorithm": "start",
+        "Plastic Surgery Referral": "exit"
+      }
+    },
+    "Liver/Nutrition Evaluation": {
+      text: "Check LFTs, albumin, prealbumin. Treat underlying cirrhosis or malnutrition.",
+      explanation: "MECHANISM: Liver disease increases SHBG (lowering free T) and peripheral aromatization.",
+      options: {
+        "Cirrhosis confirmed": "Hepatology Referral",
+        "Malnutrition": "Nutritional Rehabilitation"
+      }
+    },
+    "Medical Therapy": {
+      text: "Tamoxifen 10-20 mg/day (first-line) or raloxifene 60 mg/day for 3-6 months.",
+      explanation: "EFFICACY: Tamoxifen has 90% response rate in recent-onset (<1 year) cases.",
+      options: {
+        "Restart Algorithm": "start",
+        "Surgical Option if No Response": "exit"
+      }
+    }
+  }
+}; 
+
+
+  
+
+
+  
+let currentSymptom = null;
+    let currentQuestion = "start";
+
+    function playClick() {
+      const sound = document.getElementById("click-sound");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+      }
+    }
+
+    function startSymptom(symptom) {
+      currentSymptom = symptom;
+      currentQuestion = "start";
+      document.getElementById("symptom-title").textContent = symptom;
+      showQuestion();
+
+      document.getElementById("main-page").style.display = "none";
+      document.getElementById("question-page").style.display = "block";
+      document.getElementById("headline").style.display = "none";
+      document.getElementById("subheadline").style.display = "none";
+    }
+
+    // NEW/MODIFIED: This function is updated to show images.
+    function showQuestion() {
+      const symptomQuestions = questions[currentSymptom];
+      if (!symptomQuestions || !symptomQuestions[currentQuestion]) {
+        alert("Invalid symptom or question flow.");
+        return;
+      }
+
+      const questionData = symptomQuestions[currentQuestion];
+      const imageContainer = document.getElementById("question-image-container");
+      
+      // Clear previous image
+      imageContainer.innerHTML = "";
+
+      // If an image path exists, create and display the image
+      if (questionData.image) {
+        const img = document.createElement("img");
+        img.src = questionData.image;
+        img.alt = questionData.text; // for accessibility
+        img.className = "question-image";
+        imageContainer.appendChild(img);
+      }
+
+      document.getElementById("question").textContent = questionData.text;
+      document.getElementById("footer").textContent = questionData.explanation || "No explanation available.";
+
+      const buttons = Object.keys(questionData.options)
+        .map(option =>
+          `<button class='option-button' onclick="playClick(); nextQuestion('${option}')">${option}</button>`)
+        .join("");
+      document.querySelector(".button-container").innerHTML = buttons;
+    }
+
+    function nextQuestion(answer) {
+      const symptomQuestions = questions[currentSymptom];
+      const current = symptomQuestions[currentQuestion];
+      if (!current || !current.options[answer]) {
+        alert("Invalid choice.");
+        return;
+      }
+
+      const next = current.options[answer];
+      // Check if the next step is another question or a final diagnosis
+      if (symptomQuestions[next] && symptomQuestions[next].options) {
+          currentQuestion = next;
+          showQuestion();
+      } else {
+          // This handles both terminal nodes that are defined as full objects
+          // and those that are simple strings (your original implementation)
+          if (symptomQuestions[next]) {
+              currentQuestion = next;
+              showQuestion(); // This will display the final diagnosis with its image
+          } else {
+              // This is a fallback for legacy string-only terminals
+              document.getElementById("question").textContent = next;
+              document.getElementById("footer").textContent = "End of diagnostic path.";
+              document.querySelector(".button-container").innerHTML =
+                `<button class='option-button' onclick="playClick(); restart()">Restart</button>`;
+              document.getElementById("question-image-container").innerHTML = ""; // Clear image
+          }
+      }
+    }
+
+
+    function restart() {
+      document.getElementById("main-page").style.display = "flex";
+      document.getElementById("question-page").style.display = "none";
+      document.getElementById("headline").style.display = "block";
+      document.getElementById("subheadline").style.display = "block";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      sidebar.classList.toggle("active");
+      overlay.style.display = sidebar.classList.contains("active") ? "block" : "none";
+    }
+
+    document.addEventListener("click", function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const toggleBtn = document.querySelector(".toggle-button");
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnToggle = toggleBtn.contains(event.target);
+      if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains("active")) {
+        toggleSidebar();
+      }
+    });
+
+    let startX = 0;
+    document.addEventListener("touchstart", function(e) {
+      if (e.touches.length === 1) { startX = e.touches[0].clientX; }
+    });
+    document.addEventListener("touchend", function(e) {
+      const sidebar = document.getElementById("sidebar");
+      const diff = e.changedTouches[0].clientX - startX;
+      if (diff > 50 && sidebar.classList.contains("active")) { toggleSidebar(); }
+    });
+
+    function goHome() {
+      window.location.href = "../index.html";
+    }
+
+    function navigateTo(page) {
+      window.location.href = page;
+      const loadingScreen = document.querySelector('.loading');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'flex';
+        setTimeout(() => { window.location.href = page; }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Obstetric Symptoms</title>
+  <link rel="stylesheet" href="../style/regional_style.css" type="text/css" media="all" />
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="nav-title">ALGOMED <span>OBSTETRIC </span></div>
+  <button class="toggle-button" onclick="playClick(); toggleSidebar()">☰</button>
+</nav>
+
+<!-- Overlay for click outside -->
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <ul>
+      <li onclick="navigateTo('respiratory.html')">Respiratory</li>
+      <li onclick="navigateTo('cardiovascular.html')">Cardiovascular</li>
+      <li onclick="navigateTo('git.html')">Gastroenterology</li>
+      <li onclick="navigateTo('gynecology.html')">Gynecology</li>
+      <li onclick="navigateTo('hepatology.html')">Hepatology</li>
+      <li onclick="navigateTo('nephrology.html')">Nephrology</li>
+      <li onclick="navigateTo('obstetric.html')">Obstetric</li>
+      <li onclick="navigateTo('rheumatology.html')">Rheumatology</li>
+      <li onclick="navigateTo('hematology.html')">Hematology</li>
+      <li onclick="navigateTo('pediatric.html')">Pediatric</li>
+      <li onclick="navigateTo('ophthalmology.html')">Ophthalmology</li>
+      <li onclick="navigateTo('neurology.html')">Neurology</li>
+      <li onclick="navigateTo('dermatology.html')">Dermatology</li>
+      <li onclick="navigateTo('ent.html')">ENT</li>
+      <li onclick="navigateTo('psychiatric.html')">Psychiatric</li>
+      <li onclick="navigateTo('General.html')">General</li>
+    </ul>
+<button class="sidebar-about-button" onclick="navigateTo('../about.html')">About Us</button>
+  </aside>
+
+  <!-- Audio -->
+  <audio id="click-sound" src="../sounds/click_sound.wav" preload="auto"></audio>
+
+  <!-- Headlines Outside Container -->
+  <h3 id="headline">Select a Primary Symptom</h3>
+<p id="subheadline">Choose from the list below to begin diagnosis.</p>
+
+  <!-- Main Page -->
+  <div id="main-page" class="container">
+    <button class="symptom-button" onclick="playClick(); startSymptom('Hypertension in Pregnancy')">HTN in Pregnancy</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Diabetes in Pregnancy')">DM in Pregnancy</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Vaginal Bleeding in Pregnancy')">Vaginal Bleeding in Pregnancy</button>
+    <button class="symptom-button" onclick="startSymptom('Ectopic Pregnancy')">Ectopic Pregnancy</button>
+    <button class="symptom-button" onclick="startSymptom('Acute Abdominal Pain in Women')">Acute Abdominal Pain in Women</button>
+    <button class="symptom-button" onclick="startSymptom('Postpartum Hemorrhage')">Postpartum Hemorrhage</button>
+    
+    
+    
+  </div>
+
+  <!-- Question Page -->
+  <div id="question-page">
+  <div class="title" id="symptom-title">Symptom Diagnostic</div>
+  <div id="question-image-container"></div>
+  <div id="question" class="question"></div>
+  <div class="button-container"></div>
+  <div id="footer" class="footer"></div>
+</div>
+
+  <!-- Home Button -->
+  <button class="home-button" onclick="goHome()">
+  <img src="../bodyicons/home_button.png" alt="Home" class="home-icon">
+  <span class="sr-only">Home</span>
+</button>
+  
+  
+
+  <!-- Script -->
+ <script>
+  const questions = {
+    
+  // HTN in Pregnancy------------------
+  "Hypertension in Pregnancy": {
+      start: {
+        text: "Is blood pressure ≥140/90 mmHg?",
+        explanation: "Hypertension in pregnancy is defined as SBP ≥140 or DBP ≥90 on two occasions.",
+        options: {
+          "Yes": "Determine timing of onset",
+          "No": "Monitor BP regularly"
+        }
+      },
+      "Determine timing of onset": {
+        text: "When did hypertension develop?",
+        explanation: "Differentiates chronic HTN (pre-existing) from pregnancy-specific disorders.",
+        options: {
+          "Before 20 weeks LMP": "Chronic hypertension evaluation",
+          "After 20 weeks LMP": "Assess for pre-eclampsia"
+        }
+      },
+      "Assess for pre-eclampsia": {
+        text: "Does patient have proteinuria (1+ or more) OR signs of end-organ damage?",
+        explanation: "Pre-eclampsia requires proteinuria and/or systemic manifestations.",
+        options: {
+          "Yes": "Evaluate severity",
+          "No": "Gestational hypertension"
+        }
+      },
+      "Evaluate severity": {
+        text: "Is BP ≥160/110 mmHg OR are there neurological symptoms?",
+        explanation: "Severe features require urgent treatment and delivery planning.",
+        options: {
+          "Yes": "Severe pre-eclampsia/eclampsia",
+          "No": "Mild pre-eclampsia"
+        }
+      },
+      "Mild pre-eclampsia": {
+        text: "Gestational age?",
+        explanation: "Management differs before/after 37 weeks.",
+        options: {
+          "<37 weeks": "Pre-eclampsia <37 weeks management",
+          "≥37 weeks": "Pre-eclampsia ≥37 weeks management"
+        }
+      },
+      "Pre-eclampsia <37 weeks management": {
+        text: "Diagnosis: Mild pre-eclampsia before 37 weeks.",
+        explanation: "Admit for monitoring. No antihypertensives unless BP ≥160/110. Allow labor if occurs.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Pre-eclampsia ≥37 weeks management": {
+        text: "Diagnosis: Mild pre-eclampsia at term.",
+        explanation: "Admit for monitoring. Induce labor when cervix favorable or if deterioration occurs.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Severe pre-eclampsia/eclampsia": {
+        text: "Are seizures present?",
+        explanation: "Eclampsia is pre-eclampsia with seizures.",
+        options: {
+          "Yes": "Eclampsia management",
+          "No": "Severe pre-eclampsia management"
+        }
+      },
+      "Eclampsia management": {
+        text: "Diagnosis: Eclampsia.",
+        explanation: "1. Airway protection 2. MgSO4 4-6g IV then 1-2g/hr 3. Deliver within 24h 4. BP control",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Severe pre-eclampsia management": {
+        text: "Diagnosis: Severe pre-eclampsia.",
+        explanation: "1. MgSO4 prophylaxis 2. BP control (labetalol/hydralazine) 3. Deliver within 24-48h",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Gestational hypertension": {
+        text: "Diagnosis: Gestational hypertension.",
+        explanation: "Monitor for progression to pre-eclampsia. No treatment unless BP ≥160/110.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Chronic hypertension evaluation": {
+        text: "Diagnosis: Chronic hypertension.",
+        explanation: "Continue pre-pregnancy meds (avoid ACE/ARBs). Monitor for superimposed pre-eclampsia.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      }
+    },
+
+
+
+
+  // Diabetes in Pregnancy---------------
+  "Diabetes in Pregnancy": {
+      start: {
+        text: "Does the patient have any risk factors for gestational diabetes?",
+        explanation: "Risk factors include: BMI >30, previous GDM, macrosomia, Previous child with congenital malformation, Maternal age >35 years, First degree relative with diabetes, Previous polycystic ovary syndrome",
+        options: {
+          "Yes": "Initial screening",
+          "No": "Routine ANC monitoring",
+          "Previous GDM": "Direct OGTT"
+        }
+      },
+      "Initial screening": {
+        text: "Perform Fasting Plasma Glucose (FPG) at 24-28 weeks:",
+        explanation: "Initial screening threshold: FPG ≥92 mg/dL (5.1 mmol/L) suggests GDM",
+        options: {
+          "FPG <80 mg/dL (4.4 mmol/L)": "No GDM - routine care",
+          "FPG 81-91 mg/dL (4.5-5 mmol/L)": "Borderline - monitor",
+          "FPG 92-125 mg/dL (5.1-6.9 mmol/L)": "Diagnostic OGTT needed",
+          "FPG >125 mg/dL (>6.9 mmol/L)": "Probable preexisting diabetes"
+        }
+      },
+      "Diagnostic OGTT needed": {
+        text: "Perform 75g 2-hour OGTT. Results:",
+        explanation: "GDM diagnosis requires one abnormal value: Fasting ≥92, 1hr ≥180, or 2hr ≥153 mg/dL",
+        options: {
+          "Normal all values": "No GDM",
+          "One abnormal value": "GDM diagnosis",
+          "2hr >200 mg/dL (>11.1 mmol/L)": "Preexisting diabetes"
+        }
+      },
+      "Glycosuria evaluation": {
+        text: "Glycosuria detected (>2+ once or >1+ twice):",
+        explanation: "Unexpected glycosuria warrants glucose testing regardless of risk factors",
+        options: {
+          "FPG <92 mg/dL": "Monitor for recurrent glycosuria",
+          "FPG ≥92 mg/dL": "Proceed to OGTT"
+        }
+      },
+      "GDM diagnosis": {
+        text: "Diagnosis: Gestational Diabetes Mellitus",
+        explanation: "Begin glucose monitoring, medical nutrition therapy. Consider metformin/insulin if targets not met.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Preexisting diabetes": {
+        text: "Diagnosis: Preexisting Diabetes in Pregnancy",
+        explanation: "Immediate referral to endocrinology. Requires tight glycemic control (A1C <6.5% if possible).",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Risk Factor Details": {
+        text: "Major Risk Factors :",
+        explanation: "Indications for early screening:",
+        options: {
+          "Previous GDM": "Direct OGTT",
+          "BMI >30 kg/m²": "Early screening",
+          "Macrosomia (>4500g)": "Early screening",
+          "Stillbirth/IUFD history": "Early screening",
+          "Congenital malformation": "Early screening",
+          "Age >35 years": "Consider early screening",
+          "Family history": "Consider early screening",
+          "PCOS history": "Consider early screening"
+        }
+      }
+    },
+    
+    
+    
+    
+  //Vaginal Bleeding in Pregnancy---------
+  "Vaginal Bleeding in Pregnancy": {
+    start: {
+      text: "Is the pregnant patient experiencing vaginal bleeding?",
+      explanation: "Initial evaluation focuses on stabilizing the patient and determining gestational age. RED FLAGS: Hemodynamic instability, severe pain, or heavy bleeding require immediate intervention.",
+      options: {
+        yes: "Initial Stabilization",
+        no: "Reassure (normal variant)"
+      }
+    },
+
+    // Initial Stabilization Pathway
+    "Initial Stabilization": {
+      text: "1. Assess ABCs (Airway, Breathing, Circulation). 2. Obtain vital signs (BP, HR). 3. Start IV access if heavy bleeding. 4. Determine gestational age (LMP, fundal height, or ultrasound).",
+      explanation: "CRITICAL: Do not perform digital pelvic exam in third-trimester bleeding until placenta previa is ruled out by ultrasound.",
+      options: {
+        "Hemodynamically unstable": "Emergent Management",
+        "Stable": "Gestational Age Evaluation"
+      }
+    },
+
+    // Emergent Management Pathway
+    "Emergent Management": {
+      text: "1. Administer oxygen. 2. Transfuse if significant blood loss (Hct <30%). 3. Prepare for possible emergency delivery/surgery. 4. Order STAT labs (CBC, type & cross, coagulation panel).",
+      explanation: "LIFE-THREATENING CAUSES: Placenta previa, abruption, or ruptured ectopic pregnancy. Ultrasound must be performed immediately.",
+      options: {
+        "Third-trimester bleeding": "Rule Out Placenta Previa",
+        "First/second-trimester bleeding": "Evaluate for Ectopic/Ruptured Cyst"
+      }
+    },
+
+    // Gestational Age Evaluation Pathway
+    "Gestational Age Evaluation": {
+      text: "Is the pregnancy in the first half (<20 weeks) or second half (≥20 weeks)?",
+      explanation: "KEY DIFFERENTIALS: Early pregnancy - ectopic, miscarriage. Late pregnancy - placental causes (previa/abruption).",
+      options: {
+        "<20 weeks": "Early Pregnancy Workup",
+        "≥20 weeks": "Late Pregnancy Workup"
+      }
+    },
+
+    // Early Pregnancy Workup Pathway
+    "Early Pregnancy Workup": {
+      text: "1. Perform speculum exam (note cervical os status). 2. Order quantitative β-hCG + transvaginal ultrasound. 3. Assess for pain (ectopic vs miscarriage).",
+      explanation: "β-hCG INTERPRETATION: Should double every 48h in viable pregnancy. <1500 mIU/mL + no IUP on TVUS = suspect ectopic.",
+      options: {
+        "Cervical os closed": "Closed Os Evaluation",
+        "Cervical os open": "Open Os Evaluation"
+      }
+    },
+
+    "Closed Os Evaluation": {
+      text: "1. If fetal cardiac activity present: Threatened abortion (pelvic rest). 2. If no cardiac activity: Missed abortion or ectopic. 3. Check for molar pregnancy (uterine size > dates, very high β-hCG).",
+      explanation: "MOLAR PREGNANCY: May present with hyperemesis, hypertension, or grape-like tissue. Requires urgent evacuation.",
+      options: {
+        "Fetal cardiac activity present": "Threatened Abortion Management",
+        "No cardiac activity": "Non-Viable Pregnancy Workup"
+      }
+    },
+
+    "Threatened Abortion Management": {
+      text: "1. Pelvic rest (no intercourse/tampons). 2. Repeat ultrasound in 1-2 weeks. 3. Progesterone supplementation if recurrent loss history.",
+      explanation: "PROGNOSIS: 50% progress to miscarriage if bleeding + pain. Only 10% if cardiac activity present.",
+      options: {
+        "Bleeding resolves": "Routine Prenatal Care",
+        "Bleeding continues": "Repeat Ultrasound"
+      }
+    },
+
+    "Non-Viable Pregnancy Workup": {
+      text: "1. Compare β-hCG to discriminatory zone (1500-2000 mIU/mL). 2. If β-hCG above zone with no IUP: Ectopic until proven otherwise. 3. If β-hCG rising abnormally: Suspect molar pregnancy.",
+      explanation: "ECTOPIC RISK FACTORS: PID, prior ectopic, tubal surgery. Methotrexate if stable, surgery if unstable.",
+      options: {
+        "Ectopic confirmed": "Ectopic Pregnancy Management",
+        "Molar pregnancy": "Molar Pregnancy Management"
+      }
+    },
+
+    "Open Os Evaluation": {
+      text: "1. Inevitable abortion (os open + bleeding/cramping). 2. Incomplete abortion (partial tissue passage). 3. Septic abortion (fever + tenderness).",
+      explanation: "INCOMPLETE ABORTION: Requires surgical evacuation to prevent hemorrhage/infection. Septic abortion needs IV antibiotics.",
+      options: {
+        "Inevitable abortion": "Expectant vs Surgical Management",
+        "Incomplete abortion": "Surgical Evacuation"
+      }
+    },
+
+    // Late Pregnancy Workup Pathway
+    "Late Pregnancy Workup": {
+      text: "1. Immediate ultrasound to rule out placenta previa. 2. Assess for abruption (pain, uterine tenderness, fetal distress). 3. Evaluate for preterm labor (cervical changes).",
+      explanation: "PLACENTA PREVIA: Painless bleeding. ABRUPTION: Painful + often concealed bleeding with fetal distress.",
+      options: {
+        "Placenta previa": "Placenta Previa Management",
+        "Abruption suspected": "Abruption Management"
+      }
+    },
+
+    "Placenta Previa Management": {
+      text: "1. Hospitalize if bleeding. 2. Bed rest. 3. Avoid pelvic exams. 4. Deliver by C-section at 36-37 weeks if persistent.",
+      explanation: "CONTRAINDICATION: Never perform digital exam with previa. Can cause catastrophic hemorrhage.",
+      options: {
+        "Bleeding controlled": "Monitor Until Delivery",
+        "Uncontrolled bleeding": "Emergency C-section"
+      }
+    },
+
+    "Abruption Management": {
+      text: "1. Monitor for DIC (check fibrinogen, platelets). 2. Immediate delivery if fetal distress or maternal instability. 3. Conservative management if mild and preterm.",
+      explanation: "DIC RISK: Present in 10% of severe abruptions. Requires blood product replacement.",
+      options: {
+        "Stable": "Close Monitoring",
+        "Unstable": "Immediate Delivery"
+      }
+    },
+
+    // Shared Pathways
+    "Ectopic Pregnancy Management": {
+      text: "1. If stable + β-hCG <5000 + no cardiac activity: Methotrexate (50mg/m² IM). 2. If unstable or contraindications: Laparoscopic surgery.",
+      explanation: "FOLLOW-UP: β-hCG must decline ≥15% by day 4-7 post-methotrexate. Weekly until undetectable.",
+      options: {
+        "Treatment successful": "β-hCG Follow-up",
+        "Treatment failure": "Surgical Intervention"
+      }
+    },
+
+    "Molar Pregnancy Management": {
+      text: "1. Surgical evacuation. 2. Weekly β-hCG until normal ×3, then monthly ×6. 3. Chemotherapy if plateau/rising β-hCG (indicating persistent trophoblastic disease).",
+      explanation: "CONTRACEPTION: Essential for 1 year post-evacuation to monitor for choriocarcinoma.",
+      options: {
+        "β-hCG normalizes": "Long-term Monitoring",
+        "Persistent elevation": "Oncology Referral"
+      }
+    },
+
+    "Rule Out Placenta Previa": {
+      text: "1. Immediate bedside ultrasound. 2. If previa confirmed: No vaginal exams, prepare for C-section. 3. If previa ruled out: Evaluate for abruption.",
+      explanation: "ULTRASOUND FINDINGS: Placenta covering or <2cm from internal os = previa.",
+      options: {
+        "Previa confirmed": "Placenta Previa Management",
+        "Previa ruled out": "Abruption Evaluation"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  //Acute Abdominal Pain in Women--------
+  "Acute Abdominal Pain in Women": {
+    start: {
+      text: "Does the patient present with acute abdominal pain (sudden onset, severe, or associated with nausea/vomiting)?",
+      explanation: "Initial evaluation focuses on identifying life-threatening conditions (e.g., ectopic pregnancy, appendicitis) and stabilizing the patient. KEY: Assess for hemodynamic instability, fever, or peritoneal signs.",
+      options: {
+        yes: "Initial Stabilization and History",
+        no: "Reassure (non-urgent cause)"
+      }
+    },
+
+    // Initial Stabilization and History Pathway
+    "Initial Stabilization and History": {
+      text: "1. Assess ABCs (Airway, Breathing, Circulation). 2. Obtain vital signs (BP, HR, temp). 3. Ask about: menstrual cycle, sexual activity, contraception, recent trauma, and associated symptoms (fever, vaginal discharge).",
+      explanation: "RED FLAGS: Hypotension, rebound tenderness, or guarding suggest surgical abdomen. Pregnancy status must be determined immediately.",
+      options: {
+        "Unstable (hypotension/severe pain)": "Emergent Evaluation",
+        "Stable": "Pregnancy Test"
+      }
+    },
+
+    // Emergent Evaluation Pathway
+    "Emergent Evaluation": {
+      text: "1. Start IV fluids. 2. Order STAT labs (CBC, lactate, β-hCG). 3. Prepare for possible surgery. 4. Consider bedside ultrasound (FAST exam) if perforation/hemorrhage suspected.",
+      explanation: "CRITICAL: Ruptured ectopic pregnancy or hemorrhagic ovarian cyst can cause rapid decompensation. Do not delay imaging if unstable.",
+      options: {
+        "Peritonitis/shock present": "Immediate Surgical Consult",
+        "Stabilized": "Pregnancy Test"
+      }
+    },
+
+    // Pregnancy Test Pathway
+    "Pregnancy Test": {
+      text: "Perform urine or serum β-hCG test to determine pregnancy status.",
+      explanation: "NOTE: All women of reproductive age must be tested, regardless of contraceptive use or menstrual history.",
+      options: {
+        positive: "Pregnant Patient Evaluation",
+        negative: "Non-Pregnant Patient Evaluation"
+      }
+    },
+
+    // Pregnant Patient Pathway
+    "Pregnant Patient Evaluation": {
+      text: "1. Estimate gestational age (LMP, ultrasound if available). 2. Assess for vaginal bleeding or prior ectopic pregnancy risk factors (PID, tubal surgery).",
+      explanation: "RISK FACTORS: Ectopic pregnancy is more likely with prior ectopic, tubal ligation, or IUD use.",
+      options: {
+        "Gestational age <12 weeks": "Early Pregnancy Workup",
+        "Gestational age ≥12 weeks": "Late Pregnancy Workup"
+      }
+    },
+
+    "Early Pregnancy Workup": {
+      text: "1. Transvaginal ultrasound (TVUS) + quantitative β-hCG. 2. If β-hCG >1500 mIU/mL and no intrauterine gestation (IUP), suspect ectopic. 3. If β-hCG <1500 and unstable, proceed to laparoscopy.",
+      explanation: "DIAGNOSIS: No IUP + β-hCG >1500 = ectopic until proven otherwise. Discriminatory zone: β-hCG >2000 for abdominal ultrasound.",
+      options: {
+        "IUP confirmed": "Non-Obstetric Causes",
+        "No IUP (ectopic suspected)": "Ectopic Pregnancy Management"
+      }
+    },
+
+    "Ectopic Pregnancy Management": {
+      text: "1. If stable + ectopic <4cm + no fetal cardiac activity: Methotrexate (50mg/m² IM). 2. If unstable or contraindications: Laparoscopic salpingectomy/salpingostomy.",
+      explanation: "MONITORING: Post-methotrexate, β-hCG should drop ≥15% by day 4-7. Repeat weekly until <5 mIU/mL.",
+      options: {
+        "Treatment successful": "Follow-up β-hCG",
+        "Treatment failure": "Surgical Intervention"
+      }
+    },
+
+    "Late Pregnancy Workup": {
+      text: "1. Rule out placental abruption (ultrasound, tocometry). 2. Assess for appendicitis (RLQ pain persists despite pregnancy). 3. Consider ovarian torsion (enlarged corpus luteum cyst).",
+      explanation: "NOTE: Appendicitis is the most common non-obstetric surgical emergency in pregnancy. CT is avoided; MRI preferred.",
+      options: {
+        "Obstetric cause (e.g., abruption)": "OB Emergent Management",
+        "Non-obstetric cause": "Imaging (MRI/Ultrasound)"
+      }
+    },
+
+    // Non-Pregnant Patient Pathway
+    "Non-Pregnant Patient Evaluation": {
+      text: "1. Assess for fever/infection (PID, appendicitis). 2. Palpate for masses (ovarian torsion, fibroids). 3. Evaluate for GI causes (diverticulitis, bowel obstruction).",
+      explanation: "CLUES: PID often presents with bilateral pain + cervical motion tenderness. Appendicitis has McBurney’s point tenderness.",
+      options: {
+        "Fever/leukocytosis present": "Infectious Workup",
+        "No fever": "Structural/Other Causes"
+      }
+    },
+
+    "Infectious Workup": {
+      text: "1. Pelvic exam (cervical motion tenderness, discharge). 2. CT abdomen/pelvis (90% sensitive for appendicitis). 3. Cervical cultures (GC/Chlamydia if PID suspected).",
+      explanation: "PID DIAGNOSIS: Requires cervical motion tenderness + uterine/adnexal tenderness + one of (fever >38°C, leukocytosis, purulent discharge).",
+      options: {
+        "PID confirmed": "IV Antibiotics (Ceftriaxone + Doxycycline + Metronidazole)",
+        "Appendicitis suspected": "Surgical Consult"
+      }
+    },
+
+    "Structural/Other Causes": {
+      text: "1. TVUS for ovarian cysts/torsion. 2. Consider endometriosis (cyclic pain, dysmenorrhea). 3. Rule out renal colic (hematuria, flank pain).",
+      explanation: "OVARIAN TORSION: Sudden onset, unilateral pain + vomiting. Doppler ultrasound shows absent blood flow.",
+      options: {
+        "Torsion/large cyst": "Laparoscopic Detorsion/Cystectomy",
+        "Renal colic": "CT KUB + Analgesia"
+      }
+    },
+
+    // Shared Pathways
+    "Non-Obstetric Causes": {
+      text: "1. Ruptured ovarian cyst (sudden pain mid-cycle). 2. Appendicitis (migration to RLQ). 3. Diverticulitis (LLQ pain in elderly).",
+      explanation: "CYST RUPTURE: Typically self-limited. Treat with NSAIDs; surgery only if hemodynamically unstable.",
+      options: {
+        "Mild (stable)": "Supportive Care",
+        "Severe (unstable)": "Surgical Intervention"
+      }
+    },
+
+    "Imaging (MRI/Ultrasound)": {
+      text: "1. MRI for pregnant patients or unclear diagnosis. 2. Ultrasound first-line for gynecologic causes (cysts, fibroids). 3. CT if high suspicion for bowel pathology.",
+      explanation: "ULTRASOUND FINDINGS: Simple cyst = benign. Complex cyst (septations, solid components) warrants tumor markers (CA-125).",
+      options: {
+        "Diagnosis confirmed": "Targeted Treatment",
+        "Unclear": "Diagnostic Laparoscopy"
+      }
+    },
+
+    "Diagnostic Laparoscopy": {
+      text: "Proceed if imaging inconclusive and high clinical suspicion (e.g., torsion, small ectopic).",
+      explanation: "ADVANTAGE: Both diagnostic and therapeutic (e.g., cystectomy, salpingectomy).",
+      options: {
+        "Cause identified": "Definitive Treatment",
+        "No cause found": "Chronic Pain Evaluation"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  
+  //Ectopic Pregnancy---------------
+  "Ectopic Pregnancy": {
+    start: {
+      text: "Does the patient have abdominal/pelvic pain or vaginal bleeding with a positive pregnancy test?",
+      explanation: "RED FLAG: Ectopic pregnancy is the leading cause of 1st trimester maternal death. Assume ectopic until proven otherwise in any pregnant patient with these symptoms.",
+      options: {
+        yes: "Hemodynamic Assessment",
+        no: "Alternative Diagnosis"
+      }
+    },
+
+    // INITIAL STABILIZATION PATHWAY
+    "Hemodynamic Assessment": {
+      text: "Assess for signs of rupture/instability:",
+      explanation: "CRITICAL SIGNS: Hypotension, tachycardia, orthostasis, peritoneal signs, or distended abdomen. Young women may compensate until sudden collapse.",
+      options: {
+        "Unstable": "Emergency Management",
+        "Stable": "Diagnostic Workup"
+      }
+    },
+    "Emergency Management": {
+      text: "Immediate actions:",
+      explanation: "1) Large-bore IV access (16-18G), 2) Fluid resuscitation, 3) Type & crossmatch, 4) OB/GYN stat consult, 5) OR preparation. WARNING: Do not delay surgery for imaging in unstable patients.",
+      options: {
+        "Proceed to OR": "Laparoscopic Salpingectomy",
+        "Stabilized": "Diagnostic Workup"
+      }
+    },
+
+    // DIAGNOSTIC PATHWAY
+    "Diagnostic Workup": {
+      text: "Order initial tests:",
+      explanation: "ESSENTIALS: Quantitative β-hCG, transvaginal US, CBC, blood type/Rh, progesterone. Rh-negative patients need RhoGAM if bleeding.",
+      options: {
+        "Results available": "Ultrasound Interpretation"
+      }
+    },
+    "Ultrasound Interpretation": {
+      text: "Evaluate ultrasound findings:",
+      explanation: "DEFINITIVE IUP: Gestational sac with yolk sac/embryo in uterus. DEFINITIVE ECTOPIC: Extrauterine gestational sac with yolk sac/fetal pole.",
+      options: {
+        "Definite IUP": "Intrauterine Pregnancy Confirmed",
+        "Definite ectopic": "Ectopic Management",
+        "Indeterminate": "hCG Correlation"
+      }
+    },
+    "hCG Correlation": {
+      text: "Compare hCG to discriminatory zone (1500-2000 IU/L for TVUS):",
+      explanation: "BELOW ZONE: May be early IUP or failing pregnancy. ABOVE ZONE: Expect to see IUP - if not, high suspicion for ectopic. Progesterone <5 ng/mL suggests abnormal pregnancy.",
+      options: {
+        "hCG >2000, no IUP": "High Risk Ectopic",
+        "hCG <2000": "Serial hCG Monitoring"
+      }
+    },
+    "Serial hCG Monitoring": {
+      text: "Repeat hCG in 48 hours:",
+      explanation: "NORMAL IUP: hCG rises ≥53% in 48h. ABNORMAL: Rise <50% or falling levels. CAUTION: Even with appropriate rise, ectopic not excluded.",
+      options: {
+        "Appropriate rise": "Continue Monitoring",
+        "Inadequate rise": "Uterine Sampling"
+      }
+    },
+
+    // DIAGNOSTIC PROCEDURES
+    "Uterine Sampling": {
+      text: "Perform endometrial sampling:",
+      explanation: "OPTIONS: D&C or office pipelle biopsy. Villi on pathology = failed IUP. No villi = presumed ectopic (98% PPV).",
+      options: {
+        "Villi present": "Failed IUP",
+        "No villi": "Ectopic Confirmed"
+      }
+    },
+
+    // MANAGEMENT PATHWAYS
+    "Ectopic Management": {
+      text: "Select treatment approach:",
+      explanation: "Factors: hCG level, size, rupture signs, desire for future fertility, patient reliability for follow-up.",
+      options: {
+        "Methotrexate candidate": "Medical Management",
+        "Surgical candidate": "Surgical Options"
+      }
+    },
+    "Medical Management": {
+      text: "Methotrexate protocol (single-dose):",
+      explanation: "CRITERIA: hCG <5000, no fetal cardiac activity, mass <3.5cm, hemodynamically stable. Day 1: MTX 50mg/m² IM. Day 4/7: hCG check - must drop ≥15%.",
+      options: {
+        "Successful decline": "Weekly hCG to <5",
+        "Inadequate response": "Second Dose or Surgery"
+      }
+    },
+    "Surgical Options": {
+      text: "Choose procedure:",
+      explanation: "LAPAROSCOPY PREFERRED. Salpingectomy (for completed family or tube damage) vs salpingostomy (fertility preservation). Rh-negative patients need RhoGAM.",
+      options: {
+        "Proceed": "Post-op hCG Monitoring",
+        "Convert to open": "Laparotomy"
+      }
+    },
+
+    // FOLLOW-UP PATHWAYS
+    "Post-treatment Monitoring": {
+      text: "hCG follow-up until undetectable:",
+      explanation: "MEDICAL TX: Weekly until <5 IU/L (may take 4-6 weeks). SURGICAL: Weekly until <5 IU/L (should drop ≥50% in 48h).",
+      options: {
+        "Appropriate decline": "Continue Monitoring",
+        "Plateau/rise": "Re-evaluate for persistent ectopic"
+      }
+    },
+    "Persistent Ectopic": {
+      text: "Management of persistent trophoblast:",
+      explanation: "After surgery: MTX or repeat surgery. After MTX: Second dose if hCG <5000 and stable, otherwise surgery.",
+      options: {
+        "Medical": "Additional MTX",
+        "Surgical": "Reoperation"
+      }
+    },
+
+    // COUNSELING POINTS
+    "Future Fertility Counseling": {
+      text: "Discuss after resolution:",
+      explanation: "1) 10-25% recurrence risk, 2) Wait 3 months post-MTX before conceiving, 3) Early US in next pregnancy, 4) Consider HSG to assess tube patency.",
+      options: {
+        "Understood": "Close Follow-up",
+        "Questions": "Reproductive Specialist Referral"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  //Postpartum Hemorrhage----------------
+  "Postpartum Hemorrhage": {
+    start: {
+      text: "Is blood loss >500mL (vaginal) or >1000mL (cesarean) with ongoing bleeding?",
+      explanation: "PPH diagnosis threshold. NOTE: Visual estimation often underestimates blood loss by 30-50%. Use quantitative methods when possible.",
+      options: {
+        yes: "Initial Assessment",
+        no: "Monitor for PPH Risk Factors"
+      }
+    },
+
+    // Initial Assessment Pathway
+    "Initial Assessment": {
+      text: "Activate hemorrhage protocol and assess:",
+      explanation: "CRITICAL ACTIONS: Call for help (OB, anesthesia, nursing, blood bank), move to OR if unstable, establish 2 large-bore IVs (14-16G preferred).",
+      subSteps: [
+        {
+          text: "Calculate Shock Index (HR/SBP)",
+          explanation: "RED FLAG: SI ≥1.4 triggers massive transfusion protocol. Normal postpartum SI may reach 1.1."
+        },
+        {
+          text: "Check vital signs q5-15min",
+          explanation: "WARNING: Tachycardia often earliest sign; hypotension is late finding."
+        },
+        {
+          text: "Perform clot observation test",
+          explanation: "Place 5mL blood in dry tube - no clot in 8min suggests coagulopathy."
+        }
+      ],
+      options: {
+        "Stable (SI<1.4)": "Moderate PPH Management",
+        "Unstable (SI≥1.4)": "Severe PPH Management"
+      }
+    },
+
+    // Moderate PPH (500-1500mL)
+    "Moderate PPH Management": {
+      text: "For blood loss 500-1500mL:",
+      explanation: "KEY PRINCIPLE: Treat while simultaneously identifying cause (4 Ts: Tone, Trauma, Tissue, Thrombin).",
+      subSteps: [
+        {
+          text: "Administer TXA 1g IV over 10min",
+          explanation: "MUST GIVE WITHIN 3 HOURS OF BLEEDING ONSET. Reduces mortality by 20-30% (WOMAN trial)."
+        },
+        {
+          text: "Increase oxytocin infusion",
+          explanation: "40U in 1L NS at 250mL/hr max. CAUTION: Rapid bolus can cause hypotension."
+        },
+        {
+          text: "Bimanual uterine massage",
+          explanation: "Compress uterus between abdominal hand and vaginal fist."
+        }
+      ],
+      options: {
+        "Bleeding controlled": "Post-PPH Monitoring",
+        "Ongoing bleeding": "Secondary Interventions"
+      }
+    },
+
+    "Secondary Interventions": {
+      text: "If bleeding persists after initial measures:",
+      explanation: "ESCALATION PROTOCOL: Add uterotonics sequentially while preparing for procedural interventions.",
+      subSteps: [
+        {
+          text: "Administer additional uterotonics:",
+          options: {
+            "Carboprost 250mcg IM q15-90min (max 2mg)": "Avoid in asthma",
+            "Methylergonovine 0.2mg IM (if normotensive)": "Contraindicated in HTN"
+          }
+        },
+        {
+          text: "Examine for lacerations/retained products",
+          explanation: "ESSENTIAL: Full speculum exam under good lighting. Retained placenta requires manual removal/curettage."
+        },
+        {
+          text: "Consider intrauterine balloon tamponade",
+          explanation: "Bakri balloon typically requires 300-500mL saline. CONTINUE uterotonics during use."
+        }
+      ],
+      options: {
+        "Bleeding controlled": "Post-PPH Monitoring",
+        "Ongoing bleeding": "Severe PPH Management"
+      }
+    },
+
+    // Severe PPH (>1500mL or unstable)
+    "Severe PPH Management": {
+      text: "Massive hemorrhage protocol:",
+      explanation: "TIME-SENSITIVE: Mortality increases with delay. Activate massive transfusion protocol early.",
+      subSteps: [
+        {
+          text: "Blood product replacement (empiric ratios):",
+          explanation: "TARGET: Maintain Hb >7.5, platelets >50k, fibrinogen >200. NOTE: Pregnancy fibrinogen baseline is 350-650mg/dL.",
+          options: {
+            "4U PRBCs → 4U FFP → 1 platelet apheresis": "1:1:1 ratio",
+            "Cryoprecipitate 10U if fibrinogen <200": "Each unit raises fibrinogen ~7-10mg/dL"
+          }
+        },
+        {
+          text: "Correct coagulopathy",
+          explanation: "PRIORITIZE fibrinogen replacement. Consider fibrinogen concentrate if available (dose = [target - current] × weight/1.7)."
+        },
+        {
+          text: "Apply aortic compression",
+          explanation: "Temporizing measure: Compress aorta above umbilicus against spine."
+        }
+      ],
+      options: {
+        "Stabilized": "Definitive Therapy",
+        "Unstable": "Resuscitative Measures"
+      }
+    },
+
+    "Definitive Therapy": {
+      text: "Choose based on etiology and stability:",
+      explanation: "DECISION POINT: Uterine preservation vs. life-saving hysterectomy.",
+      options: {
+        "Stable + bleeding controlled": "Post-PPH Monitoring",
+        "Stable + slow bleeding": "Uterine Artery Embolization",
+        "Uncontrolled bleeding": "Surgical Intervention"
+      }
+    },
+
+    "Uterine Artery Embolization": {
+      text: "Interventional radiology consult",
+      explanation: "CRITERIA: Hemodynamically stable, no DIC. SUCCESS RATE: 90-97%. Gelfoam preferred (temporary occlusion).",
+      options: {
+        "Successful": "Post-Embolization Care",
+        "Failed": "Surgical Intervention"
+      }
+    },
+
+    "Surgical Intervention": {
+      text: "Laparotomy options:",
+      explanation: "PROGRESSIVE APPROACH: Start with conservative measures if desired.",
+      options: {
+        "Uterine compression sutures (B-Lynch)": "For atony",
+        "Uterine artery ligation": "O'Leary technique",
+        "Hypogastric artery ligation": "Requires surgical expertise",
+        "Hysterectomy": "Definitive treatment"
+      }
+    },
+
+    "Resuscitative Measures": {
+      text: "For catastrophic hemorrhage:",
+      explanation: "LAST-RESORT OPTIONS: REBOA can bridge to definitive treatment.",
+      options: {
+        "REBOA (Zone III)": "Endovascular aortic occlusion",
+        "Damage control laparotomy": "Packing and re-exploration",
+        "Massive transfusion protocol": "1:1:1 ratio, monitor calcium/potassium"
+      }
+    },
+
+    // Shared Pathways
+    "Post-PPH Monitoring": {
+      text: "Post-stabilization care:",
+      explanation: "VIGILANCE REQUIRED: 20% of PPH cases have delayed recurrence.",
+      subSteps: [
+        {
+          text: "Continuous monitoring for 24h",
+          explanation: "Watch for rebleeding or coagulopathy (check CBC/coags q6h)"
+        },
+        {
+          text: "Iron supplementation",
+          explanation: "Oral or IV depending on Hb level"
+        },
+        {
+          text: "Thromboprophylaxis",
+          explanation: "Start when bleeding controlled (LMWH preferred)"
+        }
+      ],
+      options: {
+        "Complications arise": "Severe PPH Management",
+        "Stable recovery": "Discharge Planning"
+      }
+    },
+
+    "Monitor for PPH Risk Factors": {
+      text: "Assess for high-risk features:",
+      explanation: "PREVENTION: Active management of third stage reduces PPH by 60%.",
+      options: {
+        "High risk (placenta previa, coagulopathy)": "Prophylactic Measures",
+        "Low risk": "Routine Postpartum Care"
+      }
+    },
+
+    "Prophylactic Measures": {
+      text: "Preventive strategies:",
+      explanation: "EVIDENCE-BASED: Oxytocin 10IU IM is gold standard prophylaxis.",
+      options: {
+        "Oxytocin infusion": "40U in 1L NS at 125mL/hr",
+        "Contingent TXA": "1g IV if bleeding >500mL",
+        "Uterine tone monitoring": "q15min for 2h"
+      }
+    }
+  }
+};
+
+  
+    
+
+    let currentSymptom = null;
+    let currentQuestion = "start";
+
+    function playClick() {
+      const sound = document.getElementById("click-sound");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+      }
+    }
+
+    function startSymptom(symptom) {
+      currentSymptom = symptom;
+      currentQuestion = "start";
+      document.getElementById("symptom-title").textContent = symptom;
+      showQuestion();
+
+      document.getElementById("main-page").style.display = "none";
+      document.getElementById("question-page").style.display = "block";
+      document.getElementById("headline").style.display = "none";
+      document.getElementById("subheadline").style.display = "none";
+    }
+
+    // NEW/MODIFIED: This function is updated to show images.
+    function showQuestion() {
+      const symptomQuestions = questions[currentSymptom];
+      if (!symptomQuestions || !symptomQuestions[currentQuestion]) {
+        alert("Invalid symptom or question flow.");
+        return;
+      }
+
+      const questionData = symptomQuestions[currentQuestion];
+      const imageContainer = document.getElementById("question-image-container");
+      
+      // Clear previous image
+      imageContainer.innerHTML = "";
+
+      // If an image path exists, create and display the image
+      if (questionData.image) {
+        const img = document.createElement("img");
+        img.src = questionData.image;
+        img.alt = questionData.text; // for accessibility
+        img.className = "question-image";
+        imageContainer.appendChild(img);
+      }
+
+      document.getElementById("question").textContent = questionData.text;
+      document.getElementById("footer").textContent = questionData.explanation || "No explanation available.";
+
+      const buttons = Object.keys(questionData.options)
+        .map(option =>
+          `<button class='option-button' onclick="playClick(); nextQuestion('${option}')">${option}</button>`)
+        .join("");
+      document.querySelector(".button-container").innerHTML = buttons;
+    }
+
+    function nextQuestion(answer) {
+      const symptomQuestions = questions[currentSymptom];
+      const current = symptomQuestions[currentQuestion];
+      if (!current || !current.options[answer]) {
+        alert("Invalid choice.");
+        return;
+      }
+
+      const next = current.options[answer];
+      // Check if the next step is another question or a final diagnosis
+      if (symptomQuestions[next] && symptomQuestions[next].options) {
+          currentQuestion = next;
+          showQuestion();
+      } else {
+          // This handles both terminal nodes that are defined as full objects
+          // and those that are simple strings (your original implementation)
+          if (symptomQuestions[next]) {
+              currentQuestion = next;
+              showQuestion(); // This will display the final diagnosis with its image
+          } else {
+              // This is a fallback for legacy string-only terminals
+              document.getElementById("question").textContent = next;
+              document.getElementById("footer").textContent = "End of diagnostic path.";
+              document.querySelector(".button-container").innerHTML =
+                `<button class='option-button' onclick="playClick(); restart()">Restart</button>`;
+              document.getElementById("question-image-container").innerHTML = ""; // Clear image
+          }
+      }
+    }
+
+
+    function restart() {
+      document.getElementById("main-page").style.display = "flex";
+      document.getElementById("question-page").style.display = "none";
+      document.getElementById("headline").style.display = "block";
+      document.getElementById("subheadline").style.display = "block";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      sidebar.classList.toggle("active");
+      overlay.style.display = sidebar.classList.contains("active") ? "block" : "none";
+    }
+
+    document.addEventListener("click", function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const toggleBtn = document.querySelector(".toggle-button");
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnToggle = toggleBtn.contains(event.target);
+      if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains("active")) {
+        toggleSidebar();
+      }
+    });
+
+    let startX = 0;
+    document.addEventListener("touchstart", function(e) {
+      if (e.touches.length === 1) { startX = e.touches[0].clientX; }
+    });
+    document.addEventListener("touchend", function(e) {
+      const sidebar = document.getElementById("sidebar");
+      const diff = e.changedTouches[0].clientX - startX;
+      if (diff > 50 && sidebar.classList.contains("active")) { toggleSidebar(); }
+    });
+
+    function goHome() {
+      window.location.href = "../index.html";
+    }
+
+    function navigateTo(page) {
+      window.location.href = page;
+      const loadingScreen = document.querySelector('.loading');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'flex';
+        setTimeout(() => { window.location.href = page; }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Psychiatric Symptoms</title>
+  <link rel="stylesheet" href="../style/regional_style.css" type="text/css" media="all" />
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="nav-title">ALGOMED <span>PSYCHIATRIC</span></div>
+  <button class="toggle-button" onclick="playClick(); toggleSidebar()">☰</button>
+</nav>
+
+<!-- Overlay for click outside -->
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <ul>
+      <li onclick="navigateTo('respiratory.html')">Respiratory</li>
+      <li onclick="navigateTo('cardiovascular.html')">Cardiovascular</li>
+      <li onclick="navigateTo('git.html')">Gastroenterology</li>
+      <li onclick="navigateTo('gynecology.html')">Gynecology</li>
+      <li onclick="navigateTo('hepatology.html')">Hepatology</li>
+      <li onclick="navigateTo('nephrology.html')">Nephrology</li>
+      <li onclick="navigateTo('obstetric.html')">Obstetric</li>
+      <li onclick="navigateTo('rheumatology.html')">Rheumatology</li>
+      <li onclick="navigateTo('hematology.html')">Hematology</li>
+      <li onclick="navigateTo('pediatric.html')">Pediatric</li>
+      <li onclick="navigateTo('ophthalmology.html')">Ophthalmology</li>
+      <li onclick="navigateTo('neurology.html')">Neurology</li>
+      <li onclick="navigateTo('dermatology.html')">Dermatology</li>
+      <li onclick="navigateTo('ent.html')">ENT</li>
+      <li onclick="navigateTo('psychiatric.html')">Psychiatric</li>
+      <li onclick="navigateTo('General.html')">General</li>
+    </ul>
+<button class="sidebar-about-button" onclick="navigateTo('../about.html')">About Us</button>
+  </aside>
+
+  <!-- Audio -->
+  <audio id="click-sound" src="../sounds/click_sound.wav" preload="auto"></audio>
+
+  <!-- Headlines Outside Container -->
+  <h3 id="headline">Select a Primary Symptom</h3>
+<p id="subheadline">Choose from the list below to begin diagnosis.</p>
+
+  <!-- Main Page -->
+  <div id="main-page" class="container">
+    <button class="symptom-button" onclick="playClick(); startSymptom('Anxiety')">Anxiety</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Depression')">Depression</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Psychosis')">Psychosis</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Somatic Symptom Disorders')">Somatic Symptom Disorders</button>
+    
+  </div>
+
+  <!-- Question Page -->
+  <div id="question-page">
+  <div class="title" id="symptom-title">Symptom Diagnostic</div>
+  <div id="question-image-container"></div>
+  <div id="question" class="question"></div>
+  <div class="button-container"></div>
+  <div id="footer" class="footer"></div>
+</div>
+
+  <!-- Home Button -->
+  <button class="home-button" onclick="goHome()">
+  <img src="../bodyicons/home_button.png" alt="Home" class="home-icon">
+  <span class="sr-only">Home</span>
+</button>
+  
+  
+
+  <!-- Script -->
+  <script>
+  const questions = {
+    
+    //ANXIETY----------------------
+  "Anxiety": {
+    start: {
+      text: "Does the patient present with symptoms of anxiety (e.g., excessive worry, panic attacks, phobias)?",
+      explanation: "Initial assessment focuses on identifying the nature and severity of anxiety symptoms. RED FLAG: Rule out organic causes (e.g., hyperthyroidism, substance withdrawal) before attributing symptoms to a primary anxiety disorder.",
+      options: {
+        yes: "Assess for Recent Stressors",
+        no: "Reassess or consider alternative diagnoses"
+      }
+    },
+    
+    // Primary Evaluation Pathway
+    "Assess for Recent Stressors": {
+      text: "Has the patient experienced recent stressors (e.g., illness, injury, loss)?",
+      explanation: "Situational anxiety or adjustment disorder may resolve with supportive therapy. NOTE: Benzodiazepines are temporary and contraindicated in substance use disorders.",
+      options: {
+        yes: "Situational Anxiety Management",
+        no: "Assess for Organic Causes"
+      }
+    },
+    
+    // Situational Anxiety Pathway
+    "Situational Anxiety Management": {
+      text: "Provide supportive therapy and consider short-term benzodiazepines if no substance use history.",
+      explanation: "SUPPORTIVE THERAPY: Active listening, reassurance, and coping strategies. BENZODIAZEPINES: Limit to 2-4 weeks (e.g., lorazepam 0.5mg PRN). CAUTION: Avoid in elderly or cognitively impaired patients.",
+      options: {
+        "Symptoms improve": "Monitor and Follow-up",
+        "Symptoms persist": "Assess for Organic Causes"
+      }
+    },
+    
+    // Organic Causes Pathway
+    "Assess for Organic Causes": {
+      text: "Evaluate for organic etiologies (e.g., hyperthyroidism, caffeine, drug withdrawal).",
+      explanation: "KEY CAUSES: Cardiovascular (arrhythmias), endocrine (hyperthyroidism), neurologic (seizures), or substance-related (cocaine, alcohol withdrawal). ACTION: Order TSH, ECG, urine toxicology if indicated.",
+      options: {
+        "Organic cause identified": "Treat Underlying Disorder",
+        "No organic cause": "Assess for Psychiatric Disorders"
+      }
+    },
+    "Treat Underlying Disorder": {
+      text: "Address the specific organic cause (e.g., methimazole for hyperthyroidism, detox for alcohol withdrawal).",
+      explanation: "EXAMPLE: Beta-blockers (e.g., propranolol) for symptomatic hyperthyroidism. WARNING: Delirium requires urgent intervention (e.g., treat infection, correct electrolytes).",
+      options: {
+        "Symptoms resolve": "Monitor and Follow-up",
+        "Symptoms persist": "Assess for Psychiatric Disorders"
+      }
+    },
+    
+    // Psychiatric Disorders Pathway
+    "Assess for Psychiatric Disorders": {
+      text: "Evaluate for comorbid psychiatric conditions (e.g., depression, PTSD, OCD).",
+      explanation: "COMMON COMORBIDITIES: Depression (screen with PHQ-9), bipolar disorder, or schizophrenia. NOTE: Anxiety may be secondary to another primary disorder.",
+      options: {
+        "Psychiatric disorder identified": "Treat Underlying Disorder",
+        "No comorbidity": "Evaluate Anxiety Disorder Subtype"
+      }
+    },
+    
+    // Anxiety Subtype Evaluation
+    "Evaluate Anxiety Disorder Subtype": {
+      text: "Identify the specific anxiety disorder based on DSM-5 criteria.",
+      explanation: "SUBTYPES: Panic disorder, phobias, OCD, PTSD, or generalized anxiety disorder (GAD). CLUES: Panic attacks (abrupt onset), phobias (specific triggers), OCD (rituals), PTSD (trauma history).",
+      options: {
+        "Panic attacks present": "Panic Disorder Pathway",
+        "Phobias present": "Phobia Pathway",
+        "OCD symptoms present": "OCD Pathway",
+        "PTSD symptoms present": "PTSD Pathway",
+        "Excessive worry >6 months": "GAD Pathway"
+      }
+    },
+    
+    // Panic Disorder Pathway
+    "Panic Disorder Pathway": {
+      text: "Assess for panic attacks (sudden fear + ≥4 somatic symptoms).",
+      explanation: "DIAGNOSIS: Recurrent attacks + fear of future attacks. FIRST-LINE: SSRIs (e.g., sertraline) or CBT. AVOID: Benzodiazepines long-term due to dependency risk.",
+      options: {
+        "Confirm panic disorder": "Panic Disorder Treatment",
+        "Agoraphobia present": "Agoraphobia Management"
+      }
+    },
+    "Panic Disorder Treatment": {
+      text: "Initiate SSRI (e.g., sertraline 25mg daily) or CBT. Warn of initial symptom exacerbation.",
+      explanation: "SSRI TIP: Start low to minimize side effects. CBT: Focus on cognitive restructuring and exposure. BENZODIAZEPINES: Reserve for acute crises (e.g., alprazolam 0.25mg PRN).",
+      options: {
+        "Response adequate": "Maintenance Therapy",
+        "No response": "Alternative Treatment"
+      }
+    },
+    "Agoraphobia Management": {
+      text: "Treat panic attacks first, then address agoraphobia with exposure therapy.",
+      explanation: "EXPOSURE THERAPY: Gradual, repeated exposure to feared situations (e.g., crowds). SUPPORT: Group therapy or family involvement.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Maintenance": "Maintenance Therapy"
+      }
+    },
+    
+    // Phobia Pathway
+    "Phobia Pathway": {
+      text: "Determine phobia type (specific, social, agoraphobia).",
+      explanation: "SPECIFIC PHOBIA: Irrational fear of objects/situations (e.g., spiders). SOCIAL PHOBIA: Fear of scrutiny (generalized or performance-only).",
+      options: {
+        "Specific phobia": "Exposure Therapy",
+        "Social phobia": "Social Phobia Treatment"
+      }
+    },
+    "Exposure Therapy": {
+      text: "Use graded exposure therapy. Consider adjunctive benzodiazepine PRN.",
+      explanation: "EXAMPLE: For fear of flying, start with virtual exposure before real flights. BENZODIAZEPINES: Alprazolam 0.25mg before triggers (avoid daily use).",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Maintenance": "Maintenance Therapy"
+      }
+    },
+    "Social Phobia Treatment": {
+      text: "For performance anxiety: beta-blocker (e.g., propranolol 10-40mg PRN). For generalized: SSRI or CBT.",
+      explanation: "BETA-BLOCKERS: Reduce physical symptoms (tremors, tachycardia). CBT: Focus on social skills and cognitive distortions.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Maintenance": "Maintenance Therapy"
+      }
+    },
+    
+    // OCD Pathway
+    "OCD Pathway": {
+      text: "Assess for obsessions (intrusive thoughts) and compulsions (rituals).",
+      explanation: "DIAGNOSIS: Yale-Brown Scale aids severity assessment. FIRST-LINE: High-dose SSRI (e.g., fluoxetine 60mg) or exposure/response prevention therapy.",
+      options: {
+        "Confirm OCD": "OCD Treatment",
+        "Severe/resistant OCD": "Specialist Referral"
+      }
+    },
+    "OCD Treatment": {
+      text: "Start SSRI (e.g., fluoxetine 20mg, titrate to 60mg) + CBT with exposure/response prevention.",
+      explanation: "RESPONSE PREVENTION: Block compulsions (e.g., handwashing) while exposing to triggers (e.g., dirt). NOTE: 8-12 weeks for full SSRI effect.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Maintenance": "Maintenance Therapy"
+      }
+    },
+    
+    // PTSD Pathway
+    "PTSD Pathway": {
+      text: "Assess for trauma history and symptoms (reexperiencing, avoidance, hyperarousal).",
+      explanation: "DIAGNOSIS: Symptoms >1 month post-trauma. FIRST-LINE: SSRIs (e.g., paroxetine) or trauma-focused CBT (e.g., prolonged exposure therapy).",
+      options: {
+        "Confirm PTSD": "PTSD Treatment",
+        "Acute stress disorder": "Supportive Therapy"
+      }
+    },
+    "PTSD Treatment": {
+      text: "Initiate SSRI (e.g., paroxetine 20mg) or CBT (e.g., eye movement desensitization).",
+      explanation: "TRAUMA-FOCUSED CBT: Address maladaptive beliefs. GROUP THERAPY: Useful for shared trauma (e.g., veterans).",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Maintenance": "Maintenance Therapy"
+      }
+    },
+    
+    // GAD Pathway
+    "GAD Pathway": {
+      text: "Confirm excessive worry >6 months + ≥3 somatic symptoms (e.g., fatigue, restlessness).",
+      explanation: "DIAGNOSIS OF EXCLUSION: Rule out other anxiety subtypes. FIRST-LINE: SNRIs (e.g., venlafaxine) or buspirone. BENZODIAZEPINES: Last resort.",
+      options: {
+        "Confirm GAD": "GAD Treatment",
+        "Re-evaluate diagnosis": "Evaluate Anxiety Disorder Subtype"
+      }
+    },
+    "GAD Treatment": {
+      text: "Start venlafaxine (37.5mg daily, titrate to 225mg) or buspirone (5mg TID).",
+      explanation: "SNRI CAUTION: Monitor blood pressure. BUSPIRONE: No dependency risk but slower onset (2-4 weeks).",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Maintenance": "Maintenance Therapy"
+      }
+    },
+    
+    // Shared Outcomes
+    "Maintenance Therapy": {
+      text: "Continue treatment for 6-12 months after remission. Monitor for relapse.",
+      explanation: "SSRI TAPER: Reduce dose by 25% every 4-6 weeks to avoid discontinuation syndrome. CBT BOOSTERS: Periodic sessions to reinforce skills.",
+      options: {
+        "Stable": "Discharge with Follow-up",
+        "Relapse": "Re-evaluate Treatment"
+      }
+    },
+    "Alternative Treatment": {
+      text: "Switch to alternative SSRI, SNRI, or augment with CBT if initial treatment fails.",
+      explanation: "EXAMPLE: Switch from sertraline to escitalopram. AUGMENTATION: Low-dose quetiapine for resistant GAD (off-label).",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Maintenance": "Maintenance Therapy"
+      }
+    },
+    "Monitor and Follow-up": {
+      text: "Schedule follow-up in 4-6 weeks to assess response and side effects.",
+      explanation: "TOOLS: GAD-7 or PHQ-9 for tracking progress. WARNING: Screen for suicidal ideation with SSRIs in young adults.",
+      options: {
+        "Restart Algorithm": "start",
+        "Discharge": "exit"
+      }
+    }
+  },
+  
+  
+  //Psychosis-------------
+  "Psychosis": {
+    start: {
+      text: "Is the patient exhibiting acute psychotic symptoms (hallucinations, delusions, disorganized behavior)?",
+      explanation: "Acute psychosis requires immediate safety assessment. RED FLAG: Command hallucinations or suicidal/homicidal ideation necessitates urgent intervention.",
+      options: {
+        yes: "Ensure Safety",
+        no: "Re-evaluate Symptoms"
+      }
+    },
+
+    // Acute Psychosis Pathway
+    "Ensure Safety": {
+      text: "Secure a low-stimulus environment and assess for immediate danger to self/others. Is restraint or sedation needed?",
+      explanation: "CRITICAL: Use chemical (e.g., benzodiazepines) or physical restraint only if necessary. Always have staff present. NEVER leave the patient unattended.",
+      options: {
+        "Restraint/Sedation required": "Acute Stabilization",
+        "No restraint needed": "Medical Evaluation"
+      }
+    },
+    "Acute Stabilization": {
+      text: "Administer antipsychotics (e.g., IM haloperidol + lorazepam) or benzodiazepines for agitation. Monitor vital signs.",
+      explanation: "NOTE: Parenteral typical antipsychotics (e.g., haloperidol) are preferred for acute agitation. Atypical antipsychotics lack IM formulations for rapid control.",
+      options: {
+        "Patient stabilized": "Medical Evaluation",
+        "Unstable": "Emergency Consultation"
+      }
+    },
+    "Medical Evaluation": {
+      text: "Obtain history (from collateral sources) and perform physical exam. Check for medical causes: trauma, infection, toxins, metabolic disorders.",
+      explanation: "KEY CLUES: Pupillary changes (drug intoxication), fever (infection), or focal neurologic signs (CVA/tumor). Lab tests: CBC, metabolic panel, tox screen, EEG if seizure suspected.",
+      options: {
+        "Organic cause identified": "Treat Medical Condition",
+        "No organic cause found": "Psychiatric Differential"
+      }
+    },
+    "Treat Medical Condition": {
+      text: "Address the underlying cause (e.g., glucose for hypoglycemia, antibiotics for CNS infection, dialysis for uremia).",
+      explanation: "URGENT: Hypoglycemia requires IV dextrose. Wernicke’s encephalopathy needs thiamine. Delirium tremens demands benzodiazepines.",
+      options: {
+        "Reassess psychosis": "Medical Evaluation",
+        "Resolution": "Discharge Planning"
+      }
+    },
+    "Psychiatric Differential": {
+      text: "Assess for psychiatric disorders. Key features:",
+      explanation: "FOCUS: Duration of symptoms (chronic vs. episodic), mood congruency of delusions, and baseline functioning between episodes.",
+      options: {
+        "Chronic bizarre delusions + social decline": "Schizophrenia Pathway",
+        "Grandiose delusions + hyperactivity": "Mania Pathway",
+        "Depressive themes + guilt/punishment delusions": "Psychotic Depression Pathway",
+        "Fixed non-bizarre delusions": "Delusional Disorder Pathway",
+        "Cognitive decline + behavioral disturbances": "Dementia Pathway"
+      }
+    },
+
+    // Schizophrenia Pathway
+    "Schizophrenia Pathway": {
+      text: "Chronic course with poor baseline functioning? Confirm with history of >6 months of symptoms.",
+      explanation: "HALLMARKS: Positive (hallucinations/delusions) and negative (avolition, flat affect) symptoms. RULE OUT: Substance-induced psychosis.",
+      options: {
+        "Confirmed": "Acute Schizophrenia Management",
+        "Unclear": "Re-evaluate History"
+      }
+    },
+    "Acute Schizophrenia Management": {
+      text: "Start antipsychotic (oral/IM). Preferred agents: risperidone, olanzapine, or haloperidol + lorazepam for agitation.",
+      explanation: "CAUTION: Clozapine requires monitoring for agranulocytosis. Avoid in acute setting due to titration needs. Long-acting injectables (LAIs) for non-adherent patients.",
+      options: {
+        "Response": "Maintenance Therapy",
+        "Refractory": "Clozapine Trial"
+      }
+    },
+    "Maintenance Therapy": {
+      text: "Continue antipsychotic at lowest effective dose. Monitor for EPS, metabolic syndrome.",
+      explanation: "NOTE: 30-50% relapse rate off meds. LAIs reduce relapse by 60% vs. oral meds. Combine with psychosocial interventions.",
+      options: {
+        "Stable": "Long-term Follow-up",
+        "Relapse": "Acute Schizophrenia Management"
+      }
+    },
+
+    // Mania Pathway
+    "Mania Pathway": {
+      text: "History of bipolar disorder or euphoric/grandiose delusions? Assess for hyperactivity, pressured speech, insomnia.",
+      explanation: "RED FLAGS: High-risk behavior (e.g., financial indiscretions, hypersexuality). Lithium level >1.2mEq/L risks toxicity.",
+      options: {
+        "Confirmed": "Acute Mania Management",
+        "Mixed features": "Mixed Episode Management"
+      }
+    },
+    "Acute Mania Management": {
+      text: "Start antipsychotic (e.g., olanzapine, quetiapine) + mood stabilizer (lithium/valproate). Adjunct benzodiazepines for agitation.",
+      explanation: "URGENT: Restrict stimuli. Valproate preferred for rapid cycling. Avoid antidepressants (may worsen mania).",
+      options: {
+        "Stabilized": "Maintenance Mood Stabilizer",
+        "Severe": "ECT Consideration"
+      }
+    },
+
+    // Psychotic Depression Pathway
+    "Psychotic Depression Pathway": {
+      text: "Delusions/hallucinations congruent with depressed mood (e.g., guilt, nihilism)?",
+      explanation: "WARNING: High suicide risk. SSRI + antipsychotic (e.g., sertraline + risperidone) or ECT for severe cases.",
+      options: {
+        "Confirmed": "Antidepressant + Antipsychotic",
+        "Suicidal": "Urgent ECT"
+      }
+    },
+
+    // Delusional Disorder Pathway
+    "Delusional Disorder Pathway": {
+      text: "Fixed, non-bizarre delusions without functional decline?",
+      explanation: "NOTE: Often refractory. Low-dose antipsychotics (e.g., pimozide) may help. Avoid confronting delusions directly.",
+      options: {
+        "Managed behaviorally": "Monitor",
+        "Agitation": "Antipsychotic Trial"
+      }
+    },
+
+    // Dementia Pathway
+    "Dementia Pathway": {
+      text: "Cognitive decline with psychotic features? Rule out delirium first.",
+      explanation: "CAUTION: Antipsychotics increase mortality in dementia. Use only if severe agitation/threat, at lowest dose (e.g., quetiapine 25mg BID).",
+      options: {
+        "Confirmed": "Behavioral Management",
+        "Agitation unmanaged": "Limited Antipsychotic Use"
+      }
+    },
+
+    // Exit Points
+    "Emergency Consultation": {
+      text: "Call psychiatry/neurology consult. Consider transfer to acute care facility.",
+      options: {}
+    },
+    "Discharge Planning": {
+      text: "Arrange outpatient follow-up, ensure medication adherence, and provide crisis resources.",
+      options: {}
+    }
+  },
+  
+  //Depression--------------
+  "Depression": {
+    start: {
+      text: "Does the patient exhibit persistent sadness or loss of interest in activities for ≥2 weeks?",
+      explanation: "SCREENING: Major depression requires ≥5/9 symptoms (DSM-5). RED FLAG: Suicidal ideation mandates immediate safety assessment.",
+      options: {
+        yes: "Symptom Assessment",
+        no: "Re-evaluate for Subthreshold Symptoms"
+      }
+    },
+
+    // Diagnostic Pathway
+    "Symptom Assessment": {
+      text: "Assess for DSM-5 criteria (≥5 of these daily for 2 weeks): (1) Depressed mood, (2) Anhedonia, (3) Weight/appetite changes, (4) Insomnia/hypersomnia, (5) Psychomotor agitation/retardation, (6) Fatigue, (7) Worthlessness/guilt, (8) Impaired concentration, (9) Suicidal ideation.",
+      explanation: "KEY DIFFERENTIAL: Rule out bipolar disorder (screen for manic episodes). Organic causes (e.g., hypothyroidism) must be excluded first.",
+      options: {
+        "Meets criteria": "Rule Out Organic Causes",
+        "Subthreshold": "Consider Dysthymia/Adjustment Disorder"
+      }
+    },
+    "Rule Out Organic Causes": {
+      text: "Order: CBC, TSH, B12/folate, RPR, HIV, toxicology screen. Consider CT/MRI if neurological signs present.",
+      explanation: "CRITICAL: Medications (e.g., beta-blockers, steroids), substance abuse, or medical conditions (e.g., Cushing's, Parkinson's) can mimic depression.",
+      options: {
+        "Organic cause found": "Treat Underlying Condition",
+        "No organic cause": "Psychiatric Diagnosis"
+      }
+    },
+    "Treat Underlying Condition": {
+      text: "Address specific cause: Adjust medications, treat hypothyroidism (levothyroxine), supplement B12/folate, manage substance withdrawal.",
+      explanation: "NOTE: Depression may persist post-treatment; initiate antidepressants if symptoms continue after 2–4 weeks of medical therapy.",
+      options: {
+        "Depression resolves": "Monitor",
+        "Persistent depression": "Psychiatric Diagnosis"
+      }
+    },
+
+    // Psychiatric Diagnosis Pathway
+    "Psychiatric Diagnosis": {
+      text: "Classify depression type:",
+      explanation: "PSYCHOTIC FEATURES: Delusions/guilt require antipsychotics (e.g., quetiapine) + antidepressants. SEASONAL: Light therapy ± SSRIs.",
+      options: {
+        "Major Depression": "Antidepressant Selection",
+        "Psychotic Depression": "Antidepressant + Antipsychotic",
+        "Seasonal Affective": "Light Therapy + SSRI",
+        "Bipolar Depression": "Mood Stabilizer First"
+      }
+    },
+
+    // Treatment Pathways
+    "Antidepressant Selection": {
+      text: "First-line: SSRI (e.g., escitalopram 10mg daily). Alternatives: SNRI (venlafaxine), bupropion (low seizure risk), or mirtazapine (sedating).",
+      explanation: "WARNINGS: SSRIs may increase suicide risk initially in young adults. Avoid MAOIs with other serotonergic drugs (risk of serotonin syndrome).",
+      options: {
+        "Tolerated": "8-Week Trial",
+        "Side effects": "Switch Class",
+        "No response": "Augmentation"
+      }
+    },
+    "8-Week Trial": {
+      text: "Monitor for response (≥50% symptom reduction) and side effects (e.g., GI upset, sexual dysfunction). Adjust dose if partial response.",
+      explanation: "MAX DOSES: Escitalopram 20mg, sertraline 200mg. CAUTION: CYP450 interactions (e.g., fluoxetine inhibits CYP2D6).",
+      options: {
+        "Response": "Maintenance Therapy",
+        "Partial response": "Dose Increase",
+        "No response": "Augmentation"
+      }
+    },
+    "Augmentation": {
+      text: "Add: (1) Lithium (target 0.6–1.0 mEq/L), (2) Atypical antipsychotic (e.g., aripiprazole), (3) Thyroid (T3 25–50 mcg/day), or (4) Buspirone.",
+      explanation: "EVIDENCE: Lithium augmentation doubles remission rates. Antipsychotics carry metabolic risks (monitor weight, lipids, glucose).",
+      options: {
+        "Response": "Maintenance Therapy",
+        "No response": "Switch to ECT"
+      }
+    },
+    "Maintenance Therapy": {
+      text: "Continue antidepressants for 6–12 months after remission (lifetime for ≥3 episodes). CBT/IPT reduces relapse risk.",
+      explanation: "TAPER SLOWLY: Halve dose every 4 weeks to avoid discontinuation syndrome (e.g., fluoxetine > paroxetine).",
+      options: {
+        "Stable": "Annual Review",
+        "Relapse": "Re-initiate Treatment"
+      }
+    },
+
+    // Special Cases
+    "Psychotic Depression": {
+      text: "Start SSRI + antipsychotic (e.g., sertraline 50mg + quetiapine 50mg). Consider ECT if severe/catatonic.",
+      explanation: "ECT has 80% response rate. Avoid antipsychotics long-term due to metabolic risks.",
+      options: {
+        "Response": "Gradual Antipsychotic Taper",
+        "No response": "ECT"
+      }
+    },
+    "Bipolar Depression": {
+      text: "Mood stabilizer first (e.g., lamotrigine, quetiapine). Avoid antidepressants without stabilizer (risk of mania).",
+      explanation: "SAFETY: Lamotrigine requires slow titration (rash risk). Quetiapine dose: 300mg nightly.",
+      options: {
+        "Response": "Long-term Stabilizer",
+        "No response": "Add Lithium/ECT"
+      }
+    },
+    "Suicidal Ideation": {
+      text: "Immediate psychiatric referral. Hospitalize if high risk. Start SSRI + close monitoring (avoid TCAs in overdose risk).",
+      explanation: "RED FLAG: Suicide risk peaks in first 4 weeks of treatment. Remove firearms/pills from home.",
+      options: {}
+    },
+
+    // Subthreshold Pathways
+    "Consider Dysthymia/Adjustment Disorder": {
+      text: "Dysthymia: Chronic (>2 years) low-grade depression → SSRI + CBT. Adjustment disorder: Stress-related (<6 months) → Supportive therapy.",
+      explanation: "Watch for progression to major depression. Exercise and sleep hygiene are key adjuncts.",
+      options: {
+        "Worsening": "Re-evaluate for Major Depression",
+        "Stable": "Monitor"
+      }
+    }
+  },
+  
+  //Somatic Symptom Disorders----------
+  "Somatic Symptom Disorders": {
+    start: {
+      text: "Does the patient present with persistent physical complaints despite negative or inconclusive medical workups?",
+      explanation: "KEY CLUE: Unexplained symptoms + psychosocial stressors suggest somatic symptom disorder. RED FLAG: Rule out organic causes first (e.g., MS, thyroid disease).",
+      options: {
+        yes: "Initial Evaluation",
+        no: "Re-evaluate for Organic Pathology"
+      }
+    },
+
+    // Diagnostic Pathway
+    "Initial Evaluation": {
+      text: "Conduct: (1) Thorough medical history, (2) Physical exam, (3) Basic labs (CBC, TSH, metabolic panel), (4) Review prior workups.",
+      explanation: "CRITICAL: 13–30% of 'conversion disorder' diagnoses later reveal organic causes. Document absence of red flags (e.g., weight loss, neurological deficits).",
+      options: {
+        "Organic cause found": "Treat Underlying Condition",
+        "No organic cause": "Psychiatric Assessment"
+      }
+    },
+    "Psychiatric Assessment": {
+      text: "Assess for: (1) Bizarre complaints (psychosis), (2) Mood/anxiety symptoms, (3) Recent stress, (4) Secondary gain, (5) Cognitive impairment.",
+      explanation: "FOCUS: Psychotic somatic delusions (e.g., 'worms in veins') vs. exaggerated but plausible symptoms (e.g., chronic pain).",
+      options: {
+        "Psychotic features": "Psychotic Disorder Pathway",
+        "Depressive symptoms": "Depression Pathway",
+        "Anxiety symptoms": "Anxiety Pathway",
+        "Stress-related": "Stress Reaction Pathway",
+        "Deceit suspected": "Deceit Evaluation",
+        "Chronic unexplained": "Somatoform Disorder Pathway"
+      }
+    },
+
+    // Psychotic Disorders
+    "Psychotic Disorder Pathway": {
+      text: "Differentiate: (1) Schizophrenia (bizarre delusions), (2) Delusional disorder (fixed somatic delusions), (3) Psychotic depression (guilt-themed delusions).",
+      explanation: "TREATMENT: Antipsychotics (e.g., risperidone 2mg daily) + address mood component if present. Pimozide for delusional parasitosis.",
+      options: {
+        "Response": "Maintenance Antipsychotics",
+        "No response": "Clozapine/ECT Consideration"
+      }
+    },
+
+    // Mood/Anxiety Disorders
+    "Depression Pathway": {
+      text: "Screen for: Anhedonia, guilt, fatigue, sleep/appetite changes. Rule out masked depression.",
+      explanation: "TREATMENT: SSRIs (e.g., sertraline) first-line. CBT for maladaptive illness beliefs.",
+      options: {
+        "Improvement": "Continue Therapy",
+        "No improvement": "Augment/Switch"
+      }
+    },
+    "Anxiety Pathway": {
+      text: "Assess for: Panic attacks (cardiac/pulmonary fears), GAD (chronic somatic tension), health anxiety.",
+      explanation: "TREATMENT: SSRIs/SNRIs + short-term benzodiazepines (e.g., lorazepam) for acute panic. Buspirone for GAD.",
+      options: {
+        "Stabilized": "Taper Benzodiazepines",
+        "Persistent": "CBT Referral"
+      }
+    },
+
+    // Stress-Related
+    "Stress Reaction Pathway": {
+      text: "Identify stressor (e.g., bereavement, trauma). Differentiate: (1) Adjustment disorder (<6 months), (2) Conversion disorder (functional neurological symptoms), (3) Reactive hypochondriasis.",
+      explanation: "MANAGEMENT: Remove stressor if possible. Supportive therapy ± short-term anxiolytics. Avoid reinforcing sick role.",
+      options: {
+        "Acute": "Supportive Therapy",
+        "Conversion symptoms": "Physical Therapy + Psychotherapy"
+      }
+    },
+
+    // Deceit/Factitious
+    "Deceit Evaluation": {
+      text: "Assess for: (1) Malingering (obvious secondary gain), (2) Factitious disorder (no clear gain, often chronic).",
+      explanation: "APPROACH: Malingering – confront + document. Factitious – avoid confrontation; coordinate care to limit 'doctor shopping.'",
+      options: {
+        "Malingering": "Address Secondary Gain",
+        "Factitious": "Psychiatric Consultation"
+      }
+    },
+
+    // Chronic Somatoform
+    "Somatoform Disorder Pathway": {
+      text: "Classify: (1) Hypochondriasis (disease conviction), (2) Somatization disorder (multiple chronic complaints), (3) Pain disorder.",
+      explanation: "TREATMENT: Regular, brief visits. CBT for catastrophizing. Avoid unnecessary tests/procedures.",
+      options: {
+        "Hypochondriasis": "CBT + SSRI",
+        "Somatization": "Unified Care Plan",
+        "Pain disorder": "Multidisciplinary Pain Clinic"
+      }
+    },
+
+    // Special Considerations
+    "Cognitive Impairment Pathway": {
+      text: "Rule out: Delirium (acute confusion), dementia (chronic). Treat underlying cause (e.g., infection, B12 deficiency).",
+      explanation: "NOTE: Antipsychotics may reduce agitation but worsen delirium. Use lowest effective dose.",
+      options: {
+        "Reversible cause": "Treat and Reassess",
+        "Irreversible": "Symptomatic Management"
+      }
+    }
+  }
+};
+
+  
+
+  
+  
+
+
+    
+  
+
+
+    let currentSymptom = null;
+    let currentQuestion = "start";
+
+    function playClick() {
+      const sound = document.getElementById("click-sound");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+      }
+    }
+
+    function startSymptom(symptom) {
+      currentSymptom = symptom;
+      currentQuestion = "start";
+      document.getElementById("symptom-title").textContent = symptom;
+      showQuestion();
+
+      document.getElementById("main-page").style.display = "none";
+      document.getElementById("question-page").style.display = "block";
+      document.getElementById("headline").style.display = "none";
+      document.getElementById("subheadline").style.display = "none";
+    }
+
+    // NEW/MODIFIED: This function is updated to show images.
+    function showQuestion() {
+      const symptomQuestions = questions[currentSymptom];
+      if (!symptomQuestions || !symptomQuestions[currentQuestion]) {
+        alert("Invalid symptom or question flow.");
+        return;
+      }
+
+      const questionData = symptomQuestions[currentQuestion];
+      const imageContainer = document.getElementById("question-image-container");
+      
+      // Clear previous image
+      imageContainer.innerHTML = "";
+
+      // If an image path exists, create and display the image
+      if (questionData.image) {
+        const img = document.createElement("img");
+        img.src = questionData.image;
+        img.alt = questionData.text; // for accessibility
+        img.className = "question-image";
+        imageContainer.appendChild(img);
+      }
+
+      document.getElementById("question").textContent = questionData.text;
+      document.getElementById("footer").textContent = questionData.explanation || "No explanation available.";
+
+      const buttons = Object.keys(questionData.options)
+        .map(option =>
+          `<button class='option-button' onclick="playClick(); nextQuestion('${option}')">${option}</button>`)
+        .join("");
+      document.querySelector(".button-container").innerHTML = buttons;
+    }
+
+    function nextQuestion(answer) {
+      const symptomQuestions = questions[currentSymptom];
+      const current = symptomQuestions[currentQuestion];
+      if (!current || !current.options[answer]) {
+        alert("Invalid choice.");
+        return;
+      }
+
+      const next = current.options[answer];
+      // Check if the next step is another question or a final diagnosis
+      if (symptomQuestions[next] && symptomQuestions[next].options) {
+          currentQuestion = next;
+          showQuestion();
+      } else {
+          // This handles both terminal nodes that are defined as full objects
+          // and those that are simple strings (your original implementation)
+          if (symptomQuestions[next]) {
+              currentQuestion = next;
+              showQuestion(); // This will display the final diagnosis with its image
+          } else {
+              // This is a fallback for legacy string-only terminals
+              document.getElementById("question").textContent = next;
+              document.getElementById("footer").textContent = "End of diagnostic path.";
+              document.querySelector(".button-container").innerHTML =
+                `<button class='option-button' onclick="playClick(); restart()">Restart</button>`;
+              document.getElementById("question-image-container").innerHTML = ""; // Clear image
+          }
+      }
+    }
+
+
+    function restart() {
+      document.getElementById("main-page").style.display = "flex";
+      document.getElementById("question-page").style.display = "none";
+      document.getElementById("headline").style.display = "block";
+      document.getElementById("subheadline").style.display = "block";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      sidebar.classList.toggle("active");
+      overlay.style.display = sidebar.classList.contains("active") ? "block" : "none";
+    }
+
+    document.addEventListener("click", function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const toggleBtn = document.querySelector(".toggle-button");
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnToggle = toggleBtn.contains(event.target);
+      if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains("active")) {
+        toggleSidebar();
+      }
+    });
+
+    let startX = 0;
+    document.addEventListener("touchstart", function(e) {
+      if (e.touches.length === 1) { startX = e.touches[0].clientX; }
+    });
+    document.addEventListener("touchend", function(e) {
+      const sidebar = document.getElementById("sidebar");
+      const diff = e.changedTouches[0].clientX - startX;
+      if (diff > 50 && sidebar.classList.contains("active")) { toggleSidebar(); }
+    });
+
+    function goHome() {
+      window.location.href = "../index.html";
+    }
+
+    function navigateTo(page) {
+      window.location.href = page;
+      const loadingScreen = document.querySelector('.loading');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'flex';
+        setTimeout(() => { window.location.href = page; }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>

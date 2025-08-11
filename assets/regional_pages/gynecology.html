@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gynecological Symptoms</title>
+  <link rel="stylesheet" href="../style/regional_style.css" type="text/css" media="all" />
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="nav-title">ALGOMED <span>GYNECOLOGY</span></div>
+  <button class="toggle-button" onclick="playClick(); toggleSidebar()">☰</button>
+</nav>
+
+<!-- Overlay for click outside -->
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <ul>
+      <li onclick="navigateTo('respiratory.html')">Respiratory</li>
+      <li onclick="navigateTo('cardiovascular.html')">Cardiovascular</li>
+      <li onclick="navigateTo('git.html')">Gastroenterology</li>
+      <li onclick="navigateTo('gynecology.html')">Gynecology</li>
+      <li onclick="navigateTo('hepatology.html')">Hepatology</li>
+      <li onclick="navigateTo('nephrology.html')">Nephrology</li>
+      <li onclick="navigateTo('obstetric.html')">Obstetric</li>
+      <li onclick="navigateTo('rheumatology.html')">Rheumatology</li>
+      <li onclick="navigateTo('hematology.html')">Hematology</li>
+      <li onclick="navigateTo('pediatric.html')">Pediatric</li>
+      <li onclick="navigateTo('ophthalmology.html')">Ophthalmology</li>
+      <li onclick="navigateTo('neurology.html')">Neurology</li>
+      <li onclick="navigateTo('dermatology.html')">Dermatology</li>
+      <li onclick="navigateTo('ent.html')">ENT</li>
+      <li onclick="navigateTo('psychiatric.html')">Psychiatric</li>
+      <li onclick="navigateTo('General.html')">General</li>
+    </ul>
+<button class="sidebar-about-button" onclick="navigateTo('../about.html')">About Us</button>
+  </aside>
+
+  <!-- Audio -->
+  <audio id="click-sound" src="../sounds/click_sound.wav" preload="auto"></audio>
+
+  <!-- Headlines Outside Container -->
+  <h3 id="headline">Select a Primary Symptom</h3>
+<p id="subheadline">Choose from the list below to begin diagnosis.</p>
+
+  <!-- Main Page -->
+  <div id="main-page" class="container">
+    <button class="symptom-button" onclick="playClick(); startSymptom('Secondary Amenorrhea')">Secondary Amenorrhea</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Vaginal Discharge')">Vaginal Discharge</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Cervicitis')">Cervicitis</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Abnormal Vaginal Bleeding')">Abnormal Vaginal Bleeding</button>
+    
+    <button class="symptom-button" onclick="startSymptom('Acute Abdominal Pain in Women')">Acute Abdominal Pain in Women</button>
+    <button class="symptom-button" onclick="startSymptom('Chest Pain in Women')">Chest Pain in Women</button>
+    <button class="symptom-button" onclick="startSymptom('Urinary Tract Infection in Women')">Urinary Tract Infection in Women</button>
+    <button class="symptom-button" onclick="startSymptom('Breast Mass')">Breast Mass</button>
+    <button class="symptom-button" onclick="startSymptom('Nipple Discharge')">Nipple Discharge</button>
+    <button class="symptom-button" onclick="startSymptom('Premenstrual Dysphoric Disorder')">Premenstrual Dysphoric Disorder</button>
+    <button class="symptom-button" onclick="startSymptom('Contraceptive Choices')">Contraceptive Choices</button>
+    <button class="symptom-button" onclick="startSymptom('Oral Contraceptive USE')">Oral Contraceptive USE</button>
+    <button class="symptom-button" onclick="startSymptom('Female Infertility')">Female Infertility</button>
+    
+  </div>
+
+  <!-- Question Page -->
+  <div id="question-page">
+  <div class="title" id="symptom-title">Symptom Diagnostic</div>
+  <div id="question-image-container"></div>
+  <div id="question" class="question"></div>
+  <div class="button-container"></div>
+  <div id="footer" class="footer"></div>
+</div>
+
+  <!-- Home Button -->
+  <button class="home-button" onclick="goHome()">
+  <img src="../bodyicons/home_button.png" alt="Home" class="home-icon">
+  <span class="sr-only">Home</span>
+</button>
+  
+  
+
+
+  <!-- Script -->
+  <script>
+  const questions = {
+  "Secondary Amenorrhea": {
+    start: {
+      text: "Has the patient had absence of menses for ≥6 months or equivalent to 3 previous cycle intervals (whichever is longer), excluding pregnancy, lactation, or menopause?",
+      explanation: "Initial evaluation must rule out physiologic causes (pregnancy, postpartum, lactation, menopause) before pathologic workup. KEY: Document prior menstrual regularity and recent changes in weight, stress, or exercise.",
+      options: {
+        yes: "Pregnancy Test",
+        no: "Reassure (physiologic or non-pathologic)"
+      }
+    },
+
+    // Initial Workup Pathway
+    "Pregnancy Test": {
+      text: "Perform urine or serum β-hCG test to exclude pregnancy.",
+      explanation: "CRITICAL: Pregnancy is the most common cause of secondary amenorrhea. Always rule out first.",
+      options: {
+        positive: "Pregnancy Confirmed",
+        negative: "Thyroid and Prolactin Testing"
+      }
+    },
+
+    "Thyroid and Prolactin Testing": {
+      text: "Order TSH and serum prolactin levels. Assess for galactorrhea, weight changes, or thyroid symptoms.",
+      explanation: "NOTE: Prolactin may be elevated by stress, breast exam, or medications (e.g., antipsychotics, metoclopramide). Levels >100 ng/mL suggest prolactinoma.",
+      options: {
+        "TSH abnormal": "Thyroid Disease Management",
+        "Prolactin elevated": "Hyperprolactinemia Workup",
+        "Both normal": "Progestin Challenge Test"
+      }
+    },
+
+    // Hyperprolactinemia Pathway
+    "Hyperprolactinemia Workup": {
+      text: "Repeat prolactin (fasting, no breast exam). If still elevated, order MRI pituitary to rule out adenoma.",
+      explanation: "WARNING: Macroadenomas (>10mm) may compress optic chiasm (check visual fields). Microadenomas often respond to dopamine agonists.",
+      options: {
+        "MRI shows adenoma": "Prolactinoma Treatment",
+        "MRI normal": "Medication/Idiopathic Hyperprolactinemia"
+      }
+    },
+
+    "Prolactinoma Treatment": {
+      text: "Start dopamine agonist (bromocriptine 2.5mg PO daily, titrate to 2.5mg BID-TID OR cabergoline 0.25mg twice weekly). For macroadenomas, consider neurosurgery/radiation if refractory.",
+      explanation: "GOAL: Normalize prolactin, restore menses, and shrink tumor. Monitor prolactin q3-6mo and MRI if symptoms worsen.",
+      options: {
+        "Prolactin normalizes": "Monitor for Recurrence",
+        "Treatment failure": "Neurosurgery Consult"
+      }
+    },
+
+    // Thyroid Pathway
+    "Thyroid Disease Management": {
+      text: "Treat hypothyroidism with levothyroxine (titrate to TSH 0.5-2.5 mIU/L). For hyperthyroidism, use thionamides or radioiodine.",
+      explanation: "NOTE: Thyroid dysfunction can cause amenorrhea via disrupted GnRH pulsatility. Recheck TSH in 6-8 weeks after treatment.",
+      options: {
+        "TSH normalized": "Reassess Menstrual Cycle",
+        "Persistent amenorrhea": "Progestin Challenge Test"
+      }
+    },
+
+    // Progestin Challenge Pathway
+    "Progestin Challenge Test": {
+      text: "Administer medroxyprogesterone acetate 10mg PO ×5 days. Assess for withdrawal bleeding within 2 weeks.",
+      explanation: "INTERPRETATION: Bleeding = intact endometrium and estrogen activity (anovulation). No bleeding = outflow tract obstruction or hypoestrogenism.",
+      options: {
+        "Withdrawal bleeding": "Anovulation Management",
+        "No bleeding": "Estrogen-Progestin Challenge"
+      }
+    },
+
+    "Anovulation Management": {
+      text: "If pregnancy desired: Induce ovulation (clomiphene 50mg PO days 3-7). If not: Cyclic progestin (e.g., medroxyprogesterone 10mg PO ×10d/month) or OCPs.",
+      explanation: "WARNING: Chronic anovulation increases endometrial cancer risk due to unopposed estrogen. Ensure regular shedding.",
+      options: {
+        "Cycle resumes": "Monitor for Recurrence",
+        "Persistent anovulation": "Evaluate for PCOS"
+      }
+    },
+
+    // Estrogen-Progestin Challenge Pathway
+    "Estrogen-Progestin Challenge": {
+      text: "Give conjugated estrogens 2.5mg PO ×21 days + medroxyprogesterone 10mg PO days 16-21. Assess for withdrawal bleeding.",
+      explanation: "INTERPRETATION: Bleeding = hypoestrogenism (e.g., hypothalamic). No bleeding = outflow tract abnormality (e.g., Asherman’s).",
+      options: {
+        "Withdrawal bleeding": "Hypothalamic Amenorrhea Workup",
+        "No bleeding": "Outflow Tract Evaluation"
+      }
+    },
+
+    "Outflow Tract Evaluation": {
+      text: "Perform hysteroscopy or saline sonohysterography to assess for Asherman’s syndrome (intrauterine adhesions) or cervical stenosis.",
+      explanation: "TREATMENT: Hysteroscopic lysis of adhesions + estrogen therapy (e.g., conjugated estrogens 2.5mg PO ×30 days) to regenerate endometrium.",
+      options: {
+        "Asherman’s confirmed": "Hysteroscopic Adhesiolysis",
+        "Normal anatomy": "Re-evaluate Hypoestrogenism"
+      }
+    },
+
+    // Hypothalamic Amenorrhea Pathway
+    "Hypothalamic Amenorrhea Workup": {
+      text: "Assess for weight loss, eating disorders, excessive exercise, or stress. Check LH/FSH (low/normal) and estradiol (low).",
+      explanation: "KEY: Hypothalamic amenorrhea is a diagnosis of exclusion. MRI pituitary if no clear cause (rule out tumor).",
+      options: {
+        "Identified cause (e.g., anorexia)": "Address Underlying Cause",
+        "No clear cause": "MRI Pituitary"
+      }
+    },
+
+    "Address Underlying Cause": {
+      text: "For weight loss/eating disorders: Nutritional rehab + psychotherapy. For athletes: Reduce exercise by 20-30%. For stress: Cognitive behavioral therapy.",
+      explanation: "NOTE: Recovery may take 6-12 months. Consider transdermal estrogen (e.g., 0.05mg estradiol patch) if prolonged amenorrhea.",
+      options: {
+        "Cycle resumes": "Monitor for Recurrence",
+        "Persistent amenorrhea": "Hormonal Replacement"
+      }
+    },
+
+    // Ovarian Failure Pathway
+    "High FSH/LH": {
+      text: "If FSH >25-30 IU/L and LH elevated, diagnose premature ovarian failure (POF). Check karyotype (if age <35), anti-Müllerian hormone (AMH), and adrenal/thyroid autoantibodies.",
+      explanation: "WARNING: Y chromosome mosaicism requires gonadectomy (risk of gonadoblastoma). Offer egg donation if fertility desired.",
+      options: {
+        "Karyotype abnormal": "Gonadectomy + HRT",
+        "Autoimmune POF": "HRT + Adrenal/Thyroid Monitoring"
+      }
+    },
+
+    // Shared Pathways
+    "Hormonal Replacement": {
+      text: "For hypoestrogenism: Transdermal estradiol 0.05mg + cyclic progesterone (e.g., medroxyprogesterone 10mg PO ×12d/month). For POF: Continue HRT until age ~50.",
+      explanation: "BENEFITS: Prevents osteoporosis, cardiovascular disease, and genitourinary atrophy. Monitor bone density q2-3y.",
+      options: {
+        "Symptoms improve": "Long-term Monitoring",
+        "Poor tolerance": "Alternative HRT Formulations"
+      }
+    },
+
+    "Evaluate for PCOS": {
+      text: "Check testosterone, DHEA-S, and SHBG. Ultrasound for polycystic ovaries. Treat with OCPs (for hyperandrogenism) or metformin (for insulin resistance).",
+      explanation: "DIAGNOSIS: Rotterdam criteria (2/3: oligo-anovulation, clinical/biochemical hyperandrogenism, polycystic ovaries).",
+      options: {
+        "PCOS confirmed": "PCOS Management",
+        "Not PCOS": "Re-evaluate Hypothalamic Cause"
+      }
+    }
+  },
+
+
+
+
+  
+  //Vaginal Discharge-------------------
+  "Vaginal Discharge": {
+    start: {
+      text: "Does the patient report vaginal discharge with associated symptoms (itching, odor, discomfort)?",
+      explanation: "Initial evaluation focuses on distinguishing physiologic discharge from pathologic causes. KEY: Assess for risk factors (antibiotics, diabetes, sexual activity).",
+      options: {
+        yes: "History and Physical Exam",
+        no: "Reassure (likely physiologic discharge)"
+      }
+    },
+
+    // Symptomatic Pathway
+    "History and Physical Exam": {
+      text: "Perform speculum exam and note discharge characteristics (color, consistency, odor). Check pH and prepare wet mounts (KOH and saline).",
+      explanation: "CLINICAL CLUES: Fishy odor (BV), cheesy appearance (yeast), frothy yellow-green (Trichomonas). pH >4.5 suggests BV or Trichomonas.",
+      options: {
+        "Wet mount diagnostic": "Wet Mount Findings",
+        "Wet mount nondiagnostic": "Nondiagnostic Evaluation"
+      }
+    },
+
+    // Wet Mount Findings Pathway
+    "Wet Mount Findings": {
+      text: "What does the wet mount reveal?",
+      explanation: "MICROSCOPIC DIAGNOSIS: Clue cells (BV), motile trichomonads (Trichomonas), pseudohyphae (yeast).",
+      options: {
+        "Clue cells (BV)": "BV Management",
+        "Motile trichomonads": "Trichomonas Management",
+        "Pseudohyphae (yeast)": "Yeast Management"
+      }
+    },
+
+    "BV Management": {
+      text: "Treat with metronidazole 500mg PO BID ×7d OR clindamycin cream intravaginally ×7d. For recurrence, switch agents or extend therapy.",
+      explanation: "NOTE: Treating partners is controversial. Recurrence may require intravaginal metronidazole/clindamycin ×3-6 weeks. Avoid alcohol with metronidazole.",
+      options: {
+        "Recurrence": "BV Recurrence",
+        "Resolution": "exit"
+      }
+    },
+
+    "BV Recurrence": {
+      text: "Switch to clindamycin (if metronidazole failed) or use extended intravaginal regimen (3 weeks daily, then 3 weeks every 3rd day).",
+      explanation: "GOAL: Allow lactobacilli recolonization. Consider testing for resistant strains or comorbid conditions (e.g., diabetes).",
+      options: {
+        "Restart Algorithm": "start",
+        "Persistent symptoms": "Evaluate for Other Causes"
+      }
+    },
+
+    "Trichomonas Management": {
+      text: "Treat patient and partner with metronidazole 2g single dose OR 500mg PO BID ×7d. Avoid alcohol. Re-treat if failure with higher dose (1g PO BID + intravaginal ×7-14d).",
+      explanation: "CAUTION: 2g dose contraindicated in 1st trimester. Test for other STIs (gonorrhea, chlamydia).",
+      options: {
+        "Treatment failure": "High-Dose Metronidazole",
+        "Resolution": "exit"
+      }
+    },
+
+    "High-Dose Metronidazole": {
+      text: "Use 1g PO BID + 500mg intravaginally BID ×7-14d if compliant and no re-exposure.",
+      explanation: "RESISTANCE: Rare but possible. Confirm diagnosis and rule out reinfection.",
+      options: {
+        "Restart Algorithm": "start",
+        "Persistent symptoms": "Evaluate for Other Causes"
+      }
+    },
+
+    "Yeast Management": {
+      text: "Treat with topical azoles (clotrimazole ×7d) OR fluconazole 150mg PO ×1 dose. For recurrent cases, confirm with culture.",
+      explanation: "NOTE: Fluconazole preferred for convenience. Recurrence warrants diabetes/HIV screening and partner evaluation (10-15% carry yeast).",
+      options: {
+        "Recurrence": "Recurrent Yeast",
+        "Resolution": "exit"
+      }
+    },
+
+    "Recurrent Yeast": {
+      text: "Confirm with culture. Treat with 30-day topical azoles OR fluconazole 150mg q72h ×3 doses, then weekly ×6mo. For resistant species (e.g., T. glabrata), use terconazole or boric acid.",
+      explanation: "WARNING: Avoid fluconazole/ketoconazole in pregnancy. Boric acid is pregnancy-contraindicated.",
+      options: {
+        "Restart Algorithm": "start",
+        "Persistent symptoms": "Evaluate for Immunodeficiency"
+      }
+    },
+
+    // Nondiagnostic Pathway
+    "Nondiagnostic Evaluation": {
+      text: "Consider allergic reaction (soaps, detergents) or STIs (gonorrhea/chlamydia). Obtain STI cultures and assess for HSV/HPV (ulcers/lesions).",
+      explanation: "RED FLAGS: Painful ulcers (HSV), condyloma (HPV). Aphthous ulcers mimic HSV but are non-infectious.",
+      options: {
+        "STI suspected": "STI Testing",
+        "Allergic reaction suspected": "Allergy Management"
+      }
+    },
+
+    "STI Testing": {
+      text: "Test for gonorrhea/chlamydia (NAAT). If ulcers present, perform HSV PCR/culture or biopsy.",
+      explanation: "NOTE: HSV may require suppressive therapy (e.g., acyclovir) if recurrent.",
+      options: {
+        "Positive for STI": "Treat STI",
+        "Negative": "Allergy Management"
+      }
+    },
+
+    "Treat STI": {
+      text: "Gonorrhea: Ceftriaxone + azithromycin. Chlamydia: Azithromycin 1g PO ×1 or doxycycline ×7d. HSV: Acyclovir/famciclovir.",
+      explanation: "PARTNER TREATMENT: Essential for STIs. Expedited partner therapy may be indicated.",
+      options: {
+        "Resolution": "exit",
+        "Persistent symptoms": "Evaluate for Other Causes"
+      }
+    },
+
+    "Allergy Management": {
+      text: "Discontinue irritants (tight clothing, scented products). Use hypoallergenic soaps and cotton underwear.",
+      explanation: "TRIAL: Eliminate potential triggers for 2-4 weeks. Topical steroids may help for inflammation.",
+      options: {
+        "Resolution": "exit",
+        "Persistent symptoms": "Evaluate for Other Causes"
+      }
+    },
+
+    // Shared Pathways
+    "Evaluate for Other Causes": {
+      text: "Consider systemic causes (diabetes, HIV), resistant infections, or non-infectious vaginitis (atrophic, inflammatory).",
+      explanation: "WORKUP: HbA1c, HIV test, vaginal cultures for atypical pathogens (e.g., Group B Strep).",
+      options: {
+        "Identified cause": "Targeted Treatment",
+        "No cause found": "Refer to Specialist"
+      }
+    },
+
+    "Evaluate for Immunodeficiency": {
+      text: "Check HbA1c, HIV status, and immunocompromising conditions if yeast recurs >4x/year.",
+      explanation: "HIGH YIELD: Uncontrolled diabetes is a common culprit. HIV testing is recommended.",
+      options: {
+        "Abnormal findings": "Treat Underlying Condition",
+        "Normal findings": "Suppressive Therapy"
+      }
+    },
+
+    "Suppressive Therapy": {
+      text: "Use fluconazole 150mg weekly ×6mo OR topical azoles twice weekly ×6mo.",
+      explanation: "MONITOR: Liver enzymes if using long-term azoles. Boric acid suppositories (600mg nightly ×14d) for resistant cases.",
+      options: {
+        "Resolution": "exit",
+        "Failure": "Refer to Specialist"
+      }
+    },
+
+    "Refer to Specialist": {
+      text: "Consult gynecology for persistent/recurrent symptoms without clear etiology.",
+      explanation: "NOTE: May require advanced testing (vaginal biopsy, PCR for rare pathogens).",
+      options: {
+        "Restart Algorithm": "start",
+        "Exit": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Cervicitis---------------------
+  "Cervicitis": {
+    start: {
+      text: "Does the patient present with mucopurulent cervical discharge, cervical motion tenderness, or post-coital bleeding?",
+      explanation: "Initial evaluation focuses on distinguishing infectious cervicitis (e.g., gonorrhea, chlamydia) from non-infectious causes (e.g., trauma, malignancy). KEY: Assess for systemic symptoms (fever, pelvic pain) suggesting PID.",
+      options: {
+        yes: "History and Physical Exam",
+        no: "Reassure (consider non-infectious causes)"
+      }
+    },
+
+    // Symptomatic Pathway
+    "History and Physical Exam": {
+      text: "Obtain sexual history (partners, unprotected sex, prior STIs) and perform pelvic exam. Note: cervical friability, ulcers, or masses. Exclude vaginitis (yeast/BV/Trichomonas).",
+      explanation: "RED FLAGS: Fever + pelvic pain = PID risk. Cervical ulcers may indicate HSV/syphilis. Masses require biopsy to rule out neoplasia.",
+      options: {
+        "Systemic symptoms (fever/pain)": "Evaluate for PID",
+        "Cervical lesion present": "Lesion Evaluation",
+        "No lesion/systemic symptoms": "STI Testing"
+      }
+    },
+
+    // PID Pathway
+    "Evaluate for PID": {
+      text: "Assess for Hager’s criteria: cervical motion tenderness + ONE of (fever >38°C, leukocytosis >10.5k, WBCs in culdocentesis, inflammatory mass, ESR >20, or GC/Chlamydia on Gram stain).",
+      explanation: "URGENT: PID requires prompt treatment to prevent tubal damage. Hospitalize if severe (nausea, tubo-ovarian abscess).",
+      options: {
+        "Meets PID criteria": "PID Treatment",
+        "Does not meet criteria": "STI Testing"
+      }
+    },
+
+    "PID Treatment": {
+      text: "Inpatient: Cefoxitin 2g IV q6h + doxycycline 100mg IV/PO q12h. Outpatient: Ceftriaxone 250mg IM ×1 + doxycycline 100mg PO BID ×14d + metronidazole 500mg PO BID ×14d.",
+      explanation: "NOTE: Avoid doxycycline in pregnancy. Quinolones contraindicated if GC resistance suspected. Treat partners empirically.",
+      options: {
+        "Severe (abscess/tubo-ovarian complex)": "Hospitalize + IV Therapy",
+        "Mild/Moderate": "Outpatient Therapy",
+        "Resolution": "Test of Cure"
+      }
+    },
+
+    // Lesion Evaluation Pathway
+    "Lesion Evaluation": {
+      text: "Characterize lesion: Ulcer (painful vs. painless) or growth/mass. Perform biopsy if suspicious for neoplasia.",
+      explanation: "CLINICAL CLUES: Painful ulcers = HSV (vesicles progress to ulcers). Painless ulcer + adenopathy = syphilis. Warty growth = HPV.",
+      options: {
+        "Painful ulcer": "HSV Management",
+        "Painless ulcer": "Syphilis Testing",
+        "Growth/mass": "Biopsy for Neoplasia/HPV"
+      }
+    },
+
+    "HSV Management": {
+      text: "Treat with acyclovir 400mg PO TID ×7-10d (primary) or 400mg PO BID (recurrent). Alternatives: valacyclovir 1g PO BID or famciclovir 250mg PO TID.",
+      explanation: "SEVERITY: Primary HSV often systemic (fever, myalgia). Suppressive therapy (e.g., valacyclovir 500mg daily) if >6 recurrences/year.",
+      options: {
+        "Resolution": "Partner Notification",
+        "Persistent lesions": "HSV Resistance Evaluation"
+      }
+    },
+
+    "Syphilis Testing": {
+      text: "Order RPR/VDRL + confirm with FTA-ABS/TPPA. Treat with benzathine penicillin G 2.4M units IM ×1 (primary) or weekly ×3 (late latent).",
+      explanation: "Jarisch-Herxheimer reaction (fever, myalgia) may occur within 24h of treatment. Test partners and offer HIV screening.",
+      options: {
+        "Resolution": "Follow-up RPR at 6/12mo",
+        "Treatment failure": "Re-evaluate for Neurosyphilis"
+      }
+    },
+
+    "Biopsy for Neoplasia/HPV": {
+      text: "Perform colposcopy with acetic acid. Biopsy confirms neoplasia (CIN) or HPV (koilocytes). Treat CIN with LEEP/cryotherapy; HPV with topical imiquimod or excision.",
+      explanation: "HIGH-RISK HPV: Types 16/18 cause 70% of cervical cancers. Vaccinate if eligible (Gardasil-9).",
+      options: {
+        "CIN confirmed": "Oncologic Referral",
+        "HPV only": "Monitor + Vaccinate"
+      }
+    },
+
+    // STI Testing Pathway
+    "STI Testing": {
+      text: "Test for GC/Chlamydia (NAAT), Trichomonas (wet mount), and HSV/syphilis if ulcers present. Offer HIV/Pap smear if due.",
+      explanation: "CO-TESTING: 25-45% have concurrent infections. NAAT is gold standard for GC/Chlamydia.",
+      options: {
+        "GC/Chlamydia positive": "STI Treatment",
+        "Negative": "Consider Mycoplasma/Ureaplasma"
+      }
+    },
+
+    "STI Treatment": {
+      text: "GC: Ceftriaxone 500mg IM ×1 + azithromycin 1g PO ×1. Chlamydia: Azithromycin 1g PO ×1 or doxycycline 100mg PO BID ×7d.",
+      explanation: "WARNINGS: Avoid doxycycline in pregnancy. Quinolones contraindicated for GC. Test partners and provide expedited therapy.",
+      options: {
+        "Resolution": "Test of Cure at 3mo",
+        "Persistent symptoms": "Resistance Evaluation"
+      }
+    },
+
+    // Shared Pathways
+    "Test of Cure": {
+      text: "Repeat NAAT at 3 months post-treatment to confirm eradication (especially GC/Chlamydia).",
+      explanation: "PERSISTENCE: May indicate reinfection (test partners) or antibiotic resistance.",
+      options: {
+        "Negative": "Exit",
+        "Positive": "Resistance Evaluation"
+      }
+    },
+
+    "Resistance Evaluation": {
+      text: "For GC: Perform culture + susceptibility testing. Use alternative regimens (e.g., gentamicin + azithromycin). For HSV: Test for acyclovir resistance (foscarnet IV).",
+      explanation: "GC RESISTANCE: Rising quinolone/cephalosporin resistance reported. Consult ID specialist if resistant.",
+      options: {
+        "Alternative regimen successful": "Exit",
+        "Failure": "ID Specialist Referral"
+      }
+    },
+
+    "Partner Notification": {
+      text: "Ensure all sexual partners (past 60d) are tested/treated. Expedited partner therapy (EPT) may be used for GC/Chlamydia.",
+      explanation: "LEGAL NOTE: EPT laws vary by state. Document counseling.",
+      options: {
+        "Partners treated": "Exit",
+        "Unable to notify": "Health Department Reporting"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  //Abnormal Vaginal Bleeding-----------
+  "Abnormal Vaginal Bleeding": {
+    start: {
+      text: "Is the patient experiencing abnormal vaginal bleeding (e.g., heavy, prolonged, intermenstrual, or postmenopausal)?",
+      explanation: "Initial evaluation focuses on distinguishing genital vs. extragenital sources and identifying high-risk features (e.g., postmenopausal bleeding, cancer risk factors).",
+      options: {
+        yes: "Initial Assessment",
+        no: "Reassure (normal variant or physiologic)"
+      }
+    },
+
+    // Initial Assessment Pathway
+    "Initial Assessment": {
+      text: "1. Perform urine hCG to rule out pregnancy. 2. Obtain history (contraceptive use, bleeding pattern, systemic symptoms). 3. Conduct pelvic exam (inspect vulva/vagina/cervix; Pap smear if due).",
+      explanation: "RED FLAGS: Postmenopausal bleeding, hemodynamic instability, or signs of malignancy (e.g., weight loss) require urgent evaluation.",
+      options: {
+        "Pregnancy positive": "Pregnancy-Related Bleeding",
+        "Pregnancy negative": "Determine Bleeding Source"
+      }
+    },
+
+    // Pregnancy-Related Bleeding
+    "Pregnancy-Related Bleeding": {
+      text: "Assess for ectopic pregnancy, miscarriage, or gestational trophoblastic disease. Order quantitative hCG + transvaginal ultrasound.",
+      explanation: "WARNING: Ectopic pregnancy is life-threatening. Signs: abdominal pain + adnexal mass. Treat with methotrexate or surgery.",
+      options: {
+        "Ectopic/miscarriage confirmed": "OB/GYN Referral",
+        "Intrauterine pregnancy": "Monitor + Supportive Care"
+      }
+    },
+
+    // Determine Bleeding Source
+    "Determine Bleeding Source": {
+      text: "Is bleeding from uterus (e.g., fibroids, adenomyosis) or extrauterine (e.g., cervical lesion, hemorrhoids)?",
+      explanation: "CLUES: Cervical bleeding often occurs post-coital. Uterine bleeding is typically cyclical (if premenopausal).",
+      options: {
+        "Uterine source": "Premenopausal or Postmenopausal?",
+        "Extrauterine source": "Extrauterine Evaluation"
+      }
+    },
+
+    // Extrauterine Evaluation
+    "Extrauterine Evaluation": {
+      text: "1. Biopsy visible cervical/vaginal lesions. 2. Rule out GI/GU sources (e.g., hematuria, rectal bleeding). 3. Test for STIs if cervicitis suspected.",
+      explanation: "NOTE: Cervical polyps often cause post-coital bleeding. Excise and send for histopathology.",
+      options: {
+        "Lesion identified": "Biopsy + Treat",
+        "No lesion": "Re-evaluate Uterine Source"
+      }
+    },
+
+    // Premenopausal Pathway
+    "Premenopausal or Postmenopausal?": {
+      text: "Is the patient premenopausal (with cycles) or postmenopausal (≥1 year without menses)?",
+      explanation: "KEY: Postmenopausal bleeding warrants endometrial evaluation (cancer risk). Premenopausal bleeding often hormonal.",
+      options: {
+        "Premenopausal": "Contraceptive Use?",
+        "Postmenopausal": "Postmenopausal Workup"
+      }
+    },
+
+    // Contraceptive-Related Bleeding
+    "Contraceptive Use?": {
+      text: "Is the patient using hormonal contraception (OCPs, IUD, Depo-Provera)?",
+      explanation: "BREAKTHROUGH BLEEDING: Common with progestin-only methods (e.g., IUD, Depo). Usually self-limited.",
+      options: {
+        yes: "Contraceptive-Related Bleeding",
+        no: "Dysfunctional Uterine Bleeding (DUB)"
+      }
+    },
+
+    "Contraceptive-Related Bleeding": {
+      text: "1. For OCPs: Ensure proper use; consider estrogen supplement (e.g., 1.25mg conjugated estrogen ×7d). 2. For IUD/Depo: Rule out infection/pregnancy; treat with NSAIDs or short-term estrogen if persistent.",
+      explanation: "PERSISTENT BLEEDING: After 3-6 months, consider switching method (e.g., to combined OCPs).",
+      options: {
+        "Bleeding resolves": "Monitor",
+        "Bleeding persists": "Evaluate for Organic Causes"
+      }
+    },
+
+    // Dysfunctional Uterine Bleeding (DUB)
+    "Dysfunctional Uterine Bleeding (DUB)": {
+      text: "1. Rule out coagulopathy (CBC, PT/PTT), thyroid disorder (TSH), and PCOS (testosterone, LH/FSH). 2. Treat with NSAIDs or hormonal therapy (OCPs, progestins).",
+      explanation: "FIRST-LINE: High-dose progestin (e.g., medroxyprogesterone 10mg ×10d) to stabilize endometrium.",
+      options: {
+        "Bleeding controlled": "Monitor Cycles",
+        "Refractory bleeding": "Structural Evaluation"
+      }
+    },
+
+    // Structural Evaluation
+    "Structural Evaluation": {
+      text: "Perform transvaginal ultrasound (TVUS) ± saline sonohysterography or hysteroscopy to assess for fibroids, polyps, or adenomyosis.",
+      explanation: "TVUS FINDINGS: Endometrial thickness >16mm (premenopausal) or >5mm (postmenopausal) warrants biopsy.",
+      options: {
+        "Polyp/fibroid identified": "Hysteroscopic Resection",
+        "Normal anatomy": "Endometrial Biopsy (EMB)"
+      }
+    },
+
+    // Postmenopausal Workup
+    "Postmenopausal Workup": {
+      text: "1. Urgent EMB (office Pipelle or hysteroscopy). 2. TVUS if EMB nondiagnostic. 3. Rule out atrophy (trial of vaginal estrogen).",
+      explanation: "MANDATORY: EMB for all postmenopausal bleeding. Cancer risk ~10% (higher if obesity, unopposed estrogen use).",
+      options: {
+        "EMB positive": "Cancer/Hyperplasia Management",
+        "EMB negative": "Atrophy/Other Causes"
+      }
+    },
+
+    // Cancer/Hyperplasia Management
+    "Cancer/Hyperplasia Management": {
+      text: "1. Atypia: High-dose progestin (e.g., megestrol 160mg/day) or hysterectomy. 2. Cancer: Refer to gynecologic oncology for staging/surgery.",
+      explanation: "MONITORING: Repeat EMB in 3-6 months if hyperplasia without atypia. Atypia has 25% progression risk to cancer.",
+      options: {
+        "Treatment complete": "Surveillance",
+        "Progression": "Oncology Referral"
+      }
+    },
+
+    // Shared Pathways
+    "Evaluate for Organic Causes": {
+      text: "Consider: 1. Coagulopathy (von Willebrand, ITP). 2. Endocrine (thyroid, PCOS). 3. Chronic anovulation (endometrial hyperplasia).",
+      explanation: "TESTING: Bleeding time, von Willebrand panel, TSH, prolactin, LH/FSH.",
+      options: {
+        "Cause identified": "Targeted Treatment",
+        "No cause found": "Reassess Hormonal Therapy"
+      }
+    },
+
+    "Hysteroscopic Resection": {
+      text: "Remove polyps/submucosal fibroids hysteroscopically. Send tissue for pathology.",
+      explanation: "RECURRENCE: Polyps recur in 15%; fibroids in 30%. Consider hormonal suppression (e.g., OCPs, LNG-IUD).",
+      options: {
+        "Bleeding resolves": "Monitor",
+        "Persistent bleeding": "Endometrial Ablation/Hysterectomy"
+      }
+    }
+  },
+  
+  
+  
+  
+
+  
+  
+  
+  //Acute Abdominal Pain in Women--------
+  "Acute Abdominal Pain in Women": {
+    start: {
+      text: "Does the patient present with acute abdominal pain (sudden onset, severe, or associated with nausea/vomiting)?",
+      explanation: "Initial evaluation focuses on identifying life-threatening conditions (e.g., ectopic pregnancy, appendicitis) and stabilizing the patient. KEY: Assess for hemodynamic instability, fever, or peritoneal signs.",
+      options: {
+        yes: "Initial Stabilization and History",
+        no: "Reassure (non-urgent cause)"
+      }
+    },
+
+    // Initial Stabilization and History Pathway
+    "Initial Stabilization and History": {
+      text: "1. Assess ABCs (Airway, Breathing, Circulation). 2. Obtain vital signs (BP, HR, temp). 3. Ask about: menstrual cycle, sexual activity, contraception, recent trauma, and associated symptoms (fever, vaginal discharge).",
+      explanation: "RED FLAGS: Hypotension, rebound tenderness, or guarding suggest surgical abdomen. Pregnancy status must be determined immediately.",
+      options: {
+        "Unstable (hypotension/severe pain)": "Emergent Evaluation",
+        "Stable": "Pregnancy Test"
+      }
+    },
+
+    // Emergent Evaluation Pathway
+    "Emergent Evaluation": {
+      text: "1. Start IV fluids. 2. Order STAT labs (CBC, lactate, β-hCG). 3. Prepare for possible surgery. 4. Consider bedside ultrasound (FAST exam) if perforation/hemorrhage suspected.",
+      explanation: "CRITICAL: Ruptured ectopic pregnancy or hemorrhagic ovarian cyst can cause rapid decompensation. Do not delay imaging if unstable.",
+      options: {
+        "Peritonitis/shock present": "Immediate Surgical Consult",
+        "Stabilized": "Pregnancy Test"
+      }
+    },
+
+    // Pregnancy Test Pathway
+    "Pregnancy Test": {
+      text: "Perform urine or serum β-hCG test to determine pregnancy status.",
+      explanation: "NOTE: All women of reproductive age must be tested, regardless of contraceptive use or menstrual history.",
+      options: {
+        positive: "Pregnant Patient Evaluation",
+        negative: "Non-Pregnant Patient Evaluation"
+      }
+    },
+
+    // Pregnant Patient Pathway
+    "Pregnant Patient Evaluation": {
+      text: "1. Estimate gestational age (LMP, ultrasound if available). 2. Assess for vaginal bleeding or prior ectopic pregnancy risk factors (PID, tubal surgery).",
+      explanation: "RISK FACTORS: Ectopic pregnancy is more likely with prior ectopic, tubal ligation, or IUD use.",
+      options: {
+        "Gestational age <12 weeks": "Early Pregnancy Workup",
+        "Gestational age ≥12 weeks": "Late Pregnancy Workup"
+      }
+    },
+
+    "Early Pregnancy Workup": {
+      text: "1. Transvaginal ultrasound (TVUS) + quantitative β-hCG. 2. If β-hCG >1500 mIU/mL and no intrauterine gestation (IUP), suspect ectopic. 3. If β-hCG <1500 and unstable, proceed to laparoscopy.",
+      explanation: "DIAGNOSIS: No IUP + β-hCG >1500 = ectopic until proven otherwise. Discriminatory zone: β-hCG >2000 for abdominal ultrasound.",
+      options: {
+        "IUP confirmed": "Non-Obstetric Causes",
+        "No IUP (ectopic suspected)": "Ectopic Pregnancy Management"
+      }
+    },
+
+    "Ectopic Pregnancy Management": {
+      text: "1. If stable + ectopic <4cm + no fetal cardiac activity: Methotrexate (50mg/m² IM). 2. If unstable or contraindications: Laparoscopic salpingectomy/salpingostomy.",
+      explanation: "MONITORING: Post-methotrexate, β-hCG should drop ≥15% by day 4-7. Repeat weekly until <5 mIU/mL.",
+      options: {
+        "Treatment successful": "Follow-up β-hCG",
+        "Treatment failure": "Surgical Intervention"
+      }
+    },
+
+    "Late Pregnancy Workup": {
+      text: "1. Rule out placental abruption (ultrasound, tocometry). 2. Assess for appendicitis (RLQ pain persists despite pregnancy). 3. Consider ovarian torsion (enlarged corpus luteum cyst).",
+      explanation: "NOTE: Appendicitis is the most common non-obstetric surgical emergency in pregnancy. CT is avoided; MRI preferred.",
+      options: {
+        "Obstetric cause (e.g., abruption)": "OB Emergent Management",
+        "Non-obstetric cause": "Imaging (MRI/Ultrasound)"
+      }
+    },
+
+    // Non-Pregnant Patient Pathway
+    "Non-Pregnant Patient Evaluation": {
+      text: "1. Assess for fever/infection (PID, appendicitis). 2. Palpate for masses (ovarian torsion, fibroids). 3. Evaluate for GI causes (diverticulitis, bowel obstruction).",
+      explanation: "CLUES: PID often presents with bilateral pain + cervical motion tenderness. Appendicitis has McBurney’s point tenderness.",
+      options: {
+        "Fever/leukocytosis present": "Infectious Workup",
+        "No fever": "Structural/Other Causes"
+      }
+    },
+
+    "Infectious Workup": {
+      text: "1. Pelvic exam (cervical motion tenderness, discharge). 2. CT abdomen/pelvis (90% sensitive for appendicitis). 3. Cervical cultures (GC/Chlamydia if PID suspected).",
+      explanation: "PID DIAGNOSIS: Requires cervical motion tenderness + uterine/adnexal tenderness + one of (fever >38°C, leukocytosis, purulent discharge).",
+      options: {
+        "PID confirmed": "IV Antibiotics (Ceftriaxone + Doxycycline + Metronidazole)",
+        "Appendicitis suspected": "Surgical Consult"
+      }
+    },
+
+    "Structural/Other Causes": {
+      text: "1. TVUS for ovarian cysts/torsion. 2. Consider endometriosis (cyclic pain, dysmenorrhea). 3. Rule out renal colic (hematuria, flank pain).",
+      explanation: "OVARIAN TORSION: Sudden onset, unilateral pain + vomiting. Doppler ultrasound shows absent blood flow.",
+      options: {
+        "Torsion/large cyst": "Laparoscopic Detorsion/Cystectomy",
+        "Renal colic": "CT KUB + Analgesia"
+      }
+    },
+
+    // Shared Pathways
+    "Non-Obstetric Causes": {
+      text: "1. Ruptured ovarian cyst (sudden pain mid-cycle). 2. Appendicitis (migration to RLQ). 3. Diverticulitis (LLQ pain in elderly).",
+      explanation: "CYST RUPTURE: Typically self-limited. Treat with NSAIDs; surgery only if hemodynamically unstable.",
+      options: {
+        "Mild (stable)": "Supportive Care",
+        "Severe (unstable)": "Surgical Intervention"
+      }
+    },
+
+    "Imaging (MRI/Ultrasound)": {
+      text: "1. MRI for pregnant patients or unclear diagnosis. 2. Ultrasound first-line for gynecologic causes (cysts, fibroids). 3. CT if high suspicion for bowel pathology.",
+      explanation: "ULTRASOUND FINDINGS: Simple cyst = benign. Complex cyst (septations, solid components) warrants tumor markers (CA-125).",
+      options: {
+        "Diagnosis confirmed": "Targeted Treatment",
+        "Unclear": "Diagnostic Laparoscopy"
+      }
+    },
+
+    "Diagnostic Laparoscopy": {
+      text: "Proceed if imaging inconclusive and high clinical suspicion (e.g., torsion, small ectopic).",
+      explanation: "ADVANTAGE: Both diagnostic and therapeutic (e.g., cystectomy, salpingectomy).",
+      options: {
+        "Cause identified": "Definitive Treatment",
+        "No cause found": "Chronic Pain Evaluation"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Chest Pain in Women-----------------
+  "Chest Pain in Women": {
+    start: {
+      text: "Does the female patient present with chest pain or anginal equivalent (e.g., neck/shoulder pain, exertional dyspnea)?",
+      explanation: "Initial evaluation focuses on identifying high-risk features and atypical presentations more common in women. RED FLAGS: Pain at rest, syncope, or hemodynamic instability require emergent evaluation.",
+      options: {
+        yes: "Initial Assessment",
+        no: "Reassure (non-cardiac likely)"
+      }
+    },
+
+    // Initial Assessment Pathway
+    "Initial Assessment": {
+      text: "1. Obtain detailed history (pain characteristics, duration, triggers). 2. Assess CAD risk factors (Table 1). 3. Perform physical exam (BP, murmurs, pulses). 4. Order baseline ECG.",
+      explanation: "WOMEN-SPECIFIC RISKS: Diabetes confers 2x higher CAD risk vs men. Atypical symptoms (fatigue, nausea) are more common.",
+      options: {
+        "Hemodynamically unstable": "Emergent Management",
+        "Stable": "Risk Stratification"
+      }
+    },
+
+    // Emergent Management Pathway
+    "Emergent Management": {
+      text: "1. Activate cardiac protocol. 2. Obtain STAT troponin, CBC, BMP. 3. Prepare for possible PCI. 4. Consider bedside echo for wall motion abnormalities.",
+      explanation: "CRITICAL: Women with STEMI have higher mortality than men. Door-to-balloon time should be <90min.",
+      options: {
+        "STEMI on ECG": "Immediate PCI/Cath Lab",
+        "NSTEMI/unstable angina": "Medical Stabilization"
+      }
+    },
+
+    // Risk Stratification Pathway
+    "Risk Stratification": {
+      text: "Stratify pretest probability of CAD based on risk factors (Table 1):",
+      explanation: "TABLE 1 RISK FACTORS: Major - typical angina, diabetes, postmenopausal. Intermediate - HTN, smoking, lipids. Minor - age >65, obesity, family history.",
+      options: {
+        "High likelihood (≥2 major risk factors)": "High Likelihood Workup",
+        "Moderate likelihood (1 major or multiple minor)": "Moderate Likelihood Workup",
+        "Low likelihood (<20% probability)": "Low Likelihood Workup"
+      }
+    },
+
+    // High Likelihood Pathway
+    "High Likelihood Workup": {
+      text: "1. Perform exercise treadmill test (ETT) if normal baseline ECG. 2. If ECG abnormal (LVH, LBBB), proceed directly to imaging stress test.",
+      explanation: "WOMEN-SPECIFIC: ETT has 57% specificity in women vs 72% in men. Higher false positives due to microvascular disease.",
+      options: {
+        "ETT negative": "Medical Management",
+        "ETT positive": "Further Testing"
+      }
+    },
+
+    "Further Testing": {
+      text: "1. If ETT positive at low workload (<5 METs): Refer for angiography. 2. If positive at high workload: Consider stress echo or nuclear imaging first.",
+      explanation: "GENDER GAP: Women are 27% less likely to be referred for angiography after positive stress test than men.",
+      options: {
+        "Angiography positive": "Revascularization Consideration",
+        "Angiography negative": "Microvascular Disease Evaluation"
+      }
+    },
+
+    // Moderate Likelihood Pathway
+    "Moderate Likelihood Workup": {
+      text: "1. Consider imaging stress test first-line (stress echo or nuclear). 2. If normal ECG and good exercise capacity, may start with ETT.",
+      explanation: "IMAGING BENEFITS: Stress echo improves specificity to 80-90% in women. Preferred for single-vessel disease detection.",
+      options: {
+        "Test negative": "Reassure + Risk Factor Modification",
+        "Test positive": "Angiography Referral"
+      }
+    },
+
+    // Low Likelihood Pathway
+    "Low Likelihood Workup": {
+      text: "1. Evaluate for non-cardiac causes (GERD, musculoskeletal, anxiety). 2. Consider CXR, gallbladder US if indicated. 3. Reassess if symptoms persist.",
+      explanation: "NON-CARDIAC CAUSES: Account for >50% of chest pain in low-risk women. GERD is most common.",
+      options: {
+        "Non-cardiac cause identified": "Targeted Treatment",
+        "Persistent symptoms": "Consider Advanced Testing"
+      }
+    },
+
+    // Shared Pathways
+    "Medical Management": {
+      text: "1. Start antiplatelet (ASA), statin, beta-blocker if CAD confirmed. 2. Aggressive risk factor modification (smoking cessation, diabetes control).",
+      explanation: "GENDER-SPECIFIC: Women benefit more from cardiac rehab but are 20% less likely to be referred.",
+      options: {
+        "Symptoms controlled": "Regular Follow-up",
+        "Refractory symptoms": "Consider Microvascular Testing"
+      }
+    },
+
+    "Microvascular Disease Evaluation": {
+      text: "1. Consider coronary reactivity testing if angina persists despite normal angiography. 2. Treat with calcium channel blockers, nitrates, statins.",
+      explanation: "WOMEN'S MICROVASCULAR DISEASE: Affects 50% of women with chest pain but normal angiograms. Impaired coronary flow reserve is key finding.",
+      options: {
+        "Diagnosis confirmed": "Vasodilator Therapy",
+        "Uncertain": "Cardiac MRI Consideration"
+      }
+    },
+
+    "Revascularization Consideration": {
+      text: "1. PCI for focal lesions if symptoms persist despite meds. 2. CABG preferred for multivessel disease + diabetes. 3. Shared decision-making essential.",
+      explanation: "GENDER DISPARITIES: Women have higher PCI complications but similar long-term outcomes when appropriately selected.",
+      options: {
+        "Procedure successful": "Cardiac Rehabilitation",
+        "Complex anatomy": "Heart Team Consultation"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Urinary Tract Infection in Women------
+  "Urinary Tract Infection in Women": {
+    start: {
+      text: "Does the female patient present with symptoms of dysuria, frequency, urgency, or suprapubic pain?",
+      explanation: "Initial evaluation focuses on distinguishing lower UTI (cystitis) from upper UTI (pyelonephritis) and identifying complicating factors. KEY: Assess for fever, flank pain, pregnancy status, and risk factors for complicated UTI.",
+      options: {
+        yes: "Symptom Assessment",
+        no: "Consider Alternative Diagnoses"
+      }
+    },
+
+    // Symptom Assessment Pathway
+    "Symptom Assessment": {
+      text: "1. Assess for systemic symptoms (fever >38°C, chills, nausea/vomiting). 2. Check for flank pain or costovertebral angle tenderness. 3. Evaluate risk factors for complicated UTI.",
+      explanation: "RED FLAGS: Fever + flank pain suggests pyelonephritis. Risk factors include pregnancy, diabetes, structural abnormalities, or recent antibiotic use.",
+      options: {
+        "Fever/flank pain present": "Pyelonephritis Evaluation",
+        "Lower symptoms only": "Cystitis Evaluation"
+      }
+    },
+
+    // Pyelonephritis Pathway
+    "Pyelonephritis Evaluation": {
+      text: "1. Obtain urinalysis and urine culture. 2. Assess hydration status and ability to tolerate oral intake. 3. Check for pregnancy if applicable.",
+      explanation: "NOTE: About 30% of women with lower symptoms may have occult upper UTI. Hospitalize if vomiting, dehydrated, or immunocompromised.",
+      options: {
+        "Mild-moderate, tolerating oral intake": "Outpatient Management",
+        "Severe/unable to tolerate oral intake": "Hospital Admission"
+      }
+    },
+
+    "Outpatient Management": {
+      text: "1. Start empiric oral antibiotics (e.g., ciprofloxacin 500mg BID ×7d or TMP-SMX DS BID ×14d if local resistance <20%). 2. Ensure follow-up in 48 hours.",
+      explanation: "FIRST-LINE: Fluoroquinolones if no recent antibiotic use. Adjust based on culture results. Avoid nitrofurantoin for pyelonephritis (poor tissue penetration).",
+      options: {
+        "Improves in 48h": "Complete 14-Day Course",
+        "Worsens/no improvement": "Re-evaluate for Admission"
+      }
+    },
+
+    "Hospital Admission": {
+      text: "1. Start IV antibiotics (ceftriaxone 1g daily or fluoroquinolone if resistant). 2. Consider imaging if no improvement in 72h (CT to rule out abscess).",
+      explanation: "TYPICAL REGIMEN: IV until afebrile 24-48h, then switch to oral to complete 14-day course. Add gentamicin if Pseudomonas suspected.",
+      options: {
+        "Improves on IV therapy": "Switch to Oral Completion",
+        "No improvement": "Imaging for Complications"
+      }
+    },
+
+    // Cystitis Pathway
+    "Cystitis Evaluation": {
+      text: "1. Check for complicating factors (pregnancy, diabetes, structural abnormalities, recent UTI). 2. Perform urinalysis (consider culture if risk factors present).",
+      explanation: "UNCOMPLICATED CYSTITIS: Non-pregnant, premenopausal, no anatomical abnormalities, no recent antibiotics or UTI.",
+      options: {
+        "Uncomplicated cystitis": "3-Day Antibiotic Therapy",
+        "Complicated cystitis": "Extended Evaluation"
+      }
+    },
+
+    "3-Day Antibiotic Therapy": {
+      text: "1. First-line: Nitrofurantoin 100mg BID ×5d (avoid in CrCl <60) or Fosfomycin 3g single dose. 2. Alternatives: TMP-SMX DS BID ×3d if local resistance <20%.",
+      explanation: "AVOID: Amoxicillin alone (high resistance). Fluoroquinolones not first-line due to resistance concerns. Pregnancy: Nitrofurantoin preferred (avoid in 3rd trimester).",
+      options: {
+        "Symptoms resolve": "No Follow-up Needed",
+        "Symptoms persist": "Culture and Re-evaluate"
+      }
+    },
+
+    "Extended Evaluation": {
+      text: "1. Obtain urine culture before treatment. 2. Treat for 7-10 days (nitrofurantoin, TMP-SMX, or cephalexin based on local resistance). 3. Consider urologic workup if recurrent.",
+      explanation: "COMPLICATED CASES: Include pregnancy, diabetes, structural abnormalities, or immunocompromise. Always culture before treatment.",
+      options: {
+        "Resolves with treatment": "Monitor for Recurrence",
+        "Recurrent infections": "Prevention Strategies"
+      }
+    },
+
+    // Recurrent UTI Pathway
+    "Prevention Strategies": {
+      text: "1. For ≥3 UTIs/year: Consider prophylaxis (nitrofurantoin 50-100mg nightly or TMP-SMX 40/200mg nightly). 2. Postcoital prophylaxis if intercourse-associated.",
+      explanation: "NON-ANTIBIOTIC OPTIONS: Cranberry products may help (300ml juice/day). Vaginal estrogen in postmenopausal women. Ensure proper hydration.",
+      options: {
+        "Successful prevention": "Continue 6-12 Months",
+        "Breakthrough infections": "Urologic Referral"
+      }
+    },
+
+    // Special Populations
+    "Pregnancy Considerations": {
+      text: "1. Always obtain urine culture. 2. Treat asymptomatic bacteriuria. 3. First-line: Nitrofurantoin (avoid in 3rd trimester) or cephalexin. 4. Avoid fluoroquinolones and TMP-SMX in 1st trimester.",
+      explanation: "PREGNANCY RISKS: Untreated UTI increases risk of pyelonephritis, preterm labor. Test of cure culture recommended 1-2 weeks post-treatment.",
+      options: {
+        "Treatment successful": "Monthly Screening",
+        "Persistent bacteriuria": "Extended Therapy"
+      }
+    },
+
+    // Diagnostic Follow-up
+    "Culture and Re-evaluate": {
+      text: "1. If initial culture negative: Consider STI (chlamydia) or non-infectious causes (interstitial cystitis). 2. If resistant organism: Tailor therapy based on sensitivities.",
+      explanation: "ATYPICAL PRESENTATIONS: Dysuria without bacteriuria may require STI testing or evaluation for vulvovaginitis.",
+      options: {
+        "Chlamydia suspected": "Doxycycline 100mg BID ×7d",
+        "Resistant organism": "Culture-Directed Therapy"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Breast Mass-------------------------
+  "Breast Mass": {
+    start: {
+      text: "Is the breast mass palpable or nonpalpable (found on screening mammography)?",
+      explanation: "Initial categorization determines the diagnostic pathway. Palpable masses require office evaluation, while nonpalpable masses need imaging-guided assessment.",
+      options: {
+        "Palpable": "Palpable Mass Evaluation",
+        "Nonpalpable": "Nonpalpable Mass Evaluation"
+      }
+    },
+
+    // PALPABLE MASS PATHWAY
+    "Palpable Mass Evaluation": {
+      text: "Perform office aspiration to exclude cyst",
+      explanation: "CRITICAL STEP: Aspiration immediately distinguishes cystic from solid masses. Use 18-22G needle with local anesthesia. Non-bloody fluid can be discarded; bloody fluid requires biopsy.",
+      options: {
+        "Cyst with complete resolution": "Cyst Resolution Management",
+        "Persistent mass or bloody fluid": "Solid Mass Evaluation"
+      }
+    },
+    "Cyst Resolution Management": {
+      text: "Normal examination after aspiration - is patient >35 years old?",
+      explanation: "Age determines next steps: Younger patients may avoid immediate mammography unless high-risk, while older patients require mammographic evaluation.",
+      options: {
+        ">35 years": "Diagnostic Mammography",
+        "≤35 years": "Observation"
+      }
+    },
+    "Solid Mass Evaluation": {
+      text: "Perform diagnostic mammography to characterize the lesion",
+      explanation: "Mammography identifies benign features (lipoma, oil cyst) vs suspicious findings. NOTE: Negative mammogram does NOT rule out malignancy in palpable masses.",
+      options: {
+        "Suspicious/indeterminate": "Referral for Biopsy",
+        "Clearly benign": "Observation with Follow-up"
+      }
+    },
+    "Referral for Biopsy": {
+      text: "Choose biopsy method: Fine Needle Aspiration (FNA) or Core Needle Biopsy (CNB)",
+      explanation: "FNA provides cytology (lower accuracy), CNB gives histology (>90% accuracy). CNB preferred for solid masses. WARNING: False negatives occur with FNA - consider excisional biopsy if high clinical suspicion.",
+      options: {
+        "Benign results": "Triple Test Concordance Check",
+        "Malignant/suspicious": "Malignancy Workup"
+      }
+    },
+    "Triple Test Concordance Check": {
+      text: "Are all three assessments concordant? (Benign physical exam, benign mammography, benign pathology)",
+      explanation: "Triple test has >99% NPV when concordant. If ANY component is suspicious → excisional biopsy required.",
+      options: {
+        "All benign": "Observation with Follow-up",
+        "Discordant findings": "Excisional Biopsy"
+      }
+    },
+
+    // NONPALPABLE MASS PATHWAY
+    "Nonpalpable Mass Evaluation": {
+      text: "Perform breast ultrasonography to exclude cyst",
+      explanation: "First step for mammographically detected lesions. Sonography differentiates simple cysts (BI-RADS 2) from complex/solid masses needing biopsy.",
+      options: {
+        "Simple cyst": "Routine Follow-up",
+        "Complex cyst/solid mass": "Image-Guided Biopsy"
+      }
+    },
+    "Image-Guided Biopsy": {
+      text: "Perform stereotactic- or sonographically-guided Core Needle Biopsy (CNB)",
+      explanation: "Gold standard for nonpalpable lesions. Stereotactic for microcalcifications, sonographic for masses. NOTE: Clip placement marks biopsy site for future localization.",
+      options: {
+        "Benign results": "Follow-up Imaging",
+        "Malignant/suspicious": "Malignancy Workup"
+      }
+    },
+    "Follow-up Imaging": {
+      text: "Schedule follow-up mammography at 6, 12, and 24 months post-biopsy",
+      explanation: "Ensures stability of benign lesions. RED FLAG: New changes require re-evaluation with possible excisional biopsy.",
+      options: {
+        "Stable findings": "Continue Routine Screening",
+        "Suspicious changes": "Excisional Biopsy"
+      }
+    },
+
+    // MALIGNANCY WORKUP (Shared Pathway)
+    "Malignancy Workup": {
+      text: "Confirm malignancy histologically - initiate staging workup:",
+      explanation: "Standard pre-op evaluation: Physical exam, CBC, LFTs, CXR. Bone scan ONLY if bony symptoms. Liver CT ONLY if abnormal LFTs. NOTE: AJCC staging requires tumor size, nodal status, margins.",
+      options: {
+        "No distant metastases": "Surgical Planning",
+        "Suspected metastases": "Advanced Imaging"
+      }
+    },
+    "Surgical Planning": {
+      text: "Refer to surgical oncology for definitive treatment:",
+      explanation: "Options based on staging: Lumpectomy+radiation vs mastectomy. NODE ASSESSMENT: Sentinel node biopsy for clinically node-negative, axillary dissection for positive nodes.",
+      options: {
+        "Complete resection": "Adjuvant Therapy Evaluation",
+        "Incomplete resection": "Additional Surgery"
+      }
+    },
+
+    // SHARED MANAGEMENT OPTIONS
+    "Observation": {
+      text: "Clinical and mammographic surveillance",
+      explanation: "For benign masses with concordant triple test. Follow-up intervals vary by risk (6-12 months initially). DOCUMENT: Patient education on self-exam and prompt reporting of changes.",
+      options: {
+        "Stable findings": "Continue Routine Screening",
+        "New concerns": "Restart Evaluation"
+      }
+    },
+    "Excisional Biopsy": {
+      text: "Perform surgical excision for diagnosis/treatment",
+      explanation: "Indications: Discordant triple test, high-risk lesions (ADH, ALH), patient preference. REQUIREMENT: Obtain clear margins (≥2mm for DCIS, no ink on tumor for invasive).",
+      options: {
+        "Benign pathology": "Discharge with Routine Follow-up",
+        "Malignant pathology": "Malignancy Workup"
+      }
+    },
+    "Advanced Imaging": {
+      text: "Perform PET/CT or dedicated metastatic workup as indicated",
+      explanation: "For confirmed metastases: Bone scan, brain MRI if neurologic symptoms, biopsy of distant lesions for ER/PR/HER2 status.",
+      options: {
+        "Oligometastatic disease": "Consider Local Therapy",
+        "Widespread metastases": "Systemic Therapy"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  //Nipple Discharge--------------------
+  "Nipple Discharge": {
+    start: {
+      text: "Is the nipple discharge spontaneous, persistent, and non-lactational?",
+      explanation: "Significant discharge characteristics that warrant evaluation: true (originates from duct), spontaneous, persistent, and unrelated to lactation. NOTE: Physiological discharge from nipple stimulation doesn't require workup.",
+      options: {
+        yes: "Discharge Characterization",
+        no: "Physiological Discharge"
+      }
+    },
+
+    // DISCHARGE CHARACTERIZATION PATHWAY
+    "Discharge Characterization": {
+      text: "Characterize the discharge type:",
+      explanation: "Critical differentiation - galactorrhea (hormonal) vs pathologic discharge. Milky/multicolored/purulent suggest benign causes; serous/sanguineous/watery raise malignancy concern.",
+      options: {
+        "Milky/Multicolored/Purulent": "Galactorrhea Evaluation",
+        "Serous/Sanguineous/Watery": "Pathologic Discharge Workup"
+      }
+    },
+
+    // GALACTORRHEA PATHWAY
+    "Galactorrhea Evaluation": {
+      text: "Perform fat stain on discharge - is it positive for milk?",
+      explanation: "Fat stain confirms galactorrhea. Bilateral galactorrhea is rarely neoplastic. Check for: pregnancy, medications (antipsychotics, antidepressants), or breast manipulation.",
+      options: {
+        "Positive": "Prolactin/TSH Testing",
+        "Negative": "Pathologic Discharge Workup"
+      }
+    },
+    "Prolactin/TSH Testing": {
+      text: "Order serum prolactin and TSH levels",
+      explanation: "Hyperprolactinemia causes: pituitary adenoma (prolactin >200 ng/mL = macroadenoma), hypothyroidism (elevated TSH), medications, or renal failure. NOTE: GH testing if acromegaly suspected.",
+      options: {
+        "Elevated prolactin": "Pituitary MRI",
+        "Elevated TSH": "Hypothyroidism Management",
+        "Normal levels": "Benign Galactorrhea"
+      }
+    },
+    "Pituitary MRI": {
+      text: "Perform brain MRI with contrast to evaluate for pituitary adenoma",
+      explanation: "Macroadenomas (>10mm) often require dopamine agonists (cabergoline). Microadenomas may be observed if asymptomatic. WARNING: Visual field defects indicate optic chiasm compression.",
+      options: {
+        "Macroadenoma": "Endocrinology Referral",
+        "Microadenoma/Normal": "Medical Management"
+      }
+    },
+    "Hypothyroidism Management": {
+      text: "Initiate thyroid hormone replacement",
+      explanation: "Hypothyroidism causes TRH-mediated prolactin elevation. Recheck prolactin 4-6 weeks after achieving euthyroidism. Persistent hyperprolactinemia requires MRI.",
+      options: {
+        "Prolactin normalizes": "Resolution",
+        "Persistent elevation": "Pituitary MRI"
+      }
+    },
+    "Benign Galactorrhea": {
+      text: "Reassure and observe if asymptomatic",
+      explanation: "50% of previously lactating women may have galactorrhea. No treatment needed unless bothersome (consider bromocriptine). RED FLAG: Unilateral galactorrhea still requires breast imaging.",
+      options: {
+        "Symptoms persist": "Consider Medication Review",
+        "Asymptomatic": "Annual Follow-up"
+      }
+    },
+
+    // PATHOLOGIC DISCHARGE PATHWAY
+    "Pathologic Discharge Workup": {
+      text: "Perform thorough breast exam - is a mass palpable?",
+      explanation: "13% of cancers present with discharge alone. Highest risk: unilateral, single-duct, spontaneous bloody/serous discharge in women >50. WARNING: Watery discharge has highest malignancy correlation.",
+      options: {
+        "Mass present": "Diagnostic Mammogram + Biopsy",
+        "No mass": "Imaging Evaluation"
+      }
+    },
+    "Imaging Evaluation": {
+      text: "Select initial imaging: Diagnostic mammogram ± ultrasound",
+      explanation: "Mammography misses 9.5% of cancers in discharge patients. Ultrasound better for ductal lesions. Galactography (ductogram) localizes lesions but doesn't differentiate benign/malignant.",
+      options: {
+        "Suspicious findings": "Image-Guided Biopsy",
+        "Negative/Indeterminate": "Discharge Cytology"
+      }
+    },
+    "Discharge Cytology": {
+      text: "Perform discharge cytology (recognizing 18% false-negative rate)",
+      explanation: "Limited by low sensitivity. Positive cytology strongly suggests malignancy, but negative doesn't exclude it. Consider ductoscopy if available for direct visualization.",
+      options: {
+        "Atypical/Malignant": "Surgical Biopsy",
+        "Benign/Nondiagnostic": "Risk Stratification"
+      }
+    },
+    "Risk Stratification": {
+      text: "Assess high-risk features: Age >50, unilateral single-duct, bloody/watery discharge?",
+      explanation: "Malignancy risk escalates with: serous→serosanguineous→sanguineous→watery discharge. >50yo patients have 3x higher cancer risk with nipple discharge.",
+      options: {
+        "High-risk features": "Surgical Duct Excision",
+        "Low-risk features": "Short-Term Monitoring"
+      }
+    },
+
+    // SURGICAL PATHWAY
+    "Surgical Duct Excision": {
+      text: "Proceed with total duct excision for definitive diagnosis",
+      explanation: "Gold standard for pathologic discharge without clear source. Identifies papillomas (40-70% cases), DCIS (5-15%), or invasive cancer (5-10%). Send all tissue for histology.",
+      options: {
+        "Benign pathology": "Annual Follow-up",
+        "Malignant pathology": "Oncology Referral"
+      }
+    },
+
+    // FOLLOW-UP PATHWAYS
+    "Short-Term Monitoring": {
+      text: "Repeat clinical exam in 3-6 months. Consider MRI if high clinical suspicion persists.",
+      explanation: "MRI has highest sensitivity for occult lesions (95% vs 70% for mammo). Indications: Strong clinical concern despite negative conventional imaging.",
+      options: {
+        "Resolution": "Discontinue Follow-up",
+        "Persistent": "Surgical Evaluation"
+      }
+    },
+    "Physiological Discharge": {
+      text: "Reassure patient - no further workup needed",
+      explanation: "Typical with: nipple stimulation, bilateral multiduct discharge, intermittent non-spontaneous flow. EXCEPTION: Pregnancy-related discharge requires evaluation if bloody/unilateral.",
+      options: {
+        "New concerning features": "Restart Evaluation",
+        "Stable": "No Further Action"
+      }
+    }
+  },
+  
+  
+  
+  //Premenstrual Dysphoric Disorder-------
+  "Premenstrual Dysphoric Disorder": {
+    start: {
+      text: "Does the patient report cyclic emotional/behavioral symptoms that impair function during the luteal phase?",
+      explanation: "Key diagnostic feature: Symptoms must occur in the luteal phase (after ovulation), resolve shortly after menses onset, and cause functional impairment. Common symptoms include irritability, mood swings, depression, and anxiety.",
+      options: {
+        yes: "Symptom Documentation",
+        no: "Alternative Diagnosis Consideration"
+      }
+    },
+
+    // DIAGNOSTIC PATHWAY
+    "Symptom Documentation": {
+      text: "Instruct patient to complete prospective daily symptom chart for ≥2 cycles (0-4 scale)",
+      explanation: "CRITICAL STEP: Retrospective recall is unreliable. Must document: 1) ≥5 symptoms worsening in luteal phase, 2) resolution post-menses, 3) functional impairment. Use standardized forms (e.g., DRSP).",
+      options: {
+        "Meets PMDD criteria": "Differential Diagnosis Evaluation",
+        "Subthreshold symptoms": "PMS Management"
+      }
+    },
+    "Differential Diagnosis Evaluation": {
+      text: "Rule out medical/psychiatric conditions with similar symptoms:",
+      explanation: "Must exclude: thyroid disorders, anemia, mood/anxiety disorders, perimenopause. NOTE: PMDD requires symptom-free follicular phase (days 6-12).",
+      options: {
+        "Medical conditions ruled out": "PMDD Confirmation",
+        "Abnormal findings": "Treat Underlying Condition"
+      }
+    },
+
+    // TREATMENT PATHWAYS
+    "PMDD Confirmation": {
+      text: "Confirm PMDD diagnosis (DSM-5 criteria): ≥5 symptoms including ≥1 mood symptom, impairing function",
+      explanation: "Required: 1 mood symptom (affective lability, irritability, depressed mood, or anxiety) plus ≥4 total symptoms (e.g., concentration difficulties, fatigue, appetite changes).",
+      options: {
+        "Meets full criteria": "First-Line Treatment",
+        "Atypical presentation": "Psychiatric Consultation"
+      }
+    },
+    "First-Line Treatment": {
+      text: "Initiate SSRI (selective serotonin reuptake inhibitor) - choose dosing strategy:",
+      explanation: "SSRIs work rapidly in PMDD (unlike MDD). Options: 1) Continuous daily, 2) Luteal-phase only (start ovulation → menses), 3) Symptom-onset dosing. First-line: sertraline 50-100mg or fluoxetine 20-40mg.",
+      options: {
+        "Good response": "Maintenance Therapy",
+        "Partial response": "SSRI Dose Adjustment",
+        "No response": "Second-Line Options"
+      }
+    },
+    "Second-Line Options": {
+      text: "Consider alternative interventions:",
+      explanation: "Options: 1) Switch to another SSRI/SNRI, 2) Add oral contraceptive (Yaz® FDA-approved for PMDD), 3) GnRH agonists (reserved for severe cases due to side effects), 4) Cognitive behavioral therapy.",
+      options: {
+        "Hormonal option": "COC Trial",
+        "Non-hormonal option": "Alternative Antidepressant",
+        "Severe refractory": "GnRH Agonist Consideration"
+      }
+    },
+    "COC Trial": {
+      text: "Prescribe drospirenone-containing COC (Yaz®) - 24/4 day regimen",
+      explanation: "Mechanism: Suppresses ovulation. WARNING: Avoid in women with VTE risk factors. Monitor for mood worsening (occurs in 10-15%).",
+      options: {
+        "Effective": "Continue + Monitor",
+        "Ineffective": "Cross to SSRI"
+      }
+    },
+    "GnRH Agonist Consideration": {
+      text: "Reserve for severe refractory cases - discuss risks (osteoporosis, VMS) and need for add-back therapy",
+      explanation: "Induces medical menopause. Use ≤6 months without add-back. Consider with: leuprolide 3.75mg IM monthly + add-back norethindrone 5mg/day.",
+      options: {
+        "Proceed": "Specialist Co-Management",
+        "Defer": "Behavioral Interventions"
+      }
+    },
+
+    // SUPPORTIVE CARE PATHWAYS
+    "PMS Management": {
+      text: "Recommend lifestyle modifications:",
+      explanation: "1) Regular aerobic exercise, 2) Stress reduction (CBT, relaxation), 3) Balanced diet (complex carbs, limit caffeine/alcohol), 4) Calcium 1200mg/day (shown effective in RCTs).",
+      options: {
+        "Improved": "Annual Follow-up",
+        "Worsening symptoms": "Re-evaluate for PMDD"
+      }
+    },
+    "Behavioral Interventions": {
+      text: "Implement cognitive behavioral therapy (CBT) and symptom-specific strategies:",
+      explanation: "CBT targets: 1) Negative thought patterns, 2) Stress management, 3) Behavioral activation. For physical symptoms: NSAIDs (mastalgia), spironolactone (bloating), or pyridoxine 50-100mg/day.",
+      options: {
+        "Adequate control": "Maintenance",
+        "Inadequate control": "Reconsider Pharmacotherapy"
+      }
+    },
+
+    // MONITORING PATHWAYS
+    "Maintenance Therapy": {
+      text: "Continue effective treatment with periodic reassessment:",
+      explanation: "Assess: 1) Ongoing efficacy, 2) Side effects, 3) Need for treatment adjustments. NOTE: Symptoms may change with age/stress/hormonal shifts.",
+      options: {
+        "Stable": "Annual Review",
+        "Relapse": "Treatment Optimization"
+      }
+    },
+    "Alternative Diagnosis Consideration": {
+      text: "Evaluate for: 1) Major depressive disorder, 2) Generalized anxiety, 3) Perimenopause, 4) Thyroid disorder",
+      explanation: "Key differentiators: Non-cyclic symptoms, persistence into follicular phase, or presence of atypical features (psychosis, suicidal ideation).",
+      options: {
+        "New diagnosis identified": "Targeted Treatment",
+        "No clear diagnosis": "Observation"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Contraceptive Choices-------------
+  "Contraceptive Choices": {
+    start: {
+      text: "Does the patient desire permanent or reversible contraception?",
+      explanation: "Initial decision point based on patient's reproductive goals. Permanent options include vasectomy/BTL; reversible options range from hormonal to barrier methods.",
+      options: {
+        "Permanent": "Sterilization Evaluation",
+        "Reversible": "Reversible Method Selection"
+      }
+    },
+
+    // PERMANENT CONTRACEPTION PATHWAY
+    "Sterilization Evaluation": {
+      text: "Assess patient for permanent contraception eligibility:",
+      explanation: "CRITERIA: 1) Certainty about no future pregnancy desire, 2) Understanding of irreversibility, 3) Age >30 or completed family size. WARNING: Regret rates highest in women <30 (20-30%).",
+      options: {
+        "Male patient": "Vasectomy Counseling",
+        "Female patient": "Tubal Ligation Counseling"
+      }
+    },
+    "Vasectomy Counseling": {
+      text: "Discuss: 1) Need for 25 ejaculations post-procedure, 2) Semen analysis confirmation, 3) 0.1% failure rate, 4) Possible but unreliable reversal options",
+      explanation: "PROCEDURE: Bilateral vas deferens interruption. NOTE: Not immediately effective - backup needed until azoospermia confirmed (typically 3 months).",
+      options: {
+        "Proceed": "Schedule Procedure",
+        "Hesitant": "Reversible Method Selection"
+      }
+    },
+    "Tubal Ligation Counseling": {
+      text: "Discuss: 1) Surgical risks (anesthesia, infection), 2) 0.5% failure rate (higher if done postpartum), 3) Increased ectopic risk if fails, 4) Microsurgical reversal possible but not guaranteed",
+      explanation: "OPTIONS: Laparoscopic (most common), postpartum mini-laparotomy, or hysteroscopic (Essure no longer available).",
+      options: {
+        "Proceed": "Surgical Referral",
+        "Hesitant": "Reversible Method Selection"
+      }
+    },
+
+    // REVERSIBLE METHOD SELECTION
+    "Reversible Method Selection": {
+      text: "Evaluate key patient factors:",
+      explanation: "Consider: 1) Medical contraindications, 2) Adherence capability, 3) STI risk, 4) Non-contraceptive benefits desired (e.g., cycle control, acne improvement).",
+      options: {
+        "Prioritizes efficacy/ease-of-use": "Long-Acting Reversible Contraception (LARC)",
+        "Prefers hormonal methods": "Short-Acting Hormonal Options",
+        "Prefers non-hormonal": "Barrier/Natural Methods"
+      }
+    },
+
+    // LARC PATHWAY
+    "Long-Acting Reversible Contraception (LARC)": {
+      text: "Choose between IUD or implant:",
+      explanation: "LARCs are most effective reversible methods (99% efficacy). First-line for most patients per ACOG. Few contraindications beyond current PID/pregnancy.",
+      options: {
+        "Copper IUD (Paragard)": "Copper IUD Details",
+        "Hormonal IUD (Mirena/Kyleena/Skyla)": "Hormonal IUD Details",
+        "Contraceptive implant (Nexplanon)": "Implant Details"
+      }
+    },
+    "Copper IUD Details": {
+      text: "Paragard®: 10-year duration, no hormones, may increase menstrual bleeding/cramps",
+      explanation: "IDEAL FOR: 1) Want long-term non-hormonal option, 2) Emergency contraception if placed within 5 days of unprotected sex. AVOID in Wilson disease.",
+      options: {
+        "Select": "IUD Insertion Protocol",
+        "Reconsider": "Reversible Method Selection"
+      }
+    },
+    "Hormonal IUD Details": {
+      text: "Mirena® (5yr), Kyleena® (5yr), Skyla® (3yr): Reduce menstrual bleeding, localized progestin only",
+      explanation: "IDEAL FOR: 1) Heavy menstrual bleeding, 2) Endometriosis, 3) Estrogen contraindications. 20% become amenorrheic by 1 year.",
+      options: {
+        "Select": "IUD Insertion Protocol",
+        "Reconsider": "Reversible Method Selection"
+      }
+    },
+    "IUD Insertion Protocol": {
+      text: "Schedule insertion during menses (easier placement). Counsel on: 1) Cramping during procedure, 2) String checks, 3) 99% efficacy from day 1",
+      explanation: "POST-INSERTION: Spotting common first 3-6 months. Follow-up at 4-6 weeks to check strings. Emergency contraception if placed within 5 days of unprotected sex.",
+      options: {
+        "Complete": "Contraception Established",
+        "Complications": "IUD Problem Management"
+      }
+    },
+
+    // SHORT-ACTING HORMONAL PATHWAY
+    "Short-Acting Hormonal Options": {
+      text: "Select based on estrogen tolerance and administration preference:",
+      explanation: "Estrogen-containing methods improve cycle control but have more contraindications. Progestin-only options safer for hypertension/smokers >35.",
+      options: {
+        "Combined estrogen-progestin": "Combined Hormonal Options",
+        "Progestin-only": "Progestin-Only Options"
+      }
+    },
+    "Combined Hormonal Options": {
+      text: "Choose formulation:",
+      explanation: "CONTRAINDICATIONS: History of VTE, migraine with aura, smoking >35yo, hypertension, breast cancer. Non-contraceptive benefits: acne reduction, lighter periods.",
+      options: {
+        "Pills (COCs)": "COC Counseling",
+        "Patch (Xulane)": "Patch Counseling",
+        "Ring (NuvaRing)": "Ring Counseling"
+      }
+    },
+    "COC Counseling": {
+      text: "Dosing options: 1) 21/7 cyclic, 2) 24/4 extended, 3) Continuous. Start: 1st day of menses (immediate protection) or Sunday start (backup x7d)",
+      explanation: "MISSED PILL RULES: 1 pill >24h late: take ASAP + backup x7d. ≥3 pills: discard pack, start new + backup x7d. Mini-pill: 3h window only.",
+      options: {
+        "Prescribe": "Follow-up in 3 Months",
+        "Contraindications": "Progestin-Only Options"
+      }
+    },
+    "Progestin-Only Options": {
+      text: "Choose delivery method:",
+      explanation: "SAFER FOR: Lactation, hypertension, smokers >35, migraine with aura. Side effects: irregular bleeding (improves by 6-12mo).",
+      options: {
+        "Pill (POP)": "POP Counseling",
+        "Injection (Depo)": "Depo Counseling",
+        "Implant (Nexplanon)": "Implant Details"
+      }
+    },
+    "Depo Counseling": {
+      text: "Depo-Provera®: IM q12wk. WARN: 1) Delayed return to fertility (median 10mo), 2) Bone density monitoring if >2yr use, 3) Weight gain (avg 5lb/yr)",
+      explanation: "IDEAL FOR: 1) Poor pill adherence, 2) Need for privacy, 3) Medical conditions precluding estrogen. 50% amenorrhea by 1 year.",
+      options: {
+        "Proceed": "Schedule Injection",
+        "Concerns": "Reversible Method Selection"
+      }
+    },
+
+    // BARRIER/NATURAL METHODS PATHWAY
+    "Barrier/Natural Methods": {
+      text: "Select based on STI risk and adherence capability:",
+      explanation: "Typical use failure rates higher (15-20%). Condoms only method protecting against STIs. Fertility awareness requires regular cycles/motivation.",
+      options: {
+        "STI protection needed": "Condom Selection",
+        "No STI risk": "Diaphragm/FAM"
+      }
+    },
+    "Condom Selection": {
+      text: "Male (latex/polyurethane) or female (FC2) condoms. Counsel on: 1) Proper use (reservoir tip), 2) Compatibility with lubricants, 3) Emergency backup plan",
+      explanation: "EFFECTIVENESS: 98% perfect use, 85% typical use. ALWAYS RECOMMEND with new/multiple partners regardless of other method use.",
+      options: {
+        "Adequate": "Contraception Established",
+        "Additional Protection Wanted": "Combine with Hormonal/IUD"
+      }
+    },
+
+    // EMERGENCY CONTRACEPTION PATHWAY
+    "Emergency Contraception": {
+      text: "Select based on time since unprotected sex and patient factors:",
+      explanation: "OPTIONS: 1) Cu-IUD (most effective, works up to 5d), 2) Ulipristal acetate (up to 5d), 3) Levonorgestrel (up to 3d), 4) Yuzpe method (least effective).",
+      options: {
+        "<72h": "Levonorgestrel EC",
+        "72-120h": "Ulipristal or IUD",
+        "Ongoing need": "Initiate Regular Contraception"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Oral Contraceptive USE----------------
+  "Oral Contraceptive USE": {
+    start: {
+      text: "Is the patient a candidate for oral contraceptives (OCs) based on initial screening?",
+      explanation: "Absolute contraindications: History of VTE, estrogen-dependent cancer, liver disease, smoking >35yo, uncontrolled HTN, migraine with aura. Relative contraindications: Diabetes, hyperlipidemia, obesity, depression.",
+      options: {
+        "Candidate": "OC Type Selection",
+        "Not candidate": "Alternative Contraception"
+      }
+    },
+
+    // INITIAL SELECTION PATHWAY
+    "OC Type Selection": {
+      text: "Select OC type based on patient characteristics:",
+      explanation: "Key considerations: 1) Estrogen tolerance, 2) Androgen sensitivity (acne/hirsutism), 3) Cycle control needs, 4) Cost/preference.",
+      options: {
+        "Standard combined OC (COC)": "COC Formulation Choice",
+        "Progestin-only pill (POP)": "POP Counseling",
+        "Special populations": "Special Considerations"
+      }
+    },
+    "COC Formulation Choice": {
+      text: "Choose formulation based on progestin type:",
+      explanation: "1st gen (norethindrone): Cheapest, more androgenic. 2nd gen (levonorgestrel): Balance of efficacy/safety. 3rd gen (desogestrel/norgestimate): Less androgenic, higher VTE risk.",
+      options: {
+        "Monophasic": "Monophasic Dosing",
+        "Multiphasic": "Multiphasic Dosing",
+        "Extended cycle": "Continuous Dosing"
+      }
+    },
+
+    // DOSING STRATEGIES
+    "Monophasic Dosing": {
+      text: "Standard 21/7 regimen - select estrogen dose:",
+      explanation: "20mcg EE: Less side effects but more breakthrough bleeding. 30-35mcg: Better cycle control. Start day 1-5 of menses for immediate protection.",
+      options: {
+        "Low dose (20mcg EE)": "Initiation Protocol",
+        "Standard dose (30-35mcg EE)": "Initiation Protocol"
+      }
+    },
+    "Continuous Dosing": {
+      text: "Options: 24/4 regimens (e.g., Yaz) or true continuous (e.g., Seasonale)",
+      explanation: "Benefits: Fewer hormone fluctuations, less PMS. Risks: More unscheduled bleeding initially. Requires 3-6 month adjustment period.",
+      options: {
+        "Proceed": "Initiation Protocol",
+        "Reconsider": "OC Type Selection"
+      }
+    },
+
+    // SPECIAL POPULATIONS
+    "Special Considerations": {
+      text: "Select special population:",
+      explanation: "These groups require tailored OC selection and monitoring.",
+      options: {
+        "Smokers": "Smoker Protocol",
+        "Lactating": "Lactation Protocol",
+        "Migraineurs": "Migraine Protocol",
+        "Diabetics": "Diabetes Protocol"
+      }
+    },
+    "Smoker Protocol": {
+      text: "Age-stratified approach:",
+      explanation: "<35yo: Can use COCs with smoking cessation counseling. ≥35yo: Progestin-only or non-hormonal methods only due to stroke/MI risk.",
+      options: {
+        "<35yo": "COC + Smoking Cessation",
+        "≥35yo": "Progestin-only or Alternative"
+      }
+    },
+    "Migraine Protocol": {
+      text: "Assess aura status:",
+      explanation: "Migraine WITH aura: Absolute contraindication to estrogen (use POP/IUD). Without aura: Can consider low-dose COC if no other risk factors.",
+      options: {
+        "With aura": "Progestin-only Option",
+        "Without aura": "Low-dose COC Trial"
+      }
+    },
+
+    // INITIATION & MONITORING
+    "Initiation Protocol": {
+      text: "Counsel on: 1) Backup method x7d, 2) Missed pill rules, 3) ACHES warning signs",
+      explanation: "Missed pill rules: 1 pill >24h late: Take ASAP + backup x7d. ≥3 pills: Start new pack + backup. POP: 3h window only.",
+      options: {
+        "Understood": "First Follow-up",
+        "Questions": "Reinforce Education"
+      }
+    },
+    "First Follow-up": {
+      text: "Schedule follow-up in 3 months to assess:",
+      explanation: "1) Side effects, 2) BP check, 3) Adherence, 4) Satisfaction. Annual follow-up thereafter if stable.",
+      options: {
+        "No issues": "Annual Monitoring",
+        "Side effects": "Side Effect Management"
+      }
+    },
+
+    // SIDE EFFECT MANAGEMENT
+    "Side Effect Management": {
+      text: "Select predominant side effect:",
+      explanation: "Most side effects improve by 3rd cycle. Persistent issues may require formulation change.",
+      options: {
+        "Breakthrough bleeding": "BTB Management",
+        "Nausea/breast tenderness": "Estrogen-related SE",
+        "Weight gain/acne": "Progestin-related SE",
+        "Headaches": "Headache Evaluation",
+        "Mood changes": "Mood Effect Management"
+      }
+    },
+    "BTB Management": {
+      text: "Assess timing:",
+      explanation: "Early-cycle: Estrogen deficiency. Late-cycle: Progestin deficiency. Continuous: May need higher estrogen or different progestin.",
+      options: {
+        "Early/mid-cycle": "Increase Estrogen",
+        "Late cycle": "Increase Progestin",
+        "Persistent": "Switch Formulation"
+      }
+    },
+    "Headache Evaluation": {
+      text: "Assess headache characteristics:",
+      explanation: "Vascular/migrainous: Discontinue COC. Estrogen-withdrawal: Consider continuous dosing. New/worsening: Needs neurologic eval.",
+      options: {
+        "Migrainous": "Discontinue COC",
+        "Cyclic": "Continuous Dosing Trial",
+        "New focal signs": "Urgent Neuro Evaluation"
+      }
+    },
+
+    // LONG-TERM MONITORING
+    "Annual Monitoring": {
+      text: "Annual assessments should include:",
+      explanation: "1) BP check, 2) Side effect review, 3) Contraceptive needs reassessment, 4) STI screening as indicated.",
+      options: {
+        "Continuing OC": "Reaffirm Adherence",
+        "Changing needs": "Re-evaluate Options"
+      }
+    }
+  },
+  
+  
+  
+  
+  //Female Infertility----------------
+  "Female Infertility": {
+    start: {
+      text: "Has the couple attempted conception for ≥12 months (or ≥6 months if female ≥35 years old)?",
+      explanation: "Infertility definition: Failure to conceive after 12 months of unprotected intercourse (6 months for women ≥35). Initial counseling should include timing of intercourse (every 36-72 hours during fertile window).",
+      options: {
+        yes: "Initial Evaluation",
+        no: "Preconception Counseling"
+      }
+    },
+
+    // INITIAL EVALUATION PATHWAY
+    "Initial Evaluation": {
+      text: "Begin with simultaneous evaluation of both partners - perform:",
+      explanation: "CRITICAL: Male factor contributes to 40-50% of infertility cases. Must evaluate both partners concurrently. Initial workup should be completed within 2-3 menstrual cycles.",
+      options: {
+        "Female evaluation": "Female Workup",
+        "Male semen analysis": "Male Factor Assessment"
+      }
+    },
+
+    // FEMALE WORKUP PATHWAY
+    "Female Workup": {
+      text: "Perform comprehensive female evaluation:",
+      explanation: "Four key factors to assess: 1) Ovulatory status, 2) Tubal patency, 3) Uterine cavity, 4) Ovarian reserve (especially if ≥35 years).",
+      options: {
+        "History/Physical": "Reproductive History",
+        "Ovulation assessment": "Ovulation Evaluation",
+        "Anatomical evaluation": "Structural Assessment"
+      }
+    },
+    "Reproductive History": {
+      text: "Assess key history elements:",
+      explanation: "ESSENTIAL QUESTIONS: Menstrual pattern, prior pregnancies/STIs, pelvic pain, gynecologic surgeries, DES exposure. PHYSICAL: Check BMI, hirsutism, galactorrhea, pelvic masses/tenderness.",
+      options: {
+        "Abnormal findings": "Targeted Testing",
+        "Normal findings": "Ovulation Evaluation"
+      }
+    },
+    "Ovulation Evaluation": {
+      text: "Select ovulation confirmation method:",
+      explanation: "Regular menses (21-35 days) suggests ovulation. CONFIRMATION OPTIONS: 1) Mid-luteal progesterone (>5 ng/mL), 2) LH surge kits, 3) BBT charts (retrospective).",
+      options: {
+        "Regular cycles": "Progesterone Testing",
+        "Irregular cycles": "Anovulation Workup"
+      }
+    },
+    "Anovulation Workup": {
+      text: "Order initial labs for irregular cycles:",
+      explanation: "BASIC PANEL: Day 3 FSH, estradiol, TSH, prolactin. PCOS: Add testosterone/SHBG. CAUTION: Day 3 FSH >15 mIU/mL suggests diminished reserve.",
+      options: {
+        "Normal labs": "Clomiphene Trial",
+        "Abnormal labs": "Endocrine Management"
+      }
+    },
+    "Structural Assessment": {
+      text: "Evaluate uterine/tubal anatomy:",
+      explanation: "HSG (hysterosalpingogram) is first-line for tubal patency. Sonohysterogram for uterine cavity. Laparoscopy reserved for suspected endometriosis.",
+      options: {
+        "Normal anatomy": "Unexplained Infertility",
+        "Abnormal findings": "Targeted Treatment"
+      }
+    },
+
+    // MALE FACTOR PATHWAY
+    "Male Factor Assessment": {
+      text: "Interpret semen analysis results:",
+      explanation: "ABNORMAL PARAMETERS: Volume <1.5mL, concentration <15M/mL, motility <40%, morphology <4% normal. Repeat in 4-6 weeks if abnormal.",
+      options: {
+        "Normal SA": "Female Factor Focus",
+        "Abnormal SA": "Urology Referral"
+      }
+    },
+
+    // TREATMENT PATHWAYS
+    "Clomiphene Trial": {
+      text: "Initiate clomiphene citrate for anovulation:",
+      explanation: "PROTOCOL: 50mg days 3-7 of cycle. Monitor with timed intercourse + progesterone check. Max 100mg x3-6 cycles. WARNING: Multiple pregnancy risk (8-10%).",
+      options: {
+        "Ovulation achieved": "Continue for 3 cycles",
+        "No response": "Gonadotropins or Referral"
+      }
+    },
+    "Endocrine Management": {
+      text: "Treat underlying endocrine disorder:",
+      explanation: "HYPOTHYROID: Levothyroxine. HYPERPROLACTINEMIA: Dopamine agonists. PCOS: Metformin + weight loss if BMI >25.",
+      options: {
+        "Corrected": "Re-evaluate Ovulation",
+        "Persistent": "Specialist Referral"
+      }
+    },
+    "Unexplained Infertility": {
+      text: "Management options for unexplained infertility:",
+      explanation: "TIERED APPROACH: 1) Expectant management (if <35), 2) Clomiphene + IUI, 3) IVF. >35yo should proceed more aggressively.",
+      options: {
+        "<35 years": "3-6 month observation",
+        "≥35 years": "Early Specialist Referral"
+      }
+    },
+
+    // SPECIAL POPULATIONS
+    "Advanced Maternal Age": {
+      text: "Additional testing for women ≥35:",
+      explanation: "CRITICAL TESTS: Day 3 FSH/AMH for ovarian reserve. Consider expedited referral after basic workup given time sensitivity.",
+      options: {
+        "Normal reserve": "Accelerated Treatment",
+        "Diminished reserve": "Donor Egg Discussion"
+      }
+    },
+
+    // FOLLOW-UP PATHWAYS
+    "Treatment Failure": {
+      text: "Next steps after failed initial treatments:",
+      explanation: "OPTIONS: 1) Advanced ART (IVF/ICSI), 2) Surgical correction (if anatomical), 3) Donor gametes, 4) Adoption. Emotional support crucial.",
+      options: {
+        "Continue treatment": "Specialist Management",
+        "Alternative paths": "Supportive Counseling"
+      }
+    },
+    "Preconception Counseling": {
+      text: "Optimize fertility potential:",
+      explanation: "KEY RECOMMENDATIONS: 1) Track ovulation (LH kits), 2) Timed intercourse, 3) Preconception vitamins, 4) Limit alcohol/caffeine, 5) Smoking cessation.",
+      options: {
+        "After 6-12 months": "Reassess",
+        "Immediate concerns": "Early Evaluation"
+      }
+    }
+  }
+  };
+  
+  
+  
+
+
+
+
+
+
+
+
+    let currentSymptom = null;
+    let currentQuestion = "start";
+
+    function playClick() {
+      const sound = document.getElementById("click-sound");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+      }
+    }
+
+    function startSymptom(symptom) {
+      currentSymptom = symptom;
+      currentQuestion = "start";
+      document.getElementById("symptom-title").textContent = symptom;
+      showQuestion();
+
+      document.getElementById("main-page").style.display = "none";
+      document.getElementById("question-page").style.display = "block";
+      document.getElementById("headline").style.display = "none";
+      document.getElementById("subheadline").style.display = "none";
+    }
+
+    // NEW/MODIFIED: This function is updated to show images.
+    function showQuestion() {
+      const symptomQuestions = questions[currentSymptom];
+      if (!symptomQuestions || !symptomQuestions[currentQuestion]) {
+        alert("Invalid symptom or question flow.");
+        return;
+      }
+
+      const questionData = symptomQuestions[currentQuestion];
+      const imageContainer = document.getElementById("question-image-container");
+      
+      // Clear previous image
+      imageContainer.innerHTML = "";
+
+      // If an image path exists, create and display the image
+      if (questionData.image) {
+        const img = document.createElement("img");
+        img.src = questionData.image;
+        img.alt = questionData.text; // for accessibility
+        img.className = "question-image";
+        imageContainer.appendChild(img);
+      }
+
+      document.getElementById("question").textContent = questionData.text;
+      document.getElementById("footer").textContent = questionData.explanation || "No explanation available.";
+
+      const buttons = Object.keys(questionData.options)
+        .map(option =>
+          `<button class='option-button' onclick="playClick(); nextQuestion('${option}')">${option}</button>`)
+        .join("");
+      document.querySelector(".button-container").innerHTML = buttons;
+    }
+
+    function nextQuestion(answer) {
+      const symptomQuestions = questions[currentSymptom];
+      const current = symptomQuestions[currentQuestion];
+      if (!current || !current.options[answer]) {
+        alert("Invalid choice.");
+        return;
+      }
+
+      const next = current.options[answer];
+      // Check if the next step is another question or a final diagnosis
+      if (symptomQuestions[next] && symptomQuestions[next].options) {
+          currentQuestion = next;
+          showQuestion();
+      } else {
+          // This handles both terminal nodes that are defined as full objects
+          // and those that are simple strings (your original implementation)
+          if (symptomQuestions[next]) {
+              currentQuestion = next;
+              showQuestion(); // This will display the final diagnosis with its image
+          } else {
+              // This is a fallback for legacy string-only terminals
+              document.getElementById("question").textContent = next;
+              document.getElementById("footer").textContent = "End of diagnostic path.";
+              document.querySelector(".button-container").innerHTML =
+                `<button class='option-button' onclick="playClick(); restart()">Restart</button>`;
+              document.getElementById("question-image-container").innerHTML = ""; // Clear image
+          }
+      }
+    }
+
+
+    function restart() {
+      document.getElementById("main-page").style.display = "flex";
+      document.getElementById("question-page").style.display = "none";
+      document.getElementById("headline").style.display = "block";
+      document.getElementById("subheadline").style.display = "block";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      sidebar.classList.toggle("active");
+      overlay.style.display = sidebar.classList.contains("active") ? "block" : "none";
+    }
+
+    document.addEventListener("click", function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const toggleBtn = document.querySelector(".toggle-button");
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnToggle = toggleBtn.contains(event.target);
+      if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains("active")) {
+        toggleSidebar();
+      }
+    });
+
+    let startX = 0;
+    document.addEventListener("touchstart", function(e) {
+      if (e.touches.length === 1) { startX = e.touches[0].clientX; }
+    });
+    document.addEventListener("touchend", function(e) {
+      const sidebar = document.getElementById("sidebar");
+      const diff = e.changedTouches[0].clientX - startX;
+      if (diff > 50 && sidebar.classList.contains("active")) { toggleSidebar(); }
+    });
+
+    function goHome() {
+      window.location.href = "../index.html";
+    }
+
+    function navigateTo(page) {
+      window.location.href = page;
+      const loadingScreen = document.querySelector('.loading');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'flex';
+        setTimeout(() => { window.location.href = page; }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>

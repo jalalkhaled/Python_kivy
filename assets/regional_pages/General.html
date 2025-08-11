@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>General Symptoms</title>
+  <link rel="stylesheet" href="../style/regional_style.css" type="text/css" media="all" />
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="nav-title">ALGOMED <span>GENERAL</span></div>
+  <button class="toggle-button" onclick="playClick(); toggleSidebar()">☰</button>
+</nav>
+
+<!-- Overlay for click outside -->
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <ul>
+      <li onclick="navigateTo('respiratory.html')">Respiratory</li>
+      <li onclick="navigateTo('cardiovascular.html')">Cardiovascular</li>
+      <li onclick="navigateTo('git.html')">Gastroenterology</li>
+      <li onclick="navigateTo('gynecology.html')">Gynecology</li>
+      <li onclick="navigateTo('hepatology.html')">Hepatology</li>
+      <li onclick="navigateTo('nephrology.html')">Nephrology</li>
+      <li onclick="navigateTo('obstetric.html')">Obstetric</li>
+      <li onclick="navigateTo('rheumatology.html')">Rheumatology</li>
+      <li onclick="navigateTo('hematology.html')">Hematology</li>
+      <li onclick="navigateTo('pediatric.html')">Pediatric</li>
+      <li onclick="navigateTo('ophthalmology.html')">Ophthalmology</li>
+      <li onclick="navigateTo('neurology.html')">Neurology</li>
+      <li onclick="navigateTo('dermatology.html')">Dermatology</li>
+      <li onclick="navigateTo('ent.html')">ENT</li>
+      <li onclick="navigateTo('psychiatric.html')">Psychiatric</li>
+      <li onclick="navigateTo('General.html')">General</li>
+    </ul>
+<button class="sidebar-about-button" onclick="navigateTo('../about.html')">About Us</button>
+  </aside>
+
+  <!-- Audio -->
+  <audio id="click-sound" src="../sounds/click_sound.wav" preload="auto"></audio>
+
+  <!-- Headlines Outside Container -->
+  <h3 id="headline">Select a Primary Symptom</h3>
+<p id="subheadline">Choose from the list below to begin diagnosis.</p>
+
+  <!-- Main Page -->
+  <div id="main-page" class="container">
+    <button class="symptom-button" onclick="playClick(); startSymptom('Foreign Body Ingestion')">Foreign Body Ingestion</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Caustic Ingestion and Exposure')">Caustic Ingestion and Exposure</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Hypothermia')">Hypothermia</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Submersion/Drowning')">Submersion/Drowning</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Acute Pulseless Extremity')">Acute Pulseless Extremity</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Anaphylaxis')">Anaphylaxis</button>
+    
+    
+  </div>
+
+  <!-- Question Page -->
+  <div id="question-page">
+  <div class="title" id="symptom-title">Symptom Diagnostic</div>
+  <div id="question-image-container"></div>
+  <div id="question" class="question"></div>
+  <div class="button-container"></div>
+  <div id="footer" class="footer"></div>
+</div>
+
+  <!-- Home Button -->
+  <button class="home-button" onclick="goHome()">
+  <img src="../bodyicons/home_button.png" alt="Home" class="home-icon">
+  <span class="sr-only">Home</span>
+</button>
+  
+  
+
+  <!-- Script -->
+  <script>
+  const questions = {
+  
+  
+   //Foreign Body Ingestion - - - - - - - 
+   "Foreign Body Ingestion": {
+    start: {
+      text: "Does the patient have signs of complete airway obstruction (apnea, cyanosis, inability to speak)?",
+      explanation: "Complete airway obstruction is life-threatening and requires immediate intervention. RED FLAG: Stridor or drooling suggests impending obstruction.",
+      options: {
+        yes: "Complete Airway Obstruction",
+        no: "Assess Symptoms and History"
+      }
+    },
+
+    // Complete Airway Obstruction Pathway
+    "Complete Airway Obstruction": {
+      text: "Perform oropharyngeal sweep, Heimlich maneuver, or direct laryngoscopy with Magill forceps.",
+      explanation: "ACTION STEPS: 1) Oropharyngeal sweep for visible objects. 2) Heimlich for subglottic obstruction. 3) Laryngoscopy if unresolved. CRITICAL: Prepare for cricothyrotomy if failure.",
+      options: {
+        "Object removed": "Post-Removal Evaluation",
+        "Unsuccessful": "Cricothyrotomy"
+      }
+    },
+    "Cricothyrotomy": {
+      text: "Proceed with emergency cricothyrotomy and stabilize airway.",
+      explanation: "LAST RESORT: Perform only if other methods fail. WARNING: Avoid in children <12 years (use needle cricothyrotomy).",
+      options: {
+        "Airway secured": "Post-Removal Evaluation",
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Symptomatic Evaluation Pathway
+    "Assess Symptoms and History": {
+      text: "Does the patient have symptoms (dysphagia, vomiting, chest pain) or risk factors (pediatric, psychiatric, esophageal stricture)?",
+      explanation: "KEY RISKS: Children (coins), adults (food impaction), or psychiatric patients (sharp objects). NOTE: Denture users may not sense obstruction.",
+      options: {
+        yes: "Symptomatic Evaluation",
+        no: "Asymptomatic Observation"
+      }
+    },
+    "Symptomatic Evaluation": {
+      text: "Perform physical exam (oral/nasal pharynx, neck crepitus) and radiography (neck/chest/abdomen).",
+      explanation: "IMAGING CLUES: Coins in esophagus = coronal; trachea = sagittal. WARNING: Food/fish bones may be radiolucent. Look for subcutaneous air (perforation).",
+      options: {
+        "Airway involvement": "Partial Airway Obstruction",
+        "Esophageal obstruction": "Esophageal Management",
+        "Stomach/intestine": "GI Tract Management"
+      }
+    },
+
+    // Partial Airway Obstruction Pathway
+    "Partial Airway Obstruction": {
+      text: "Is there evidence of aspirated foreign body (wheezing, overexpanded lung on expiratory film)?",
+      explanation: "SIGNS: Unilateral wheeze, hyperlucent lung (air trapping), or mediastinal shift. ACTION: Bronchoscopy for removal.",
+      options: {
+        yes: "Bronchoscopy",
+        no: "Re-evaluate Symptoms"
+      }
+    },
+    "Bronchoscopy": {
+      text: "Proceed with bronchoscopy for foreign body retrieval.",
+      explanation: "URGENT: Remove sharp objects or valves causing air trapping. NOTE: Post-obstructive pneumonia may require antibiotics.",
+      options: {
+        "Object removed": "Post-Removal Evaluation",
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // Esophageal Obstruction Pathway
+    "Esophageal Management": {
+      text: "Is the object a battery, sharp, or food impaction?",
+      explanation: "CRITICAL: Batteries cause liquefaction necrosis (remove within 2h). Sharp objects have 35% complication rate.",
+      options: {
+        "Battery": "Urgent Endoscopy",
+        "Sharp object": "Urgent Endoscopy",
+        "Food impaction": "Glucagon Trial"
+      }
+    },
+    "Urgent Endoscopy": {
+      text: "Perform immediate esophagoscopy for battery/sharp object removal.",
+      explanation: "TIMING: Batteries >24h in esophagus risk perforation. WARNING: Foley catheter/magnet tubes are contraindicated.",
+      options: {
+        "Object removed": "Post-Removal Evaluation",
+        "Failure": "Surgical Consultation"
+      }
+    },
+    "Glucagon Trial": {
+      text: "Administer IV glucagon (1mg, repeat 2mg if no relief) for food impaction.",
+      explanation: "CAUTION: Exclude hypersensitivity. Follow with water challenge. AVOID: Meat tenderizer (risk of perforation).",
+      options: {
+        "Relieved": "Delayed Endoscopy",
+        "Persistent": "Urgent Endoscopy"
+      }
+    },
+    "Delayed Endoscopy": {
+      text: "Schedule non-emergent esophagoscopy to evaluate for strictures/Schatzki’s ring.",
+      explanation: "MANDATORY: Even if resolved, assess for underlying pathology (e.g., eosinophilic esophagitis).",
+      options: {
+        "Restart Algorithm": "start"
+      }
+    },
+
+    // GI Tract Management Pathway
+    "GI Tract Management": {
+      text: "Is the object in the stomach or beyond pylorus?",
+      explanation: "HIGH-RISK OBJECTS: >2cm width (pyloric obstruction) or >10cm length (duodenal sweep).",
+      options: {
+        "Stomach (high-risk)": "Endoscopic Removal",
+        "Stomach (low-risk)": "Expectant Observation",
+        "Beyond pylorus": "Serial Radiographs"
+      }
+    },
+    "Endoscopic Removal": {
+      text: "Remove sharp/large objects endoscopically if in stomach >48h or no progression.",
+      explanation: "INDICATIONS: Button batteries (if intact), magnets, or objects causing symptoms (pain/vomiting).",
+      options: {
+        "Object removed": "Post-Removal Evaluation",
+        "Restart Algorithm": "start"
+      }
+    },
+    "Expectant Observation": {
+      text: "Monitor for spontaneous passage (24-72h). Repeat radiographs if symptoms develop.",
+      explanation: "NOTE: Antacids/cathartics are ineffective. WARNING: Abdominal pain = possible perforation (check for free air).",
+      options: {
+        "Passed": "Discharge",
+        "No passage": "Surgical Consultation"
+      }
+    },
+    "Serial Radiographs": {
+      text: "Track progression with abdominal films every 3-4 days. Intervene if no movement after 72h.",
+      explanation: "SURGICAL INDICATIONS: Obstruction, perforation, or failure to progress beyond stomach.",
+      options: {
+        "Passed": "Discharge",
+        "Complications": "Surgical Intervention"
+      }
+    },
+
+    // Post-Removal/Discharge Pathway
+    "Post-Removal Evaluation": {
+      text: "Assess for complications (perforation, infection) and underlying pathology.",
+      explanation: "KEY ACTIONS: 1) Esophagoscopy after food impaction. 2) Chest X-ray if perforation suspected.",
+      options: {
+        "Stable": "Discharge",
+        "Unstable": "Admit for Monitoring"
+      }
+    },
+    "Discharge": {
+      text: "Educate on warning signs (fever, pain, vomiting) and follow-up for recurrent episodes.",
+      explanation: "PREVENTION: Pediatric childproofing, psychiatric patient supervision, and denture checks.",
+      options: {}
+    },
+
+    // Asymptomatic Pathway
+    "Asymptomatic Observation": {
+      text: "Observe for 24-72h if object is small/blunt and past pylorus. Repeat imaging if symptoms occur.",
+      explanation: "LOW-RISK: Coins in stomach usually pass spontaneously. EXCEPTION: Batteries require tracking.",
+      options: {
+        "Passed": "Discharge",
+        "Symptoms develop": "Symptomatic Evaluation"
+      }
+    }
+  },
+  
+   //Caustic Ingestion and Exposure - - - - - 
+   "Caustic Ingestion and Exposure": {
+    start: {
+      text: "Does the patient show signs of airway compromise (stridor, drooling, respiratory distress)?",
+      explanation: "RED FLAG: Laryngeal edema or perforation can rapidly progress to airway obstruction. Immediate intervention is critical.",
+      options: {
+        yes: "Airway Emergency",
+        no: "Initial Assessment"
+      }
+    },
+
+    // Airway Emergency Pathway
+    "Airway Emergency": {
+      text: "Secure airway via intubation or surgical airway (cricothyrotomy) if severe edema.",
+      explanation: "ACTION: Prepare for difficult intubation (edema obscures view). WARNING: Avoid blind nasotracheal intubation due to perforation risk.",
+      options: {
+        "Airway secured": "Resuscitation and Evaluation",
+        "Failure": "Surgical Airway"
+      }
+    },
+    "Surgical Airway": {
+      text: "Perform emergency cricothyrotomy or tracheostomy.",
+      explanation: "LAST RESORT: Use in complete obstruction. NOTE: Needle cricothyrotomy is temporary (convert to surgical within 30 min).",
+      options: {
+        "Proceed to Evaluation": "Resuscitation and Evaluation"
+      }
+    },
+    "Resuscitation and Evaluation": {
+      text: "Assess for shock (perforation/mediastinitis) and initiate IV fluids/vasopressors if needed.",
+      explanation: "KEY SIGNS: Hypotension, subcutaneous emphysema, or peritoneal signs indicate perforation. ACTION: Broad-spectrum antibiotics (e.g., piperacillin-tazobactam).",
+      options: {
+        "Stable": "History and Exposure Details",
+        "Unstable": "Emergency Surgery Consultation"
+      }
+    },
+
+    // Initial Assessment Pathway
+    "Initial Assessment": {
+      text: "Identify the caustic agent (alkali, acid, HF acid, battery) and route (ingestion/eye/skin).",
+      explanation: "CRITICAL CLUES: Alkali (lye, cleaners) cause liquefaction necrosis; acids (pool cleaners) cause coagulation necrosis. HF acid requires calcium therapy.",
+      options: {
+        "Alkali/Acid Ingestion": "Ingestion Management",
+        "Battery Ingestion": "Battery Management",
+        "HF Acid Exposure": "HF Acid Protocol",
+        "Eye Exposure": "Ocular Emergency",
+        "Skin Exposure": "Chemical Burn Care"
+      }
+    },
+
+    // Ingestion Management Pathway
+    "Ingestion Management": {
+      text: "Is the patient symptomatic (vomiting, chest pain, drooling) or high-risk (suicide attempt, large volume)?",
+      explanation: "HIGH-RISK: Suicide attempts often involve larger volumes. NOTE: 20% of asymptomatic patients have esophageal injury on endoscopy.",
+      options: {
+        yes: "Urgent Endoscopy and Admission",
+        no: "Asymptomatic Observation"
+      }
+    },
+    "Urgent Endoscopy and Admission": {
+      text: "Perform endoscopy within 12-24h to assess burn depth (1st/2nd/3rd degree).",
+      explanation: "GRADING: 1st = hyperemia; 2nd = ulcers; 3rd = full-thickness necrosis. WARNING: Steroids for 2nd-degree burns only (methylprednisone 2 mg/kg/day + antibiotics).",
+      options: {
+        "1st Degree": "Discharge if Asymptomatic",
+        "2nd Degree": "Steroid/Antibiotic Therapy",
+        "3rd Degree": "Surgical Consultation"
+      }
+    },
+    "Steroid/Antibiotic Therapy": {
+      text: "Initiate methylprednisone (2 mg/kg/day) + ampicillin (1g q6h) for 2nd-degree burns.",
+      explanation: "GOAL: Reduce stricture risk. CAUTION: Steroids contraindicated in perforation or 3rd-degree burns.",
+      options: {
+        "Monitor for Strictures": "Follow-up Endoscopy"
+      }
+    },
+    "Asymptomatic Observation": {
+      text: "Observe for 3-4h. Discharge if no symptoms develop (alkali). Admit all acid ingestions.",
+      explanation: "ACID RISK: Higher perforation risk even if asymptomatic. Alkali may discharge if reliable history.",
+      options: {
+        "Symptoms Develop": "Urgent Endoscopy"
+      }
+    },
+
+    // Battery Management Pathway
+    "Battery Management": {
+      text: "Obtain radiographs to locate battery (esophagus/stomach).",
+      explanation: "URGENT: Esophageal batteries require removal within 2h (risk of necrosis). Gastric batteries pass in 48h if asymptomatic.",
+      options: {
+        "Esophageal Battery": "Immediate Endoscopy",
+        "Gastric Battery": "48h Observation"
+      }
+    },
+    "Immediate Endoscopy": {
+      text: "Remove esophageal battery endoscopically. Check for perforation.",
+      explanation: "DELAYED RISK: Fistula formation (tracheoesophageal/aortoenteric). Follow-up in 1-2 weeks.",
+      options: {
+        "Removed": "Post-Removal Monitoring"
+      }
+    },
+    "48h Observation": {
+      text: "Repeat radiographs in 48h. Remove if no progression or symptoms develop.",
+      explanation: "INTERVENTION: Endoscopic retrieval if battery intact >48h or symptoms (vomiting, pain).",
+      options: {
+        "Passed": "Discharge",
+        "Retained": "Endoscopic Removal"
+      }
+    },
+
+    // HF Acid Protocol
+    "HF Acid Protocol": {
+      text: "Is exposure dermal, ingested, or inhaled?",
+      explanation: "HF ACID RISKS: Hypocalcemia, QT prolongation, and bone destruction. Even small exposures can be fatal.",
+      options: {
+        "Dermal": "Calcium Gluconate Therapy",
+        "Ingested": "Oral Magnesium/Ca Gluconate",
+        "Inhaled": "ICU Admission"
+      }
+    },
+    "Calcium Gluconate Therapy": {
+      text: "For dermal burns: Inject 10% calcium gluconate intradermally or apply gel.",
+      explanation: "MECHANISM: Binds fluoride ions. SEVERE BURNS: Consider arterial infusion (e.g., radial artery).",
+      options: {
+        "Pain Persists": "Repeat Dosing"
+      }
+    },
+    "Oral Magnesium/Ca Gluconate": {
+      text: "Administer 300 mL magnesium citrate or oral calcium gluconate.",
+      explanation: "GOAL: Precipitate fluoride ions. MONITOR: ECG for QT prolongation, serum calcium.",
+      options: {
+        "Admit for Monitoring": "ICU if Symptomatic"
+      }
+    },
+
+    // Ocular Emergency Pathway
+    "Ocular Emergency": {
+      text: "Irrigate eye continuously with saline for ≥3h. Consult ophthalmology immediately.",
+      explanation: "CRITICAL: Alkali penetrates rapidly. USE: Morgan lens for prolonged irrigation. AVOID: Neutralizing agents.",
+      options: {
+        "After Irrigation": "Antibiotic Drops"
+      }
+    },
+
+    // Chemical Burn Care Pathway
+    "Chemical Burn Care": {
+      text: "Remove contaminated clothing. Irrigate skin with water for 30-60 min.",
+      explanation: "EXCEPTION: Dry lime (brush off first). HF acid requires calcium gluconate as above.",
+      options: {
+        "Severe Burn": "Burn Center Transfer"
+      }
+    },
+
+    // Follow-up and Disposition
+    "Follow-up Endoscopy": {
+      text: "Repeat endoscopy in 2-3 weeks to assess for strictures (2nd/3rd degree burns).",
+      explanation: "LATE COMPLICATION: Strictures may require dilation or surgery.",
+      options: {}
+    },
+    "Post-Removal Monitoring": {
+      text: "Monitor for fever, pain, or hematemesis (perforation signs). Admit if high-risk.",
+      explanation: "ALERT: Mediastinitis may present 24-48h post-ingestion.",
+      options: {}
+    },
+    "Discharge": {
+      text: "Educate on warning signs (dysphagia, pain) and psychiatric referral if suicide attempt.",
+      explanation: "PREVENTION: Safe storage in original containers, childproofing.",
+      options: {}
+    }
+  },
+  
+  
+  
+  
+  //Hypothermia - - - - - - - - - - - 
+   "Hypothermia": {
+    start: {
+      text: "Is the patient's core temperature <35°C (95°F)?",
+      explanation: "Hypothermia is defined as core temperature <35°C. Severity: Mild (32-35°C), Moderate (28-32°C), Severe (<28°C). RED FLAG: Suspect secondary causes (sepsis, trauma, endocrine disorders) if no clear exposure history.",
+      options: {
+        yes: "Hypothermia Confirmed",
+        no: "Evaluate for Underlying Condition"
+      }
+    },
+
+    // Hypothermia Confirmed Pathway
+    "Hypothermia Confirmed": {
+      text: "Assess airway, breathing, circulation (ABCs). Is the patient hemodynamically stable?",
+      explanation: "CRITICAL: Hypothermic patients may appear dead but still be viable. KEY POINT: Pulse checks should be prolonged (30-60 sec) due to bradycardia.",
+      options: {
+        yes: "Stable Hypothermia",
+        no: "Unstable Hypothermia"
+      }
+    },
+
+    // Stable Hypothermia Pathway
+    "Stable Hypothermia": {
+      text: "Initiate passive rewarming (remove wet clothing, blankets) and monitor core temperature. Does the patient have shivering?",
+      explanation: "PASSIVE REWARMING: Effective for mild hypothermia with intact shivering mechanism. CAUTION: Avoid active external rewarming (e.g., heating pads) to prevent 'afterdrop' (cold blood return to core).",
+      options: {
+        yes: "Mild Hypothermia (32-35°C)",
+        no: "Moderate/Severe Hypothermia"
+      }
+    },
+    "Mild Hypothermia (32-35°C)": {
+      text: "Provide warm oral fluids if alert. Monitor for rewarming complications (arrhythmias, hypotension).",
+      explanation: "WARNING: Alcohol/caffeine contraindicated (vasodilation increases heat loss). TARGET: Rewarm at 0.5-2°C/hour.",
+      options: {
+        "Rewarming Successful": "Discharge if Asymptomatic",
+        "Deterioration": "Active Rewarming"
+      }
+    },
+    "Moderate/Severe Hypothermia": {
+      text: "Initiate active external rewarming (forced-air warming blankets) + active core rewarming (warmed IV fluids, humidified O₂).",
+      explanation: "CORE REWARMING: Warm IV fluids (40-42°C), humidified O₂ (42-46°C). AVOID: Peripheral vasodilation (can precipitate hypotension).",
+      options: {
+        "Rewarming Progressing": "Continue Monitoring",
+        "Cardiac Arrest": "CPR with ACLS Modifications"
+      }
+    },
+
+    // Unstable Hypothermia Pathway
+    "Unstable Hypothermia": {
+      text: "Is the patient in cardiac arrest (VF/asystole) or severe cardiovascular instability?",
+      explanation: "ECG FINDINGS: Osborne (J) waves pathognomonic but not prognostic. VF refractory to defibrillation until core temp >30°C.",
+      options: {
+        yes: "Cardiac Arrest Management",
+        no: "Severe Hypothermia with Instability"
+      }
+    },
+    "Cardiac Arrest Management": {
+      text: "Begin CPR. Defibrillate once if VF, then delay further shocks until core temp >30°C. Initiate extracorporeal rewarming (ECMO if available).",
+      explanation: "ACLS MODIFICATIONS: Prolonged CPR often needed. DRUGS: Withhold epinephrine/amiodarone until temp >30°C (risk of toxicity).",
+      options: {
+        "ROSC Achieved": "ICU Admission",
+        "No ROSC": "Continue CPR Until Core Temp >32°C"
+      }
+    },
+    "Severe Hypothermia with Instability": {
+      text: "Use invasive core rewarming: Peritoneal/pleural lavage, extracorporeal rewarming (ECMO preferred).",
+      explanation: "METHODS: Peritoneal lavage (40-45°C saline), ECMO (fastest rewarming). TARGET: Rewarm to 32°C before attempting complex interventions.",
+      options: {
+        "Stabilized": "ICU Admission",
+        "Deterioration": "Cardiac Arrest Management"
+      }
+    },
+
+    // Underlying Condition Pathway
+    "Evaluate for Underlying Condition": {
+      text: "Assess for sepsis, hypoglycemia, hypothyroidism, trauma, or overdose. Is there a identifiable secondary cause?",
+      explanation: "CLUES: Hypoglycemia (AMS), myxedema (bradycardia, hypoventilation), sepsis (fever absent in elderly).",
+      options: {
+        yes: "Treat Underlying Condition",
+        no: "Environmental Exposure Ruled Out"
+      }
+    },
+    "Treat Underlying Condition": {
+      text: "Address specific cause (e.g., IV dextrose for hypoglycemia, levothyroxine for myxedema, antibiotics for sepsis).",
+      explanation: "EXAMPLE: Sepsis protocol if infection suspected (even without fever). NOTE: Hypothermia masks typical signs of infection.",
+      options: {
+        "Hypothermia Resolves": "Discharge if Stable",
+        "Persistent Hypothermia": "Hypothermia Confirmed"
+      }
+    },
+
+    // Disposition and Follow-up
+    "ICU Admission": {
+      text: "Admit to ICU for continuous monitoring (cardiac, electrolytes, rewarming complications).",
+      explanation: "COMPLICATIONS: Rewarming shock, arrhythmias, rhabdomyolysis. MONITOR: Core temp until >35°C for 24h.",
+      options: {}
+    },
+    "Discharge if Asymptomatic": {
+      text: "Educate on prevention (layered clothing, avoid alcohol). Arrange follow-up for recurrent cases.",
+      explanation: "HIGH-RISK GROUPS: Elderly, homeless, psychiatric patients. CONSIDER: Social work referral for unsafe living conditions.",
+      options: {}
+    }
+  },
+  
+  
+  
+  
+  //Submersion/Drowning - - - - - - - 
+  "Submersion/Drowning": {
+    start: {
+      text: "Is the victim spontaneously breathing and conscious after submersion?",
+      explanation: "KEY POINT: 10-15% of victims die from laryngospasm without water aspiration. Outcomes correlate with neurologic status at presentation.",
+      options: {
+        yes: "Conscious with Spontaneous Breathing",
+        no: "Unconscious or Apneic"
+      }
+    },
+
+    // Conscious with Spontaneous Breathing Pathway
+    "Conscious with Spontaneous Breathing": {
+      text: "Assess for hypoxia (SpO₂), C-spine injury (if trauma suspected), and hypothermia. Is the patient hypoxic (SpO₂ <90%)?",
+      explanation: "RED FLAGS: Diving injury (C-spine precautions), cold water submersion (risk of arrhythmias), or contaminated water (infection risk).",
+      options: {
+        yes: "Hypoxic but Conscious",
+        no: "Normoxic and Stable"
+      }
+    },
+    "Hypoxic but Conscious": {
+      text: "Administer high-flow O₂ via non-rebreather mask. Consider CPAP if available and patient cooperative.",
+      explanation: "ACTION: CPAP improves V/Q mismatch. WARNING: Prepare for intubation if mental status declines.",
+      options: {
+        "Improves": "Observe for Delayed Complications",
+        "Worsens": "Intubate and ICU Admission"
+      }
+    },
+    "Normoxic and Stable": {
+      text: "Check C-spine (if trauma suspected), chest X-ray, and core temperature. Any abnormalities?",
+      explanation: "DISCHARGE CRITERIA: Normoxic, normothermic, no bronchospasm/acidosis, and reliable social support.",
+      options: {
+        yes: "Treat Specific Abnormality",
+        no: "Discharge with Precautions"
+      }
+    },
+    "Discharge with Precautions": {
+      text: "Discharge if no symptoms for 6-8h. Educate on delayed pulmonary complications (e.g., secondary drowning).",
+      explanation: "PEDIATRICS: Mandate social work evaluation for neglect/abuse if unsupervised drowning occurred.",
+      options: {}
+    },
+
+    // Unconscious or Apneic Pathway
+    "Unconscious or Apneic": {
+      text: "Initiate immediate rescue breathing if apneic (even in water). Does the victim have a pulse?",
+      explanation: "CRITICAL: Oxygenation takes priority over water drainage. AVOID: Heimlich maneuver (risks vomiting/aspiration).",
+      options: {
+        yes: "Apneic with Pulse",
+        no: "Cardiac Arrest"
+      }
+    },
+    "Apneic with Pulse": {
+      text: "Continue rescue breathing. Intubate ASAP if not already done. Maintain C-spine precautions if trauma suspected.",
+      explanation: "PREHOSPITAL: BVM with 100% O₂. IN ED: Secure airway, place OG tube, and use PEEP (start at 5-10 cmH₂O).",
+      options: {
+        "Transport to ED": "ED Management"
+      }
+    },
+    "Cardiac Arrest": {
+      text: "Begin CPR with C-spine precautions. Check core temperature. Is temperature <32°C (severe hypothermia)?",
+      explanation: "ACLS MODIFICATIONS: Withhold epinephrine/vasopressors if temp <30°C. Defibrillate VF once, then delay further shocks until rewarmed.",
+      options: {
+        yes: "Severe Hypothermia with Arrest",
+        no: "Normothermic Arrest"
+      }
+    },
+    "Severe Hypothermia with Arrest": {
+      text: "Continue CPR. Initiate extracorporeal rewarming (ECMO preferred) or warmed IV fluids/peritoneal lavage if ECMO unavailable.",
+      explanation: "GOLD STANDARD: ECMO provides both circulation and rewarming (3-5°C/hour). DO NOT STOP CPR until core temp >32°C.",
+      options: {
+        "ROSC Achieved": "ICU Admission",
+        "No ROSC": "Continue CPR Until Rewarmed"
+      }
+    },
+    "Normothermic Arrest": {
+      text: "Follow standard ACLS with PEEP. Intubate, place OG tube, and treat reversible causes (e.g., hypoxia, acidosis).",
+      explanation: "PEEP: Start at 10 cmH₂O for pulmonary edema. CAUTION: Avoid hyperventilation (worsens acidosis).",
+      options: {
+        "ROSC Achieved": "ICU Admission",
+        "No ROSC": "Terminate per Protocol"
+      }
+    },
+
+    // ED Management Pathway
+    "ED Management": {
+      text: "Intubate if not done. Start PEEP, place OG tube, and assess for: Hypothermia, C-spine injury, bronchospasm, acidosis.",
+      explanation: "DIAGNOSTICS: ABG (corrected for temperature), CXR (aspiration/ARDS), electrolytes (dilutional hyponatremia in freshwater drowning).",
+      options: {
+        "Hypothermia Present": "Rewarming Protocol",
+        "Bronchospasm/Acidosis": "Treat Complications"
+      }
+    },
+    "Rewarming Protocol": {
+      text: "Is core temperature <32°C (severe) or 32-35°C (moderate)?",
+      explanation: "AFTERDROP RISK: Active external rewarming alone can cause core temperature to drop further due to cold peripheral blood return.",
+      options: {
+        "<32°C": "Active Core Rewarming",
+        "32-35°C": "Passive + External Rewarming"
+      }
+    },
+    "Active Core Rewarming": {
+      text: "Use ECMO, warmed peritoneal/pleural lavage, or hemodialysis. Avoid peripheral vasodilation.",
+      explanation: "METHODS: Peritoneal lavage (40-45°C saline at 10-20 mL/kg). ECMO flow rates: 40-70 mL/kg/min.",
+      options: {
+        "Temp >32°C": "Continue ICU Monitoring"
+      }
+    },
+    "Treat Complications": {
+      text: "Bronchospasm: Nebulized albuterol. Acidosis: Sodium bicarbonate if pH <7.1. Seizures: Benzodiazepines.",
+      explanation: "CAUTION: Bicarbonate only for severe acidosis (risk of hypernatremia/worsening intracellular acidosis).",
+      options: {
+        "Stabilized": "ICU Admission"
+      }
+    },
+
+    // ICU Admission Pathway
+    "ICU Admission": {
+      text: "Monitor for ARDS, sepsis, cerebral edema, and arrhythmias. Maintain PEEP, correct electrolytes, and assess neurologic prognosis.",
+      explanation: "NEUROPROGNOSIS: Poor if GCS ≤5 at 24h or absent pupillary reflexes. Avoid hypothermia therapy (no proven benefit).",
+      options: {}
+    }
+  },
+  
+  
+  
+  
+  //Acute Pulseless Extremity----------
+  "Acute Pulseless Extremity": {
+    start: {
+      text: "Is the extremity pulseless with acute onset of symptoms (pain, pallor, paresthesia)?",
+      explanation: "RED FLAG: Paralysis or loss of light touch sensation indicates irreversible ischemia. Time is critical - irreversible damage occurs within 4-6 hours.",
+      options: {
+        yes: "Acute Ischemia Confirmed",
+        no: "Chronic Vascular Evaluation"
+      }
+    },
+
+    // Acute Ischemia Pathway
+    "Acute Ischemia Confirmed": {
+      text: "Is there a history of trauma or recent vascular procedure?",
+      explanation: "KEY DISTINCTION: Trauma requires immediate surgical consult. Post-procedure cases suggest graft thrombosis.",
+      options: {
+        yes: "Trauma or Post-Procedure",
+        no: "Non-Traumatic Ischemia"
+      }
+    },
+
+    // Trauma/Post-Procedure Pathway
+    "Trauma or Post-Procedure": {
+      text: "For trauma: Apply direct pressure to bleeding sites. For post-procedure: Assess graft/stent site. Is the limb viable (sensate, movable)?",
+      explanation: "VIABILITY CRITERIA: Capillary refill <3sec, minimal pain, intact motor/sensory function. WARNING: Hard paralysis = unsalvageable limb.",
+      options: {
+        yes: "Viable Limb",
+        no: "Non-Viable Limb"
+      }
+    },
+    "Viable Limb": {
+      text: "Start IV heparin bolus (80U/kg), then infusion (18U/kg/hr). Call vascular surgery immediately.",
+      explanation: "HEPARIN: Prevents clot propagation. TARGET: aPTT 2-2.5x normal. AVOID: Antiplatelets alone (insufficient for acute ischemia).",
+      options: {
+        "Vascular Consult Activated": "Imaging Decision"
+      }
+    },
+    "Non-Viable Limb": {
+      text: "Emergency surgical exploration for revascularization or amputation. Do not delay for imaging.",
+      explanation: "IRREVERSIBLE ISCHEMIA: >6h of symptoms with paralysis/anesthesia. ACTION: OR within 90min if any salvage potential.",
+      options: {}
+    },
+
+    // Non-Traumatic Ischemia Pathway
+    "Non-Traumatic Ischemia": {
+      text: "Assess for cardiac sources (AFib, MI) or vascular disease. Is this likely embolism (acute onset, no claudication history) or thrombosis (known PAD, gradual worsening)?",
+      explanation: "EMBOLISM CLUES: Atrial fibrillation, mitral stenosis, recent MI. THROMBOSIS: History of claudication, previous bypass.",
+      options: {
+        "Embolism Suspected": "Anticoagulation and Imaging",
+        "Thrombosis Suspected": "Thrombolysis Consideration"
+      }
+    },
+    "Anticoagulation and Imaging": {
+      text: "Start heparin as above. Obtain stat CTA/MRA or conventional angiography.",
+      explanation: "IMAGING CHOICE: CTA if stable (faster), conventional angiography if endovascular intervention anticipated.",
+      options: {
+        "Occlusion Identified": "Revascularization Strategy"
+      }
+    },
+    "Thrombolysis Consideration": {
+      text: "If symptoms <12h and no contraindications, consider catheter-directed thrombolysis (tPA).",
+      explanation: "THROMBOLYSIS WINDOW: Best within 12h. CONTRAINDICATIONS: Recent stroke, active bleeding, surgery <10d.",
+      options: {
+        "Proceed with Thrombolysis": "Post-Thrombolysis Care",
+        "Contraindications Present": "Surgical Revascularization"
+      }
+    },
+
+    // Revascularization Pathways
+    "Imaging Decision": {
+      text: "Vascular surgeon to choose: Endovascular (angioplasty/stent) vs open (embolectomy/bypass).",
+      explanation: "ENDOVASCULAR: Preferred for focal lesions. OPEN: Needed for long-segment occlusions or trauma.",
+      options: {
+        "Procedure Completed": "Post-Revascularization Care"
+      }
+    },
+    "Post-Thrombolysis Care": {
+      text: "Monitor for bleeding. Repeat angiography in 24h for residual clot. Start dual antiplatelets if stent placed.",
+      explanation: "COMPLICATIONS: Distal embolization (check pedal pulses hourly), compartment syndrome (measure pressures if swollen).",
+      options: {}
+    },
+    "Surgical Revascularization": {
+      text: "Proceed with embolectomy (Fogarty catheter) or bypass based on lesion location.",
+      explanation: "BYPASS GRAFT CHOICE: Autogenous vein preferred over PTFE for crural targets.",
+      options: {
+        "Post-Op Monitoring": "Compartment Pressure Checks"
+      }
+    },
+
+    // Post-Intervention Care
+    "Post-Revascularization Care": {
+      text: "Monitor for reperfusion injury (CK elevation, hyperkalemia) and compartment syndrome.",
+      explanation: "REPERFUSION RISKS: Acidosis, myoglobinuria (hydrate aggressively), arrhythmias from hyperkalemia.",
+      options: {
+        "Stable Recovery": "Long-Term Anticoagulation",
+        "Compartment Syndrome": "Fasciotomy"
+      }
+    },
+    "Compartment Pressure Checks": {
+      text: "Measure compartment pressures if pain disproportionate to exam or tense swelling.",
+      explanation: "FASCIOTOMY TRIGGER: ΔP (Diastolic BP - compartment pressure) <30mmHg or absolute pressure >40mmHg.",
+      options: {}
+    },
+
+    // Chronic Pathway
+    "Chronic Vascular Evaluation": {
+      text: "Assess for claudication, rest pain, or non-healing wounds. Order ABI and vascular imaging.",
+      explanation: "CHRONIC FINDINGS: Diminished pulses, hair loss, dependent rubor. ABI <0.9 diagnostic for PAD.",
+      options: {
+        "PAD Confirmed": "Medical Management",
+        "Normal Studies": "Alternative Diagnosis"
+      }
+    },
+    "Medical Management": {
+      text: "Start high-intensity statin, cilostazol, and structured exercise program. Smoking cessation mandatory.",
+      explanation: "GOAL: LDL <70mg/dL for PAD. CILOSTAZOL: Avoid in HF. SUPERIOR to pentoxifylline for symptom relief.",
+      options: {}
+    }
+  },
+  
+  
+  //Anaphylaxis--------------------
+  "Anaphylaxis": {
+    start: {
+      text: "Is the patient showing signs of anaphylaxis (e.g., urticaria, angioedema, hypotension, bronchospasm)?",
+      explanation: "RED FLAG: Rapid onset of symptoms involving multiple systems (skin, respiratory, cardiovascular) suggests anaphylaxis. Rule out mimics (e.g., vasovagal syncope, panic attacks).",
+      options: {
+        yes: "Immediate Intervention",
+        no: "Re-evaluate Symptoms"
+      }
+    },
+
+    // Acute Anaphylaxis Pathway
+    "Immediate Intervention": {
+      text: "Assess airway, breathing, circulation (ABCs). Place patient in Trendelenburg position if hypotensive. Administer oxygen (high-flow).",
+      explanation: "CRITICAL: Epinephrine is first-line; delay can be fatal. Prepare IV access and monitor vitals continuously. NOTE: Stridor or wheezing indicates airway compromise.",
+      options: {
+        "Airway compromise": "Secure Airway",
+        "Stable airway": "Epinephrine Administration"
+      }
+    },
+    "Secure Airway": {
+      text: "If stridor/severe laryngeal edema: Intubate immediately (use smaller ETT if edema present). Cricothyrotomy if intubation fails.",
+      explanation: "WARNING: Delayed airway management can lead to complete obstruction. Have surgical backup ready. Avoid sedatives if hypotension is present.",
+      options: {
+        "Airway secured": "Epinephrine Administration",
+        "Failed intubation": "Emergency Cricothyrotomy"
+      }
+    },
+    "Epinephrine Administration": {
+      text: "Give epinephrine IM (anterolateral thigh, 0.3–0.5 mg of 1:1,000) or IV (0.1 mg of 1:10,000 if cardiac arrest/severe shock). Repeat every 5–15 mins if needed.",
+      explanation: "CAUTION: IV epinephrine requires cardiac monitoring (risk of arrhythmias). Avoid SC route (slower absorption). For refractory hypotension, consider epinephrine infusion (1–4 mcg/min).",
+      options: {
+        "Response": "Adjunctive Therapies",
+        "No response": "Refractory Anaphylaxis"
+      }
+    },
+    "Adjunctive Therapies": {
+      text: "Initiate: (1) IV fluids (1–2 L bolus), (2) H1-antihistamine (e.g., diphenhydramine 25–50 mg IV), (3) H2-blocker (e.g., ranitidine 50 mg IV), (4) Corticosteroid (e.g., methylprednisolone 125 mg IV).",
+      explanation: "NOTE: Steroids prevent biphasic reactions but take 4–6 hrs to work. Bronchospasm requires inhaled albuterol. Avoid NSAIDs/opioids (can worsen hypotension).",
+      options: {
+        "Stabilized": "Observation/Disposition",
+        "Persistent bronchospasm": "Bronchospasm Management",
+        "Hypotension": "Hypotension Management"
+      }
+    },
+    "Refractory Anaphylaxis": {
+      text: "If no response to epinephrine: (1) Ensure adequate IV fluids, (2) Start vasopressor (e.g., norepinephrine), (3) Consider glucagon (if on beta-blockers).",
+      explanation: "KEY POINT: Beta-blockers blunt epinephrine effects. Glucagon dose: 1–5 mg IV over 5 mins, then 5–15 mcg/min infusion. Methylene blue for vasoplegic shock.",
+      options: {
+        "Stabilized": "ICU Transfer",
+        "Cardiac arrest": "ACLS Protocol"
+      }
+    },
+    "Bronchospasm Management": {
+      text: "Nebulized albuterol (5 mg) + ipratropium (0.5 mg). Consider IV magnesium (2 g) or heliox if severe. Intubate if respiratory failure.",
+      explanation: "AVOID: Theophylline (arrhythmia risk). Steroids are adjunctive only. Monitor for pneumothorax in severe cases.",
+      options: {
+        "Improved": "Observation/Disposition",
+        "Worsening": "Intubation"
+      }
+    },
+    "Hypotension Management": {
+      text: "Aggressive IV fluids (2–4 L). Add vasopressors (e.g., norepinephrine) if unresponsive. Consider PA catheter for refractory shock.",
+      explanation: "CAUTION: Excessive fluids can cause pulmonary edema in cardiac patients. Target MAP >65 mmHg. Rule out alternate causes (e.g., PE, MI).",
+      options: {
+        "Stabilized": "ICU Monitoring",
+        "Unstable": "Vasopressor Escalation"
+      }
+    },
+
+    // Post-Stabilization Pathway
+    "Observation/Disposition": {
+      text: "Observe for 4–24 hrs (risk of biphasic reaction). Document trigger if identified. Provide epinephrine auto-injector and allergy referral.",
+      explanation: "MANDATORY: Discontinue beta-blockers/ACE inhibitors if possible. Educate on avoidance strategies and anaphylaxis action plan.",
+      options: {
+        "No recurrence": "Discharge with Plan",
+        "Recurrence": "Re-treat with Epinephrine"
+      }
+    },
+    "Discharge with Plan": {
+      text: "Prescribe: (1) Epinephrine auto-injector, (2) Antihistamines, (3) Prednisone taper if severe. Schedule follow-up with allergist.",
+      explanation: "KEY TIP: Ensure patient can demonstrate auto-injector use. Consider medical alert bracelet for high-risk patients.",
+      options: {}
+    },
+
+    // Special Cases
+    "Bee Sting/Insect Allergy": {
+      text: "If hx of insect allergy: Remove stinger, apply ice. Refer for venom immunotherapy (VIT).",
+      explanation: "VIT reduces risk of future reactions by >90%. Start in allergy clinic.",
+      options: {
+        "Local reaction only": "Discharge with Antihistamines",
+        "Systemic reaction": "Epinephrine + Observation"
+      }
+    },
+    "Idiopathic Anaphylaxis": {
+      text: "If no trigger identified: Consider prophylactic steroids + antihistamines. Evaluate for mastocytosis.",
+      explanation: "WORKUP: Tryptase levels (during acute phase), bone marrow biopsy if mastocytosis suspected.",
+      options: {
+        "Confirmed mastocytosis": "Specialist Management",
+        "No cause found": "Prophylactic Therapy"
+      }
+    }
+  }
+};
+
+
+
+  
+
+    let currentSymptom = null;
+    let currentQuestion = "start";
+
+    function playClick() {
+      const sound = document.getElementById("click-sound");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+      }
+    }
+
+    function startSymptom(symptom) {
+      currentSymptom = symptom;
+      currentQuestion = "start";
+      document.getElementById("symptom-title").textContent = symptom;
+      showQuestion();
+
+      document.getElementById("main-page").style.display = "none";
+      document.getElementById("question-page").style.display = "block";
+      document.getElementById("headline").style.display = "none";
+      document.getElementById("subheadline").style.display = "none";
+    }
+
+    // NEW/MODIFIED: This function is updated to show images.
+    function showQuestion() {
+      const symptomQuestions = questions[currentSymptom];
+      if (!symptomQuestions || !symptomQuestions[currentQuestion]) {
+        alert("Invalid symptom or question flow.");
+        return;
+      }
+
+      const questionData = symptomQuestions[currentQuestion];
+      const imageContainer = document.getElementById("question-image-container");
+      
+      // Clear previous image
+      imageContainer.innerHTML = "";
+
+      // If an image path exists, create and display the image
+      if (questionData.image) {
+        const img = document.createElement("img");
+        img.src = questionData.image;
+        img.alt = questionData.text; // for accessibility
+        img.className = "question-image";
+        imageContainer.appendChild(img);
+      }
+
+      document.getElementById("question").textContent = questionData.text;
+      document.getElementById("footer").textContent = questionData.explanation || "No explanation available.";
+
+      const buttons = Object.keys(questionData.options)
+        .map(option =>
+          `<button class='option-button' onclick="playClick(); nextQuestion('${option}')">${option}</button>`)
+        .join("");
+      document.querySelector(".button-container").innerHTML = buttons;
+    }
+
+    function nextQuestion(answer) {
+      const symptomQuestions = questions[currentSymptom];
+      const current = symptomQuestions[currentQuestion];
+      if (!current || !current.options[answer]) {
+        alert("Invalid choice.");
+        return;
+      }
+
+      const next = current.options[answer];
+      // Check if the next step is another question or a final diagnosis
+      if (symptomQuestions[next] && symptomQuestions[next].options) {
+          currentQuestion = next;
+          showQuestion();
+      } else {
+          // This handles both terminal nodes that are defined as full objects
+          // and those that are simple strings (your original implementation)
+          if (symptomQuestions[next]) {
+              currentQuestion = next;
+              showQuestion(); // This will display the final diagnosis with its image
+          } else {
+              // This is a fallback for legacy string-only terminals
+              document.getElementById("question").textContent = next;
+              document.getElementById("footer").textContent = "End of diagnostic path.";
+              document.querySelector(".button-container").innerHTML =
+                `<button class='option-button' onclick="playClick(); restart()">Restart</button>`;
+              document.getElementById("question-image-container").innerHTML = ""; // Clear image
+          }
+      }
+    }
+
+
+    function restart() {
+      document.getElementById("main-page").style.display = "flex";
+      document.getElementById("question-page").style.display = "none";
+      document.getElementById("headline").style.display = "block";
+      document.getElementById("subheadline").style.display = "block";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      sidebar.classList.toggle("active");
+      overlay.style.display = sidebar.classList.contains("active") ? "block" : "none";
+    }
+
+    document.addEventListener("click", function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const toggleBtn = document.querySelector(".toggle-button");
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnToggle = toggleBtn.contains(event.target);
+      if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains("active")) {
+        toggleSidebar();
+      }
+    });
+
+    let startX = 0;
+    document.addEventListener("touchstart", function(e) {
+      if (e.touches.length === 1) { startX = e.touches[0].clientX; }
+    });
+    document.addEventListener("touchend", function(e) {
+      const sidebar = document.getElementById("sidebar");
+      const diff = e.changedTouches[0].clientX - startX;
+      if (diff > 50 && sidebar.classList.contains("active")) { toggleSidebar(); }
+    });
+
+    function goHome() {
+      window.location.href = "../index.html";
+    }
+
+    function navigateTo(page) {
+      window.location.href = page;
+      const loadingScreen = document.querySelector('.loading');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'flex';
+        setTimeout(() => { window.location.href = page; }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About ALGOMED</title>
+  <style>
+    :root {
+      --primary-color: #ff9900;
+      --primary-dark: #e68a00;
+      --bg-light: #ffffffdd;
+      --bg-dark: #222;
+      --text-light: #fff;
+      --text-dark: #333;
+      --transition-speed: 0.4s;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: url('bodyicons/app_background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+      color: white;
+    }
+    
+   .AlgoMed_icon img {
+       text-align: center;
+      margin-bottom: 5px;
+      margin-top: 15px;
+      max-width: 50%;
+      max-height: 150px; /* You can adjust this height */
+      
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.85);
+      padding: 10px 20px;
+      color: #ffa901;
+      font-size: 22px;
+      font-weight: bold;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .nav-title {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    span {
+      color: white ;
+    }
+
+    /* About Container */
+    .about-container {
+      max-width: 800px;
+      margin: 80px auto 40px;
+      padding: 30px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      color: #fff;
+      line-height: 1.6;
+      backdrop-filter: blur(8px);
+    }
+
+    .about-container h2 {
+      color: #FFA901;
+      margin-bottom: 20px;
+    }
+
+    .about-container p {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+     .home-button {
+   position: fixed;
+   bottom: 20px;
+   right: 20px;
+   width: 50px;
+   height: 50px;
+   border-radius: 50%;
+   background-color: var(--primary-color);
+   cursor: pointer;
+   padding: 0;
+   z-index: 1000;
+ }
+ 
+ .home-button img {
+   width: 75%;
+   height: 75%;
+   object-fit: contain;
+ }
+ 
+ .home-button:hover img {
+   transform: scale(1.1);
+   transition: transform 0.2s ease;
+ }
+ 
+ .sr-only {
+   position: absolute;
+   width: 1px;
+   height: 1px;
+   padding: 0;
+   margin: -1px;
+   overflow: hidden;
+   clip: rect(0, 0, 0, 0);
+   white-space: nowrap;
+   border-width: 0;
+ }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-title"><span>ABOUT</span> ALGOMED</div>
+  </nav>
+  
+  <div class="AlgoMed_icon" >
+    <img  src="bodyicons/algomed_icon.png" alt="" />
+  </div>
+  
+
+  <!-- About Content -->
+  <div class="about-container">
+    <h2>What is ALGOMED?</h2>
+    <p>
+      ALGOMED is an intelligent clinical diagnostic tool designed to assist medical professionals and students in identifying symptoms, exploring differential diagnoses, and understanding structured clinical pathways.
+    </p>
+    <p>
+      It offers a guided approach to common medical presentations by following evidence-based algorithms that mimic real-world clinical reasoning.
+    </p>
+
+    <h2>Who Designed This App?</h2>
+    <p>
+      ALGOMED was conceptualized and developed by <strong>Jalal Khaled</strong>, a passionate healthcare technology enthusiast with a strong focus on improving medical education and diagnostic efficiency.
+    </p>
+    <p>
+      The goal behind this application is to provide an intuitive, interactive, and educational platform for both learners and practitioners in the field of medicine.
+    </p>
+
+    <h2>Purpose & Features</h2>
+    <ul style="text-align: left; padding-left: 20px;">
+      <li><strong>Structured Clinical Pathways:</strong> Follow logical steps based on symptoms and findings.</li>
+      <li><strong>System-Based Approach:</strong> Navigate through various body systems like Respiratory, Cardiovascular, Endocrinology, and more.</li>
+      <li><strong>Educational Tool:</strong> Ideal for medical students, residents, and clinicians seeking to refine their diagnostic thinking.</li>
+      <li><strong>User-Friendly Interface:</strong> Clean design, responsive layout, and interactive buttons for seamless navigation.</li>
+    </ul>
+
+    <h2>Why Use ALGOMED?</h2>
+    <p>
+      Whether you're preparing for exams, refining your clinical reasoning skills, or looking for a quick reference during patient encounters, ALGOMED provides a reliable framework to guide your thought process and improve decision-making.
+    </p>
+  </div>
+
+  <div class="footer">
+    &copy; Copyright reserved for Jalal Khaled - 2025
+  </div>
+
+  <!-- Home Button -->
+  <button class="home-button" onclick="goHome()">
+    <img src="bodyicons/home_button.png" alt="Home" class="home-icon">
+    <span class="sr-only">Home</span>
+  </button>
+
+</body>
+<script>
+function goHome() {
+      window.location.href = "index.html";
+    } 
+  
+</script>
+</html>

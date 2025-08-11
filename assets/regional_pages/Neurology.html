@@ -1,0 +1,2723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Neurological Symptoms</title>
+  <link rel="stylesheet" href="../style/regional_style.css" type="text/css" media="all" />
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="nav-title">ALGOMED <span>NEUROLOGY </span></div>
+  <button class="toggle-button" onclick="playClick(); toggleSidebar()">☰</button>
+</nav>
+
+<!-- Overlay for click outside -->
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <ul>
+      <li onclick="navigateTo('respiratory.html')">Respiratory</li>
+      <li onclick="navigateTo('cardiovascular.html')">Cardiovascular</li>
+      <li onclick="navigateTo('git.html')">Gastroenterology</li>
+      <li onclick="navigateTo('gynecology.html')">Gynecology</li>
+      <li onclick="navigateTo('hepatology.html')">Hepatology</li>
+      <li onclick="navigateTo('nephrology.html')">Nephrology</li>
+      <li onclick="navigateTo('obstetric.html')">Obstetric</li>
+      <li onclick="navigateTo('rheumatology.html')">Rheumatology</li>
+      <li onclick="navigateTo('hematology.html')">Hematology</li>
+      <li onclick="navigateTo('pediatric.html')">Pediatric</li>
+      <li onclick="navigateTo('ophthalmology.html')">Ophthalmology</li>
+      <li onclick="navigateTo('neurology.html')">Neurology</li>
+      <li onclick="navigateTo('dermatology.html')">Dermatology</li>
+      <li onclick="navigateTo('ent.html')">ENT</li>
+      <li onclick="navigateTo('psychiatric.html')">Psychiatric</li>
+      <li onclick="navigateTo('General.html')">General</li>
+    </ul>
+<button class="sidebar-about-button" onclick="navigateTo('../about.html')">About Us</button>
+  </aside>
+
+  <!-- Audio -->
+  <audio id="click-sound" src="../sounds/click_sound.wav" preload="auto"></audio>
+
+  <!-- Headlines Outside Container -->
+  <h3 id="headline">Select a Primary Symptom</h3>
+<p id="subheadline">Choose from the list below to begin diagnosis.</p>
+
+  <!-- Main Page -->
+  <div id="main-page" class="container">
+    <button class="symptom-button" onclick="playClick(); startSymptom('Aphasia')">Aphasia</button>
+    <button class="symptom-button" onclick="playClick(); startSymptom('Acute Headache')">Acute Headache</button>
+    <button class="symptom-button" onclick="startSymptom('Chronic Headache')">Chronic Headache</button>
+    <button class="symptom-button" onclick="startSymptom('Transient Ischemic Attack and Stroke Evaluation')">Transient Ischemic Attack and Stroke Evaluation</button>
+    <button class="symptom-button" onclick="startSymptom('Transient Monocular Visual Loss')">Transient Monocular Visual Loss</button>
+    <button class="symptom-button" onclick="startSymptom('Acute Stroke')">Acute Stroke</button>
+    <button class="symptom-button" onclick="startSymptom('Memory Loss')">Memory Loss</button>
+    <button class="symptom-button" onclick="startSymptom('Dizziness')">Dizziness</button>
+    <button class="symptom-button" onclick="startSymptom('Seizures')">Seizures</button>
+    <button class="symptom-button" onclick="startSymptom('Status Epilepticus')">Status Epilepticus</button>
+    <button class="symptom-button" onclick="startSymptom('Weakness')">Weakness</button>
+    <button class="symptom-button" onclick="startSymptom('Gait Disturbances')">Gait Disturbances</button>
+    <button class="symptom-button" onclick="startSymptom('Tremor')">Tremor</button>
+    <button class="symptom-button" onclick="startSymptom('Peripheral Neuropathy')">Peripheral Neuropathy</button>
+    <button class="symptom-button" onclick="startSymptom('Hyperkinesias')">Hyperkinesias</button>
+    <button class="symptom-button" onclick="startSymptom('Acute Confusional State')">Acute Confusional State</button>
+    <button class="symptom-button" onclick="startSymptom('Chronic Behavior Change')">Chronic Behavior Change</button>
+    <button class="symptom-button" onclick="startSymptom('Disturbances of Smell and Taste')">Disturbances of Smell and Taste</button>
+    <button class="symptom-button" onclick="startSymptom('Coma')">Coma</button>
+    <button class="symptom-button" onclick="startSymptom('Brain Death')">Brain Death</button>
+    
+    
+    
+  </div>
+
+  <!-- Question Page -->
+  <div id="question-page">
+  <div class="title" id="symptom-title">Symptom Diagnostic</div>
+  <div id="question-image-container"></div>
+  <div id="question" class="question"></div>
+  <div class="button-container"></div>
+  <div id="footer" class="footer"></div>
+</div>
+
+  <!-- Home Button -->
+  <button class="home-button" onclick="goHome()">
+  <img src="../bodyicons/home_button.png" alt="Home" class="home-icon">
+  <span class="sr-only">Home</span>
+</button>
+  
+  
+  <!-- Script -->
+  <script>
+  const questions = {
+    "Aphasia": {
+      start: {
+        text: "Is speech fluent? (normal rate/rhythm, >5 words/sentence)",
+        explanation: "Fluent aphasias involve Wernicke's area; non-fluent involve Broca's.",
+        options: {
+          "Yes": "Assess comprehension",
+          "No": "Assess comprehension (non-fluent)"
+        }
+      },
+      "Assess comprehension": {
+        text: "Can the patient comprehend spoken commands?",
+        explanation: "Tests auditory processing (Wernicke's area and connections).",
+        options: {
+          "Yes": "Assess repetition (fluent)",
+          "No": "Assess repetition (non-comprehending)"
+        }
+      },
+      "Assess comprehension (non-fluent)": {
+        text: "Can the patient comprehend spoken commands?",
+        explanation: "Non-fluent aphasias with comprehension intact suggest Broca's.",
+        options: {
+          "Yes": "Assess repetition (non-fluent)",
+          "No": "Global aphasia likely"
+        }
+      },
+      "Assess repetition (fluent)": {
+        text: "Can the patient repeat phrases accurately?",
+        explanation: "Repetition tests arcuate fasciculus integrity.",
+        options: {
+          "Yes": "Anomic aphasia",
+          "No": "Conduction aphasia"
+        }
+      },
+      "Assess repetition (non-fluent)": {
+        text: "Can the patient repeat phrases accurately?",
+        explanation: "Repetition preserved in transcortical aphasias.",
+        options: {
+          "Yes": "Transcortical motor aphasia",
+          "No": "Broca aphasia"
+        }
+      },
+      "Assess repetition (non-comprehending)": {
+        text: "Can the patient repeat phrases accurately?",
+        explanation: "Repetition preserved in transcortical sensory aphasia.",
+        options: {
+          "Yes": "Transcortical sensory aphasia",
+          "No": "Wernicke aphasia"
+        }
+      },
+      "Global aphasia likely": {
+        text: "Diagnosis: Global aphasia (non-fluent, no comprehension, no repetition).",
+        explanation: "Large left MCA strokes affecting Broca's, Wernicke's, and arcuate fasciculus.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Broca aphasia": {
+        text: "Diagnosis: Broca aphasia (non-fluent, comprehends, cannot repeat).",
+        explanation: "Lesion in Broca's area (inferior frontal gyrus). Telegraphic speech.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Transcortical motor aphasia": {
+        text: "Diagnosis: Transcortical motor aphasia (non-fluent, comprehends, can repeat).",
+        explanation: "Lesion anterior/superior to Broca's area. Echolalia present.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Wernicke aphasia": {
+        text: "Diagnosis: Wernicke aphasia (fluent, no comprehension, no repetition).",
+        explanation: "Lesion in Wernicke's area (superior temporal gyrus). Jargon speech.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Transcortical sensory aphasia": {
+        text: "Diagnosis: Transcortical sensory aphasia (fluent, no comprehension, can repeat).",
+        explanation: "Lesion near Wernicke's area. Echolalia with poor comprehension.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Conduction aphasia": {
+        text: "Diagnosis: Conduction aphasia (fluent, comprehends, cannot repeat).",
+        explanation: "Lesion in arcuate fasciculus. Paraphasic errors with intact comprehension.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      },
+      "Anomic aphasia": {
+        text: "Diagnosis: Anomic aphasia (fluent, comprehends, can repeat).",
+        explanation: "Word-finding difficulty. Lesions in angular gyrus or temporal lobe.",
+        options: {
+          "Restart Algorithm": "start",
+          "Return to Symptoms": "exit"
+        }
+      }
+    },
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+     // Acute Headache--------------------
+    "Acute Headache": {
+    start: {
+      text: "Is the headache sudden onset (thunderclap) or gradual onset?",
+      explanation: "Critical first step to identify potential life-threatening causes. RED FLAG: Thunderclap headache suggests subarachnoid hemorrhage until proven otherwise.",
+      options: {
+        "Sudden onset": "Thunderclap Evaluation",
+        "Gradual onset (hours/days)": "Gradual Onset Evaluation",
+        "Gradual onset (weeks/months)": "Chronic Headache Pathway"
+      }
+    },
+
+    // Thunderclap Headache Pathway
+    "Thunderclap Evaluation": {
+      text: "Is there recent head trauma?",
+      explanation: "Trauma history changes diagnostic approach. NOTE: Even minor trauma can cause significant intracranial pathology in elderly or anticoagulated patients.",
+      options: {
+        "Yes": "Trauma Evaluation",
+        "No": "Non-Traumatic Thunderclap"
+      }
+    },
+    "Non-Traumatic Thunderclap": {
+      text: "Immediate non-contrast head CT to rule out subarachnoid hemorrhage (SAH).",
+      explanation: "URGENT: CT has 95% sensitivity for SAH within 6 hours. WARNING: 15% of SAH may have normal CT - lumbar puncture required if clinical suspicion remains.",
+      options: {
+        "CT positive for SAH": "SAH Management",
+        "CT negative": "LP Decision"
+      }
+    },
+    "SAH Management": {
+      text: "Consult neurosurgery immediately. Prepare for CTA/MRA and potential intervention.",
+      explanation: "CRITICAL: Maintain SBP <160mmHg to prevent rebleeding. Nimodipine 60mg q4h reduces vasospasm risk. Monitor for hydrocephalus and delayed cerebral ischemia.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Transfer": "exit"
+      }
+    },
+    "LP Decision": {
+      text: "Perform lumbar puncture if CT negative but high clinical suspicion (nuchal rigidity, focal neuro signs).",
+      explanation: "KEY FINDINGS: Xanthochromia (centrifuged supernatant) or >5 RBCs in final tube suggests SAH. NOTE: LP must be done >12hr post-headache onset for accurate xanthochromia.",
+      options: {
+        "LP positive": "SAH Management",
+        "LP negative": "Alternative Thunderclap Causes"
+      }
+    },
+    "Alternative Thunderclap Causes": {
+      text: "Consider: RCVS, pituitary apoplexy, arterial dissection. Obtain CTA/MRA if suspicion remains.",
+      explanation: "CLINICAL CLUES: RCVS often has thunderclap headaches recurring over days. Dissection may have neck pain/Horner's. Pituitary apoplexy shows visual field defects.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Trauma Pathway
+    "Trauma Evaluation": {
+      text: "Does patient have focal neurologic signs or altered mental status?",
+      explanation: "RED FLAGS: Any focal deficit, declining GCS, or persistent confusion warrants emergent imaging regardless of trauma severity.",
+      options: {
+        "Yes": "Immediate CT Head",
+        "No": "Observe for Deterioration"
+      }
+    },
+    "Immediate CT Head": {
+      text: "Obtain non-contrast CT head to assess for hemorrhage, fractures, or mass effect.",
+      explanation: "PRIORITY: Identify epidural hematoma (lenticular shape) needing surgical evacuation vs subdural (crescentic) which may be managed conservatively.",
+      options: {
+        "Abnormal findings": "Neurosurgical Consultation",
+        "Normal findings": "Monitor with High Vigilance"
+      }
+    },
+    "Neurosurgical Consultation": {
+      text: "Discuss findings with neurosurgery for potential intervention or transfer.",
+      explanation: "TIMING IS CRITICAL: Epidural hematoma with midline shift >5mm or GCS<9 typically requires urgent evacuation.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Transfer": "exit"
+      }
+    },
+    "Monitor with High Vigilance": {
+      text: "Observe for 4-6 hours with serial neuro exams. Repeat CT if symptoms worsen.",
+      explanation: "DANGER PERIOD: Highest risk for delayed hemorrhage is first 24hr post-trauma, especially in elderly or anticoagulated patients.",
+      options: {
+        "Deterioration": "Repeat CT",
+        "Stable": "Discharge with Precautions"
+      }
+    },
+    "Observe for Deterioration": {
+      text: "Symptomatic management with close follow-up. Return if vomiting, confusion, or worsening pain.",
+      explanation: "DISCHARGE CRITERIA: Normal neuro exam, reliable caregiver, and no high-risk features (anticoagulation, age >65, dangerous mechanism).",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Gradual Onset Pathway
+    "Gradual Onset Evaluation": {
+      text: "Assess for fever or other systemic symptoms.",
+      explanation: "KEY DISTINCTION: Fever suggests infectious etiology (meningitis, encephalitis) or systemic illness. A febrile headache has different differential.",
+      options: {
+        "Fever present": "Febrile Workup",
+        "No fever": "Afebrile Evaluation"
+      }
+    },
+    "Febrile Workup": {
+      text: "Evaluate for meningismus, sinus tenderness, or focal neuro signs.",
+      explanation: "CRITICAL: If nuchal rigidity present, do NOT delay LP for imaging unless focal signs suggest mass lesion (Cushing's triad, papilledema).",
+      options: {
+        "Nuchal rigidity": "Meningitis Pathway",
+        "Sinus tenderness": "Sinusitis Evaluation",
+        "No localizing signs": "Systemic Infection"
+      }
+    },
+    "Meningitis Pathway": {
+      text: "Immediate empiric antibiotics (ceftriaxone + vancomycin) + dexamethasone after blood cultures.",
+      explanation: "URGENT: LP for CSF analysis (cell count, protein, glucose, cultures). CT before LP only if immunocompromised, focal deficits, or papilledema.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Admission": "exit"
+      }
+    },
+    "Sinusitis Evaluation": {
+      text: "Diagnose only with purulent discharge + localized tenderness. Consider imaging if atypical.",
+      explanation: "PITFALL: Overdiagnosis common. TRUE sinus headaches require ≥2: purulent discharge, fever, localized pain, or radiographic confirmation.",
+      options: {
+        "Classic presentation": "Antibiotic Therapy",
+        "Atypical features": "Sinus CT"
+      }
+    },
+    "Systemic Infection": {
+      text: "Treat underlying infection. Headache is secondary and will resolve with illness.",
+      explanation: "COMMON SCENARIO: Viral syndromes often cause diffuse headache without focal findings. Reassess if headache persists after fever resolution.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+    "Afebrile Evaluation": {
+      text: "Assess age and vascular risk factors.",
+      explanation: "CRITICAL AGE CUTOFF: >50 years requires temporal arteritis workup. Younger patients more likely to have primary headache disorders.",
+      options: {
+        "Age >50": "Giant Cell Arteritis Workup",
+        "Age ≤50": "Primary Headache Evaluation"
+      }
+    },
+    "Giant Cell Arteritis Workup": {
+      text: "Check ESR/CRP. If elevated, start high-dose prednisone immediately and arrange temporal artery biopsy.",
+      explanation: "OCULAR EMERGENCY: Delay in treatment risks permanent vision loss from ophthalmic artery thrombosis. Biopsy can be done within 1-2 weeks of starting steroids.",
+      options: {
+        "ESR/CRP elevated": "Start Steroids + Biopsy",
+        "ESR/CRP normal": "Atypical GCA Evaluation"
+      }
+    },
+    "Primary Headache Evaluation": {
+      text: "Complete neurologic exam. Consider neuroimaging if first severe headache or abnormal exam.",
+      explanation: "IMAGING INDICATIONS: First migraine >40yo, progressive pattern, or any abnormal neuro finding. MRI preferred for posterior fossa evaluation.",
+      options: {
+        "Normal exam": "Migraine/Tension Management",
+        "Abnormal exam": "Neuroimaging"
+      }
+    },
+    "Migraine/Tension Management": {
+      text: "Trial of abortive therapy (NSAIDs, triptans) with follow-up if not responsive.",
+      explanation: "RED FLAGS: Any headache that changes pattern or becomes refractory to previously effective treatments warrants re-evaluation.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  // Chronic Headache------------------
+  "Chronic Headache": {
+    start: {
+      text: "What is the primary headache pattern?",
+      explanation: "Initial classification guides diagnostic workup. RED FLAG: Thunderclap onset or focal neuro signs require immediate imaging.",
+      options: {
+        "Episodic (comes and goes)": "Episodic Headache Evaluation",
+        "Constant (daily/unremitting)": "Constant Headache Evaluation",
+        "New/worsening pattern": "Secondary Headache Workup"
+      }
+    },
+
+    // Episodic Headache Pathway
+    "Episodic Headache Evaluation": {
+      text: "Characterize the headache features:",
+      explanation: "KEY FEATURES: Unilateral vs bilateral, throbbing vs pressure, associated symptoms (nausea, photophobia).",
+      options: {
+        "Unilateral, throbbing, + nausea/photophobia": "Migraine Evaluation",
+        "Unilateral, severe, periorbital + autonomic": "Cluster Headache Workup",
+        "Bilateral, pressure-like": "Tension Headache Assessment"
+      }
+    },
+    "Migraine Evaluation": {
+      text: "Assess frequency and aura symptoms:",
+      explanation: "AURA: Visual, sensory or speech disturbances lasting 5-60min. NOTE: >3/month warrants prophylaxis.",
+      options: {
+        "With aura": "Aura Management",
+        "Without aura": "Migraine Frequency Assessment",
+        "Chronic (>15 days/month)": "Medication Overuse Evaluation"
+      }
+    },
+    "Migraine Frequency Assessment": {
+      text: "How many migraine days per month?",
+      explanation: "TREATMENT STRATEGY: ≤3/mo = abortive only; >3/mo = add prophylaxis.",
+      options: {
+        "≤3/month": "Acute Therapy Only",
+        "4-14/month": "Prophylaxis Consideration",
+        "≥15/month": "Chronic Migraine Protocol"
+      }
+    },
+    "Acute Therapy Only": {
+      text: "First-line: Triptans (sumatriptan 50-100mg PO). Alternatives: NSAIDs, antiemetics.",
+      explanation: "CAUTION: Limit triptans to <10 days/month to avoid MOH. CONTRAINDICATIONS: Uncontrolled HTN, CAD.",
+      options: {
+        "Effective": "Monitor Frequency",
+        "Ineffective": "Step-Up Therapy"
+      }
+    },
+    "Cluster Headache Workup": {
+      text: "Confirm episodic cluster features (severe unilateral orbital pain + autonomic symptoms):",
+      explanation: "DIAGNOSTIC: Attacks last 15-180min, occur in clusters (weeks-months). GENDER BIAS: Male predominance (M:F = 4:1).",
+      options: {
+        "Confirmed cluster": "Cluster Management",
+        "Atypical features": "Trigeminal Autonomic Cephalgia Workup"
+      }
+    },
+    "Cluster Management": {
+      text: "Acute: High-flow O2 (12L/min), sumatriptan SC. Prophylaxis: Verapamil 240-480mg/day.",
+      explanation: "EMERGENCY: Transitional steroids for frequent attacks. WARNING: Avoid opioids - worsen chronicity.",
+      options: {}
+    },
+
+    // Constant Headache Pathway
+    "Constant Headache Evaluation": {
+      text: "Assess medication use and neurological exam:",
+      explanation: "CRITICAL: Overuse of analgesics (>15 days/month) causes rebound headaches. ALARM: Papilledema requires urgent imaging.",
+      options: {
+        "Daily analgesic use": "Medication Overuse Headache",
+        "Normal exam, no overuse": "Chronic Tension-Type Headache",
+        "Abnormal neuro exam": "Secondary Headache Workup"
+      }
+    },
+    "Medication Overuse Headache": {
+      text: "Identify overused medication type:",
+      explanation: "COMMON OFFENDERS: NSAIDs, triptans, opioids, caffeine combos. TREATMENT: Must discontinue completely.",
+      options: {
+        "Triptans/ergots": "Triptan Withdrawal Protocol",
+        "NSAIDs/analgesics": "Analgesic Withdrawal",
+        "Opioids": "Opioid Taper + Bridge Therapy"
+      }
+    },
+    "Triptan Withdrawal Protocol": {
+      text: "Abrupt cessation + bridge with NSAIDs/steroids. Start prophylaxis (topiramate, beta-blockers).",
+      explanation: "WITHDRAWAL: May last 2-10 days. PREVENTION: Limit triptans to <10 days/month.",
+      options: {}
+    },
+
+    // Secondary Headache Pathway
+    "Secondary Headache Workup": {
+      text: "Identify potential secondary causes:",
+      explanation: "RED FLAGS: Thunderclap onset, fever, immunocompromise, cancer history, positional worsening.",
+      options: {
+        "Sudden onset": "SAH Protocol (CT/LP)",
+        "Fever/meningismus": "Meningitis Workup",
+        "Positional/worsening": "CSF Pressure Evaluation"
+      }
+    },
+    "SAH Protocol (CT/LP)": {
+      text: "Immediate non-contrast CT. If negative → LP for xanthochromia (12h post-ictal).",
+      explanation: "TIME-SENSITIVE: 95% sensitivity of CT within 6h. ANGIOGRAPHY: Required if SAH confirmed.",
+      options: {}
+    },
+
+    // Shared Terminal Nodes
+    "Prophylaxis Consideration": {
+      text: "First-line: Propranolol 80-240mg/day or topiramate 50-100mg/day. Alternatives: TCAs, CGRP mAbs.",
+      options: {}
+    },
+    "Chronic Migraine Protocol": {
+      text: "Discontinue overused meds + start dual therapy: OnabotulinumtoxinA + CGRP mAb or topiramate.",
+      options: {}
+    },
+    "CSF Pressure Evaluation": {
+      text: "MRI brain + MRV to assess for IIH or CSF leak. Consider LP with opening pressure.",
+      options: {}
+    }
+  },
+  
+  
+  
+  
+  
+
+  //Transient Ischemic Attack and Stroke Evaluation----------------
+    "Transient Ischemic Attack and Stroke Evaluation": {
+    start: {
+      text: "Does the patient have focal neurologic deficits?",
+      explanation: "Critical first step to identify true TIA/stroke. KEY POINT: Focal deficits must be sudden onset to be vascular. Non-focal symptoms (confusion alone, syncope) suggest alternative diagnoses.",
+      options: {
+        yes: "Focal Deficit Evaluation",
+        no: "Non-Focal Symptom Workup"
+      }
+    },
+
+    // Focal Deficit Pathway
+    "Focal Deficit Evaluation": {
+      text: "Was the onset sudden (minutes) or subacute (hours-days)?",
+      explanation: "TIMING IS CRUCIAL: Vascular events are sudden. Subacute progression suggests mass lesion, infection, or other structural causes.",
+      options: {
+        "Sudden onset": "Vascular Event Assessment",
+        "Subacute onset": "Structural Lesion Workup"
+      }
+    },
+    "Vascular Event Assessment": {
+      text: "Did symptoms resolve within 24 hours?",
+      explanation: "DEFINITION: TIA = resolution <24h (though modern imaging shows many have infarcts). Stroke = persistent deficits. URGENT: Even if resolved, 5% stroke risk at 48h.",
+      options: {
+        "<24 hours": "TIA Evaluation",
+        ">24 hours": "Stroke Management"
+      }
+    },
+    "TIA Evaluation": {
+      text: "Determine vascular territory: Anterior (carotid) or Posterior (vertebrobasilar) circulation?",
+      explanation: "CLINICAL CLUES: Anterior = unilateral weakness/sensory loss, aphasia, amaurosis fugax. Posterior = ataxia, diplopia, vertigo, bilateral deficits.",
+      options: {
+        "Anterior circulation": "Anterior Workup",
+        "Posterior circulation": "Posterior Workup",
+        "Uncertain": "Comprehensive Neuroimaging"
+      }
+    },
+    "Anterior Workup": {
+      text: "Immediate non-contrast CT head to rule out hemorrhage, then:",
+      explanation: "PRIORITY: Carotid evaluation for stenosis (source of 30% anterior circulation TIAs). EMERGENT: If crescendo TIAs (≥2 in 24h), consider CTA for near-occlusion.",
+      options: {
+        "Carotid duplex + ECG + labs": "Anterior Risk Stratification",
+        "High-risk features*": "Urgent CTA/MRA"
+      }
+    },
+    "Posterior Workup": {
+      text: "MRI brain (DWI preferred) to assess brainstem/cerebellum. If unavailable, CT with CTA.",
+      explanation: "CHALLENGE: CT often misses posterior fossa infarcts due to bone artifact. NOTE: Vertebral artery dissection common in young patients with neck trauma.",
+      options: {
+        "MRI available": "Posterior MRI Pathway",
+        "Only CT available": "CT with CTA"
+      }
+    },
+    "Posterior MRI Pathway": {
+      text: "MRI with DWI + MRA head/neck. Assess for PFO in young patients.",
+      explanation: "SPECIAL CASE: Basilar artery TIAs may progress to locked-in syndrome. RED FLAG: Any altered consciousness with posterior symptoms = emergent imaging.",
+      options: {
+        "Abnormal findings": "Posterior Stroke Protocol",
+        "Normal findings": "Cardioembolic Workup"
+      }
+    },
+    "Anterior Risk Stratification": {
+      text: "ABCD2 score ≥4 or recurrent TIAs?",
+      explanation: "HIGH RISK: ABCD2 ≥4 (Age≥60, BP≥140/90, Clinical features, Duration≥60min, Diabetes) = 8% stroke risk at 48h. ADMIT for monitoring.",
+      options: {
+        "High-risk": "Hospital Admission",
+        "Low-risk": "Outpatient Workup"
+      }
+    },
+    "Stroke Management": {
+      text: "Activate stroke protocol: CT head immediately, consider thrombolytics if within window.",
+      explanation: "TIME-SENSITIVE: tPA window 4.5h from onset. Thrombectomy possible up to 24h with perfusion mismatch. Check glucose first!",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Stroke Unit": "exit"
+      }
+    },
+
+    // Structural Lesion Pathway
+    "Structural Lesion Workup": {
+      text: "Obtain contrast-enhanced MRI (preferred) or CT head with contrast.",
+      explanation: "SUSPICIOUS FEATURES: Progressive deficits, headache, cancer history, or immunocompromise. LOOK FOR: Tumor, abscess, subdural, venous sinus thrombosis.",
+      options: {
+        "Mass identified": "Neurosurgical Consult",
+        "No mass": "Inflammatory Workup"
+      }
+    },
+    "Inflammatory Workup": {
+      text: "Consider LP if suspect infection/inflammation. Check ESR/CRP, autoimmune panel.",
+      explanation: "RARER CAUSES: Vasculitis, MS, sarcoid. NOTE: Venous sinus thrombosis may require MRV/CTV if conventional imaging negative.",
+      options: {
+        "Restart Algorithm": "start",
+        "Return to Symptoms": "exit"
+      }
+    },
+
+    // Non-Focal Pathway
+    "Non-Focal Symptom Workup": {
+      text: "Evaluate for seizure, migraine, metabolic, or psychiatric causes.",
+      explanation: "MIMICS: Syncope (check ECG), complex migraine (visual aura), hypoglycemia (check glucose), conversion disorder.",
+      options: {
+        "Seizure features": "EEG + Neurology Referral",
+        "Migraine features": "Trial of Abortives",
+        "Metabolic derangement": "Correct Underlying Cause"
+      }
+    },
+
+    // Young Patient Addendum
+    "Cardioembolic Workup": {
+      text: "Is patient <45 years old? If yes, additional evaluations:",
+      explanation: "UNIQUE RISKS: Cervical dissection (trauma history), PFO (bubble echo), hypercoagulable states (OCP use, thrombophilia).",
+      options: {
+        "Young patient": "Young Patient Protocol",
+        "Older patient": "Standard Secondary Prevention"
+      }
+    },
+    "Young Patient Protocol": {
+      text: "Perform: Neck vessel imaging (dissection), bubble echo (PFO), hypercoag panel if indicated.",
+      explanation: "CLINICAL PEARL: Carotid dissection may present with ipsilateral face/neck pain + Horner's + anterior circulation symptoms.",
+      options: {
+        "Dissection found": "Anticoagulation Consideration",
+        "PFO found": "PFO Closure Evaluation",
+        "Hypercoagulable": "Hematology Consult"
+      }
+    },
+    "Standard Secondary Prevention": {
+      text: "Initiate antiplatelet (aspirin + clopidogrel x21d for high-risk TIA), statin, optimize BP.",
+      explanation: "LANDMARK TRIALS: CHANCE/POINT showed dual antiplatelets reduce early recurrent stroke. CAREFUL: Avoid in major stroke (bleed risk).",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Discharge": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  // Transient Monocular Visual Loss------
+    "Transient Monocular Visual Loss": {
+    start: {
+      text: "Does the patient have transient monocular visual loss (TMVL)?",
+      explanation: "CRITICAL FIRST STEP: Confirm true monocular (not binocular) visual loss. RED FLAG: TMVL is a medical emergency with 11% stroke risk within 1 week.",
+      options: {
+        yes: "TMVL Confirmed",
+        no: "Consider Binocular Causes"
+      }
+    },
+
+    // Main TMVL Pathway
+    "TMVL Confirmed": {
+      text: "Is headache present with the visual loss?",
+      explanation: "KEY DISTINCTION: Headache suggests different etiologies (temporal arteritis, migraine) vs painless TMVL which is typically embolic.",
+      options: {
+        yes: "Headache Evaluation",
+        no: "Painless TMVL Workup"
+      }
+    },
+
+    // Painless TMVL Pathway
+    "Painless TMVL Workup": {
+      text: "Perform urgent ophthalmologic examination. What are the findings?",
+      explanation: "EMERGENT: Look for Hollenhorst plaques (cholesterol emboli), retinal ischemia, or optic disc edema. Normal exam doesn't rule out vascular cause.",
+      options: {
+        "Hollenhorst plaque": "Embolic Workup",
+        "Retinal ischemia": "Vascular Ocular Disease",
+        "Optic disc edema": "Papilledema Evaluation",
+        "Normal exam": "Vascular Studies"
+      }
+    },
+    "Embolic Workup": {
+      text: "Immediate carotid duplex + cardiac evaluation for embolic source.",
+      explanation: "PRIORITY: 50% of emboli originate from ipsilateral carotid bifurcation. 4% are fibrin clots from cardiac sources. YOUNG PATIENTS: Consider dissection if trauma history.",
+      options: {
+        "Carotid stenosis ≥70%": "Surgical Evaluation",
+        "Cardiac source": "Anticoagulation Consideration",
+        "No source found": "Hypercoagulable Workup"
+      }
+    },
+    "Surgical Evaluation": {
+      text: "Symptomatic carotid stenosis ≥70% - refer for carotid endarterectomy.",
+      explanation: "LANDMARK TRIAL: NASCET showed 17% absolute risk reduction in ipsilateral stroke with CEA vs medical therapy for symptomatic stenosis.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Surgery": "exit"
+      }
+    },
+    "Vascular Studies": {
+      text: "Perform carotid duplex, consider CTA/MRA if high suspicion despite normal ultrasound.",
+      explanation: "PITFALL: Up to 15% have normal noninvasive studies but significant stenosis on angiography. Low-flow states may cause TMVL without stenosis.",
+      options: {
+        "Stenosis found": "Embolic Workup",
+        "Normal studies": "Hemodynamic Evaluation"
+      }
+    },
+
+    // Headache Pathway
+    "Headache Evaluation": {
+      text: "Assess for temporal arteritis vs other causes. Check ESR/CRP.",
+      explanation: "OCULAR EMERGENCY: Giant cell arteritis causes irreversible blindness in 35% if untreated. Requires immediate steroids if suspected.",
+      options: {
+        "ESR/CRP elevated": "Temporal Arteritis Protocol",
+        "ESR/CRP normal": "Migraine Evaluation"
+      }
+    },
+    "Temporal Arteritis Protocol": {
+      text: "Start high-dose prednisone (1mg/kg) immediately. Arrange temporal artery biopsy within 1 week.",
+      explanation: "URGENT: Don't delay steroids for biopsy. Typical features: age >50, jaw claudication, scalp tenderness. Biopsy may show skip lesions.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Treatment": "exit"
+      }
+    },
+    "Migraine Evaluation": {
+      text: "Does visual loss have migrainous features (scintillations, progression over minutes)?",
+      explanation: "DIAGNOSIS OF EXCLUSION: Retinal migraine is rare. Must rule out vascular causes first. Positive visual phenomena suggest migraine.",
+      options: {
+        "Migrainous features": "Trial of Migraine Therapy",
+        "Atypical features": "Neuroimaging"
+      }
+    },
+
+    // Vascular Ocular Diseases
+    "Vascular Ocular Disease": {
+      text: "Differentiate: Anterior ischemic optic neuropathy (AION) vs central retinal vein occlusion vs other.",
+      explanation: "CLINICAL CLUES: AION shows optic disc edema. CRVO has retinal hemorrhages. Both may have permanent vision loss.",
+      options: {
+        "AION": "AION Management",
+        "CRVO": "Ophthalmology Referral",
+        "Other": "Specific Ocular Workup"
+      }
+    },
+    "AION Management": {
+      text: "Assess for arteritic (GCA) vs non-arteritic causes. Check ESR/CRP.",
+      explanation: "DRUG WARNING: PDE5 inhibitors (Viagra) can precipitate NAION. Arteritic AION requires immediate steroids.",
+      options: {
+        "ESR elevated": "Temporal Arteritis Protocol",
+        "ESR normal": "Non-Arteritic AION Care"
+      }
+    },
+
+    // Young Patient Considerations
+    "Hypercoagulable Workup": {
+      text: "Is patient <45 years old? If yes, evaluate for:",
+      explanation: "UNIQUE RISKS: Carotid dissection (neck trauma), hypercoagulable states, PFO with paradoxical embolism.",
+      options: {
+        "Young patient": "Young Patient Protocol",
+        "Older patient": "Optimize Medical Therapy"
+      }
+    },
+    "Young Patient Protocol": {
+      text: "Perform: Neck vessel imaging (dissection), bubble echo (PFO), hypercoag panel if indicated.",
+      explanation: "RED FLAG: Carotid dissection may present with ipsilateral neck pain/Horner's + TMVL. Requires anticoagulation.",
+      options: {
+        "Dissection found": "Anticoagulation Protocol",
+        "PFO found": "PFO Closure Consideration",
+        "Hypercoagulable": "Hematology Referral"
+      }
+    },
+
+    // Secondary Prevention
+    "Optimize Medical Therapy": {
+      text: "Initiate antiplatelet (aspirin/clopidogrel), statin, BP control regardless of findings.",
+      explanation: "STANDARD CARE: Even without identified source, TMVL confers high stroke risk. CAREFUL: Dual antiplatelets only short-term (21d) for high-risk TIA.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Follow-up": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  // Acute Stroke--------------------
+    "Acute Stroke": {
+    start: {
+      text: "Does the patient have acute focal neurologic deficits or altered consciousness?",
+      explanation: "RED FLAG: Sudden onset focal deficits constitute a stroke emergency. TIME IS BRAIN: Every minute of delay results in 1.9 million neurons lost.",
+      options: {
+        yes: "Stroke Protocol Activation",
+        no: "Consider Stroke Mimics"
+      }
+    },
+
+    // Stroke Protocol Pathway
+    "Stroke Protocol Activation": {
+      text: "Immediate actions: Secure ABCs, check glucose, note exact symptom onset time.",
+      explanation: "CRITICAL FIRST STEPS: Maintain O2 sat >94%, BP management depends on stroke type (don't lower for ischemic strokes without consult). Check glucose to rule out hypoglycemia mimic.",
+      options: {
+        "Stable ABCs": "Rapid Assessment",
+        "Unstable ABCs": "Emergency Stabilization"
+      }
+    },
+    "Rapid Assessment": {
+      text: "Perform NIH Stroke Scale (NIHSS) and focused history (onset time, headache, trauma, anticoagulants).",
+      explanation: "KEY DATA: Last known normal time determines treatment options. HEADACHE RED FLAG: Thunderclap suggests SAH. Anticoagulant use affects hemorrhage management.",
+      options: {
+        "NIHSS completed": "Immediate Imaging"
+      }
+    },
+    "Immediate Imaging": {
+      text: "Non-contrast head CT STAT to differentiate ischemic vs hemorrhagic stroke.",
+      explanation: "GOLD STANDARD: CT detects hemorrhage immediately. Ischemic changes may take 24-48h to appear. DON'T DELAY tPA for advanced imaging if within window.",
+      options: {
+        "Ischemic stroke": "Ischemic Pathway",
+        "Hemorrhagic stroke": "Hemorrhagic Pathway",
+        "Normal CT (clinical stroke)": "MRI Decision"
+      }
+    },
+
+    // Ischemic Stroke Pathway
+    "Ischemic Pathway": {
+      text: "Is onset time <4.5 hours (or <9h with perfusion mismatch)? Check tPA eligibility.",
+      explanation: "TIME WINDOWS: Standard tPA <4.5h. Extended window requires perfusion imaging. CONTRAINDICATIONS: Bleeding risk, recent surgery, BP >185/110.",
+      options: {
+        "Eligible for tPA": "Thrombolysis Protocol",
+        "Ineligible for tPA": "Alternative Reperfusion"
+      }
+    },
+    "Thrombolysis Protocol": {
+      text: "Administer IV tPA 0.9mg/kg (max 90mg), 10% bolus then infusion over 1h. Monitor in ICU.",
+      explanation: "CRITICAL: No anticoagulants/antiplatelets for 24h post-tPA. WATCH FOR: Angioedema (more common with ACE inhibitors), hemorrhage conversion.",
+      options: {
+        "Successful reperfusion": "Post-tPA Management",
+        "Persistent deficits": "Endovascular Consideration"
+      }
+    },
+    "Alternative Reperfusion": {
+      text: "Consider mechanical thrombectomy if large vessel occlusion (LVO) and <24h from onset with salvageable tissue.",
+      explanation: "LVO CLUES: NIHSS ≥6, cortical signs (aphasia, neglect). DAWN/DEFUSE-3 criteria apply for extended window.",
+      options: {
+        "LVO confirmed": "Endovascular Therapy",
+        "No LVO": "Medical Management"
+      }
+    },
+    "Medical Management": {
+      text: "Start aspirin 325mg (unless tPA given). Optimize BP (<220/120 unless thrombolysis candidate).",
+      explanation: "GUIDELINES: Avoid aggressive BP lowering in untreated ischemic strokes. Early statin therapy improves outcomes.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Stroke Unit": "exit"
+      }
+    },
+
+    // Hemorrhagic Stroke Pathway
+    "Hemorrhagic Pathway": {
+      text: "Identify hemorrhage type: Intraparenchymal (IPH), subarachnoid (SAH), subdural/epidural.",
+      explanation: "LOCATION MATTERS: Lobar IPH suggests amyloid. Basal ganglia IPH suggests HTN. SAH requires aneurysm workup.",
+      options: {
+        "IPH": "Intraparenchymal Management",
+        "SAH": "Subarachnoid Protocol",
+        "Subdural/Epidural": "Traumatic Hemorrhage"
+      }
+    },
+    "Intraparenchymal Management": {
+      text: "Reverse anticoagulation if present. Control BP (target SBP <140). Obtain CTA/MRA to evaluate for underlying lesion.",
+      explanation: "URGENT: For warfarin-related ICH, give vitamin K + PCC. DOAC reversal agents now available. Neurosurgery consult for cerebellar hemorrhage >3cm.",
+      options: {
+        "Stable": "Neurocritical Care",
+        "Expanding hematoma": "Surgical Evaluation"
+      }
+    },
+    "Subarachnoid Protocol": {
+      text: "If CT negative but high suspicion, perform LP for xanthochromia. Immediate neurosurgery consult for confirmed SAH.",
+      explanation: "ANEURYSM CLUES: Worst headache of life, thunderclap onset. WATCH FOR: Rebleeding, vasospasm (peaks day 3-14).",
+      options: {
+        "Aneurysm found": "Definitive Repair",
+        "No source found": "Repeat Imaging"
+      }
+    },
+
+    // Special Considerations
+    "MRI Decision": {
+      text: "Obtain MRI with DWI if CT negative but high clinical suspicion (especially posterior circulation strokes).",
+      explanation: "DWI detects ischemia within minutes. PITFALL: False negatives can occur with small brainstem strokes or hyperacute ischemia.",
+      options: {
+        "MRI positive": "Ischemic Pathway",
+        "MRI negative": "Stroke Mimic Workup"
+      }
+    },
+    "Stroke Mimic Workup": {
+      text: "Consider: Seizure (post-ictal Todd's paralysis), migraine aura, Bell's palsy, functional disorder, metabolic.",
+      explanation: "MIMIC CLUES: Seizure may have preceding aura. Migraine often has positive visual phenomena. Check electrolytes, toxicology.",
+      options: {
+        "Identify cause": "Targeted Treatment",
+        "Unclear diagnosis": "Observation"
+      }
+    },
+
+    // Secondary Prevention
+    "Post-tPA Management": {
+      text: "24h post-tPA: Start antiplatelet, statin. Workup for stroke etiology (echo, vascular imaging, telemetry).",
+      explanation: "ETIOLOGY MATTERS: Cardioembolic needs anticoagulation. Large artery disease may need stenting/CEA. Small vessel = risk factor control.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Rehab": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+    // Memory Loss-----------------------
+   "Memory Loss": {
+    start: {
+      text: "Does the patient or informant report significant memory complaints?",
+      explanation: "CRITICAL FIRST STEP: Patient anosognosia (lack of awareness) is common in true memory disorders. Always corroborate with a reliable informant.",
+      options: {
+        yes: "Memory Complaint Evaluation",
+        no: "Consider Non-Memory Cognitive Issues"
+      }
+    },
+
+    // Memory Complaint Pathway
+    "Memory Complaint Evaluation": {
+      text: "Assess impact on daily function and characterize memory type from history:",
+      explanation: "FUNCTIONAL IMPACT: Key for dementia diagnosis. MEMORY TYPES: Episodic (events), semantic (facts), procedural (skills), working (manipulating info).",
+      options: {
+        "Impairs daily function": "Dementia Workup",
+        "No functional impact": "Mild Cognitive Impairment Assessment"
+      }
+    },
+    "Dementia Workup": {
+      text: "Perform cognitive testing (MMSE, MoCA, or SLUMS) and neurological exam.",
+      explanation: "SCREENING TOOLS: MoCA more sensitive for early dementia. RED FLAGS: Focal deficits suggest stroke or space-occupying lesion.",
+      options: {
+        "Abnormal testing": "Dementia Subtyping",
+        "Normal testing": "Psychiatric Evaluation"
+      }
+    },
+    "Dementia Subtyping": {
+      text: "Characterize the cognitive profile based on exam and history:",
+      explanation: "PATTERN RECOGNITION: Alzheimer's = episodic memory loss. FTD = behavior/executive > memory. Lewy body = fluctuations + hallucinations.",
+      options: {
+        "Episodic memory predominant": "Alzheimer Evaluation",
+        "Executive/behavior predominant": "Frontotemporal Evaluation",
+        "Fluctuating cognition": "Lewy Body Evaluation",
+        "Stepwise decline": "Vascular Dementia Workup"
+      }
+    },
+
+    // Acute Memory Loss Pathway
+    "Mild Cognitive Impairment Assessment": {
+      text: "Determine acuity of onset and associated symptoms:",
+      explanation: "TIME COURSE MATTERS: Acute = vascular/seizure. Subacute = infectious/toxic. Chronic = neurodegenerative.",
+      options: {
+        "Acute onset (<24h)": "Acute Amnesia Workup",
+        "Subacute onset (days-weeks)": "Subacute Workup",
+        "Gradual onset (months-years)": "Neurodegenerative Workup"
+      }
+    },
+    "Acute Amnesia Workup": {
+      text: "For acute isolated memory loss (<24h duration):",
+      explanation: "TGA CLASSICS: Anterograde amnesia, repetitive questioning, preserved other cognition. Usually resolves in 24h.",
+      options: {
+        "Transient global amnesia (TGA) features": "TGA Management",
+        "Focal deficits present": "Stroke Evaluation",
+        "Altered consciousness": "Seizure/Encephalopathy Workup"
+      }
+    },
+    "TGA Management": {
+      text: "Observe for resolution within 24h. MRI if atypical features (focal signs, recurrence).",
+      explanation: "DIAGNOSIS OF EXCLUSION: Must rule out TIA, seizure, migraine. IMAGING: DWI may show hippocampal dots in 20% of TGA cases.",
+      options: {
+        "Resolves completely": "Reassurance",
+        "Persists >24h": "Advanced Neuroimaging"
+      }
+    },
+
+    // Etiology-Specific Pathways
+    "Alzheimer Evaluation": {
+      text: "Assess for medial temporal lobe atrophy on MRI. Consider amyloid PET if diagnostic uncertainty.",
+      explanation: "BIOMARKERS: CSF tau/Aβ42 or PET can confirm Alzheimer's pathology. MEDICAL WORKUP: Rule out B12 deficiency, hypothyroidism.",
+      options: {
+        "Typical Alzheimer pattern": "Alzheimer Management",
+        "Atypical features": "Atypical Dementia Workup"
+      }
+    },
+    "Subacute Workup": {
+      text: "Evaluate for infectious, autoimmune, or toxic/metabolic causes:",
+      explanation: "RED FLAGS: Fever = HSV encephalitis. Immunosuppression = HHV-6. Rapid progression = CJD or autoimmune encephalitis.",
+      options: {
+        "Fever/meningismus": "LP + Empiric Acyclovir",
+        "Psychiatric symptoms": "Autoimmune Encephalitis Panel",
+        "Alcohol/nutrition history": "Thiamine/B12 Replacement"
+      }
+    },
+
+    // Diagnostic Testing
+    "Advanced Neuroimaging": {
+      text: "Select appropriate imaging based on clinical suspicion:",
+      explanation: "STRUCTURAL: MRI with DWI/FLAIR (stroke, HSV). FUNCTIONAL: FDG-PET (neurodegenerative patterns). AMYLOID PET: Alzheimer's confirmation.",
+      options: {
+        "Focal deficits": "MRI Brain with DWI",
+        "Progressive dementia": "FDG-PET or Amyloid PET",
+        "Psychiatric features": "Autoimmune Antibody Panel"
+      }
+    },
+
+    // Management Pathways
+    "Alzheimer Management": {
+      text: "Start cholinesterase inhibitor (donepezil, rivastigmine). Add memantine for moderate-severe cases.",
+      explanation: "MODEST BENEFIT: Cholinesterase inhibitors may slow decline by 6-12 months. MONITOR: Depression, agitation, sleep disturbances.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Follow-up": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+    // Dizziness---------------
+    "Dizziness": {
+    start: {
+      text: "How does the patient describe their dizziness?",
+      explanation: "CRITICAL FIRST STEP: Differentiate vertigo (illusion of movement) from presyncope (lightheadedness) and other types. Quality trumps duration in initial classification.",
+      options: {
+        "Spinning/rotating sensation (vertigo)": "Vertigo Evaluation",
+        "Lightheadedness/near-fainting": "Presyncope Evaluation",
+        "Vague/unsteady feeling": "NonSpecific Dizziness",
+        "Positionally triggered": "Positional Vertigo Evaluation"
+      }
+    },
+
+    // Vertigo Pathway
+    "Vertigo Evaluation": {
+      text: "Is the vertigo acute (first episode or worst ever) or recurrent?",
+      explanation: "TIME COURSE MATTERS: Acute severe vertigo suggests vestibular neuritis or stroke. Recurrent episodes suggest BPPV, Meniere's, or migraine.",
+      options: {
+        "Acute onset (<24-48h)": "Acute Vertigo Workup",
+        "Recurrent episodes": "Recurrent Vertigo Workup"
+      }
+    },
+    "Acute Vertigo Workup": {
+      text: "Assess for central vs peripheral signs:",
+      explanation: "RED FLAGS FOR CENTRAL: Direction-changing nystagmus, inability to walk, severe ataxia, or accompanying neurological deficits. HINTS exam can help differentiate.",
+      options: {
+        "Central signs present": "Central Vertigo Protocol",
+        "Peripheral signs only": "Vestibular Neuritis Management"
+      }
+    },
+    "Central Vertigo Protocol": {
+      text: "Urgent MRI (DWI sequences) to rule out posterior circulation stroke. Check vascular risk factors.",
+      explanation: "DON'T MISS: 25% of cerebellar strokes present with isolated vertigo. MRI > CT for posterior fossa. ABCD2 score predicts stroke risk after TIA.",
+      options: {
+        "MRI positive": "Stroke Management",
+        "MRI negative": "Atypical Vertigo Workup"
+      }
+    },
+    "Vestibular Neuritis Management": {
+      text: "Symptomatic treatment with vestibular suppressants (meclizine) + antiemetics. Consider steroids if severe.",
+      explanation: "TYPICAL COURSE: Severe symptoms 1-3 days, gradual improvement over weeks. WARNING: Persistent symptoms >1 month need re-evaluation.",
+      options: {
+        "Improving": "Vestibular Rehabilitation",
+        "Worsening": "Reconsider Central Cause"
+      }
+    },
+
+    // Recurrent Vertigo Pathway
+    "Recurrent Vertigo Workup": {
+      text: "Characterize episode duration and associated symptoms:",
+      explanation: "DURATION CLUES: Seconds-minutes = BPPV. Minutes-hours = TIA/Meniere's. Hours-days = Vestibular migraine.",
+      options: {
+        "Seconds-minutes, positionally triggered": "BPPV Evaluation",
+        "Minutes-hours, hearing changes": "Meniere's Workup",
+        "Hours-days, headache history": "Vestibular Migraine"
+      }
+    },
+    "BPPV Evaluation": {
+      text: "Perform Dix-Hallpike maneuver to confirm posterior canal BPPV.",
+      explanation: "DIAGNOSTIC GOLD STANDARD: Geotropic nystagmus after latency. Horizontal canal BPPV requires roll test. Epley maneuver treats posterior canal BPPV.",
+      options: {
+        "Positive Dix-Hallpike": "Canalith Repositioning",
+        "Negative but high suspicion": "Consider Horizontal Canal BPPV"
+      }
+    },
+    "Meniere's Workup": {
+      text: "Audiogram to confirm low-frequency hearing loss. Rule out syphilis and autoimmune causes if atypical.",
+      explanation: "TRIAD: Vertigo + tinnitus + hearing loss. Consider salt restriction + diuretics first-line. Intratympanic gentamicin for refractory cases.",
+      options: {
+        "Classic triad": "Meniere's Management",
+        "Atypical features": "Secondary Causes Workup"
+      }
+    },
+
+    // Presyncope Pathway
+    "Presyncope Evaluation": {
+      text: "Check orthostatic vital signs and assess for cardiac vs non-cardiac causes:",
+      explanation: "ORTHOSTATIC HYPOTENSION: >20mmHg SBP drop or >10mmHg DBP drop within 3min standing. CARDIAC CAUSES: Arrhythmias, AS, HOCM.",
+      options: {
+        "Orthostatic hypotension": "Hypotension Workup",
+        "Palpitations/irregular pulse": "Cardiac Evaluation",
+        "Normal exam": "Vasovagal/Reflex Syncope"
+      }
+    },
+    "Cardiac Evaluation": {
+      text: "Obtain ECG, consider echocardiogram and Holter monitoring based on risk factors.",
+      explanation: "HIGH-RISK FEATURES: Exertional syncope, family history of SCD, abnormal ECG. Consider ILR for recurrent unexplained episodes.",
+      options: {
+        "Arrhythmia found": "Arrhythmia Management",
+        "Structural heart disease": "Cardiology Referral",
+        "Normal cardiac workup": "Reflex Syncope Management"
+      }
+    },
+
+    // Non-Specific Dizziness Pathway
+    "NonSpecific Dizziness": {
+      text: "Evaluate for psychiatric, medication, and multisensory causes:",
+      explanation: "COMMON CULPRITS: Polypharmacy (especially anticholinergics), anxiety/depression, peripheral neuropathy + vision loss in elderly.",
+      options: {
+        "Psychiatric symptoms": "Anxiety/Depression Screen",
+        "High-risk medications": "Medication Review",
+        "Elderly with falls": "Multisensory Assessment"
+      }
+    },
+
+    // Positional Vertigo Pathway
+    "Positional Vertigo Evaluation": {
+      text: "Differentiate BPPV from central positional vertigo:",
+      explanation: "CENTRAL RED FLAGS: No latency, no fatigue, direction-changing nystagmus. Consider posterior fossa lesions if atypical.",
+      options: {
+        "Typical BPPV features": "BPPV Evaluation",
+        "Atypical features": "Central Imaging Needed"
+      }
+    }
+  },
+  
+  
+  
+  
+   // Seizures------------------------
+  "Seizures": {
+    start: {
+      text: "Is this an active seizure or postictal state?",
+      explanation: "CRITICAL FIRST STEP: Active seizures require immediate intervention. Postictal state allows for evaluation. STATUS EPILEPTICUS = seizure >5min or recurrent without recovery.",
+      options: {
+        "Active seizure": "Acute Seizure Management",
+        "Postictal": "Seizure Evaluation"
+      }
+    },
+
+    // Acute Management Pathway
+    "Acute Seizure Management": {
+      text: "Initiate ABCs (Airway, Breathing, Circulation). Administer benzodiazepine if >5min duration.",
+      explanation: "FIRST-LINE: Lorazepam 4mg IV/IM or midazolam 10mg IM. TIME CRITICAL: Establish IV access, check glucose, monitor vitals.",
+      options: {
+        "Seizure stops": "Post-Seizure Workup",
+        "Persists >5min": "Status Epilepticus Protocol"
+      }
+    },
+    "Status Epilepticus Protocol": {
+      text: "Escalate to second-line AED (fosphenytoin, valproate, levetiracetam). Prepare for intubation if needed.",
+      explanation: "DOSE: Fosphenytoin 20mg PE/kg at 150mg PE/min. WARNING: Respiratory depression risk with polypharmacy.",
+      options: {
+        "Seizure stops": "ICU Monitoring",
+        "Persists >30min": "Refractory Status Management"
+      }
+    },
+
+    // Diagnostic Evaluation Pathway
+    "Seizure Evaluation": {
+      text: "Classify seizure type based on witness description:",
+      explanation: "KEY DISTINCTION: Focal onset (even if generalized) vs primary generalized. Auras indicate focal onset.",
+      options: {
+        "Focal features/aura": "Focal Seizure Workup",
+        "Primary generalized": "Generalized Seizure Workup",
+        "Unclear/unknown": "Undifferentiated Seizure Pathway"
+      }
+    },
+    "Focal Seizure Workup": {
+      text: "Assess for underlying structural cause. Obtain MRI brain with epilepsy protocol.",
+      explanation: "RED FLAGS: Focal exam, Todd's paralysis, persistent deficit. COMMON CAUSES: Stroke, tumor, cortical dysplasia, mesial temporal sclerosis.",
+      options: {
+        "Structural lesion found": "Etiology-Specific Management",
+        "No lesion identified": "Genetic/Idiopathic Evaluation"
+      }
+    },
+    "Generalized Seizure Workup": {
+      text: "Evaluate for genetic generalized epilepsy. Obtain EEG, consider genetic testing.",
+      explanation: "TYPICAL FINDINGS: 3Hz spike-wave on EEG. CAUTION: Rule out pseudo-generalized from undetected focal onset.",
+      options: {
+        "EEG abnormal": "Generalized Epilepsy Management",
+        "EEG normal": "Provocative Factor Evaluation"
+      }
+    },
+
+    // Risk Stratification Pathway
+    "Post-Seizure Workup": {
+      text: "Determine if provoked or unprovoked:",
+      explanation: "PROVOKED CAUSES: EtOH withdrawal, metabolic derangements, drugs, acute CNS injury. Unprovoked requires recurrence risk assessment.",
+      options: {
+        "Provoked": "Treat Underlying Cause",
+        "First unprovoked": "Recurrence Risk Assessment",
+        "Recurrent unprovoked": "Epilepsy Diagnosis"
+      }
+    },
+    "Recurrence Risk Assessment": {
+      text: "Calculate risk based on EEG/MRI findings:",
+      explanation: "HIGH RISK (60%+): Abnormal EEG or MRI, nocturnal seizure, Todd's paralysis. LOW RISK (34%): Normal studies.",
+      options: {
+        "High risk features": "Consider AED Initiation",
+        "Low risk": "Observation Strategy"
+      }
+    },
+
+    // Treatment Pathways
+    "Epilepsy Diagnosis": {
+      text: "Select AED based on seizure type, comorbidities, and patient factors:",
+      explanation: "FOCAL: Lamotrigine, levetiracetam. GENERALIZED: Valproate (avoid in women of childbearing potential). COMORBIDITIES: Consider drug interactions.",
+      options: {
+        "Focal epilepsy": "Focal AED Selection",
+        "Generalized epilepsy": "Generalized AED Selection",
+        "Special populations": "Individualized Therapy"
+      }
+    },
+    "Focal AED Selection": {
+      text: "First-line options: levetiracetam, lamotrigine, lacosamide. Consider side effect profiles.",
+      explanation: "NEWER AGENTS: Generally better tolerated. LAMOTRIGINE: Slow titration reduces rash risk. LEVETIRACETAM: Watch for mood effects.",
+      options: {
+        "Initial therapy chosen": "Monitoring Plan",
+        "Refractory cases": "Epilepsy Referral"
+      }
+    },
+
+    // Special Considerations
+    "Individualized Therapy": {
+      text: "Tailor treatment based on specific patient factors:",
+      explanation: "PREGNANCY: Lamotrigine, levetiracetam preferred. ELDERLY: Low-dose levetiracetam. LIVER DISEASE: Avoid valproate.",
+      options: {
+        "Women of childbearing potential": "Pregnancy-Safe Options",
+        "Elderly/comorbidities": "Geriatric Considerations"
+      }
+    },
+
+    // Follow-up Pathways
+    "Monitoring Plan": {
+      text: "Establish safety precautions and follow-up schedule:",
+      explanation: "SAFETY: No swimming alone, shower instead of bath. DRIVING: State-specific regulations (typically seizure-free 6mo).",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Follow-up": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  //Status Epilepticus-------------------
+  "Status Epilepticus": {
+    start: {
+      text: "Is the patient actively seizing or postictal?",
+      explanation: "CRITICAL FIRST STEP: Status epilepticus = seizure >5min or recurrent without recovery. Time starts from seizure onset or last witnessed normal.",
+      options: {
+        "Actively seizing": "Acute Stabilization",
+        "Postictal": "Postictal Evaluation"
+      }
+    },
+
+    // Acute Management Pathway
+    "Acute Stabilization": {
+      text: "Time 0-5min: Secure ABCs, give O2, establish IV access, check glucose, monitor vitals.",
+      explanation: "EMERGENCY ACTIONS: Position to protect airway, prepare suction. Check glucose (give thiamine + glucose if hypoglycemic). Avoid restraints.",
+      options: {
+        "ABCs secured": "First-Line Treatment",
+        "Respiratory compromise": "Airway Management"
+      }
+    },
+    "First-Line Treatment": {
+      text: "Administer benzodiazepine (time 5-10min): Lorazepam 0.1mg/kg IV (max 4mg/dose) at 2mg/min.",
+      explanation: "GOLD STANDARD: Lorazepam preferred for longer CNS effect. Alternatives: Diazepam 0.15mg/kg or midazolam IM if no IV access.",
+      options: {
+        "Seizure stops": "Postictal Management",
+        "Persists >5min after benzo": "Second-Line Therapy"
+      }
+    },
+    "Second-Line Therapy": {
+      text: "Time 10-20min: Load antiepileptic drug - choose based on patient factors:",
+      explanation: "OPTIONS: Fosphenytoin 20mg PE/kg (<150mg PE/min), Valproate 40mg/kg (<6mg/kg/min), or Levetiracetam 60mg/kg (<5mg/min).",
+      options: {
+        "Fosphenytoin loaded": "Monitor for Arrhythmias",
+        "Valproate loaded": "Monitor for Hyperammonemia",
+        "Levetiracetam loaded": "Proceed to Monitoring"
+      }
+    },
+
+    // Refractory Status Pathway
+    "Persists >5min after benzo": {
+      text: "Time 20-40min: Prepare for ICU transfer. Consider intubation if:",
+      explanation: "INTUBATION CRITERIA: Respiratory failure, persistent seizures, or need for anesthetic doses. Use short-acting paralytics if needed.",
+      options: {
+        "Intubated": "Anesthetic Infusion",
+        "Not intubated": "Escalate AED Therapy"
+      }
+    },
+    "Anesthetic Infusion": {
+      text: "Initiate continuous EEG monitoring. Choose anesthetic agent:",
+      explanation: "OPTIONS: Midazolam 0.2mg/kg bolus then 0.05-2mg/kg/hr OR Propofol 1-2mg/kg bolus then 20-200mcg/kg/hr. Titrate to burst-suppression.",
+      options: {
+        "EEG monitoring established": "Titrate to Burst-Suppression",
+        "No EEG available": "Empiric Anesthetic Dosing"
+      }
+    },
+
+    // Super-Refractory Pathway
+    "Titrate to Burst-Suppression": {
+      text: "If seizures persist >60min despite anesthesia:",
+      explanation: "CONSIDER: Ketamine 1-3mg/kg bolus then 0.5-10mg/kg/hr OR Pentobarbital 5-15mg/kg bolus then 0.5-5mg/kg/hr. Multidisciplinary consult.",
+      options: {
+        "Ketamine initiated": "Monitor for ICP Increase",
+        "Pentobarbital initiated": "Monitor for Hypotension"
+      }
+    },
+
+    // Etiology Workup
+    "Postictal Evaluation": {
+      text: "Identify likely etiology based on history and exam:",
+      explanation: "ACUTE SYMPTOMATIC: Drug withdrawal, infection, stroke. REMOTE: Prior brain injury. IDIOPATHIC: Known epilepsy with breakthrough.",
+      options: {
+        "Known epilepsy": "Breakthrough Seizure Workup",
+        "First seizure": "First Seizure Protocol",
+        "Symptomatic cause suspected": "Targeted Diagnostics"
+      }
+    },
+    "Targeted Diagnostics": {
+      text: "Select studies based on clinical suspicion:",
+      explanation: "ESSENTIAL: CT head (rule out hemorrhage), LP if febrile. CONSIDER: Tox screen, MRI, EEG, metabolic panel, AED levels.",
+      options: {
+        "Structural lesion found": "Neurosurgery Consult",
+        "Metabolic derangement": "Correct Abnormalities",
+        "No cause identified": "Epilepsy Monitoring"
+      }
+    },
+
+    // Special Populations
+    "Breakthrough Seizure Workup": {
+      text: "Evaluate for causes of breakthrough:",
+      explanation: "COMMON: Noncompliance, infection, metabolic, sleep deprivation. Check AED levels, consider drug interactions.",
+      options: {
+        "Noncompliance": "Medication Reconciliation",
+        "Provoking factor": "Address Trigger",
+        "Unknown": "AED Adjustment"
+      }
+    },
+
+    // Follow-up Pathways
+    "Postictal Management": {
+      text: "Initiate maintenance AED if indicated. Provide seizure precautions.",
+      explanation: "INDICATIONS FOR MAINTENANCE: Structural lesion, recurrent seizures. PRECAUTIONS: Nothing by mouth until alert, padded side rails.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Disposition": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  //Weakness---------------------
+  "Weakness": {
+    start: {
+      text: "Does the weakness involve upper motor neuron (UMN) signs, lower motor neuron (LMN) signs, or both?",
+      explanation: "CRITICAL FIRST STEP: UMN signs = hyperreflexia, spasticity, Babinski. LMN signs = atrophy, fasciculations, hyporeflexia. Mixed suggests ALS or cervical myelopathy.",
+      options: {
+        "UMN signs only": "UMN Weakness Evaluation",
+        "LMN signs only": "LMN Weakness Evaluation",
+        "Both UMN and LMN signs": "Mixed Weakness Evaluation",
+        "No clear signs": "Functional Weakness Assessment"
+      }
+    },
+
+    // UMN Pathway
+    "UMN Weakness Evaluation": {
+      text: "Assess acuity of onset and pattern of weakness:",
+      explanation: "ACUTE ONSET: Stroke, trauma, transverse myelitis. SUBACUTE: MS, infection. CHRONIC: Primary lateral sclerosis, hereditary spastic paraplegia.",
+      options: {
+        "Acute onset (<48h)": "Acute UMN Workup",
+        "Subacute (days-weeks)": "Subacute UMN Workup",
+        "Chronic (months-years)": "Chronic UMN Workup"
+      }
+    },
+    "Acute UMN Workup": {
+      text: "Obtain emergent neuroimaging (MRI preferred) based on suspected level:",
+      explanation: "BRAIN: Unilateral weakness. SPINAL CORD: Bilateral weakness + sensory level. RED FLAG: Cord compression requires immediate neurosurgery consult.",
+      options: {
+        "Brain lesion found": "Stroke Protocol",
+        "Spinal cord lesion": "Myelopathy Management",
+        "Normal imaging": "Demyelinating Workup"
+      }
+    },
+
+    // LMN Pathway
+    "LMN Weakness Evaluation": {
+      text: "Determine if weakness is accompanied by sensory symptoms:",
+      explanation: "PURE MOTOR: Anterior horn cell, NMJ, or myopathy. SENSORY INVOLVEMENT: Nerve root, plexus, or peripheral nerve.",
+      options: {
+        "Pure motor weakness": "Motor-Only LMN Workup",
+        "Sensorimotor weakness": "Sensorimotor LMN Workup"
+      }
+    },
+    "Motor-Only LMN Workup": {
+      text: "Assess distribution and fatigability:",
+      explanation: "FATIGUABLE: Myasthenia gravis. PROXIMAL: Myopathy. DISTAL: Motor neuropathy. FOCAL: Radiculopathy or mononeuropathy.",
+      options: {
+        "Fatigable weakness": "NMJ Disorder Workup",
+        "Non-fatigable weakness": "EMG-Guided Evaluation"
+      }
+    },
+    "NMJ Disorder Workup": {
+      text: "Evaluate for myasthenia gravis vs Lambert-Eaton:",
+      explanation: "MG: Worse with exercise, ptosis/diplopia. LEMS: Improves with exercise, autonomic symptoms. Check AChR antibodies, repetitive nerve stimulation.",
+      options: {
+        "MG suspected": "Edrophonium Test",
+        "LEMS suspected": "P/Q-type VGCC Antibodies"
+      }
+    },
+
+    // Mixed UMN/LMN Pathway
+    "Mixed Weakness Evaluation": {
+      text: "Assess for ALS vs mimic (cervical myeloradiculopathy):",
+      explanation: "ALS: Progressive painless weakness in multiple regions. MIMICS: Sensory symptoms, mechanical neck pain, non-progressive.",
+      options: {
+        "ALS features present": "ALS Workup",
+        "Possible mimic": "Cervical Spine MRI"
+      }
+    },
+    "ALS Workup": {
+      text: "Confirm diagnosis with EMG + exclude mimics:",
+      explanation: "REQUIRED: LMN signs in ≥3 regions. MIMICS: Heavy metals, multifocal motor neuropathy, Kennedy's disease.",
+      options: {
+        "EMG confirmed": "ALS Management",
+        "Atypical features": "Alternative Diagnosis"
+      }
+    },
+
+    // Diagnostic Testing
+    "EMG-Guided Evaluation": {
+      text: "Select testing based on EMG findings:",
+      explanation: "MYOPATHIC: Elevated CK, consider biopsy. NEUROPATHIC: Nerve conduction studies. NORMAL: Consider metabolic myopathy or channelopathy.",
+      options: {
+        "Myopathic pattern": "Muscle Biopsy",
+        "Neuropathic pattern": "Nerve Conduction Studies",
+        "Normal EMG": "Metabolic Workup"
+      }
+    },
+
+    // Management Pathways
+    "ALS Management": {
+      text: "Multidisciplinary care with riluzole + supportive therapies:",
+      explanation: "FOCUS: Respiratory, nutrition, communication. PALLIATION: Non-invasive ventilation, PEG tube, mobility aids.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Care Plan": "exit"
+      }
+    },
+    "Myelopathy Management": {
+      text: "Urgent neurosurgery consult for compressive lesions. Start steroids if inflammatory.",
+      explanation: "EMERGENCY: Cord compression requires decompression <24h. STEROIDS: High-dose methylprednisolone for non-compressive myelitis.",
+      options: {
+        "Restart Algorithm": "start",
+        "Proceed to Treatment": "exit"
+      }
+    }
+  },
+  
+  
+  
+  
+  
+  // Gait Disturbances----------------
+  "Gait Disturbances": {
+    start: {
+      text: "Does the patient have gait disturbance with abnormalities on neurologic examination?",
+      explanation: "Initial step to differentiate neurologic vs. non-neurologic causes (e.g., orthopedic, deconditioning). RED FLAG: Acute onset may indicate stroke or spinal cord compression.",
+      options: {
+        yes: "Neurologic Evaluation",
+        no: "Non-Neurologic Evaluation"
+      }
+    },
+
+    // Neurologic Pathway
+    "Neurologic Evaluation": {
+      text: "Identify key neurologic signs from examination (select all that apply):",
+      explanation: "Localizing signs guide further workup. CRITICAL: Spasticity/Babinski's sign suggests upper motor neuron (UMN) lesion; sensory loss points to peripheral neuropathy/dorsal column disease.",
+      options: {
+        "Spasticity, hyperreflexia, Babinski's sign": "UMN Lesion Evaluation",
+        "Wide-based gait, sensory loss, Romberg's sign": "Sensory Ataxia Evaluation",
+        "Steppage gait, foot drop, distal weakness": "Neuromuscular Evaluation",
+        "Shuffling, rigidity, bradykinesia": "Extrapyramidal Evaluation",
+        "Wide-based, unsteady, dysmetria": "Cerebellar Evaluation",
+        "Short stride, 'stuck to floor', incontinence": "Frontal Lobe Evaluation"
+      }
+    },
+
+    // UMN Lesion Pathway
+    "UMN Lesion Evaluation": {
+      text: "Assess for myelopathy (bilateral signs) or unilateral corticospinal tract lesion:",
+      explanation: "Myelopathy suggests spinal cord pathology (e.g., cervical spondylosis, MS). Unilateral signs may indicate stroke or tumor. NOTE: MRI is mandatory for spinal cord/brain imaging.",
+      options: {
+        "Bilateral signs (myelopathy)": "Spinal Cord Imaging",
+        "Unilateral signs (cortical)": "Brain Imaging"
+      }
+    },
+    "Spinal Cord Imaging": {
+      text: "Order MRI spine with contrast if demyelinating disease (e.g., MS) is suspected. Check for compressive lesions (e.g., spondylosis, tumor).",
+      explanation: "PRIORITY: Cervical spine MRI for spastic gait in elderly (spondylosis). For young patients, consider MS or trauma. LABS: Vitamin B12, HIV, HTLV-1 if non-compressive.",
+      options: {
+        "Compressive lesion found": "Neurosurgery Consult",
+        "Non-compressive (e.g., MS)": "Demyelinating Workup"
+      }
+    },
+    "Brain Imaging": {
+      text: "Perform brain MRI to evaluate for stroke, tumor, or white matter disease.",
+      explanation: "FOCUS: Internal capsule or motor cortex lesions cause unilateral UMN signs. Small vessel disease may cause bilateral frontal gait apraxia.",
+      options: {
+        "Lesion found (e.g., stroke)": "Lesion-Specific Management",
+        "No lesion": "Consider Functional Disorder"
+      }
+    },
+
+    // Sensory Ataxia Pathway
+    "Sensory Ataxia Evaluation": {
+      text: "Evaluate for peripheral neuropathy or dorsal column disease:",
+      explanation: "KEY TESTS: Nerve conduction studies (NCS), vitamin B12, RPR (for syphilis), glucose (diabetes). NOTE: Romberg sign is positive in dorsal column lesions.",
+      options: {
+        "B12 deficiency or syphilis": "Treat Specific Cause",
+        "Diabetic neuropathy": "Optimize Glucose Control",
+        "Idiopathic neuropathy": "Supportive Care"
+      }
+    },
+
+    // Neuromuscular Pathway
+    "Neuromuscular Evaluation": {
+      text: "Assess for neuropathy (distal weakness) vs. myopathy (proximal weakness):",
+      explanation: "EMG/NCS localizes to nerve (e.g., peroneal palsy) or muscle (e.g., myositis). FOOT DROP: Common peroneal nerve palsy vs. L5 radiculopathy.",
+      options: {
+        "Neuropathy (EMG confirmed)": "Neuropathy Workup",
+        "Myopathy (proximal weakness)": "Myopathy Workup"
+      }
+    },
+
+    // Extrapyramidal Pathway
+    "Extrapyramidal Evaluation": {
+      text: "Assess for Parkinsonism (rigidity, bradykinesia) vs. other movement disorders:",
+      explanation: "PARKINSONIAN GAIT: Flexed posture, shuffling, festination. Chorea (Huntington's) or dystonia may also cause gait abnormalities.",
+      options: {
+        "Parkinsonism": "Dopaminergic Trial",
+        "Chorea/Dystonia": "Movement Disorder Referral"
+      }
+    },
+
+    // Cerebellar Pathway
+    "Cerebellar Evaluation": {
+      text: "Determine cerebellar lesion etiology:",
+      explanation: "MRI brain is diagnostic. CONSIDER: Stroke (acute), alcohol (vermal degeneration), or tumor (slow progression).",
+      options: {
+        "Acute onset (stroke)": "Stroke Protocol",
+        "Chronic (alcohol, atrophy)": "Rehab Support"
+      }
+    },
+
+    // Frontal Lobe Pathway
+    "Frontal Lobe Evaluation": {
+      text: "Evaluate for normal-pressure hydrocephalus (NPH) or vascular disease:",
+      explanation: "TRIAD: Gait apraxia, dementia, incontinence. MRI shows ventriculomegaly (NPH) or white matter disease (vascular).",
+      options: {
+        "NPH suspected": "Lumbar Drain Trial",
+        "Vascular dementia": "Vascular Risk Control"
+      }
+    },
+
+    // Non-Neurologic Pathway
+    "Non-Neurologic Evaluation": {
+      text: "Assess for medication effects, deconditioning, or psychogenic causes:",
+      explanation: "DRUGS: Sedatives, antipsychotics, or alcohol. PSYCHOGENIC: Inconsistent findings, bizarre gait (astasia-abasia).",
+      options: {
+        "Medication-related": "Adjust Medications",
+        "Deconditioning": "Physical Therapy",
+        "Psychogenic": "Psychiatry Referral"
+      }
+    },
+
+    // Shared Terminal Nodes
+    "Neurosurgery Consult": {
+      text: "Urgent consult for compressive myelopathy (e.g., tumor, spondylosis).",
+      options: {}
+    },
+    "Demyelinating Workup": {
+      text: "Start IV steroids for MS relapse. Long-term immunomodulation if confirmed.",
+      options: {}
+    },
+    "Treat Specific Cause": {
+      text: "B12 deficiency: Parenteral B12. Syphilis: Penicillin G.",
+      options: {}
+    },
+    "Lumbar Drain Trial": {
+      text: "40-50mL CSF removal to assess for NPH improvement. Consider shunt if positive.",
+      options: {}
+    }
+  },
+  
+  
+  
+  
+  
+  
+  // Tremor--------------------------------
+  "Tremor": {
+    start: {
+      text: "What is the primary characteristic of the tremor?",
+      explanation: "Initial classification by tremor type (rest, postural, kinetic) guides further evaluation. RED FLAG: Rest tremor suggests Parkinson's disease until proven otherwise.",
+      options: {
+        "Rest tremor (3-6 Hz)": "Parkinsonian Evaluation",
+        "Postural/kinetic tremor (8-12 Hz)": "Essential vs. Physiologic Evaluation",
+        "Coarse kinetic tremor (variable amplitude)": "Cerebellar Evaluation"
+      }
+    },
+
+    // Parkinsonian Pathway
+    "Parkinsonian Evaluation": {
+      text: "Assess for associated features of Parkinsonism (rigidity, bradykinesia, postural instability):",
+      explanation: "KEY FEATURES: Asymmetric onset, pill-rolling tremor, and levodopa responsiveness support idiopathic PD. Atypical features (early falls, poor levodopa response) suggest Parkinson-plus syndromes.",
+      options: {
+        "Classic PD features": "PD Management",
+        "Atypical features (e.g., early falls, vertical gaze palsy)": "Atypical Parkinsonism Workup"
+      }
+    },
+    "PD Management": {
+      text: "Initiate levodopa or dopamine agonist for symptomatic control. Consider DBS for refractory cases.",
+      explanation: "DRUG TITRATION: Start low-dose levodopa (50-100mg TID) to avoid dyskinesias. MONITOR: Motor fluctuations after 3-5 years of treatment.",
+      options: {
+        "Restart Algorithm": "start",
+        "Refer to Movement Disorder Specialist": "exit"
+      }
+    },
+    "Atypical Parkinsonism Workup": {
+      text: "Perform brain MRI to evaluate for MSA (putaminal atrophy), PSP (midbrain atrophy), or vascular parkinsonism.",
+      explanation: "IMAGING CLUES: 'Hot cross bun' sign (MSA), 'hummingbird' sign (PSP). NOTE: These syndromes are typically levodopa-resistant.",
+      options: {
+        "MSA/PSP confirmed": "Symptomatic Management",
+        "Vascular parkinsonism": "Vascular Risk Control"
+      }
+    },
+
+    // Essential vs. Physiologic Pathway
+    "Essential vs. Physiologic Evaluation": {
+      text: "Evaluate for familial history, alcohol responsiveness, or secondary causes:",
+      explanation: "ESSENTIAL TREMOR: Bilateral upper limb tremor, positive family history (50%), improves with alcohol. PHYSIOLOGIC: Drug/toxin exposure (lithium, valproate), hyperthyroidism, or stress.",
+      options: {
+        "Family history + alcohol responsive": "Essential Tremor Management",
+        "Drug/toxin exposure or metabolic disorder": "Secondary Cause Workup"
+      }
+    },
+    "Essential Tremor Management": {
+      text: "First-line: Propranolol or primidone. Consider DBS if medication-refractory.",
+      explanation: "DRUG DETAILS: Propranolol (start 20mg BID, max 320mg/day). Primidone (start 25mg HS, titrate to 250mg TID). CAUTION: Primidone may cause sedation.",
+      options: {
+        "Restart Algorithm": "start",
+        "Refer for DBS Evaluation": "exit"
+      }
+    },
+    "Secondary Cause Workup": {
+      text: "Check TSH, glucose, drug levels (lithium/valproate), and toxin screen (mercury/lead).",
+      explanation: "REVERSIBLE CAUSES: Correct hyperthyroidism, hypoglycemia, or drug toxicity. NOTE: Caffeine exacerbates all tremor types.",
+      options: {
+        "Identified cause (e.g., hyperthyroidism)": "Treat Underlying Condition",
+        "No cause found": "Reclassify as Essential Tremor"
+      }
+    },
+
+    // Cerebellar Pathway
+    "Cerebellar Evaluation": {
+      text: "Assess for cerebellar signs (dysmetria, dysdiadochokinesia) and lesion etiology:",
+      explanation: "ACUTE ONSET: Stroke (MRI urgent). CHRONIC: MS, alcoholism (vermal atrophy), or hereditary ataxias (genetic testing).",
+      options: {
+        "Acute onset (stroke concern)": "Urgent MRI",
+        "Chronic/progressive": "Chronic Cerebellar Workup"
+      }
+    },
+    "Urgent MRI": {
+      text: "Perform brain MRI with DWI to rule out cerebellar stroke or hemorrhage.",
+      explanation: "ACTION: If stroke confirmed, consult neurology for thrombolysis eligibility (within 4.5h window).",
+      options: {
+        "Stroke confirmed": "Stroke Management",
+        "No stroke": "Chronic Cerebellar Workup"
+      }
+    },
+    "Chronic Cerebellar Workup": {
+      text: "Evaluate for MS (MRI with contrast), alcoholism (history), or genetic ataxias (Friedreich's).",
+      explanation: "MS CLUES: Periventricular white matter lesions. ALCOHOLISM: Vermal atrophy on MRI. GENETIC: GAA repeat expansion for Friedreich's.",
+      options: {
+        "MS suspected": "Demyelinating Workup",
+        "Alcohol-related": "Abstinence + Thiamine",
+        "Genetic ataxia": "Genetic Counseling"
+      }
+    },
+
+    // Shared Terminal Nodes
+    "Treat Underlying Condition": {
+      text: "e.g., Methimazole for hyperthyroidism, lithium cessation for drug-induced tremor.",
+      options: {}
+    },
+    "Stroke Management": {
+      text: "Acute stroke protocol: thrombolysis if eligible, rehab for residual deficits.",
+      options: {}
+    },
+    "Demyelinating Workup": {
+      text: "LP for oligoclonal bands, IV steroids for acute relapse, immunomodulators long-term.",
+      options: {}
+    }
+  },
+
+
+
+  
+
+
+  //Peripheral Neuropathy-----------------
+  "Peripheral Neuropathy": {
+    start: {
+      text: "Is the neuropathy symmetric or asymmetric?",
+      explanation: "Initial classification by symmetry helps narrow the differential. RED FLAG: Asymmetric neuropathies may indicate vasculitis, trauma, or compressive lesions.",
+      options: {
+        "Symmetric": "Symmetric Neuropathy Evaluation",
+        "Asymmetric": "Asymmetric Neuropathy Evaluation"
+      }
+    },
+
+    // Symmetric Pathway
+    "Symmetric Neuropathy Evaluation": {
+      text: "What is the primary symptom pattern?",
+      explanation: "Sensory vs. motor involvement and autonomic symptoms guide further evaluation. KEY CLUES: Small-fiber symptoms (burning pain) vs. large-fiber (ataxia, loss of vibration).",
+      options: {
+        "Sensory symptoms (pain, numbness)": "Sensory Neuropathy Workup",
+        "Motor weakness": "Motor Neuropathy Workup",
+        "Autonomic symptoms (e.g., orthostatic hypotension)": "Autonomic Neuropathy Workup",
+        "Combined sensorimotor": "Sensorimotor Neuropathy Workup"
+      }
+    },
+    "Sensory Neuropathy Workup": {
+      text: "Assess for small-fiber (pain/temperature loss) vs. large-fiber (vibration/proprioception loss) involvement:",
+      explanation: "SMALL-FIBER: Diabetes, amyloidosis, HIV. LARGE-FIBER: B12 deficiency, CIDP, HMSN. NOTE: Small-fiber neuropathies may have normal NCS.",
+      options: {
+        "Small-fiber predominance": "Small-Fiber Evaluation",
+        "Large-fiber predominance": "Large-Fiber Evaluation"
+      }
+    },
+    "Small-Fiber Evaluation": {
+      text: "Check for diabetes (HbA1c), amyloidosis (SPEP/UPEP, fat pad biopsy), HIV, and autoimmune markers (ANA, RF).",
+      explanation: "CRITICAL: Skin biopsy for intraepidermal nerve fiber density (IENFD) if NCS normal. TREAT: Gabapentin/pregabalin for neuropathic pain.",
+      options: {
+        "Diabetes/HIV identified": "Disease-Specific Management",
+        "Amyloidosis suspected": "Amyloid Workup",
+        "Idiopathic": "Idiopathic Small-Fiber Management"
+      }
+    },
+    "Large-Fiber Evaluation": {
+      text: "Evaluate for B12 deficiency, CIDP (NCS with demyelination), and hereditary neuropathies (family history, genetic testing).",
+      explanation: "CIDP CLUES: Proximal weakness, elevated CSF protein, NCS with conduction block. ACTION: IVIG or steroids if CIDP confirmed.",
+      options: {
+        "B12 deficiency": "B12 Replacement",
+        "CIDP suspected": "CIDP Workup",
+        "Hereditary (e.g., HMSN)": "Genetic Counseling"
+      }
+    },
+    "Motor Neuropathy Workup": {
+      text: "Assess for distal vs. proximal weakness and demyelinating features (e.g., CIDP, MMN):",
+      explanation: "DEMYELINATING: Reduced conduction velocity, temporal dispersion. AXONAL: Normal velocity with reduced amplitudes. NOTE: MMN is purely motor with conduction block.",
+      options: {
+        "Demyelinating features": "Demyelinating Neuropathy Workup",
+        "Axonal features": "Axonal Motor Neuropathy Workup"
+      }
+    },
+    "Demyelinating Neuropathy Workup": {
+      text: "Perform NCS/EMG to confirm demyelination. Check for CIDP (proximal weakness), MMN (asymmetric, conduction block), or GBS (acute onset).",
+      explanation: "CIDP: Requires IVIG/steroids. MMN: IVIG only (steroids worsen it). GBS: Plasmapheresis/IVIG urgently.",
+      options: {
+        "CIDP": "Immunomodulatory Therapy",
+        "MMN": "IVIG Treatment",
+        "GBS": "Urgent Neurology Referral"
+      }
+    },
+    "Autonomic Neuropathy Workup": {
+      text: "Assess for diabetes, amyloidosis, or autoimmune pandysautonomia (e.g., Sjögren’s, paraneoplastic).",
+      explanation: "TESTS: Tilt table, QSART, cardiac vagal tests. RED FLAG: Rapid progression suggests paraneoplastic (anti-Hu antibodies).",
+      options: {
+        "Diabetes/amyloidosis": "Underlying Disease Management",
+        "Autoimmune": "Autoimmune Workup"
+      }
+    },
+
+    // Asymmetric Pathway
+    "Asymmetric Neuropathy Evaluation": {
+      text: "Is the asymmetry motor-only, sensorimotor, or sensory ataxia?",
+      explanation: "MOTOR-ONLY: ALS, MMN. SENSORIMOTOR: Vasculitis, leprosy. SENSORY ATAXIA: Ganglionopathy (e.g., Sjögren’s, paraneoplastic).",
+      options: {
+        "Motor-only": "Motor Asymmetric Workup",
+        "Sensorimotor": "Vasculitis/Infectious Workup",
+        "Sensory ataxia": "Ganglionopathy Workup"
+      }
+    },
+    "Motor Asymmetric Workup": {
+      text: "Evaluate for MMN (conduction block on NCS), ALS (UMN + LMN signs), or radiculopathy.",
+      explanation: "MMN: IVIG-responsive. ALS: Progressive with fasciculations. RADICULOPATHY: MRI spine for compressive lesions.",
+      options: {
+        "MMN": "IVIG Treatment",
+        "ALS suspected": "ALS Referral",
+        "Radiculopathy": "Spine Imaging"
+      }
+    },
+    "Vasculitis/Infectious Workup": {
+      text: "Check for vasculitis (ANCA, CRP), leprosy (skin biopsy), Lyme (serology), or sarcoidosis (ACE, chest CT).",
+      explanation: "VASCULITIS: Nerve biopsy may be needed. LEPROSY: Acid-fast bacilli in nerves. TREAT: Steroids for vasculitis, antibiotics for infections.",
+      options: {
+        "Vasculitis": "Immunosuppression",
+        "Infectious": "Infection-Specific Treatment"
+      }
+    },
+    "Ganglionopathy Workup": {
+      text: "Assess for Sjögren’s (SSA/SSB), paraneoplastic (anti-Hu), or pyridoxine toxicity.",
+      explanation: "PARANEOPLASTIC: Screen for lung cancer (CT chest). SJÖGREN’S: Lip biopsy. NOTE: IVIG may help autoimmune ganglionopathy.",
+      options: {
+        "Paraneoplastic": "Cancer Screening",
+        "Sjögren’s": "Autoimmune Management"
+      }
+    },
+
+    // Shared Terminal Nodes
+    "Disease-Specific Management": {
+      text: "e.g., Tight glucose control for diabetes, ART for HIV, chemotherapy for amyloidosis.",
+      options: {}
+    },
+    "CIDP Workup": {
+      text: "LP for elevated CSF protein, MRI nerve roots for hypertrophy. Start IVIG/steroids if confirmed.",
+      options: {}
+    },
+    "ALS Referral": {
+      text: "Urgent referral for riluzole and supportive care.",
+      options: {}
+    }
+  },
+  
+  
+  
+
+  
+  // Hyperkinesias-------------------
+  "Hyperkinesias": {
+    start: {
+      text: "What is the predominant type of hyperkinetic movement?",
+      explanation: "Initial classification by movement type guides further evaluation. RED FLAG: Acute-onset chorea may indicate stroke or metabolic crisis.",
+      options: {
+        "Chorea (irregular, flowing movements)": "Chorea Evaluation",
+        "Dystonia (sustained abnormal postures)": "Dystonia Evaluation",
+        "Myoclonus (brief, shock-like jerks)": "Myoclonus Evaluation",
+        "Tics (stereotyped, suppressible movements)": "Tics Evaluation",
+        "Mixed/Uncertain": "General Hyperkinesia Workup"
+      }
+    },
+
+    // Chorea Pathway
+    "Chorea Evaluation": {
+      text: "Assess for associated features and potential causes:",
+      explanation: "KEY FEATURES: Family history (Huntington's), acanthocytes on smear (neuroacanthocytosis), Kayser-Fleischer rings (Wilson's). NOTE: Sydenham's chorea follows strep infection.",
+      options: {
+        "Family history of movement disorder": "Genetic Chorea Workup",
+        "Acute/subacute onset": "Secondary Chorea Workup",
+        "Chronic progressive": "Neurodegenerative Workup"
+      }
+    },
+    "Genetic Chorea Workup": {
+      text: "Order genetic testing for Huntington's (CAG repeat), Wilson's (ceruloplasmin, copper), or neuroacanthocytosis (peripheral smear).",
+      explanation: "URGENT: Wilson's is treatable - check 24h urine copper if suspected. Huntington's testing requires counseling due to implications.",
+      options: {
+        "Huntington's confirmed": "Symptomatic Management",
+        "Wilson's confirmed": "Copper Chelation Therapy",
+        "Negative genetics": "Re-evaluate for Secondary Causes"
+      }
+    },
+    "Secondary Chorea Workup": {
+      text: "Evaluate for metabolic, autoimmune, or infectious causes:",
+      explanation: "TESTS: TSH, glucose, ANA, antiphospholipid antibodies, ASO titer (Sydenham's). DRUGS: Check for neuroleptics, stimulants, oral contraceptives.",
+      options: {
+        "Metabolic (e.g., hyperglycemia)": "Correct Metabolic Abnormality",
+        "Autoimmune (e.g., lupus)": "Immunosuppression",
+        "Drug-induced": "Discontinue Offending Agent"
+      }
+    },
+
+    // Dystonia Pathway
+    "Dystonia Evaluation": {
+      text: "Determine distribution and age of onset:",
+      explanation: "FOCAL: Common in adults (e.g., cervical dystonia). GENERALIZED: Often childhood-onset (DYT1). RED FLAG: Dopa-responsive dystonia improves dramatically with levodopa.",
+      options: {
+        "Focal dystonia (e.g., torticollis)": "Focal Dystonia Management",
+        "Generalized dystonia": "Generalized Dystonia Workup",
+        "Diurnal variation (worse evenings)": "Dopa-Responsive Dystonia Trial"
+      }
+    },
+    "Focal Dystonia Management": {
+      text: "Consider botulinum toxin injections for focal symptoms. Assess for task-specific triggers.",
+      explanation: "FIRST-LINE: Botox for cervical dystonia/blepharospasm. NOTE: EMG guidance may improve targeting.",
+      options: {
+        "Effective": "Maintenance Therapy",
+        "Refractory": "Consider DBS Evaluation"
+      }
+    },
+    "Generalized Dystonia Workup": {
+      text: "Evaluate for DYT1 mutation, Wilson's disease, or secondary causes (birth injury, drugs).",
+      explanation: "DYT1: Autosomal dominant, early limb onset. WILSON'S: Must rule out - check ceruloplasmin. SECONDARY: MRI brain for structural lesions.",
+      options: {
+        "DYT1 positive": "DBS Consultation",
+        "Wilson's confirmed": "Copper Chelation",
+        "Structural lesion": "Treat Underlying Cause"
+      }
+    },
+
+    // Myoclonus Pathway
+    "Myoclonus Evaluation": {
+      text: "Determine if cortical, subcortical, or spinal origin:",
+      explanation: "CORTICAL: Triggered by action, focal. SUBCORTICAL: Generalized (e.g., post-hypoxic). SPINAL: Segmental. RED FLAG: Creutzfeldt-Jakob presents with rapidly progressive myoclonus+dementia.",
+      options: {
+        "Post-hypoxic or metabolic": "Metabolic Encephalopathy Workup",
+        "Epileptic (e.g., JME)": "EEG and Antiepileptics",
+        "Progressive with dementia": "CJD Workup"
+      }
+    },
+    "Metabolic Encephalopathy Workup": {
+      text: "Check LFTs, ammonia, electrolytes, ABG. Consider toxicology screen.",
+      explanation: "COMMON CAUSES: Hepatic/renal failure, CO poisoning, drug overdose. TREAT: Correct underlying cause; clonazepam for symptomatic relief.",
+      options: {
+        "Liver failure": "Lactulose/N-acetylcysteine",
+        "Drug toxicity": "Antidote/Supportive Care"
+      }
+    },
+
+    // Tics Pathway
+    "Tics Evaluation": {
+      text: "Assess for Tourette's criteria (multiple motor + ≥1 vocal tic) or simple tics:",
+      explanation: "DIAGNOSIS: Tics must persist >1 year. RED FLAG: Adult-onset tics may indicate secondary cause (e.g., stroke, drugs).",
+      options: {
+        "Meets Tourette's criteria": "Tourette's Management",
+        "Simple motor/vocal tics": "Simple Tic Management",
+        "Adult onset": "Secondary Tic Workup"
+      }
+    },
+    "Tourette's Management": {
+      text: "First-line: Behavioral therapy (CBIT). For severe cases, consider clonidine or antipsychotics.",
+      explanation: "MED CHOICE: Start clonidine (0.05mg BID) for children due to better side effect profile. Avoid dopamine blockers if possible due to tardive risk.",
+      options: {
+        "Behavioral therapy failed": "Pharmacologic Treatment",
+        "Refractory": "Consider Experimental Therapies"
+      }
+    },
+
+    // Shared Terminal Nodes
+    "Symptomatic Management": {
+      text: "Chorea: Tetrabenazine/valbenazine. Dystonia: Trihexyphenidyl. Myoclonus: Clonazepam.",
+      options: {}
+    },
+    "DBS Consultation": {
+      text: "Refer for deep brain stimulation evaluation (GPi target for dystonia, thalamus for tremor).",
+      options: {}
+    },
+    "CJD Workup": {
+      text: "MRI brain (cortical ribboning), EEG (periodic sharp waves), CSF 14-3-3 protein.",
+      options: {}
+    }
+  },
+  
+  
+  
+  
+  
+  // Acute Confusional State-------------
+  "Acute Confusional State": {
+    start: {
+      text: "Does the patient have focal neurologic signs or symptoms?",
+      explanation: "Initial assessment for focal findings helps differentiate primary CNS vs. systemic causes. RED FLAG: Focal signs may indicate stroke, hemorrhage, or mass lesion requiring urgent imaging.",
+      options: {
+        yes: "Focal Neurologic Signs Present",
+        no: "No Focal Neurologic Signs"
+      }
+    },
+
+    // Focal Neurologic Signs Pathway
+    "Focal Neurologic Signs Present": {
+      text: "Identify the most prominent associated feature:",
+      explanation: "FOCAL FINDINGS: Hemiparesis suggests stroke; headache with fever may indicate abscess or encephalitis; trauma history raises concern for hematoma.",
+      options: {
+        "Hemiparesis/visual field defect": "Stroke Evaluation",
+        "Headache + fever": "CNS Infection Workup",
+        "History of trauma": "Trauma Evaluation",
+        "Seizure activity": "Seizure Workup"
+      }
+    },
+    "Stroke Evaluation": {
+      text: "Obtain urgent CT head (non-contrast) to rule out hemorrhage. If negative, consider MRI with DWI for acute infarct.",
+      explanation: "TIME-SENSITIVE: For ischemic stroke, consider tPA if within 4.5h window. CRITICAL: Posterior circulation strokes often present with confusion alone.",
+      options: {
+        "Hemorrhage found": "Neurosurgery Consult",
+        "Acute infarct": "Stroke Protocol",
+        "Negative imaging": "Re-evaluate for Other Causes"
+      }
+    },
+    "CNS Infection Workup": {
+      text: "Start empiric acyclovir for HSV encephalitis. Order LP (cell count, glucose, protein, cultures, PCR) and blood cultures.",
+      explanation: "URGENT: Do not delay acyclovir for LP results. NOTE: HSV PCR may be negative early; repeat LP at 48h if high suspicion.",
+      options: {
+        "Meningitis/encephalitis confirmed": "Infectious Disease Consult",
+        "Abscess suspected": "Contrast MRI + Neurosurgery Consult"
+      }
+    },
+    "Trauma Evaluation": {
+      text: "Obtain CT head without contrast to assess for subdural/epidural hematoma or contusion.",
+      explanation: "HIGH-RISK GROUPS: Elderly (subdurals from minor trauma), anticoagulated patients. NOTE: Delayed confusion may occur with chronic subdural.",
+      options: {
+        "Acute hemorrhage": "Neurosurgery Consult",
+        "Diffuse axonal injury": "Neurology Consult"
+      }
+    },
+
+    // No Focal Signs Pathway
+    "No Focal Neurologic Signs": {
+      text: "Assess for systemic/metabolic causes:",
+      explanation: "KEY CLUES: Asterixis (metabolic), fever (infection), medication changes. PRIORITY: Check glucose, give thiamine before glucose if malnutrition/alcoholism suspected.",
+      options: {
+        "Recent medication changes": "Medication Review",
+        "Fever/infection signs": "Sepsis Workup",
+        "Metabolic derangement suspected": "Metabolic Workup",
+        "Toxic exposure": "Toxicology Workup",
+        "Seizure history": "Seizure Workup"
+      }
+    },
+    "Medication Review": {
+      text: "Identify high-risk medications (anticholinergics, opioids, benzodiazepines, steroids). Check for recent additions/dose changes.",
+      explanation: "COMMON OFFENDERS: Diphenhydramine, scopolamine, opioids. ACTION: Discontinue/reduce dose if possible.",
+      options: {
+        "Medication-induced": "Adjust Medications",
+        "Other cause suspected": "Broaden Workup"
+      }
+    },
+    "Sepsis Workup": {
+      text: "Obtain CBC, lactate, blood cultures, urinalysis, CXR. Start broad-spectrum antibiotics if infection suspected.",
+      explanation: "SILENT INFECTIONS: Elderly may not mount fever. UTIs commonly cause delirium in older adults.",
+      options: {
+        "Infection confirmed": "Targeted Antibiotics",
+        "No clear source": "Consider Occult Infection"
+      }
+    },
+    "Metabolic Workup": {
+      text: "Check electrolytes, BUN/Cr, LFTs, TSH, calcium, ABG. Assess for hypoxia/hypercapnia.",
+      explanation: "CRITICAL VALUES: Na <120 or >160, glucose <50 or >400, Ca >12. WERNICKE'S: Give thiamine 500mg IV before glucose.",
+      options: {
+        "Hyponatremia": "Correct Slowly",
+        "Hypercalcemia": "IV Fluids + Bisphosphonates",
+        "Wernicke's": "High-Dose Thiamine"
+      }
+    },
+    "Seizure Workup": {
+      text: "Obtain stat EEG to rule out nonconvulsive status. Check anticonvulsant levels if applicable.",
+      explanation: "NONCONVULSIVE STATUS: May present as prolonged confusion. TREAT: Lorazepam 2mg IV if confirmed.",
+      options: {
+        "Status epilepticus": "Benzodiazepines + Load Antiepileptic",
+        "Subtherapeutic levels": "Adjust Antiepileptics"
+      }
+    },
+
+    // Shared Terminal Nodes
+    "Neurosurgery Consult": {
+      text: "Urgent consult for mass lesion, hemorrhage, or elevated ICP.",
+      options: {}
+    },
+    "Infectious Disease Consult": {
+      text: "Tailor antibiotics to culture results. Continue acyclovir until HSV PCR negative.",
+      options: {}
+    },
+    "Stroke Protocol": {
+      text: "Neurology consult for acute stroke management (tPA/thrombectomy if eligible).",
+      options: {}
+    },
+    "High-Dose Thiamine": {
+      text: "Give thiamine 500mg IV TID for 3-5 days, then 250mg daily until no further improvement.",
+      options: {}
+    }
+  },
+  
+  
+  
+  
+  
+  
+  // Chronic Behavior Change--------------
+  "Chronic Behavior Change": {
+    start: {
+      text: "What is the primary pattern of cognitive/behavioral symptoms?",
+      explanation: "Initial classification guides diagnostic workup. KEY: Memory-predominant suggests Alzheimer's; behavior/executive dysfunction suggests FTD; stepwise decline suggests vascular.",
+      options: {
+        "Memory-predominant decline": "Alzheimer's Evaluation",
+        "Behavior/Executive dysfunction": "Frontotemporal Dementia Workup",
+        "Stepwise cognitive decline": "Vascular Dementia Evaluation",
+        "Cognitive + movement disorder": "Movement Disorder Dementia Workup",
+        "Rapidly progressive dementia": "Prion Disease Evaluation"
+      }
+    },
+
+    // Alzheimer's Pathway
+    "Alzheimer's Evaluation": {
+      text: "Assess for insidious progression, medial temporal atrophy on MRI, and AD biomarkers:",
+      explanation: "TYPICAL FEATURES: Episodic memory loss, disorientation, preserved social skills. DIAGNOSTIC: CSF Aβ42/tau ratio or amyloid PET if atypical presentation.",
+      options: {
+        "Typical AD features": "AD Management",
+        "Atypical features (young onset, focal deficits)": "Atypical Dementia Workup"
+      }
+    },
+    "AD Management": {
+      text: "Start cholinesterase inhibitor (donepezil 5mg daily, titrate to 10mg). Add memantine 5mg BID for moderate-severe AD.",
+      explanation: "MONITOR: GI side effects (nausea). CONSIDER: Non-pharmacologic interventions (cognitive stimulation, caregiver support).",
+      options: {
+        "Effective": "Maintenance Therapy",
+        "Ineffective/Intolerant": "Alternative Cholinesterase Inhibitor"
+      }
+    },
+
+    // Frontotemporal Dementia Pathway
+    "Frontotemporal Dementia Workup": {
+      text: "Evaluate for behavioral variant (disinhibition, apathy) or primary progressive aphasia:",
+      explanation: "KEY FEATURES: Early loss of social conduct, hyperorality, stereotyped behaviors. IMAGING: Frontal/anterior temporal atrophy on MRI.",
+      options: {
+        "Behavioral variant": "bvFTD Management",
+        "Language variant (PPA)": "PPA Subtyping"
+      }
+    },
+    "bvFTD Management": {
+      text: "SSRIs for compulsivity; avoid typical antipsychotics. Refer for genetic counseling if family history present.",
+      explanation: "WARNING: Neuroleptics may worsen parkinsonism in FTD-ALS spectrum. GENETIC: C9ORF72, MAPT, GRN mutations account for ~30% cases.",
+      options: {
+        "Behavioral symptoms controlled": "Monitor Progression",
+        "Refractory symptoms": "Neuropsychiatry Consult"
+      }
+    },
+
+    // Vascular Dementia Pathway
+    "Vascular Dementia Evaluation": {
+      text: "Assess cerebrovascular risk factors and neuroimaging for ischemic changes:",
+      explanation: "CRITICAL: Control vascular risks (HTN, DM, AF). IMAGING: White matter hyperintensities, lacunes, or strategic infarcts on MRI.",
+      options: {
+        "Vascular lesions present": "Vascular Risk Management",
+        "No significant vascular lesions": "Re-evaluate for Mixed Dementia"
+      }
+    },
+    "Vascular Risk Management": {
+      text: "Optimize BP (target <130/80), statin, antiplatelet if indicated. Consider cholinesterase inhibitors for cognitive symptoms.",
+      explanation: "PREVENTION: Aggressive risk factor control may slow progression. AVOID: Over-anticoagulation in amyloid angiopathy.",
+      options: {
+        "Controlled risk factors": "Cognitive Rehabilitation",
+        "Progression despite treatment": "Advanced Neuroimaging"
+      }
+    },
+
+    // Movement Disorder Dementia Pathway
+    "Movement Disorder Dementia Workup": {
+      text: "Characterize movement disorder features:",
+      explanation: "DLB: Fluctuations, visual hallucinations. PSP: Vertical gaze palsy, falls. CBD: Asymmetric apraxia, alien limb.",
+      options: {
+        "Parkinsonism + hallucinations": "Lewy Body Dementia Evaluation",
+        "Atypical parkinsonism": "PSP/CBD Workup",
+        "Chorea": "Huntington's Testing"
+      }
+    },
+    "Lewy Body Dementia Evaluation": {
+      text: "Assess for core features (fluctuations, RBD, neuroleptic sensitivity). Start rivastigmine for cognition.",
+      explanation: "AVOID: Typical antipsychotics (high mortality risk). CAUTION: Levodopa may worsen hallucinations.",
+      options: {
+        "Diagnosis confirmed": "Multidisciplinary Management",
+        "Uncertain diagnosis": "DATScan or MIBG"
+      }
+    },
+
+    // Prion Disease Pathway
+    "Prion Disease Evaluation": {
+      text: "Assess for rapidly progressive dementia (<2 years) with myoclonus or cerebellar signs:",
+      explanation: "URGENT: MRI (cortical ribboning, DWI abnormalities), EEG (periodic sharp waves), CSF 14-3-3/RTP-QuIC.",
+      options: {
+        "Typical features present": "Prion Disease Management",
+        "Atypical presentation": "Autoimmune Encephalitis Workup"
+      }
+    },
+    "Prion Disease Management": {
+      text: "Palliative care focus. Rule out treatable mimics (autoimmune, paraneoplastic). Notify public health if CJD confirmed.",
+      explanation: "SAFETY: Use contact precautions for invasive procedures. NOTE: No disease-modifying treatments currently available.",
+      options: {}
+    },
+
+    // Shared Terminal Nodes
+    "Atypical Dementia Workup": {
+      text: "Consider: CSF biomarkers, genetic testing, paraneoplastic/autoimmune evaluation.",
+      options: {}
+    },
+    "Neuropsychiatry Consult": {
+      text: "For refractory behavioral symptoms in FTD or advanced dementia.",
+      options: {}
+    },
+    "Autoimmune Encephalitis Workup": {
+      text: "Check NMDA-R, LGI1, CASPR2 antibodies. Consider IVIG/steroids if positive.",
+      options: {}
+    }
+  },
+
+
+
+  
+  
+  // Disturbances of Smell and Taste------
+  "Disturbances of Smell and Taste": {
+    start: {
+      text: "Is the primary complaint related to smell or taste?",
+      explanation: "Initial differentiation is crucial as pathways diverge. NOTE: Many patients reporting 'taste' problems actually have smell dysfunction.",
+      options: {
+        "Smell disturbance": "Smell Disorder Evaluation",
+        "Taste disturbance": "Taste Disorder Evaluation",
+        "Both smell and taste": "Combined Sensory Evaluation"
+      }
+    },
+
+    // Smell Disorders Pathway
+    "Smell Disorder Evaluation": {
+      text: "What type of smell disturbance is present?",
+      explanation: "CLASSIFICATION: Anosmia (complete loss), hyposmia (reduced), parosmia (distorted). RED FLAG: Unilateral anosmia may indicate intracranial mass.",
+      options: {
+        "Complete loss (anosmia)": "Anosmia Workup",
+        "Reduced smell (hyposmia)": "Hyposmia Evaluation",
+        "Distorted smell (parosmia/dysosmia)": "Dysosmia Evaluation"
+      }
+    },
+    "Anosmia Workup": {
+      text: "Determine onset and duration of anosmia:",
+      explanation: "ACUTE: Trauma, URI. CHRONIC: Neurodegenerative, congenital. PROGRESSIVE: Tumor, neurodegenerative.",
+      options: {
+        "Congenital/lifelong": "Congenital Anosmia Evaluation",
+        "Post-traumatic": "Post-Traumatic Anosmia",
+        "Progressive onset": "Progressive Anosmia Workup",
+        "Post-viral URI": "Post-Viral Anosmia"
+      }
+    },
+    "Congenital Anosmia Evaluation": {
+      text: "Assess for Kallmann syndrome (anosmia + hypogonadism) or other congenital syndromes.",
+      explanation: "DIAGNOSTIC: MRI shows absent olfactory bulbs. GENETIC: FGFR1, PROK2, PROKR2 mutations in Kallmann's.",
+      options: {
+        "Kallmann features present": "Endocrine + Genetic Workup",
+        "Isolated anosmia": "Olfactory MRI + Genetic Counseling"
+      }
+    },
+    "Post-Traumatic Anosmia": {
+      text: "Confirm head trauma history. Obtain CT head to rule out cribriform plate fracture.",
+      explanation: "PROGNOSIS: ~33% recover within 1 year. NO TREATMENT: Olfactory neuron regeneration is limited.",
+      options: {
+        "Acute trauma": "Neurosurgery Consult if Fracture",
+        "Chronic post-traumatic": "Smell Rehabilitation Referral"
+      }
+    },
+    "Progressive Anosmia Workup": {
+      text: "Evaluate for tumors, neurodegenerative diseases:",
+      explanation: "IMAGING: MRI brain with attention to olfactory bulbs, frontal lobes. NEURODEGENERATIVE: Often precedes Parkinson's/Alzheimer's by years.",
+      options: {
+        "MRI abnormal (tumor/mass)": "Neurosurgery Referral",
+        "MRI normal": "Neurodegenerative Risk Assessment"
+      }
+    },
+    "Dysosmia Evaluation": {
+      text: "Assess for epileptic, psychiatric, or neurodegenerative causes:",
+      explanation: "UNCINATE FITS: Brief foul smells + altered consciousness. PSYCHIATRIC: Schizophrenia, depression. DEGENERATIVE: Often precedes cognitive decline.",
+      options: {
+        "Epileptic features": "EEG + Neurology Referral",
+        "Psychiatric features": "Psychiatric Evaluation",
+        "Isolated symptom": "Olfactory Training"
+      }
+    },
+
+    // Taste Disorders Pathway
+    "Taste Disorder Evaluation": {
+      text: "Characterize the taste disturbance:",
+      explanation: "TRUE TASTE LOSS: Rare, usually local oral cause. METALLIC TASTE: Often medication-related.",
+      options: {
+        "Complete loss (ageusia)": "Ageusia Workup",
+        "Metallic/dysgeusia": "Dysgeusia Evaluation",
+        "Localized loss (e.g., one side)": "Focal Taste Loss"
+      }
+    },
+    "Ageusia Workup": {
+      text: "Evaluate for systemic, neurologic, or local oral causes:",
+      explanation: "SYSTEMIC: Diabetes, renal failure. NEUROLOGIC: Bell's palsy (chorda tympani). LOCAL: Oral candidiasis, GERD.",
+      options: {
+        "Diabetes/renal disease": "Metabolic Workup",
+        "Facial weakness (Bell's palsy)": "ENT + Neurology Referral",
+        "Oral lesions": "Dental/Oral Medicine Consult"
+      }
+    },
+    "Dysgeusia Evaluation": {
+      text: "Review medications and assess for oral/systemic causes:",
+      explanation: "COMMON DRUGS: ACEIs, metformin, PPIs. ORAL: Poor hygiene, xerostomia. SYSTEMIC: Zinc deficiency.",
+      options: {
+        "Medication-related": "Medication Adjustment",
+        "Oral/local cause": "Oral Hygiene Optimization",
+        "Idiopathic": "Zinc Supplement Trial"
+      }
+    },
+
+    // Combined Disorders Pathway
+    "Combined Sensory Evaluation": {
+      text: "Assess for systemic, neurologic, or medication causes:",
+      explanation: "CRITICAL: COVID-19 can cause both. OTHER: Sjögren's, neurodegenerative diseases, chemo/radiation.",
+      options: {
+        "Recent URI/COVID-19": "Post-Viral Workup",
+        "Medication review": "Pharmacologic Causes",
+        "Neurodegenerative signs": "Neurology Referral"
+      }
+    },
+
+    // Shared Terminal Nodes
+    "Medication Adjustment": {
+      text: "Discontinue/replace offending drugs if possible. Allow 4-6 weeks for recovery after cessation.",
+      options: {}
+    },
+    "Olfactory Training": {
+      text: "Recommend smell training with essential oils (rose, lemon, clove, eucalyptus) twice daily for 6 months.",
+      options: {}
+    },
+    "Endocrine + Genetic Workup": {
+      text: "Check LH/FSH/testosterone/estradiol. Refer to endocrinology and genetics for Kallmann syndrome management.",
+      options: {}
+    }
+  },
+  
+  
+  
+  
+  
+  // Coma----------------------------
+  "Coma": {
+    start: {
+      text: "Is there any history or signs of trauma?",
+      explanation: "Initial trauma assessment directs immediate imaging needs. RED FLAG: C-spine immobilization must be maintained until cleared.",
+      options: {
+        yes: "Trauma Pathway",
+        no: "Non-Trauma Evaluation"
+      }
+    },
+
+    // Trauma Pathway
+    "Trauma Pathway": {
+      text: "Obtain immediate CT head and C-spine. Assess for signs of herniation or skull fracture:",
+      explanation: "CRITICAL: Look for unequal pupils, posturing, or Cushing's triad (HTN, bradycardia, irregular breathing). PRIORITY: Neurosurgery consult for operable lesions.",
+      options: {
+        "Mass lesion/hemorrhage": "Neurosurgical Emergency",
+        "Diffuse axonal injury": "Supportive Care + ICP Monitoring",
+        "No structural injury": "Re-evaluate for Secondary Causes"
+      }
+    },
+    "Neurosurgical Emergency": {
+      text: "Prepare for possible decompression. Start hyperosmolar therapy (mannitol 1g/kg or hypertonic saline) if signs of herniation.",
+      explanation: "TIME-SENSITIVE: EDH evacuation within 1-2 hours improves outcomes. MONITOR: ICP goals <22mmHg, CPP >60mmHg.",
+      options: {}
+    },
+
+    // Non-Trauma Pathway
+    "Non-Trauma Evaluation": {
+      text: "Is the neurologic examination focal or nonfocal?",
+      explanation: "FOCAL: Asymmetric findings suggest structural lesion. NONFOCAL: Suggests toxic/metabolic or global process.",
+      options: {
+        "Focal findings": "Structural Lesion Workup",
+        "Nonfocal": "Metabolic/Toxic Evaluation",
+        "Meningismus": "Meningitis/SAH Workup"
+      }
+    },
+    "Structural Lesion Workup": {
+      text: "Perform emergent CT head (non-contrast first). Localize to supratentorial vs. infratentorial:",
+      explanation: "SUPRATENTORIAL: Decorticate posturing, gaze preference. INFRA: Abnormal doll's eyes, irregular breathing.",
+      options: {
+        "Supratentorial mass": "Herniation Protocol",
+        "Infratentorial lesion": "Brainstem Compression Management",
+        "Ischemic stroke": "Stroke Protocol"
+      }
+    },
+    "Herniation Protocol": {
+      text: "Elevate HOB 30°, hyperventilate to pCO2 30-35, mannitol 1g/kg. Prepare for surgical decompression.",
+      explanation: "WARNING: Avoid over-hyperventilation (cerebral ischemia). MONITOR: Neurologic exams q15-30min.",
+      options: {}
+    },
+    "Metabolic/Toxic Evaluation": {
+      text: "Check glucose, electrolytes, ABG, ammonia, LFTs, tox screen. Administer:",
+      explanation: "EMPIRIC: Thiamine 100mg IV before glucose, naloxone 2mg IV if opioid suspected, flumazenil if benzo overdose.",
+      options: {
+        "Hypoglycemia": "D50W 1 amp",
+        "Opioid overdose": "Naloxone Titration",
+        "Other metabolic": "Specific Correction"
+      }
+    },
+    "Meningitis/SAH Workup": {
+      text: "After CT head, perform LP if no mass effect. Start empiric therapy:",
+      explanation: "ANTIBIOTICS: Vancomycin + ceftriaxone + ampicillin (if elderly). ACYCLOVIR: Add if HSV suspected.",
+      options: {
+        "SAH confirmed": "Nimodipine + Neurointervention",
+        "Meningitis": "Culture-Directed Therapy",
+        "Negative workup": "Re-evaluate for Autoimmune"
+      }
+    },
+
+    // Seizure Pathway
+    "Seizure Evaluation": {
+      text: "Is there evidence of seizure activity (observed or EEG)?",
+      explanation: "NONCONVULSIVE STATUS: May show subtle eye/face twitching. EEG is diagnostic.",
+      options: {
+        "Convulsive status": "Benzodiazepines + Antiepileptics",
+        "Nonconvulsive": "EEG Monitoring + Treatment",
+        "Postictal": "Supportive Care"
+      }
+    },
+    "Benzodiazepines + Antiepileptics": {
+      text: "Lorazepam 4mg IV, repeat q5min x3. Load fosphenytoin 20mg PE/kg or valproate 40mg/kg.",
+      explanation: "REFACTORY: Midazolam/propofol infusion with EEG monitoring. WATCH: Respiratory depression.",
+      options: {}
+    },
+
+    // Special Considerations
+    "Brain Death Evaluation": {
+      text: "Consider if no brainstem reflexes after reversible causes excluded:",
+      explanation: "REQUIREMENTS: Apnea test, no sedation/paralytics, core temp >36°C. DOCUMENT: Two exams + apnea test or ancillary study.",
+      options: {
+        "Criteria met": "Organ Donation Discussion",
+        "Uncertain": "Ancillary Testing (EEG/angiography)"
+      }
+    },
+
+    // Shared Terminal Nodes
+    "Naloxone Titration": {
+      text: "Give 0.4mg IV q2min until respirations improve (max 10mg). Monitor for re-sedation.",
+      options: {}
+    },
+    "Stroke Protocol": {
+      text: "CT angiogram for LVO. Consider tPA/thrombectomy if within window. Maintain SBP <180 for tPA.",
+      options: {}
+    },
+    "ICP Monitoring": {
+      text: "Insert monitor if GCS ≤8. Goal ICP <22, CPP >60 with fluids/vasopressors.",
+      options: {}
+    }
+  },
+  
+  
+  
+  
+  
+  // Brain Death---------------------
+  "Brain Death": {
+    start: {
+      text: "Is the patient in deep coma with no evidence of receptivity or awareness?",
+      explanation: "Initial assessment of coma state. PREREQUISITE: Must have documented irreversible catastrophic brain injury with known etiology.",
+      options: {
+        yes: "Prerequisites Evaluation",
+        no: "Re-evaluate Coma Cause"
+      }
+    },
+
+    // Prerequisites Pathway
+    "Prerequisites Evaluation": {
+      text: "Are all reversible/treatable conditions excluded?",
+      explanation: "CONFOUNDERS: Hypothermia (<36°C), hypotension (SBP <90mmHg), metabolic disturbances, drug intoxication, or neuromuscular blockade.",
+      options: {
+        "All excluded": "Brainstem Reflex Testing",
+        "Potential confounders present": "Ancillary Testing Consideration"
+      }
+    },
+
+    // Brainstem Examination Pathway
+    "Brainstem Reflex Testing": {
+      text: "Assess cranial nerve reflexes systematically:",
+      explanation: "MUST TEST: Pupillary, corneal, oculovestibular, gag/cough reflexes. NOTE: Spinal reflexes may persist and don't preclude diagnosis.",
+      options: {
+        "All absent": "Apnea Test Preparation",
+        "Any present": "Not Brain Dead"
+      }
+    },
+    "Apnea Test Preparation": {
+      text: "Ensure preconditions met: normothermia, normotension, euvolemia, PaCO2 35-45mmHg, PaO2 ≥200mmHg (after preoxygenation)",
+      explanation: "ABSOLUTE CONTRAINDICATIONS: CO2 retention (baseline PaCO2 >45mmHg), hemodynamic instability, or hypoxia during test.",
+      options: {
+        "Conditions met": "Perform Apnea Test",
+        "Unstable": "Consider Ancillary Test"
+      }
+    },
+    "Perform Apnea Test": {
+      text: "Disconnect ventilator, provide O2 via tracheal catheter. Monitor for respiratory efforts while allowing PaCO2 to rise:",
+      explanation: "POSITIVE TEST: No respiratory movements with PaCO2 ≥60mmHg or 20mmHg above baseline. ABORT CRITERIA: SpO2 <85%, SBP <90mmHg, arrhythmias.",
+      options: {
+        "Positive (no respiration)": "Confirmatory Testing",
+        "Negative (respiratory effort)": "Not Brain Dead",
+        "Aborted": "Ancillary Testing Required"
+      }
+    },
+
+    // Ancillary Testing Pathway
+    "Ancillary Testing Consideration": {
+      text: "Select appropriate ancillary test based on clinical scenario:",
+      explanation: "INDICATIONS: Unable to complete clinical exam (e.g., severe facial trauma), confounding factors present, or equivocal apnea test.",
+      options: {
+        "EEG (electrocerebral silence)": "EEG Confirmation",
+        "Cerebral angiography (no flow)": "Angiography Protocol",
+        "Transcranial Doppler (reverberating flow)": "TCD Evaluation",
+        "SPECT (no uptake)": "Nuclear Medicine Protocol"
+      }
+    },
+    "EEG Confirmation": {
+      text: "Perform 30-minute EEG with proper technical standards (≥8 scalp electrodes, high sensitivity settings).",
+      explanation: "DIAGNOSTIC: Electrocerebral silence (ECS) at 2μV/mm sensitivity. PITFALLS: Drug effects may mimic ECS.",
+      options: {
+        "ECS confirmed": "Brain Death Confirmed",
+        "Residual activity": "Not Brain Dead"
+      }
+    },
+    "Angiography Protocol": {
+      text: "Four-vessel cerebral angiogram showing no intracranial flow at skull base.",
+      explanation: "GOLD STANDARD: Must demonstrate absence of flow above carotid siphon/vertebrobasilar junction. NOTE: Not affected by drugs/metabolic factors.",
+      options: {
+        "No flow": "Brain Death Confirmed",
+        "Partial flow": "Repeat Clinical Exam"
+      }
+    },
+
+    // Documentation Pathway
+    "Confirmatory Testing": {
+      text: "Determine if second exam required per institutional policy:",
+      explanation: "TYPICAL PROTOCOL: Two exams by qualified physicians, often with observation period (6-24hrs). Some states require different physicians.",
+      options: {
+        "Second exam required": "Repeat Full Evaluation",
+        "Single exam sufficient": "Final Documentation"
+      }
+    },
+    "Final Documentation": {
+      text: "Record complete findings including:",
+      explanation: "ESSENTIAL ELEMENTS: Time of death, all absent reflexes, apnea test results, exclusion of confounders, names/titles of examiners.",
+      options: {
+        "Proceed to Organ Donation Discussion": "exit",
+        "Family Counseling": "exit"
+      }
+    },
+
+    // Special Considerations
+    "Pediatric Considerations": {
+      text: "Is patient <1 year old? Additional requirements apply:",
+      explanation: "SPECIAL RULES: Longer observation periods (24-48hrs), two exams + ancillary test often required. Consult pediatric neurology.",
+      options: {
+        "Neonate (<30 days)": "Neonatal Protocol",
+        "Infant (1mo-1yr)": "Infant Protocol",
+        "Not pediatric": "Continue Standard Pathway"
+      }
+    }
+  }
+};
+
+  
+
+
+
+
+
+
+
+    let currentSymptom = null;
+    let currentQuestion = "start";
+
+    function playClick() {
+      const sound = document.getElementById("click-sound");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+      }
+    }
+
+    function startSymptom(symptom) {
+      currentSymptom = symptom;
+      currentQuestion = "start";
+      document.getElementById("symptom-title").textContent = symptom;
+      showQuestion();
+
+      document.getElementById("main-page").style.display = "none";
+      document.getElementById("question-page").style.display = "block";
+      document.getElementById("headline").style.display = "none";
+      document.getElementById("subheadline").style.display = "none";
+    }
+
+    // NEW/MODIFIED: This function is updated to show images.
+    function showQuestion() {
+      const symptomQuestions = questions[currentSymptom];
+      if (!symptomQuestions || !symptomQuestions[currentQuestion]) {
+        alert("Invalid symptom or question flow.");
+        return;
+      }
+
+      const questionData = symptomQuestions[currentQuestion];
+      const imageContainer = document.getElementById("question-image-container");
+      
+      // Clear previous image
+      imageContainer.innerHTML = "";
+
+      // If an image path exists, create and display the image
+      if (questionData.image) {
+        const img = document.createElement("img");
+        img.src = questionData.image;
+        img.alt = questionData.text; // for accessibility
+        img.className = "question-image";
+        imageContainer.appendChild(img);
+      }
+
+      document.getElementById("question").textContent = questionData.text;
+      document.getElementById("footer").textContent = questionData.explanation || "No explanation available.";
+
+      const buttons = Object.keys(questionData.options)
+        .map(option =>
+          `<button class='option-button' onclick="playClick(); nextQuestion('${option}')">${option}</button>`)
+        .join("");
+      document.querySelector(".button-container").innerHTML = buttons;
+    }
+
+    function nextQuestion(answer) {
+      const symptomQuestions = questions[currentSymptom];
+      const current = symptomQuestions[currentQuestion];
+      if (!current || !current.options[answer]) {
+        alert("Invalid choice.");
+        return;
+      }
+
+      const next = current.options[answer];
+      // Check if the next step is another question or a final diagnosis
+      if (symptomQuestions[next] && symptomQuestions[next].options) {
+          currentQuestion = next;
+          showQuestion();
+      } else {
+          // This handles both terminal nodes that are defined as full objects
+          // and those that are simple strings (your original implementation)
+          if (symptomQuestions[next]) {
+              currentQuestion = next;
+              showQuestion(); // This will display the final diagnosis with its image
+          } else {
+              // This is a fallback for legacy string-only terminals
+              document.getElementById("question").textContent = next;
+              document.getElementById("footer").textContent = "End of diagnostic path.";
+              document.querySelector(".button-container").innerHTML =
+                `<button class='option-button' onclick="playClick(); restart()">Restart</button>`;
+              document.getElementById("question-image-container").innerHTML = ""; // Clear image
+          }
+      }
+    }
+
+
+    function restart() {
+      document.getElementById("main-page").style.display = "flex";
+      document.getElementById("question-page").style.display = "none";
+      document.getElementById("headline").style.display = "block";
+      document.getElementById("subheadline").style.display = "block";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      sidebar.classList.toggle("active");
+      overlay.style.display = sidebar.classList.contains("active") ? "block" : "none";
+    }
+
+    document.addEventListener("click", function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const toggleBtn = document.querySelector(".toggle-button");
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnToggle = toggleBtn.contains(event.target);
+      if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains("active")) {
+        toggleSidebar();
+      }
+    });
+
+    let startX = 0;
+    document.addEventListener("touchstart", function(e) {
+      if (e.touches.length === 1) { startX = e.touches[0].clientX; }
+    });
+    document.addEventListener("touchend", function(e) {
+      const sidebar = document.getElementById("sidebar");
+      const diff = e.changedTouches[0].clientX - startX;
+      if (diff > 50 && sidebar.classList.contains("active")) { toggleSidebar(); }
+    });
+
+    function goHome() {
+      window.location.href = "../index.html";
+    }
+
+    function navigateTo(page) {
+      window.location.href = page;
+      const loadingScreen = document.querySelector('.loading');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'flex';
+        setTimeout(() => { window.location.href = page; }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>

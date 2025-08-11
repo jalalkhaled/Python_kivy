@@ -1,0 +1,62 @@
+AlgoMed Diagnostic Tool/
+│
+├── bodyicons/
+│   ├── algomed_icon.png
+│   ├── app_background.jpg
+│   ├── Cardiology.png
+│   ├── Dermatology.png
+│   ├── Endocrinology.png
+│   ├── ent.png
+│   ├── git.png
+│   ├── Gynecology.png
+│   ├── hematology.png
+│   ├── Hepatology.png
+│   ├── home_button.png
+│   ├── Nephrology.png
+│   ├── Neurology.png
+│   ├── Obstetric.png
+│   ├── Ophthalmology.png
+│   ├── Pediatric.png
+│   ├── Respiratory.png
+│   └── Rheumatology.png
+│
+├── fonts/
+│   ├── Oswald-Bold.eot
+│   ├── Oswald-Bold.otf
+│   ├── Oswald-Bold.svg
+│   ├── Oswald-Bold.ttf
+│   ├── Oswald-Bold.woff
+│   └── Oswald-Bold.woff2
+│
+├── regional_pages/
+│   ├── cardiovascular.html
+│   ├── Dermatology.html
+│   ├── endocrinology.html
+│   ├── ent.html
+│   ├── General.html
+│   ├── git.html
+│   ├── gynecology.html
+│   ├── Hematology.html
+│   ├── hepatology.html
+│   ├── nephrology.html
+│   ├── Neurology.html
+│   ├── Obstetric.html
+│   ├── Ophthalmology.html
+│   ├── pediatric.html
+│   ├── psychiatric.html
+│   ├── respiratory.html
+│   ├── Rheumatology.html
+│   └── trailer.html
+│
+├── sounds/
+│   └── click_sound.wav
+│
+├── style/
+│   ├── regional_style.css
+│   ├── style.css
+│   └── trailer.css
+│
+├── about.html
+├── Copy.txt
+├── index.html
+└── search.js
